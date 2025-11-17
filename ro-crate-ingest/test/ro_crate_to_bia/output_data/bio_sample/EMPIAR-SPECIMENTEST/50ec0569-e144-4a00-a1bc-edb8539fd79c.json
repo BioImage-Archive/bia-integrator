@@ -1,0 +1,32 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "50ec0569-e144-4a00-a1bc-edb8539fd79c",
+  "version": 0,
+  "model": {
+    "type_name": "BioSample",
+    "version": 4
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "S. cerevisiae"
+      }
+    }
+  ],
+  "title": "_:S. cerevisiae",
+  "organism_classification": [
+    {
+      "additional_metadata": [],
+      "common_name": "baker's yeast",
+      "scientific_name": "Saccharomyces cerevisiae",
+      "ncbi_id": null
+    }
+  ],
+  "biological_entity_description": "S. cerevisiae (BY4741) cells.",
+  "experimental_variable_description": [],
+  "extrinsic_variable_description": [],
+  "intrinsic_variable_description": [],
+  "growth_protocol_uuid": null
+}

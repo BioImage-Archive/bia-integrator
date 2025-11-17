@@ -1,0 +1,7 @@
+file_path	size_in_bytes	type	label	source_image_label	associated_specimen	associated_annotation_method	associated_protocol
+data/frames/TS_006_00001_-0.0.tif	12	http://bia/Image	Control condition frames 06_00001_-0.0		_:Specimen 06		_:Glucose control condition
+data/frames/TS_006_00002_2.0.tif	12	http://bia/Image	Control condition frames 06_00002_2.0		_:Specimen 06		_:Glucose control condition
+data/frames/TS_006_00003_-2.0.tif	12	http://bia/Image	Control condition frames 06_00003_-2.0		_:Specimen 06		_:Glucose control condition
+data/frames/TS_007_00001_-0.0.tif	12	http://bia/Image	Control condition frames 07_00001_-0.0				_:Glucose control condition
+data/frames/TS_007_00002_2.0.tif	12	http://bia/Image	Control condition frames 07_00002_2.0				_:Glucose control condition
+data/frames/TS_007_00003_-2.0.tif	12	http://bia/Image	Control condition frames 07_00003_-2.0				_:Glucose control condition

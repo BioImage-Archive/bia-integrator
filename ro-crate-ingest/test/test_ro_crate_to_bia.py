@@ -67,6 +67,7 @@ def get_expected_files(accession_id) -> list[Path]:
         (get_mock_ro_crate_path("S-BIADWITHFILELIST"), None),
         (get_empiar_to_ro_crate_path("EMPIAR-IMAGEPATTERNTEST"), "empiar"),
         (get_empiar_to_ro_crate_path("EMPIAR-STARFILETEST"), "empiar"),
+        (get_empiar_to_ro_crate_path("EMPIAR-SPECIMENTEST"), "empiar"),
     ],
 )
 class TestGenericROCrateToAPI:

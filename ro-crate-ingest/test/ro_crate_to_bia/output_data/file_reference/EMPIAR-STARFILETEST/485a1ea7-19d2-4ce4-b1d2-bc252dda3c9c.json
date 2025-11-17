@@ -23,6 +23,7 @@
         "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "http://bia/Image",
         "http://schema.org/name": "Unaligned, unbinned, multi-frame micrograph TS_008",
         "http://bia/sourceImageLabel": "",
+        "http://bia/associatedSubject": "",
         "http://bia/associatedAnnotationMethod": "",
         "http://bia/associatedProtocol": ""
       }

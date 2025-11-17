@@ -1,0 +1,24 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "a26d3410-d7d7-4366-aadc-a5a3e1c10359",
+  "version": 0,
+  "model": {
+    "type_name": "Image",
+    "version": 2
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "14ef11d9-b891-470e-919e-367b4fd55c85"
+      }
+    }
+  ],
+  "label": "Control condition frames 06_00002_2.0",
+  "submission_dataset_uuid": "3d6a8b43-4239-4bad-9d41-59ba02dac49c",
+  "creation_process_uuid": "484e99da-5c76-4853-a6b5-adc40745d906",
+  "original_file_reference_uuid": [
+    "14ef11d9-b891-470e-919e-367b4fd55c85"
+  ]
+}

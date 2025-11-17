@@ -1,5 +1,5 @@
-file_path	size_in_bytes	type	label	source_image_label	associated_annotation_method	associated_protocol
-data/220330/tomograms/220330.star	0	http://bia/AnnotationData	Coordinates from subtomogram averaging of GEM2 particles for dataset 2 (220330)	['Tomogram TS_008', 'Tomogram TS_010', 'Tomogram TS_017']	_:DeePiCt and manual particle picking	
-data/220330/tomograms/TS_008.mrc_aretomo.mrc	16	http://bia/Image	Tomogram TS_008	Tilt series TS_008		_:Tomogram reconstruction and sub-tomogram averaging
-data/220330/tomograms/TS_010.mrc_aretomo.mrc	16	http://bia/Image	Tomogram TS_010	Tilt series TS_010		_:Tomogram reconstruction and sub-tomogram averaging
-data/220330/tomograms/TS_017.mrc_aretomo.mrc	16	http://bia/Image	Tomogram TS_017	Tilt series TS_017		_:Tomogram reconstruction and sub-tomogram averaging
+file_path	size_in_bytes	type	label	source_image_label	associated_specimen	associated_annotation_method	associated_protocol
+data/220330/tomograms/220330.star	0	http://bia/AnnotationData	Coordinates from subtomogram averaging of GEM2 particles for dataset 2 (220330)	['Tomogram TS_008', 'Tomogram TS_010', 'Tomogram TS_017']		_:DeePiCt and manual particle picking	
+data/220330/tomograms/TS_008.mrc_aretomo.mrc	16	http://bia/Image	Tomogram TS_008	Tilt series TS_008			_:Tomogram reconstruction and sub-tomogram averaging
+data/220330/tomograms/TS_010.mrc_aretomo.mrc	16	http://bia/Image	Tomogram TS_010	Tilt series TS_010			_:Tomogram reconstruction and sub-tomogram averaging
+data/220330/tomograms/TS_017.mrc_aretomo.mrc	16	http://bia/Image	Tomogram TS_017	Tilt series TS_017			_:Tomogram reconstruction and sub-tomogram averaging

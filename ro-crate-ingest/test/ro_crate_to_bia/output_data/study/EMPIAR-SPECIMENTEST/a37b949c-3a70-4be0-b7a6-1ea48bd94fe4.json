@@ -1,0 +1,42 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "a37b949c-3a70-4be0-b7a6-1ea48bd94fe4",
+  "version": 0,
+  "model": {
+    "type_name": "Study",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "EMPIAR-SPECIMENTEST"
+      }
+    }
+  ],
+  "accession_id": "EMPIAR-SPECIMENTEST",
+  "doi": null,
+  "licence": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "author": [
+    {
+      "rorid": null,
+      "address": null,
+      "website": null,
+      "orcid": null,
+      "display_name": "Test",
+      "affiliation": [],
+      "contact_email": null,
+      "role": []
+    }
+  ],
+  "title": "Cryo-electron tomography data acquired on S. cerevisiae (BY4741) cryo-FIB lamellae",
+  "release_date": "2025-02-04",
+  "description": "",
+  "keyword": [],
+  "acknowledgement": null,
+  "see_also": [],
+  "related_publication": [],
+  "grant": [],
+  "funding_statement": null
+}

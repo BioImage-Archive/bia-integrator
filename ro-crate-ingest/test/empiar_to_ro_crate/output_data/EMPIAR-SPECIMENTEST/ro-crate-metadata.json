@@ -1,0 +1,476 @@
+{
+    "@context": [
+        "https://w3id.org/ro/crate/1.1/context",
+        {
+            "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+            "schema": "http://schema.org/",
+            "dc": "http://purl.org/dc/terms/",
+            "bia": "http://bia/",
+            "csvw": "http://www.w3.org/ns/csvw#",
+            "displayName": {
+                "@id": "schema:name"
+            },
+            "address": {
+                "@id": "schema:address"
+            },
+            "website": {
+                "@id": "bia:website"
+            },
+            "resultOf": {
+                "@id": "bia:resultOf"
+            },
+            "label": {
+                "@id": "schema:name"
+            },
+            "title": {
+                "@id": "schema:name"
+            },
+            "protocolDescription": {
+                "@id": "schema:description"
+            },
+            "annotationCriteria": {
+                "@id": "bia:annotationCriteria"
+            },
+            "annotationCoverage": {
+                "@id": "bia:annotationCoverage"
+            },
+            "transformationDescription": {
+                "@id": "bia:transformationDescription"
+            },
+            "spatialInformation": {
+                "@id": "bia:spatialInformation"
+            },
+            "methodType": {
+                "@id": "bia:annotationMethodType"
+            },
+            "annotationSourceIndicator": {
+                "@id": "bia:annotationSourceIndicator"
+            },
+            "biologicalEntityDescription": {
+                "@id": "bia:biologicalEntityDescription"
+            },
+            "experimentalVariableDescription": {
+                "@id": "bia:experimentalVariableDescription"
+            },
+            "extrinsicVariableDescription": {
+                "@id": "bia:extrinsicVariableDescription"
+            },
+            "intrinsicVariableDescription": {
+                "@id": "bia:intrinsicVariableDescription"
+            },
+            "organismClassification": {
+                "@id": "bia:organismClassification"
+            },
+            "growthProtocol": {
+                "@id": "bia:growthProtocol"
+            },
+            "columnName": {
+                "@id": "csvw:name"
+            },
+            "propertyUrl": {
+                "@id": "csvw:propertyUrl"
+            },
+            "affiliation": {
+                "@id": "schema:memberOf"
+            },
+            "role": {
+                "@id": "bia:role"
+            },
+            "contactEmail": {
+                "@id": "schema:email"
+            },
+            "imageAcquisitionProtocol": {
+                "@id": "bia:imageAcquisitionProtocol"
+            },
+            "subject": {
+                "@id": "bia:subject"
+            },
+            "protocol": {
+                "@id": "bia:protocol"
+            },
+            "annotationMethod": {
+                "@id": "bia:annotationMethod"
+            },
+            "inputImage": {
+                "@id": "bia:inputImage"
+            },
+            "description": {
+                "@id": "schema:description"
+            },
+            "associatedBiologicalEntity": {
+                "@id": "bia:associatedBiologicalEntity"
+            },
+            "associatedSpecimenImagingPreparationProtocol": {
+                "@id": "bia:associatedImagingPreparationProtocol"
+            },
+            "associatedSpecimen": {
+                "@id": "bia:associatedSubject"
+            },
+            "associatedImageAcquisitionProtocol": {
+                "@id": "bia:associatedImageAcquisitionProtocol"
+            },
+            "associatedAnnotationMethod": {
+                "@id": "bia:associatedAnnotationMethod"
+            },
+            "associatedImageAnalysisMethod": {
+                "@id": "bia:associatedAnalysisMethod"
+            },
+            "associatedImageCorrelationMethod": {
+                "@id": "bia:associatedCorrelationMethod"
+            },
+            "associatedProtocol": {
+                "@id": "bia:associatedProtocol"
+            },
+            "hasPart": {
+                "@id": "schema:hasPart"
+            },
+            "associationFileMetadata": {
+                "@id": "bia:associationFileMetadata"
+            },
+            "link": {
+                "@id": "schema:url"
+            },
+            "linkDescription": {
+                "@id": "schema:description"
+            },
+            "tableSchema": {
+                "@id": "csvw:tableSchema"
+            },
+            "imagingInstrumentDescription": {
+                "@id": "bia:imagingInstrumentDescription"
+            },
+            "imagingMethodName": {
+                "@id": "bia:imagingMethodName"
+            },
+            "fbbiId": {
+                "@id": "bia:fbbiId"
+            },
+            "featuresAnalysed": {
+                "@id": "bia:featuresAnalysed"
+            },
+            "fiducialsUsed": {
+                "@id": "bia:fiducialsUsed"
+            },
+            "transformationMatrix": {
+                "@id": "bia:transformationMatrix"
+            },
+            "authorNames": {
+                "@id": "bia:authorNames"
+            },
+            "signalContrastMechanismDescription": {
+                "@id": "bia:signalContrastMechanismDescription"
+            },
+            "channelContentDescription": {
+                "@id": "bia:channelContentDescription"
+            },
+            "channelBiologicalEntity": {
+                "@id": "bia:channelBiologicalEntity"
+            },
+            "channelLabel": {
+                "@id": "dc:identifier"
+            },
+            "biologicalEntity": {
+                "@id": "bia:sampleOf"
+            },
+            "imagingPreparationProtocol": {
+                "@id": "bia:imagingPreparationProtocol"
+            },
+            "signalChannelInformation": {
+                "@id": "bia:signalChannelInformation"
+            },
+            "contributor": {
+                "@id": "schema:author"
+            },
+            "licence": {
+                "@id": "schema:license"
+            },
+            "datePublished": {
+                "@id": "schema:datePublished"
+            },
+            "keyword": {
+                "@id": "schema:keywords"
+            },
+            "acknowledgement": {
+                "@id": "bia:acknowledgement"
+            },
+            "accessionId": {
+                "@id": "schema:identifier"
+            },
+            "column": {
+                "@id": "csvw:column"
+            },
+            "commonName": {
+                "@id": "bia:commonName"
+            },
+            "scientificName": {
+                "@id": "bia:scientificName"
+            }
+        }
+    ],
+    "@graph": [
+        {
+            "@id": "ro-crate-metadata.json",
+            "@type": "CreativeWork",
+            "conformsTo": {
+                "@id": "https://w3id.org/ro/crate/1.1"
+            },
+            "about": {
+                "@id": "./"
+            }
+        },
+        {
+            "@id": "./",
+            "@type": [
+                "Dataset",
+                "bia:Study"
+            ],
+            "title": "Cryo-electron tomography data acquired on S. cerevisiae (BY4741) cryo-FIB lamellae",
+            "contributor": [
+                {
+                    "@id": "_:c0"
+                }
+            ],
+            "description": "",
+            "licence": "https://creativecommons.org/publicdomain/zero/1.0/",
+            "datePublished": "2025-02-04",
+            "keyword": [],
+            "acknowledgement": null,
+            "hasPart": [
+                {
+                    "@id": "Movie%20stacks%20data/frames/"
+                }
+            ],
+            "accessionId": "EMPIAR-SPECIMENTEST"
+        },
+        {
+            "@id": "_:c0",
+            "@type": [
+                "Person",
+                "bia:Contributor"
+            ],
+            "displayName": "Test",
+            "address": null,
+            "website": null,
+            "affiliation": [],
+            "role": [],
+            "contactEmail": null
+        },
+        {
+            "@id": "Movie%20stacks%20data/frames/file_list.tsv",
+            "@type": [
+                "File",
+                "bia:FileList",
+                "csvw:Table"
+            ],
+            "tableSchema": {
+                "@id": "_:ts0"
+            }
+        },
+        {
+            "@id": "_:col7",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "associated_protocol",
+            "propertyUrl": "http://bia/associatedProtocol"
+        },
+        {
+            "@id": "_:col6",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "associated_annotation_method",
+            "propertyUrl": "http://bia/associatedAnnotationMethod"
+        },
+        {
+            "@id": "_:col5",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "associated_specimen",
+            "propertyUrl": "http://bia/associatedSubject"
+        },
+        {
+            "@id": "_:col4",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "source_image_label",
+            "propertyUrl": "http://bia/sourceImageLabel"
+        },
+        {
+            "@id": "_:col3",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "label",
+            "propertyUrl": "http://schema.org/name"
+        },
+        {
+            "@id": "_:col2",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "type",
+            "propertyUrl": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+        },
+        {
+            "@id": "_:col1",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "size_in_bytes",
+            "propertyUrl": "http://bia/sizeInBytes"
+        },
+        {
+            "@id": "_:col0",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "file_path",
+            "propertyUrl": "http://bia/filePath"
+        },
+        {
+            "@id": "_:ts0",
+            "@type": [
+                "csvw:Schema"
+            ],
+            "column": [
+                {
+                    "@id": "_:col0"
+                },
+                {
+                    "@id": "_:col1"
+                },
+                {
+                    "@id": "_:col2"
+                },
+                {
+                    "@id": "_:col3"
+                },
+                {
+                    "@id": "_:col4"
+                },
+                {
+                    "@id": "_:col5"
+                },
+                {
+                    "@id": "_:col6"
+                },
+                {
+                    "@id": "_:col7"
+                }
+            ]
+        },
+        {
+            "@id": "Movie%20stacks%20data/frames/",
+            "@type": [
+                "Dataset",
+                "bia:Dataset"
+            ],
+            "title": "Movie stacks",
+            "description": "Raw unaligned multi-frame micrographs were aligned, sorted and combined into tilt series stacks using Warp (st files in metadata folder) and tomograms reconstructed using AreTomo. Naming for tomograms of control cells: TS_006, TS_007, TS_008, TS_017. Original metadata files (mdocs_ori) and the count ref file (dm4 file) are provided in the frames folder.",
+            "associatedBiologicalEntity": [
+                {
+                    "@id": "_:S. cerevisiae"
+                }
+            ],
+            "associatedSpecimenImagingPreparationProtocol": [
+                {
+                    "@id": "_:Cryo-FIB milling preparation"
+                }
+            ],
+            "associatedSpecimen": null,
+            "associatedImageAcquisitionProtocol": [
+                {
+                    "@id": "_:Cryo-electron tomography"
+                }
+            ],
+            "associatedAnnotationMethod": [],
+            "associatedImageAnalysisMethod": [],
+            "associatedImageCorrelationMethod": [],
+            "associatedProtocol": [],
+            "hasPart": [
+                {
+                    "@id": "Movie%20stacks%20data/frames/file_list.tsv"
+                }
+            ],
+            "associationFileMetadata": {
+                "@id": "Movie%20stacks%20data/frames/file_list.tsv"
+            }
+        },
+        {
+            "@id": "_:Glucose control condition",
+            "@type": [
+                "bia:Protocol"
+            ],
+            "title": "Glucose control condition",
+            "protocolDescription": "S. cerevisiae (BY4741) cells were grown in synthetic media supplemented with 20 mM dextrose (glucose control medium)."
+        },
+        {
+            "@id": "_:Specimen 06",
+            "@type": [
+                "bia:Specimen"
+            ],
+            "biologicalEntity": [
+                {
+                    "@id": "_:S. cerevisiae"
+                }
+            ],
+            "imagingPreparationProtocol": [
+                {
+                    "@id": "_:Cryo-FIB milling preparation"
+                }
+            ]
+        },
+        {
+            "@id": "_:Cryo-FIB milling preparation",
+            "@type": [
+                "bia:SpecimenImagingPreparationProtocol"
+            ],
+            "title": "Cryo-FIB milling preparation",
+            "protocolDescription": "Saccharomyces cerevisiae (BY4741) were recovered from frozen stocks (stored at \u221280\u00b0C) and streaked onto YPAD agar plates. Cells were grown for 3 days at 30\u00b0C before single colonies were re-streaked onto fresh plates and grown for 2 days as described above. Single colonies were picked from these plates to inoculate 20 mL of synthetic media supplemented with 20 mM dextrose (glucose control medium). The liquid cultures were incubated overnight at 30\u00b0C and shaking at 165 rpm (NCU-Shaker mini, Benchmark) to grow cells to the exponential growth phase. Cells at an OD600 of 0.5\u20130.6 were centrifuged for 3 min at 3000 rpm, resuspended in either 1 mL of glucose control medium or synthetic medium supplemented with 100 mM sorbitol (starvation medium) and washed twice. Each washing step consisted of centrifugation at 4,000 rpm for 3 min (Eppendorf 5424R centrifuge), discarding the supernatant and replacing it with 1 mL of the respective medium. Cells were incubated either in glucose control medium or starvation medium shaking at 165 rpm for 30 min before plunge-freezing. Plunge-freezing was performed using a Leica EM GP2 (Leica Microsystems), set to 22\u00b0C and 99% humidity. 4 \u03bcL of the cell suspension were deposited on glow discharged holey Quantifoil silicon dioxide grids (R1/2, Cu 200 mesh grid, Quantifoil Micro Tools), and grids were blotted from the reverse side for 1\u20132 s before being plunged into liquid ethane cooled to the temperature of liquid nitrogen. For the subsequent steps of cryo-focused ion beam (cryo-FIB) milling and cryo-electron tomography (cryo-ET), grids were kept at liquid nitrogen temperature. Cellular slices (lamellae) with a thickness of approximately 200 nm were generated by cryo-FIB milling. Grids with vitrified cells were mounted into custom-made AutoGrid cartridges and transferred into an Aquilos cryo-focused ion beam/scanning electron microscope (FIB/SEM dual-beam microscope, Thermo Fisher Scientific) using a 45 degree pre-tilt shuttle. Grids were initially sputter-coated with platinum and coated with organometallic platinum using the gas injection system to render the samples conductive and to reduce curtaining artifacts that can occur during FIB milling. Next, positions for lamella generation were determined and refined for eucentricity using MAPS3 (Thermo Fisher Scientific). Milling was performed with a gallium ion beam at 30 kV at a stage tilt angle of 20 degrees. The SEM was used to monitor progress during the milling process (10 kV, 50 pA). Automated rough-milling was conducted in a stepwise fashion with SerialFIB using currents of 1 nA, 0.5 nA and 0.3 nA to thin down the cells to 5 \u03bcm, 3 \u03bcm and 1 \u03bcm, respectively. Finally, lamellae were manually thinned to the target thickness of 200 nm using a current of 50 pA. To render the lamellae conductive for subsequent cryo-ET, a final platinum sputter coating was applied for 3\u20135 s (1 kV, 10 mA, 10 Pa).",
+            "signalChannelInformation": []
+        },
+        {
+            "@id": "_:Cryo-electron tomography",
+            "@type": [
+                "bia:ImageAcquisitionProtocol"
+            ],
+            "title": "Cryo-electron tomography",
+            "protocolDescription": "Cryo-electron tomograms were acquired on a Titan Krios microscope operated at 300 kV (Thermo Fisher Scientific) equipped with a field-emission gun, a quantum post-column energy filter (Gatan) and a K3 direct detector (Gatan). Data was collected in low-dose mode using automation scripts in SerialEM. Tilt series were acquired from -60\u00b0 to +60\u00b0 in 2\u00b0 increments at a magnification of 26,000x with a calibrated pixel size of 3.425 \u00c5, using a dose-symmetric tilt scheme, defocus range of 2-4 \u03bcm, and keeping the total accumulated dose below 150 e-/A2. 14 tilt series were acquired for the glucose control and 26 tilt series for the starvation condition. Prior to tomogram reconstruction, tilt movie frames were corrected for gain reference and beam-induced motion in Warp 1.0.9 alongside contrast transfer function (CTF) estimation. Tomograms were aligned and reconstructed by weighted back-projection in AreTomo at 4x binning, corresponding to a pixel size of 13.7 \u00c5.",
+            "imagingInstrumentDescription": "Titan Krios microscope operated at 300 kV (Thermo Fisher Scientific) equipped with a field-emission gun, a quantum post-column energy filter (Gatan) and a K3 direct detector (Gatan)",
+            "imagingMethodName": [
+                "Cryo-electron tomography"
+            ],
+            "fbbiId": [
+                "obo:FBbi_00000256"
+            ]
+        },
+        {
+            "@id": "NCBI:txid4932",
+            "@type": [
+                "bia:Taxon"
+            ],
+            "commonName": "baker's yeast",
+            "scientificName": "Saccharomyces cerevisiae"
+        },
+        {
+            "@id": "_:S. cerevisiae",
+            "@type": [
+                "bia:BioSample"
+            ],
+            "title": "S. cerevisiae",
+            "biologicalEntityDescription": "S. cerevisiae (BY4741) cells.",
+            "experimentalVariableDescription": [],
+            "extrinsicVariableDescription": [],
+            "intrinsicVariableDescription": [],
+            "organismClassification": [
+                {
+                    "@id": "NCBI:txid4932"
+                }
+            ],
+            "growthProtocol": null
+        }
+    ]
+}
