@@ -408,7 +408,7 @@
             "protocolDescription": "S. cerevisiae (BY4741) cells were grown in synthetic media supplemented with 20 mM dextrose (glucose control medium)."
         },
         {
-            "@id": "_:Specimen 06",
+            "@id": "_:Shared specimen",
             "@type": [
                 "bia:Specimen"
             ],

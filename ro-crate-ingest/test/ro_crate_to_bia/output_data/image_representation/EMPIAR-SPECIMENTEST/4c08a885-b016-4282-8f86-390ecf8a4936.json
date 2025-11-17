@@ -1,6 +1,6 @@
 {
   "object_creator": "bia_ingest",
-  "uuid": "23d622ff-0e78-47de-9e5a-5a19cbd3b924",
+  "uuid": "4c08a885-b016-4282-8f86-390ecf8a4936",
   "version": 0,
   "model": {
     "type_name": "ImageRepresentation",
@@ -11,13 +11,13 @@
       "provenance": "bia_ingest",
       "name": "uuid_unique_input",
       "value": {
-        "uuid_unique_input": "809a944c-7319-42f0-9fb8-6a4858936ea0"
+        "uuid_unique_input": "fc8d40c7-4e72-4480-9bbc-9a48aea9dfc0"
       }
     }
   ],
   "image_format": ".tif",
   "file_uri": [
-    "https://ftp.ebi.ac.uk/empiar/world_availability/SPECIMENTEST/data/frames/TS_006_00003_-2.0.tif"
+    "https://ftp.ebi.ac.uk/empiar/world_availability/SPECIMENTEST/data/frames/image_sharing_specimen_01.tif"
   ],
   "total_size_in_bytes": 12,
   "voxel_physical_size_x": null,
@@ -29,5 +29,5 @@
   "size_c": null,
   "size_t": null,
   "image_viewer_setting": [],
-  "representation_of_uuid": "809a944c-7319-42f0-9fb8-6a4858936ea0"
+  "representation_of_uuid": "fc8d40c7-4e72-4480-9bbc-9a48aea9dfc0"
 }

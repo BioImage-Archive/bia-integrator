@@ -1,6 +1,6 @@
 {
   "object_creator": "bia_ingest",
-  "uuid": "c2d05c01-d303-4845-8150-54ae98b28ccb",
+  "uuid": "f4e8977a-6c12-45b9-a0ad-875766b1e863",
   "version": 0,
   "model": {
     "type_name": "Specimen",
@@ -11,7 +11,7 @@
       "provenance": "bia_ingest",
       "name": "uuid_unique_input",
       "value": {
-        "uuid_unique_input": "2b16cd0a-25a3-43f2-ba41-4cf98132febd"
+        "uuid_unique_input": "Shared specimen"
       }
     }
   ],

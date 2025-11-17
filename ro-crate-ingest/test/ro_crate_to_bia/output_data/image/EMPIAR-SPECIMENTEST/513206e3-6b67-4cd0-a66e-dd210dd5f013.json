@@ -1,6 +1,6 @@
 {
   "object_creator": "bia_ingest",
-  "uuid": "a26d3410-d7d7-4366-aadc-a5a3e1c10359",
+  "uuid": "513206e3-6b67-4cd0-a66e-dd210dd5f013",
   "version": 0,
   "model": {
     "type_name": "Image",
@@ -11,14 +11,14 @@
       "provenance": "bia_ingest",
       "name": "uuid_unique_input",
       "value": {
-        "uuid_unique_input": "14ef11d9-b891-470e-919e-367b4fd55c85"
+        "uuid_unique_input": "b785cc11-1793-4613-9dbb-ef9fff2c74b0"
       }
     }
   ],
-  "label": "Control condition frames 06_00002_2.0",
+  "label": "Control condition frames 06_02",
   "submission_dataset_uuid": "3d6a8b43-4239-4bad-9d41-59ba02dac49c",
-  "creation_process_uuid": "484e99da-5c76-4853-a6b5-adc40745d906",
+  "creation_process_uuid": "cdabfcec-5efa-483a-82bc-4f673c350bc2",
   "original_file_reference_uuid": [
-    "14ef11d9-b891-470e-919e-367b4fd55c85"
+    "b785cc11-1793-4613-9dbb-ef9fff2c74b0"
   ]
 }
