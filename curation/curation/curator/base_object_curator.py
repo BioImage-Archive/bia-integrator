@@ -20,6 +20,7 @@ class ObjectCurator(ABC):
     @abstractmethod
     def update(self, target_object: Any, directive: Directive):
         """
-        Note, it is not recommended to update the version of the object as part of 
+        Note, it is not recommended to update the version of the object as part of this method.
+        The version should be be updated once all changes are applied by all directives, to avoid unnecessary version pumps.
         """
         raise NotImplementedError

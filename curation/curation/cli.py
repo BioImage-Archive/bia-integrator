@@ -59,7 +59,7 @@ def apply_directive(
     modified_api_objects = {}
 
     for directive in directives:
-        api_object = modified_api_objects.get(directive.target_uuid)
+        api_object = modified_api_objects.get(str(directive.target_uuid))
         if not api_object:
             api_object = api_client.get_object_by_type(
                 directive.target_uuid, directive.object_type
@@ -67,13 +67,13 @@ def apply_directive(
 
         match directive:
             case FieldDirective():
-                updated_api_object = field_curator.update(api_object, directive)
+                api_object = field_curator.update(api_object, directive)
             case AttributeDirective():
-                updated_api_object = attribute_curator.update(api_object, directive)
+                api_object = attribute_curator.update(api_object, directive)
             case _:
                 raise RuntimeError(f"Unhandled directive type: {type(directive)}")
 
-        modified_api_objects[updated_api_object.uuid] = updated_api_object
+        modified_api_objects[str(api_object.uuid)] = api_object
 
     logger.info(f"Created {len(modified_api_objects)} modified API objects.")
 

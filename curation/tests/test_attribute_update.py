@@ -31,7 +31,7 @@ def test_update_attribute(
     # Check that running update_attribute directives adds new attributes
     updated_study = private_client.get_study(any_api_object.uuid)
     updated_study_attribute_count = len(updated_study.additional_metadata)
-    assert updated_study_attribute_count > attribute_count
+    assert updated_study_attribute_count == attribute_count + 2
 
     # Checl that re-running update_attribute commands don't result in more attributes
     result = runner.invoke(curate, command)
