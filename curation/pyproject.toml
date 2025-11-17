@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "curation"
+version = "0.1.0"
+description = "BioImage Archive curation tools"
+authors = ["Francois <fsherwood@ebi.ac.uk>"]
+license = "Apache 2.0"
+readme = "README.md"
+
+
+[tool.poetry.scripts]
+curation = "curation.cli:curate"
+
+[tool.poetry.dependencies]
+python = "^3.13"
+pydantic = "^2.9.2"
+pydantic-settings = "^2.5.2"
+rich = "^13.8.1"
+typer = "^0.20.0"
+ruamel-yaml = "^0.18.10"
+bia-shared-datamodels = { path = "../bia-shared-datamodels", develop = true }
+bia-integrator-api = { path = "../clients/python", develop = true }
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
