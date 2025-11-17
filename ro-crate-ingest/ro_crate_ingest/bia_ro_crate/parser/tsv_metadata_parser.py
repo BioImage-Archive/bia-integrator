@@ -19,5 +19,6 @@ class TSVMetadataParser(OSVMetadataParser):
         data = pd.read_csv(full_file_path, delimiter="\t")
 
         self._expand_list_columns(data, columns)
+        self._handle_empty_single_value_columns(data, columns)
 
         self._result = FileList(ro_crate_id=file_list_id, schema=columns, data=data)

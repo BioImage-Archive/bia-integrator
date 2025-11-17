@@ -29,9 +29,12 @@ class OSVMetadataParser(MetadataParser[FileList]):
         "http://bia/associatedAnnotationMethod",
         "http://bia/associatedProtocol",
         "http://bia/associatedSourceImage",
-        "http://bia/associatedSubject",
         "http://bia/sourceImagePath",
         "http://bia/sourceImageName",
+    ]
+
+    DEFAULT_SINGLE_VALUE_PROPERTIES = [
+        "http://bia/associatedSubject", 
     ]
 
     bia_rocrate_metadata: BIAROCrateMetadata
@@ -60,6 +63,19 @@ class OSVMetadataParser(MetadataParser[FileList]):
             ]
         else:
             self.multivalued_properties = self.DEFAULT_LIST_PROPERTIES
+        
+        single_value_properties_key = "single_value_properties"
+        if context and single_value_properties_key in context:
+            if not isinstance(context[single_value_properties_key], list):
+                raise TypeError(
+                    f"{single_value_properties_key} in context should be a list (of string or URIRefs of the properties)"
+                )
+            self.single_value_properties = [
+                str(single_property)
+                for single_property in context[single_value_properties_key]
+            ]
+        else:
+            self.single_value_properties = self.DEFAULT_SINGLE_VALUE_PROPERTIES
 
         super().__init__(context=context)
 
@@ -110,4 +126,14 @@ class OSVMetadataParser(MetadataParser[FileList]):
             if column.propertyUrl in self.multivalued_properties:
                 data[column.columnName] = data[column.columnName].apply(
                     _expand_array_cells,
+                )
+    
+    def _handle_empty_single_value_columns(
+        self, data: pd.DataFrame, columns: dict[str, Column]
+    ) -> None:
+    
+        for column in columns.values():
+            if column.propertyUrl in self.single_value_properties:
+                data[column.columnName] = data[column.columnName].apply(
+                    lambda x: None if pd.isna(x) else x
                 )

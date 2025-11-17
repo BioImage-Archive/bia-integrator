@@ -128,6 +128,10 @@ class FileListReferenceValidator(Validator):
     ):
         for column in columns_to_check:
             references = row[column]
+
+            if references is None:
+                continue
+
             if isinstance(references, str):
                 references = [references]
 
