@@ -29,6 +29,7 @@ class OSVMetadataParser(MetadataParser[FileList]):
         "http://bia/associatedAnnotationMethod",
         "http://bia/associatedProtocol",
         "http://bia/associatedSourceImage",
+        "http://bia/associatedSubject",
         "http://bia/sourceImagePath",
         "http://bia/sourceImageName",
     ]
