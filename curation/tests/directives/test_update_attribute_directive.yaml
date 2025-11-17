@@ -1,0 +1,14 @@
+# S-BIADTEST
+- object_type: Study
+  target_uuid: a2fdbd58-ee11-4cd9-bc6a-f3d3da7fff71 
+  command: update_attribute
+  provenance: bia_curation
+  name: simple_attribute
+  value: "Example simple string."
+- object_type: Study
+  target_uuid: a2fdbd58-ee11-4cd9-bc6a-f3d3da7fff71 
+  command: update_attribute
+  provenance: bia_curation
+  name: proper_attribute
+  value: 
+    attribute_key: "Attribute value"
