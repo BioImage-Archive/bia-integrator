@@ -1,0 +1,27 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "ef6a59e5-9b93-49c9-b4ae-494ee64ca9ac",
+  "version": 0,
+  "model": {
+    "type_name": "ImageAcquisitionProtocol",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Cryo-electron tomography"
+      }
+    }
+  ],
+  "title": "Cryo-electron tomography",
+  "protocol_description": "Cryo-electron tomograms were acquired on a Titan Krios microscope operated at 300 kV (Thermo Fisher Scientific) equipped with a field-emission gun, a quantum post-column energy filter (Gatan) and a K3 direct detector (Gatan). Data was collected in low-dose mode using automation scripts in SerialEM. Tilt series were acquired from -60° to +60° in 2° increments at a magnification of 26,000x with a calibrated pixel size of 3.425 Å, using a dose-symmetric tilt scheme, defocus range of 2-4 μm, and keeping the total accumulated dose below 150 e-/A2. 14 tilt series were acquired for the glucose control and 26 tilt series for the starvation condition. Prior to tomogram reconstruction, tilt movie frames were corrected for gain reference and beam-induced motion in Warp 1.0.9 alongside contrast transfer function (CTF) estimation. Tomograms were aligned and reconstructed by weighted back-projection in AreTomo at 4x binning, corresponding to a pixel size of 13.7 Å.",
+  "imaging_instrument_description": "Titan Krios microscope operated at 300 kV (Thermo Fisher Scientific) equipped with a field-emission gun, a quantum post-column energy filter (Gatan) and a K3 direct detector (Gatan)",
+  "fbbi_id": [
+    "obo:FBbi_00000256"
+  ],
+  "imaging_method_name": [
+    "Cryo-electron tomography"
+  ]
+}

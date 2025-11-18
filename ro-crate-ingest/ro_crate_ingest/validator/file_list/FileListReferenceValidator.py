@@ -1,5 +1,6 @@
 from pathlib import Path
 from typing import Iterable
+import pandas as pd
 from urllib.parse import unquote
 
 import rdflib
@@ -128,6 +129,10 @@ class FileListReferenceValidator(Validator):
     ):
         for column in columns_to_check:
             references = row[column]
+
+            if not isinstance(references, list) and pd.isna(references):
+                continue
+
             if isinstance(references, str):
                 references = [references]
 

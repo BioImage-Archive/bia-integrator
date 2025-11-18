@@ -1,4 +1,4 @@
-file_path	size_in_bytes	type	label	source_image_label	associated_annotation_method	associated_protocol
-data/220330/alignment/TS_008.mrc/TS_008.mrc.st	27	http://bia/Image	Tilt series TS_008	Unaligned, unbinned, multi-frame micrograph TS_008		
-data/220330/alignment/TS_010.mrc/TS_010.mrc.st	27	http://bia/Image	Tilt series TS_010	Unaligned, unbinned, multi-frame micrograph TS_010		
-data/220330/alignment/TS_017.mrc/TS_017.mrc.st	27	http://bia/Image	Tilt series TS_017	Unaligned, unbinned, multi-frame micrograph TS_017		
+file_path	size_in_bytes	type	label	source_image_label	associated_specimen	associated_annotation_method	associated_protocol
+data/220330/alignment/TS_008.mrc/TS_008.mrc.st	27	http://bia/Image	Tilt series TS_008	Unaligned, unbinned, multi-frame micrograph TS_008			
+data/220330/alignment/TS_010.mrc/TS_010.mrc.st	27	http://bia/Image	Tilt series TS_010	Unaligned, unbinned, multi-frame micrograph TS_010			
+data/220330/alignment/TS_017.mrc/TS_017.mrc.st	27	http://bia/Image	Tilt series TS_017	Unaligned, unbinned, multi-frame micrograph TS_017			

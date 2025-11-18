@@ -1,0 +1,60 @@
+{
+  "EMPIAR-SPECIMENTEST": {
+    "imagesets": [
+      {
+        "segmentations": [],
+        "name": "Movie stacks",
+        "directory": "data/frames",
+        "category": "micrographs - multiframe",
+        "header_format": "TIFF",
+        "data_format": "TIFF",
+        "num_images_or_tilt_series": 203,
+        "frames_per_image": 10,
+        "frame_range_min": null,
+        "frame_range_max": null,
+        "voxel_type": "UNSIGNED BYTE",
+        "pixel_width": 3.425,
+        "pixel_height": null,
+        "micrographs_file_pattern": "",
+        "picked_particles_file_pattern": "",
+        "picked_particles_directory": "",
+        "details": "Raw unaligned multi-frame micrographs were aligned, sorted and combined into tilt series stacks using Warp (st files in metadata folder) and tomograms reconstructed using AreTomo. Naming for tomograms of control cells: TS_006, TS_007, TS_008, TS_017. Original metadata files (mdocs_ori) and the count ref file (dm4 file) are provided in the frames folder.",
+        "image_width": "5760",
+        "image_height": "4092"
+      }
+    ],
+    "workflow_file": null,
+    "grant_references": [],
+    "version_history": [],
+    "title": "Cryo-electron tomography data acquired on S. cerevisiae (BY4741) cryo-FIB lamellae",
+    "principal_investigator": [],
+    "status": "REL",
+    "deposition_date": "2024-05-25",
+    "release_date": "2025-02-04",
+    "obsolete_date": null,
+    "update_date": "2025-02-04",
+    "corresponding_author": {
+      "author": {
+        "name": "Test",
+        "author_orcid": null
+      }
+    },
+    "authors": [
+      {
+        "author": {
+          "name": "Test",
+          "author_orcid": null
+        }
+      }
+    ],
+    "cross_references": [],
+    "biostudies_references": [],
+    "idr_references": [],
+    "empiar_references": [],
+    "citation": [],
+    "dataset_size": "165.4 GB",
+    "experiment_type": "EMDB",
+    "scale": "cell",
+    "entry_doi": "10.6019/EMPIAR-12104"
+  }
+}

@@ -267,7 +267,7 @@
             }
         },
         {
-            "@id": "_:col6",
+            "@id": "_:col7",
             "@type": [
                 "csvw:Column"
             ],
@@ -275,12 +275,20 @@
             "propertyUrl": "http://bia/associatedProtocol"
         },
         {
-            "@id": "_:col5",
+            "@id": "_:col6",
             "@type": [
                 "csvw:Column"
             ],
             "columnName": "associated_annotation_method",
             "propertyUrl": "http://bia/associatedAnnotationMethod"
+        },
+        {
+            "@id": "_:col5",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "associated_specimen",
+            "propertyUrl": "http://bia/associatedSubject"
         },
         {
             "@id": "_:col4",
@@ -348,6 +356,9 @@
                 },
                 {
                     "@id": "_:col6"
+                },
+                {
+                    "@id": "_:col7"
                 }
             ]
         },

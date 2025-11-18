@@ -1,0 +1,20 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "f6774b3f-2788-4133-a703-03e731927145",
+  "version": 0,
+  "model": {
+    "type_name": "Protocol",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Glucose control condition"
+      }
+    }
+  ],
+  "title": "Glucose control condition",
+  "protocol_description": "S. cerevisiae (BY4741) cells were grown in synthetic media supplemented with 20 mM dextrose (glucose control medium)."
+}

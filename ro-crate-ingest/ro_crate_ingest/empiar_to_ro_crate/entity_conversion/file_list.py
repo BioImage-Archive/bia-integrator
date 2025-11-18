@@ -201,6 +201,7 @@ def expand_row_metadata(
         "type": None,
         "label": None,
         "source_image_label": None,
+        "associated_specimen": None,
         "associated_annotation_method": None,
         "associated_protocol": None,
     }
@@ -237,6 +238,9 @@ def update_row(
             label_parts = parse_file_path_for_label(output_row["file_path"], yaml_object.get("file_pattern", ""))
             if label_parts is not None:
                 output_row["label"] = f"{label_prefix}_{label_parts}"
+
+        specimen_title = yaml_object.get("specimen_title", None)
+        output_row["associated_specimen"] = f"_:{specimen_title}" if specimen_title else None
 
         annotation_method_title = yaml_object.get("annotation_method_title", None)
         output_row["associated_annotation_method"] = (
@@ -347,6 +351,7 @@ def get_column_list() -> list[ro_crate_models.Column]:
         "type": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
         "label": "http://schema.org/name",
         "source_image_label": "http://bia/sourceImageLabel",
+        "associated_specimen": "http://bia/associatedSubject",
         "associated_annotation_method": "http://bia/associatedAnnotationMethod",
         "associated_protocol": "http://bia/associatedProtocol",
     }

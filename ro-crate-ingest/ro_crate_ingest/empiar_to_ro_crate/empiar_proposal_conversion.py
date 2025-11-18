@@ -12,6 +12,7 @@ from ro_crate_ingest.empiar_to_ro_crate.entity_conversion import (
     annotation_method,
     image_acquisition_protocol,
     specimen_imaging_preparation_protocol,
+    specimen, 
     image_analysis_method,
     image_correlation_method,
     dataset,
@@ -49,6 +50,11 @@ def convert_empiar_proposal_to_ro_crate(proposal_path: Path, crate_path: Path | 
         yaml_file
     )
     graph += roc_specimen_imaging_preparation_protocol
+
+    roc_specimen = specimen.get_specimens(
+        yaml_file
+    )
+    graph += roc_specimen
 
     roc_annotation_method = annotation_method.get_annotation_methods(yaml_file)
     graph += roc_annotation_method
