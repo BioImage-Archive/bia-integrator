@@ -25,6 +25,8 @@ def get_bio_samples_and_taxons(
 
 def get_bio_sample(bio_sample_dict: dict) -> BioSample:
 
+    growth_protocol_title = bio_sample_dict.get("growth_protocol_title", None)
+
     model_dict = {
         "@id": f"_:{bio_sample_dict["title"]}",
         "@type": ["bia:BioSample"],
@@ -39,7 +41,7 @@ def get_bio_sample(bio_sample_dict: dict) -> BioSample:
             {"@id": taxon["ncbi_id"]}
             for taxon in bio_sample_dict["organism_classification"]
         ],
-        "growthProtocol": None,
+        "growthProtocol": ({"@id": f"_:{growth_protocol_title}"} if growth_protocol_title else None),
     }
 
     return BioSample(**model_dict)

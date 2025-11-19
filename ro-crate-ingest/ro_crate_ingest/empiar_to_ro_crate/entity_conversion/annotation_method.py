@@ -26,7 +26,7 @@ def get_annotation_method(
         "@type": ["bia:AnnotationMethod"],
         "title": yaml_object["title"],
         "protocolDescription": yaml_object["protocol_description"],
-        "method_type": yaml_object.get("method_type", []),
+        "methodType": yaml_object.get("method_type", []),
     }
 
     return AnnotationMethod(**model_dict)
