@@ -389,7 +389,11 @@
             "associatedAnnotationMethod": [],
             "associatedImageAnalysisMethod": [],
             "associatedImageCorrelationMethod": [],
-            "associatedProtocol": [],
+            "associatedProtocol": [
+                {
+                    "@id": "_:Glucose control condition"
+                }
+            ],
             "hasPart": [
                 {
                     "@id": "Movie%20stacks%20data/frames/file_list.tsv"

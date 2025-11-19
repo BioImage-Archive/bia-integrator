@@ -21,6 +21,8 @@
   "annotation_coverage": null,
   "transformation_description": null,
   "spatial_information": null,
-  "method_type": [],
+  "method_type": [
+    "point_annotations"
+  ],
   "annotation_source_indicator": null
 }
