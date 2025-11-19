@@ -29,6 +29,7 @@ from .utils import (
     get_dir_size,
     add_or_update_attribute,
     create_vizarr_compatible_ome_zarr_uri,
+    create_uri_for_extracting_2d_image_from_ome_zarr,
 )
 
 
@@ -78,20 +79,22 @@ def create_2d_image_and_upload_to_s3(ome_zarr_uri, dims, dst_key):
 def convert_interactive_display_to_thumbnail(
     input_image_rep: ImageRepresentation,
 ) -> str:
-    # Should create a 2D thumbnail from convert an INTERACTIVE_DISPLAY rep
+    # Should create a 2D thumbnail from an INTERACTIVE_DISPLAY rep
 
     dims = (256, 256)
-    # Check the image rep
-    assert ".zarr" in input_image_rep.file_uri[0]
+    # Get uri for multiscale image to convert
+    ome_zarr_uri = create_uri_for_extracting_2d_image_from_ome_zarr(
+        input_image_rep.file_uri[0]
+    )
 
-    # Retrieve model ibjects
+    # Retrieve model objects
     input_image = api_client.get_image(input_image_rep.representation_of_uuid)
 
     dst_key = create_s3_uri_suffix_for_2d_view_of_image_representation(
         input_image_rep, dims=dims, name="thumbnail"
     )
     file_uri, size_in_bytes = create_2d_image_and_upload_to_s3(
-        input_image_rep.file_uri[0], dims, dst_key
+        ome_zarr_uri, dims, dst_key
     )
 
     # Update the BIA Image object with uri for this 2D view
@@ -120,8 +123,10 @@ def convert_interactive_display_to_static_display(
     # Should convert an INTERACTIVE_DISPLAY rep, to a STATIC_DISPLAY rep
 
     dims = (512, 512)
-    # Check the image rep
-    assert ".zarr" in input_image_rep.file_uri[0]
+    # Get uri for multiscale image to convert
+    ome_zarr_uri = create_uri_for_extracting_2d_image_from_ome_zarr(
+        input_image_rep.file_uri[0]
+    )
 
     # Retrieve model ibjects
     input_image = api_client.get_image(input_image_rep.representation_of_uuid)
@@ -130,7 +135,7 @@ def convert_interactive_display_to_static_display(
         input_image_rep, dims=dims, name="static_display"
     )
     file_uri, size_in_bytes = create_2d_image_and_upload_to_s3(
-        input_image_rep.file_uri[0], dims, dst_key
+        ome_zarr_uri, dims, dst_key
     )
 
     # Update the BIA Image object with uri for this 2D view

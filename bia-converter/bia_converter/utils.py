@@ -5,6 +5,7 @@ from typing import Union
 from pathlib import Path
 
 import zarr
+from pydantic_core._pydantic_core import ValidationError
 from .omezarrmeta import ZMeta
 
 from bia_integrator_api.models import (  # type: ignore
@@ -203,14 +204,14 @@ def determine_ome_zarr_type(zarr_path):
             try:
                 ZMeta.model_validate(zarr_group.attrs)
                 return "v04image"
-            except IOError as e:
+            except (IOError, ValidationError) as e:
                 logger.warning(f"Got errore {e} attempting to validate v04image")
                 return "unknown"
     elif zarr_group.metadata.zarr_format == 3:
         try:
             ZMeta.model_validate(zarr_group.attrs["ome"])
             return "v05image"
-        except IOError as e:
+        except (IOError, ValidationError) as e:
             logger.warning(f"Got errore {e} attempting to validate v04image")
             return "unknown"
 
@@ -253,3 +254,48 @@ def create_vizarr_compatible_ome_zarr_uri(original_zarr_group_uri: str) -> str:
             return zarr_group_uri
         else:
             return original_zarr_group_uri
+
+
+def find_multiscale_well_uri(zarr_uri):
+    """
+    Find a well with a multiscale image in it and return the URI to the top level of the well.
+
+    Args:
+        zarr_uri (str): The URI to the high content screen Zarr archive.
+
+    Returns:
+        str: The URI to the top level of the well containing the multiscale image.
+
+    Raises:
+        ValueError: If no well with a multiscale image is found in the Zarr archive.
+    """
+    # Open the Zarr archive
+    zarr_group = zarr.open_group(zarr_uri)
+
+    # Iterate over all the wells in the Zarr archive
+    for row in zarr_group.keys():
+        for col in zarr_group[row].keys():
+            for image in zarr_group[row][col].keys():
+                # Check if the well contains a multiscale image
+                well_uri = "/".join([zarr_uri, row, col, image])
+                ome_zarr_type = determine_ome_zarr_type(well_uri)
+                if ome_zarr_type.endswith("image"):
+                    return well_uri
+
+    # Raise an error if no well with a multiscale image is found
+    raise ValueError(
+        f"No well with a multiscale image found in the Zarr archive: {zarr_uri}"
+    )
+
+
+def create_uri_for_extracting_2d_image_from_ome_zarr(uri):
+    """Returns URI to a multiscale image. For HCS returns URI to a well with a multiscale image."""
+
+    ome_zarr_uri = create_vizarr_compatible_ome_zarr_uri(uri)
+    ome_zarr_type = determine_ome_zarr_type(ome_zarr_uri)
+    if ome_zarr_type.endswith("image"):
+        return ome_zarr_uri
+    elif ome_zarr_type == "hcs":
+        return find_multiscale_well_uri(ome_zarr_uri)
+    else:
+        raise ValueError(f"Could not get URI for multiscale image from: {uri}")

@@ -5,6 +5,7 @@ from bia_converter.utils import (
     add_or_update_attribute,
     determine_ome_zarr_type,
     create_vizarr_compatible_ome_zarr_uri,
+    find_multiscale_well_uri,
 )
 
 
@@ -213,3 +214,19 @@ def test_create_vizarr_compatible_ome_zarr_hcs_uri_from_zarr_root(current_dir):
 def test_create_vizarr_compatible_ome_zarr_hcs_uri_from_bf2rawtr_root(current_dir):
     uri = f"{current_dir}/data/hcs.ome.zarr"
     assert create_vizarr_compatible_ome_zarr_uri(uri + "/0") == uri
+
+
+def test_find_uri_of_multiscale_image_in_hcs_archive(current_dir):
+    hcs_uri = f"{current_dir}/data/hcs.ome.zarr"
+    multiscale_uri = find_multiscale_well_uri(hcs_uri)
+
+    assert multiscale_uri in [
+        f"{current_dir}/data/hcs.ome.zarr/A/1/0",
+        f"{current_dir}/data/hcs.ome.zarr/A/1/1",
+        f"{current_dir}/data/hcs.ome.zarr/A/2/0",
+        f"{current_dir}/data/hcs.ome.zarr/A/2/1",
+        f"{current_dir}/data/hcs.ome.zarr/B/1/0",
+        f"{current_dir}/data/hcs.ome.zarr/B/1/1",
+        f"{current_dir}/data/hcs.ome.zarr/B/2/0",
+        f"{current_dir}/data/hcs.ome.zarr/B/2/1",
+    ]
