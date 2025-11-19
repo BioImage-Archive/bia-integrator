@@ -4,6 +4,8 @@ from uuid import UUID
 from typing import Union
 from pathlib import Path
 
+import zarr
+from .omezarrmeta import ZMeta
 
 from bia_integrator_api.models import (  # type: ignore
     ImageRepresentation,
@@ -144,6 +146,7 @@ def add_or_update_attribute(attribute_to_add: Attribute, attributes: list[Attrib
     # If not found, append it
     attributes.append(attribute_to_add)
 
+
 def is_zarr_multiscales(zarr_path: Path) -> bool:
     """
     Check if a given Zarr is multiscales
@@ -166,3 +169,87 @@ def is_zarr_multiscales(zarr_path: Path) -> bool:
             return "multiscales" in zattrs_content
     except (json.JSONDecodeError, IOError):
         return False
+    return
+
+
+def determine_ome_zarr_type(zarr_path):
+    """
+    Determine the type of OME-Zarr format based on the metadata of the given Zarr group.
+
+    Args:
+        zarr_path (str): The URL or path to the OME-Zarr file.
+
+    Returns:
+            - "hcs": If the Zarr group contains an HCS (High Content Screening) image.
+            - "bf2rawtr": If the Zarr group contains a BioFormats2RawTr image.
+            - "v04image": If the Zarr group contains an OME v4 image.
+            - "v05image": If the Zarr group contains an OME v5 image.
+            - "unknown": If the Zarr group does not match any of the known OME-Zarr formats.
+
+    Based on bia_zarr.thing.determine_thing in https://github.com/BioImage-Archive/bia-zarr
+    """
+    try:
+        zarr_group = zarr.open_group(zarr_path, mode="r")
+    except (FileNotFoundError, IOError) as e:
+        logger.warning(f"Got error {e} attempting to open zarr group")
+        return "unknown"
+
+    if zarr_group.metadata.zarr_format == 2:
+        if "plate" in zarr_group.attrs:
+            return "hcs"
+        if dict(zarr_group.attrs) == {"bioformats2raw.layout": 3}:
+            return "bf2rawtr"
+        else:
+            try:
+                ZMeta.model_validate(zarr_group.attrs)
+                return "v04image"
+            except IOError as e:
+                logger.warning(f"Got errore {e} attempting to validate v04image")
+                return "unknown"
+    elif zarr_group.metadata.zarr_format == 3:
+        try:
+            ZMeta.model_validate(zarr_group.attrs["ome"])
+            return "v05image"
+        except IOError as e:
+            logger.warning(f"Got errore {e} attempting to validate v04image")
+            return "unknown"
+
+    return "Unknown"
+
+
+def create_vizarr_compatible_ome_zarr_uri(original_zarr_group_uri: str) -> str:
+    """
+    Customised check for vizarr compatible hcs or image uri. If unknown return original uri.
+
+    """
+
+    ACCEPTED_ZARR_TYPES = [
+        "hcs",
+        "v04image",
+        "v05image",
+    ]
+    zarr_group_uri = original_zarr_group_uri.strip()
+
+    while zarr_group_uri.endswith("/"):
+        zarr_group_uri = zarr_group_uri.rstrip("/")
+
+    ome_zarr_type = determine_ome_zarr_type(zarr_group_uri)
+    if ome_zarr_type in ACCEPTED_ZARR_TYPES:
+        return zarr_group_uri
+    else:
+        # Reconstruct uri and try again
+        if ome_zarr_type == "bf2rawtr":
+            zarr_group_uri = zarr_group_uri + "/0"
+        elif zarr_group_uri.endswith("/0"):
+            # Strip "/0" and retry
+            zarr_group_uri = zarr_group_uri[:-2]
+        else:
+            # Otherwise append "/0" and retry
+            zarr_group_uri = zarr_group_uri + "/0"
+
+        # Try again with reconstructed uri
+        ome_zarr_type = determine_ome_zarr_type(zarr_group_uri)
+        if ome_zarr_type in ACCEPTED_ZARR_TYPES:
+            return zarr_group_uri
+        else:
+            return original_zarr_group_uri

@@ -28,6 +28,7 @@ from .utils import (
     attributes_by_name,
     get_dir_size,
     add_or_update_attribute,
+    create_vizarr_compatible_ome_zarr_uri,
 )
 
 
@@ -289,7 +290,7 @@ def check_if_path_contains_zarr_group(dirpath: Path) -> bool:
     try:
         zarr.open_group(dirpath, mode="r")
         return True
-    except zarr.hierarchy.GroupNotFoundError:
+    except zarr.errors.GroupNotFoundError:
         return False
 
 
@@ -428,10 +429,7 @@ def convert_uploaded_by_submitter_to_interactive_display(
     # Upload to S3
     dst_suffix = create_s3_uri_suffix_for_image_representation(base_image_rep)
     zarr_group_uri = sync_dirpath_to_s3(output_zarr_fpath, dst_suffix)
-    # TODO: Discuss how to handle whether to append '/0'
-    # After discussion with MH on 11/02/2025 agreed to default to '/0' (which currently won't work for plate-well)
-    ome_zarr_uri = zarr_group_uri + "/0"
-    # ome_zarr_uri = zarr_group_uri
+    ome_zarr_uri = create_vizarr_compatible_ome_zarr_uri(zarr_group_uri)
 
     # Set image_rep properties that we now know
     base_image_rep.total_size_in_bytes = get_dir_size(output_zarr_fpath)
@@ -450,9 +448,10 @@ def unzip_ome_zarr_archive(
 ) -> ImageRepresentation:
     """Unzip an OME-ZARR zip archive image representation to an OME-ZARR"""
 
-
     if input_image_rep.image_format != ".ome.zarr.zip":
-        raise Exception(f"Input image representation format {input_image_rep.image_format} is not an OME-ZARR zip archive. Expecting type '.ome.zarr.zip'")
+        raise Exception(
+            f"Input image representation format {input_image_rep.image_format} is not an OME-ZARR zip archive. Expecting type '.ome.zarr.zip'"
+        )
 
     conversion_process_dict = {
         "image_representation_of_submitted_by_uploader": f"{input_image_rep.uuid}",
@@ -480,10 +479,7 @@ def unzip_ome_zarr_archive(
     # Upload to S3
     dst_suffix = create_s3_uri_suffix_for_image_representation(base_image_rep)
     zarr_group_uri = sync_dirpath_to_s3(output_zarr_fpath, dst_suffix)
-    # TODO: Discuss how to handle whether to append '/0'
-    # After discussion with MH on 11/02/2025 agreed to default to '/0' (which currently won't work for plate-well)
-    ome_zarr_uri = zarr_group_uri + "/0"
-    # ome_zarr_uri = zarr_group_uri
+    ome_zarr_uri = create_vizarr_compatible_ome_zarr_uri(zarr_group_uri)
 
     # Set image_rep properties that we now know
     base_image_rep.total_size_in_bytes = get_dir_size(output_zarr_fpath)
@@ -495,6 +491,7 @@ def unzip_ome_zarr_archive(
     store_object_in_api_idempotent(base_image_rep)
 
     return base_image_rep
+
 
 def update_recommended_vizarr_representation_for_image(image_rep: ImageRepresentation):
     """Update 'recommended_vizarr_representation' attr of underlying Image object"""

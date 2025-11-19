@@ -56,10 +56,10 @@ class MultiScaleImage(BaseModel):
     datasets: List[DataSet]
     metadata: Optional[MSMetadata] = None
     name: Optional[str] = None
-    axes: Optional[List[Axis]]
-    version: str
+    axes: Optional[List[Axis]] = None
+    version: Optional[str] = None
 
 
 class ZMeta(BaseModel):
-    omero: Optional[Omero]
+    omero: Optional[Omero] = None
     multiscales: List[MultiScaleImage]
