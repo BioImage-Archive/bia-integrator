@@ -30,6 +30,8 @@ from .utils import (
     add_or_update_attribute,
     create_vizarr_compatible_ome_zarr_uri,
     create_uri_for_extracting_2d_image_from_ome_zarr,
+    determine_ome_zarr_type,
+    find_multiscale_well_uri,
 )
 
 
@@ -439,6 +441,11 @@ def convert_uploaded_by_submitter_to_interactive_display(
     # Set image_rep properties that we now know
     base_image_rep.total_size_in_bytes = get_dir_size(output_zarr_fpath)
     base_image_rep.file_uri = [ome_zarr_uri]
+
+    # If hcs we use dimensions from a well with a multiscale image
+    ome_zarr_type = determine_ome_zarr_type(ome_zarr_uri)
+    if ome_zarr_type == "hcs":
+        ome_zarr_uri = find_multiscale_well_uri(ome_zarr_uri)
     update_dict = get_dimensions_dict_from_zarr(ome_zarr_uri)
     base_image_rep.__dict__.update(update_dict)
 
