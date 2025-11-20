@@ -28,9 +28,12 @@ def process_and_persist_file_references(
     max_workers: int,
 ):
 
-    image_extensions = accepted_image_extensions(
-        get_settings().accepted_bioformats_file
-    )
+    
+    image_extensions = []
+    # TODO: decide on whether we want to automatically create images based on extension. If so can use:
+    # image_extensions = accepted_image_extensions(
+    #     get_settings().accepted_bioformats_file
+    # )
 
     rows = df.to_dict("records")
 
