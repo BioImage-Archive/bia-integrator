@@ -28,7 +28,6 @@ def process_and_persist_file_references(
     max_workers: int,
 ):
 
-    
     image_extensions = []
     # TODO: decide on whether we want to automatically create images based on extension. If so can use:
     # image_extensions = accepted_image_extensions(
@@ -223,6 +222,8 @@ def select_result_data_id_and_type(
 
         if file_list_info.get("http://www.w3.org/1999/02/22-rdf-syntax-ns#type", None):
             bia_type = file_list_info["http://www.w3.org/1999/02/22-rdf-syntax-ns#type"]
+            if not result_data_id:
+                result_data_id = row["path"]
         elif result_data_id:
             # Assume something that has been named in a filelist is an image if not specified that it's annotation data
             bia_type = "http://bia/Image"
