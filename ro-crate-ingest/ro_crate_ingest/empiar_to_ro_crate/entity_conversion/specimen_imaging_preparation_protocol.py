@@ -11,7 +11,6 @@ def get_specimen_imaging_preparation_protocols(
 
     roc_objects = []
     for yaml_object in yaml_list_of_objs:
-
         roc_objects.append(get_specimen_imaging_preparation_protocol(yaml_object))
 
     return roc_objects

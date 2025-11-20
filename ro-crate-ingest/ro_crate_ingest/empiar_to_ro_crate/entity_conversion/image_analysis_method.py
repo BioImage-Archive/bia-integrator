@@ -1,26 +1,25 @@
 import logging
-from bia_shared_datamodels import ro_crate_models
+from bia_shared_datamodels.ro_crate_models import ImageAnalysisMethod
 
 logger = logging.getLogger("__main__." + __name__)
 
 
-def get_image_analysis_methods_by_title(
+def get_image_analysis_methods(
     rembi_yaml: dict,
-) -> dict[str, ro_crate_models.ImageAnalysisMethod]:
+) -> list[ImageAnalysisMethod]:
 
     yaml_list_of_objs = rembi_yaml.get("dataset_rembis", {}).get(
         "ImageAnalysisMethod", []
     )
 
-    roc_objects_dict = {}
+    roc_objects = []
     for yaml_object in yaml_list_of_objs:
-        roc_object = get_image_analysis_method(yaml_object)
-        roc_objects_dict[roc_object.title] = roc_object
+        roc_objects.append(get_image_analysis_method(yaml_object))
 
-    return roc_objects_dict
+    return roc_objects
 
 
-def get_image_analysis_method(yaml_object: dict) -> ro_crate_models.ImageAnalysisMethod:
+def get_image_analysis_method(yaml_object: dict) -> ImageAnalysisMethod:
 
     model_dict = {
         "@id": f"_:{yaml_object["title"]}",
@@ -30,4 +29,4 @@ def get_image_analysis_method(yaml_object: dict) -> ro_crate_models.ImageAnalysi
         "featuresAnalysed": yaml_object["features_analysed"],
     }
 
-    return ro_crate_models.ImageAnalysisMethod(**model_dict)
+    return ImageAnalysisMethod(**model_dict)

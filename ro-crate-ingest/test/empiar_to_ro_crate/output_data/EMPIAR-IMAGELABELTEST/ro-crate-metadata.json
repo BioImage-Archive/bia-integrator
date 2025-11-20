@@ -409,7 +409,11 @@
             ],
             "associatedImageAnalysisMethod": [],
             "associatedImageCorrelationMethod": [],
-            "associatedProtocol": [],
+            "associatedProtocol": [
+                {
+                    "@id": "_:Tomogram reconstruction"
+                }
+            ],
             "hasPart": [
                 {
                     "@id": "Tomograms%20data/tomograms/file_list.tsv"
@@ -434,7 +438,11 @@
             "associatedAnnotationMethod": [],
             "associatedImageAnalysisMethod": [],
             "associatedImageCorrelationMethod": [],
-            "associatedProtocol": [],
+            "associatedProtocol": [
+                {
+                    "@id": "_:Tilt series preprocessing"
+                }
+            ],
             "hasPart": [
                 {
                     "@id": "Tilt%20series%20data/metadata/file_list.tsv"
@@ -508,7 +516,9 @@
             "annotationCoverage": null,
             "transformationDescription": null,
             "spatialInformation": null,
-            "methodType": [],
+            "methodType": [
+                "point_annotations"
+            ],
             "annotationSourceIndicator": null
         },
         {
@@ -522,7 +532,9 @@
             "annotationCoverage": null,
             "transformationDescription": null,
             "spatialInformation": null,
-            "methodType": [],
+            "methodType": [
+                "point_annotations"
+            ],
             "annotationSourceIndicator": null
         },
         {

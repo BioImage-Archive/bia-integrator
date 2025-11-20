@@ -18,6 +18,15 @@
     },
     {
       "provenance": "bia_ingest",
+      "name": "protocol_uuid",
+      "value": {
+        "protocol_uuid": [
+          "7212c1b0-86ed-45c4-830f-eeb9e85b9fa9"
+        ]
+      }
+    },
+    {
+      "provenance": "bia_ingest",
       "name": "uuid_unique_input",
       "value": {
         "uuid_unique_input": "Reconstructed tomograms for dataset 1 (211206) data/211206/tomograms"

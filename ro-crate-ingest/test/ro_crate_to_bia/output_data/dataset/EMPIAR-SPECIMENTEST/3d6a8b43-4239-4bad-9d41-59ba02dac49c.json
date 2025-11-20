@@ -36,6 +36,15 @@
     },
     {
       "provenance": "bia_ingest",
+      "name": "protocol_uuid",
+      "value": {
+        "protocol_uuid": [
+          "f6774b3f-2788-4133-a703-03e731927145"
+        ]
+      }
+    },
+    {
+      "provenance": "bia_ingest",
       "name": "uuid_unique_input",
       "value": {
         "uuid_unique_input": "Movie stacks data/frames"

@@ -451,7 +451,11 @@
             ],
             "associatedImageAnalysisMethod": [],
             "associatedImageCorrelationMethod": [],
-            "associatedProtocol": [],
+            "associatedProtocol": [
+                {
+                    "@id": "_:Tomogram reconstruction and sub-tomogram averaging"
+                }
+            ],
             "hasPart": [
                 {
                     "@id": "Reconstructed%20tomograms%20for%20dataset%202%20%28220330%29%20data/220330/tomograms/file_list.tsv"
@@ -550,7 +554,11 @@
                     "@id": "_:Cryo-CLEM correlation"
                 }
             ],
-            "associatedProtocol": [],
+            "associatedProtocol": [
+                {
+                    "@id": "_:Tomogram reconstruction and sub-tomogram averaging"
+                }
+            ],
             "hasPart": [
                 {
                     "@id": "Reconstructed%20tomograms%20for%20dataset%201%20%28211206%29%20data/211206/tomograms/file_list.tsv"
@@ -664,7 +672,9 @@
             "annotationCoverage": null,
             "transformationDescription": null,
             "spatialInformation": null,
-            "methodType": [],
+            "methodType": [
+                "point_annotations"
+            ],
             "annotationSourceIndicator": null
         },
         {
