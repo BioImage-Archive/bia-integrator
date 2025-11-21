@@ -54,7 +54,7 @@ def get_bio_sample_as_map() -> dict[str, bia_data_model.BioSample]:
             "organism_classification": [
                 taxon1.model_dump(),
             ],
-            "biological_entity_description": 'Test biological entity 1. Test description 1 ("with some escaped chars")',
+            "biological_entity_description": 'Test biological entity 1 - Test description 1 ("with some escaped chars")',
             "experimental_variable_description": [
                 "Test experimental entity 1",
             ],
@@ -85,7 +85,7 @@ def get_bio_sample_as_map() -> dict[str, bia_data_model.BioSample]:
             "organism_classification": [
                 taxon2.model_dump(),
             ],
-            "biological_entity_description": "Test biological entity 2. Test description 2",
+            "biological_entity_description": "Test biological entity 2 - Test description 2",
             "experimental_variable_description": [
                 "Test experimental entity 2",
             ],
@@ -116,7 +116,7 @@ def get_bio_sample_as_map() -> dict[str, bia_data_model.BioSample]:
             "organism_classification": [
                 taxon2.model_dump(),
             ],
-            "biological_entity_description": "Test biological entity 2. Test description 2",
+            "biological_entity_description": "Test biological entity 2 - Test description 2",
             "experimental_variable_description": [
                 "Test experimental entity 2",
             ],

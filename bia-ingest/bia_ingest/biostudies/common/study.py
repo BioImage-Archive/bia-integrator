@@ -361,15 +361,6 @@ def get_related_publications(
                 publication["doi"], "doi"
             )
             logger.debug(f"get_related_publications: publication: {publication}")
-            logger.debug(f"get_related_publications: publication: {publication}")
-            logger.debug(f"get_related_publications: publication: {publication}")
-            logger.debug(f"get_related_publications: publication: {publication}")
-
-        logger.debug(f"get_related_publications: publication: {publication}")
-        logger.debug(f"get_related_publications: publication: {publication}")
-        logger.debug(f"get_related_publications: publication: {publication}")
-        logger.debug(f"get_related_publications: publication: {publication}")
-        logger.debug(f"get_related_publications: publication: {publication}")
 
         # Check all fields are not None because new ST allowed
         # some empty publications between August 2025 and October 2025

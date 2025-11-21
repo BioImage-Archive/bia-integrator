@@ -85,18 +85,25 @@ def extract_biosample_dicts(
 
         biological_entity = case_insensitive_get(attr_dict, "Biological entity", "")
         # clears the entity and ensures that it is dealin with a string
+
         biological_entity = f"{biological_entity}".strip()
-        biological_entity = (
-            biological_entity[-1:]
-            if biological_entity != "" and biological_entity[-1] == "."
-            else biological_entity
-        )
         description = case_insensitive_get(attr_dict, "Description", "")
+        description = f"{description}".strip()
+        if biological_entity and description:
+            biological_entity_description = (
+                f"{biological_entity} - {description}".strip()
+            )
+        elif biological_entity:
+            biological_entity_description = f"{biological_entity}".strip()
+        elif description:
+            biological_entity_description = f"{description}".strip()
+        else:
+            biological_entity_description = ""
 
         model_dict.setdefault("title", title)
         model_dict.setdefault(
             "biological_entity_description",
-            f"{biological_entity}. {description}".strip(),
+            biological_entity_description,
         )
 
         # Populate intrinsic, extrinsic and experimental variables separately to base keys as they are list of strings
