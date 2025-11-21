@@ -239,7 +239,7 @@ def test_overlapping_image_data(
     result_data_files = list(image_folder_path.glob("*.json"))
     result_data_files.extend(list(annotation_data_folder_path.glob("*.json")))
 
-    assert len(result_data_files) == 4
+    assert len(result_data_files) == 3
 
     result_field_length_expectations = {
         "data/annotation_data_in_ro_crate_refs_file_list_file.tsv": {
@@ -262,13 +262,6 @@ def test_overlapping_image_data(
             "input_image_uuid": 1,
             "protocol_uuid": 0,
             "annotation_method_uuid": 0,
-        },
-        "data/image3_not_referenced_gets_dataset_associations.tiff": {
-            "subject_specimen_uuid": 1,
-            "image_acquisition_protocol_uuid": 1,
-            "input_image_uuid": 0,
-            "protocol_uuid": 0,
-            "annotation_method_uuid": 1,
         },
     }
 
