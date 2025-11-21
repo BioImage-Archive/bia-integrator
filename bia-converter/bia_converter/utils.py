@@ -4,6 +4,9 @@ from uuid import UUID
 from typing import Union
 from pathlib import Path
 
+import zarr
+from pydantic_core._pydantic_core import ValidationError
+from .omezarrmeta import ZMeta
 
 from bia_integrator_api.models import (  # type: ignore
     ImageRepresentation,
@@ -143,3 +146,157 @@ def add_or_update_attribute(attribute_to_add: Attribute, attributes: list[Attrib
             return
     # If not found, append it
     attributes.append(attribute_to_add)
+
+
+def is_zarr_multiscales(zarr_path: Path) -> bool:
+    """
+    Check if a given Zarr is multiscales
+
+    Parameters:
+    - zarr_path: Path to the Zarr directory.
+
+    Returns:
+    - bool: True if the Zarr directory is multiscales, False otherwise.
+    """
+    zattrs_path = zarr_path / ".zattrs"
+    if not zattrs_path.is_file():
+        return False
+
+    try:
+        import json
+
+        with open(zattrs_path, "r") as f:
+            zattrs_content = json.load(f)
+            return "multiscales" in zattrs_content
+    except (json.JSONDecodeError, IOError):
+        return False
+    return
+
+
+def determine_ome_zarr_type(zarr_path):
+    """
+    Determine the type of OME-Zarr format based on the metadata of the given Zarr group.
+
+    Args:
+        zarr_path (str): The URL or path to the OME-Zarr file.
+
+    Returns:
+    # TODO: As suggested by @tushar - make types an enum.
+            - "hcs": If the Zarr group contains an HCS (High Content Screening) image.
+            - "bf2rawtr": If the Zarr group contains a BioFormats2RawTr image.
+            - "v04image": If the Zarr group contains an OME v4 image.
+            - "v05image": If the Zarr group contains an OME v5 image.
+            - "unknown": If the Zarr group does not match any of the known OME-Zarr formats.
+
+    Based on bia_zarr.thing.determine_thing in https://github.com/BioImage-Archive/bia-zarr
+    """
+    try:
+        zarr_group = zarr.open_group(zarr_path, mode="r")
+    except (FileNotFoundError, IOError) as e:
+        logger.warning(f"Got error {e} attempting to open zarr group")
+        return "unknown"
+
+    if zarr_group.metadata.zarr_format == 2:
+        if "plate" in zarr_group.attrs:
+            return "hcs"
+        if dict(zarr_group.attrs) == {"bioformats2raw.layout": 3}:
+            return "bf2rawtr"
+        else:
+            try:
+                ZMeta.model_validate(zarr_group.attrs)
+                return "v04image"
+            except (IOError, ValidationError) as e:
+                logger.warning(f"Got error {e} attempting to validate v04image")
+                return "unknown"
+    elif zarr_group.metadata.zarr_format == 3:
+        try:
+            ZMeta.model_validate(zarr_group.attrs["ome"])
+            return "v05image"
+        except (IOError, ValidationError) as e:
+            logger.warning(f"Got error {e} attempting to validate v05image")
+            return "unknown"
+
+    return "Unknown"
+
+
+def create_vizarr_compatible_ome_zarr_uri(original_zarr_group_uri: str) -> str:
+    """
+    Customised check for vizarr compatible hcs or image uri. If unknown return original uri.
+
+    """
+
+    ACCEPTED_ZARR_TYPES = [
+        "hcs",
+        "v04image",
+        "v05image",
+    ]
+    zarr_group_uri = original_zarr_group_uri.strip()
+
+    while zarr_group_uri.endswith("/"):
+        zarr_group_uri = zarr_group_uri.rstrip("/")
+
+    ome_zarr_type = determine_ome_zarr_type(zarr_group_uri)
+    if ome_zarr_type in ACCEPTED_ZARR_TYPES:
+        return zarr_group_uri
+    else:
+        # Reconstruct uri and try again
+        if ome_zarr_type == "bf2rawtr":
+            zarr_group_uri = zarr_group_uri + "/0"
+        elif zarr_group_uri.endswith("/0"):
+            # Strip "/0" and retry
+            zarr_group_uri = zarr_group_uri[:-2]
+        else:
+            # Otherwise append "/0" and retry
+            zarr_group_uri = zarr_group_uri + "/0"
+
+        # Try again with reconstructed uri
+        ome_zarr_type = determine_ome_zarr_type(zarr_group_uri)
+        if ome_zarr_type in ACCEPTED_ZARR_TYPES:
+            return zarr_group_uri
+        else:
+            return original_zarr_group_uri
+
+
+def find_multiscale_well_uri(zarr_uri):
+    """
+    Find a well with a multiscale image in it and return the URI to the top level of the well.
+
+    Args:
+        zarr_uri (str): The URI to the high content screen Zarr archive.
+
+    Returns:
+        str: The URI to the top level of the well containing the multiscale image.
+
+    Raises:
+        ValueError: If no well with a multiscale image is found in the Zarr archive.
+    """
+    # Open the Zarr archive
+    zarr_group = zarr.open_group(zarr_uri)
+
+    # Iterate over all the wells in the Zarr archive
+    for row in zarr_group.keys():
+        for col in zarr_group[row].keys():
+            for image in zarr_group[row][col].keys():
+                # Check if the well contains a multiscale image
+                well_uri = "/".join([zarr_uri, row, col, image])
+                ome_zarr_type = determine_ome_zarr_type(well_uri)
+                if ome_zarr_type.endswith("image"):
+                    return well_uri
+
+    # Raise an error if no well with a multiscale image is found
+    raise ValueError(
+        f"No well with a multiscale image found in the Zarr archive: {zarr_uri}"
+    )
+
+
+def create_uri_for_extracting_2d_image_from_ome_zarr(uri):
+    """Returns URI to a multiscale image. For HCS returns URI to a well with a multiscale image."""
+
+    ome_zarr_uri = create_vizarr_compatible_ome_zarr_uri(uri)
+    ome_zarr_type = determine_ome_zarr_type(ome_zarr_uri)
+    if ome_zarr_type.endswith("image"):
+        return ome_zarr_uri
+    elif ome_zarr_type == "hcs":
+        return find_multiscale_well_uri(ome_zarr_uri)
+    else:
+        raise ValueError(f"Could not get URI for multiscale image from: {uri}")

@@ -28,6 +28,10 @@ from .utils import (
     attributes_by_name,
     get_dir_size,
     add_or_update_attribute,
+    create_vizarr_compatible_ome_zarr_uri,
+    create_uri_for_extracting_2d_image_from_ome_zarr,
+    determine_ome_zarr_type,
+    find_multiscale_well_uri,
 )
 
 
@@ -77,20 +81,22 @@ def create_2d_image_and_upload_to_s3(ome_zarr_uri, dims, dst_key):
 def convert_interactive_display_to_thumbnail(
     input_image_rep: ImageRepresentation,
 ) -> str:
-    # Should create a 2D thumbnail from convert an INTERACTIVE_DISPLAY rep
+    # Should create a 2D thumbnail from an INTERACTIVE_DISPLAY rep
 
     dims = (256, 256)
-    # Check the image rep
-    assert ".zarr" in input_image_rep.file_uri[0]
+    # Get uri for multiscale image to convert
+    ome_zarr_uri = create_uri_for_extracting_2d_image_from_ome_zarr(
+        input_image_rep.file_uri[0]
+    )
 
-    # Retrieve model ibjects
+    # Retrieve model objects
     input_image = api_client.get_image(input_image_rep.representation_of_uuid)
 
     dst_key = create_s3_uri_suffix_for_2d_view_of_image_representation(
         input_image_rep, dims=dims, name="thumbnail"
     )
     file_uri, size_in_bytes = create_2d_image_and_upload_to_s3(
-        input_image_rep.file_uri[0], dims, dst_key
+        ome_zarr_uri, dims, dst_key
     )
 
     # Update the BIA Image object with uri for this 2D view
@@ -119,8 +125,10 @@ def convert_interactive_display_to_static_display(
     # Should convert an INTERACTIVE_DISPLAY rep, to a STATIC_DISPLAY rep
 
     dims = (512, 512)
-    # Check the image rep
-    assert ".zarr" in input_image_rep.file_uri[0]
+    # Get uri for multiscale image to convert
+    ome_zarr_uri = create_uri_for_extracting_2d_image_from_ome_zarr(
+        input_image_rep.file_uri[0]
+    )
 
     # Retrieve model ibjects
     input_image = api_client.get_image(input_image_rep.representation_of_uuid)
@@ -129,7 +137,7 @@ def convert_interactive_display_to_static_display(
         input_image_rep, dims=dims, name="static_display"
     )
     file_uri, size_in_bytes = create_2d_image_and_upload_to_s3(
-        input_image_rep.file_uri[0], dims, dst_key
+        ome_zarr_uri, dims, dst_key
     )
 
     # Update the BIA Image object with uri for this 2D view
@@ -289,7 +297,7 @@ def check_if_path_contains_zarr_group(dirpath: Path) -> bool:
     try:
         zarr.open_group(dirpath, mode="r")
         return True
-    except zarr.hierarchy.GroupNotFoundError:
+    except zarr.errors.GroupNotFoundError:
         return False
 
 
@@ -428,14 +436,16 @@ def convert_uploaded_by_submitter_to_interactive_display(
     # Upload to S3
     dst_suffix = create_s3_uri_suffix_for_image_representation(base_image_rep)
     zarr_group_uri = sync_dirpath_to_s3(output_zarr_fpath, dst_suffix)
-    # TODO: Discuss how to handle whether to append '/0'
-    # After discussion with MH on 11/02/2025 agreed to default to '/0' (which currently won't work for plate-well)
-    ome_zarr_uri = zarr_group_uri + "/0"
-    # ome_zarr_uri = zarr_group_uri
+    ome_zarr_uri = create_vizarr_compatible_ome_zarr_uri(zarr_group_uri)
 
     # Set image_rep properties that we now know
     base_image_rep.total_size_in_bytes = get_dir_size(output_zarr_fpath)
     base_image_rep.file_uri = [ome_zarr_uri]
+
+    # If hcs we use dimensions from a well with a multiscale image
+    ome_zarr_type = determine_ome_zarr_type(ome_zarr_uri)
+    if ome_zarr_type == "hcs":
+        ome_zarr_uri = find_multiscale_well_uri(ome_zarr_uri)
     update_dict = get_dimensions_dict_from_zarr(ome_zarr_uri)
     base_image_rep.__dict__.update(update_dict)
 
@@ -450,9 +460,10 @@ def unzip_ome_zarr_archive(
 ) -> ImageRepresentation:
     """Unzip an OME-ZARR zip archive image representation to an OME-ZARR"""
 
-
     if input_image_rep.image_format != ".ome.zarr.zip":
-        raise Exception(f"Input image representation format {input_image_rep.image_format} is not an OME-ZARR zip archive. Expecting type '.ome.zarr.zip'")
+        raise Exception(
+            f"Input image representation format {input_image_rep.image_format} is not an OME-ZARR zip archive. Expecting type '.ome.zarr.zip'"
+        )
 
     conversion_process_dict = {
         "image_representation_of_submitted_by_uploader": f"{input_image_rep.uuid}",
@@ -480,10 +491,7 @@ def unzip_ome_zarr_archive(
     # Upload to S3
     dst_suffix = create_s3_uri_suffix_for_image_representation(base_image_rep)
     zarr_group_uri = sync_dirpath_to_s3(output_zarr_fpath, dst_suffix)
-    # TODO: Discuss how to handle whether to append '/0'
-    # After discussion with MH on 11/02/2025 agreed to default to '/0' (which currently won't work for plate-well)
-    ome_zarr_uri = zarr_group_uri + "/0"
-    # ome_zarr_uri = zarr_group_uri
+    ome_zarr_uri = create_vizarr_compatible_ome_zarr_uri(zarr_group_uri)
 
     # Set image_rep properties that we now know
     base_image_rep.total_size_in_bytes = get_dir_size(output_zarr_fpath)
@@ -495,6 +503,7 @@ def unzip_ome_zarr_archive(
     store_object_in_api_idempotent(base_image_rep)
 
     return base_image_rep
+
 
 def update_recommended_vizarr_representation_for_image(image_rep: ImageRepresentation):
     """Update 'recommended_vizarr_representation' attr of underlying Image object"""

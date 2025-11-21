@@ -1,6 +1,17 @@
+from pathlib import Path
 import pytest
 from bia_integrator_api.models import Attribute
-from bia_converter.utils import add_or_update_attribute
+from bia_converter.utils import (
+    add_or_update_attribute,
+    determine_ome_zarr_type,
+    create_vizarr_compatible_ome_zarr_uri,
+    find_multiscale_well_uri,
+)
+
+
+@pytest.fixture
+def current_dir() -> Path:
+    return Path(__file__).parent.resolve()
 
 
 @pytest.fixture
@@ -169,3 +180,53 @@ def test_no_duplicate_addition(attribute1):
 
     assert len(attributes) == 1
     assert attributes[0].value == attribute1.value
+
+
+def test_determine_ome_zarr_type(current_dir):
+    assert determine_ome_zarr_type(current_dir / "data" / "im06.ome.zarr") == "bf2rawtr"
+    assert (
+        determine_ome_zarr_type(current_dir / "data" / "im06.ome.zarr/0") == "v04image"
+    )
+
+    # HCS test data taken from ngff-zarr tests/input/hcs.ome.zarr
+    assert determine_ome_zarr_type(current_dir / "data" / "hcs.ome.zarr") == "hcs"
+
+    # TODO: Need to create test for 05image
+
+
+# Test that /0 gets added if we have bf2rawtr data?
+def test_create_vizarr_compatible_ome_zarr_image_uri_from_zarr_root(current_dir):
+    uri = f"{current_dir}/data/im06.ome.zarr"
+    assert create_vizarr_compatible_ome_zarr_uri(uri) == uri + "/0"
+
+
+def test_create_vizarr_compatible_ome_zarr_image_uri_from_bf2rawtr_root(current_dir):
+    uri = f"{current_dir}/data/im06.ome.zarr/0"
+    assert create_vizarr_compatible_ome_zarr_uri(uri) == uri
+
+
+def test_create_vizarr_compatible_ome_zarr_hcs_uri_from_zarr_root(current_dir):
+    uri = f"{current_dir}/data/hcs.ome.zarr"
+    assert create_vizarr_compatible_ome_zarr_uri(uri) == uri
+
+
+# Test that /0 gets stripped if we have hcs data?
+def test_create_vizarr_compatible_ome_zarr_hcs_uri_from_bf2rawtr_root(current_dir):
+    uri = f"{current_dir}/data/hcs.ome.zarr"
+    assert create_vizarr_compatible_ome_zarr_uri(uri + "/0") == uri
+
+
+def test_find_uri_of_multiscale_image_in_hcs_archive(current_dir):
+    hcs_uri = f"{current_dir}/data/hcs.ome.zarr"
+    multiscale_uri = find_multiscale_well_uri(hcs_uri)
+
+    assert multiscale_uri in [
+        f"{current_dir}/data/hcs.ome.zarr/A/1/0",
+        f"{current_dir}/data/hcs.ome.zarr/A/1/1",
+        f"{current_dir}/data/hcs.ome.zarr/A/2/0",
+        f"{current_dir}/data/hcs.ome.zarr/A/2/1",
+        f"{current_dir}/data/hcs.ome.zarr/B/1/0",
+        f"{current_dir}/data/hcs.ome.zarr/B/1/1",
+        f"{current_dir}/data/hcs.ome.zarr/B/2/0",
+        f"{current_dir}/data/hcs.ome.zarr/B/2/1",
+    ]

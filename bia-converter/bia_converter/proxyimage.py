@@ -1,7 +1,7 @@
 """BIA Proxy image classes + functionality to enable determination of
 image properties."""
 
-from typing import Optional, List
+from typing import Optional, List, Any
 
 import zarr
 import dask.array as da
@@ -19,7 +19,7 @@ class OMEZarrImage(BaseModel):
     sizeT: int = 1
 
     dimensions: str = "tczyx"
-    zgroup: zarr.Group
+    zgroup: Any = None
 
     n_scales: int = 1
     xy_scaling: float = 1.0
@@ -165,9 +165,11 @@ def calculate_scale_ratios(
                 level_ratio.append(next_scale[j] / current_scale[j])
             except ZeroDivisionError as e:
                 # If this axes is 'c' or 't' set ratio to 1 if both scales are close to 0
-                axis = dimension_str.lower()[j]  
+                axis = dimension_str.lower()[j]
                 tol = 1e-10
-                if axis in ('c', 't') and np.isclose(next_scale[j], current_scale[j], atol=tol):
+                if axis in ("c", "t") and np.isclose(
+                    next_scale[j], current_scale[j], atol=tol
+                ):
                     level_ratio.append(1.0)
                 else:
                     raise (e)
