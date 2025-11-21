@@ -88,6 +88,7 @@ def extract_biosample_dicts(
 
         biological_entity = f"{biological_entity}".strip()
         description = case_insensitive_get(attr_dict, "Description", "")
+        description = f"{description}".strip()
         if biological_entity and description:
             biological_entity_description = (
                 f"{biological_entity} - {description}".strip()
