@@ -181,6 +181,7 @@ def determine_ome_zarr_type(zarr_path):
         zarr_path (str): The URL or path to the OME-Zarr file.
 
     Returns:
+    # TODO: As suggested by @tushar - make types an enum.
             - "hcs": If the Zarr group contains an HCS (High Content Screening) image.
             - "bf2rawtr": If the Zarr group contains a BioFormats2RawTr image.
             - "v04image": If the Zarr group contains an OME v4 image.
@@ -205,14 +206,14 @@ def determine_ome_zarr_type(zarr_path):
                 ZMeta.model_validate(zarr_group.attrs)
                 return "v04image"
             except (IOError, ValidationError) as e:
-                logger.warning(f"Got errore {e} attempting to validate v04image")
+                logger.warning(f"Got error {e} attempting to validate v04image")
                 return "unknown"
     elif zarr_group.metadata.zarr_format == 3:
         try:
             ZMeta.model_validate(zarr_group.attrs["ome"])
             return "v05image"
         except (IOError, ValidationError) as e:
-            logger.warning(f"Got errore {e} attempting to validate v04image")
+            logger.warning(f"Got error {e} attempting to validate v05image")
             return "unknown"
 
     return "Unknown"
