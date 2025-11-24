@@ -1,4 +1,5 @@
 file_path	type	source_image_path	associated_annotation_method	associated_protocol	associated_image_acquisition	associated_bio_sample	associated_sipp
 data/image_1_use_ro_crate_info.tiff	http://bia/Image		_:Cell counts			_:Biosample1	_:SpecimenPreparation
 data/image_2_use_file_list_info.tiff	http://bia/Image	data/image_1_use_ro_crate_info.tiff			_:ImageAcquisitionProtocol1	_:Biosample1	_:SpecimenPreparation
+data/image_3_in_file_list_with_no_type_is_not_assigned.tiff							
 data/annotation_data_in_ro_crate_refs_file_list_file.tsv	http://bia/AnnotationData	data/image_2.tiff	_:Cell counts				
