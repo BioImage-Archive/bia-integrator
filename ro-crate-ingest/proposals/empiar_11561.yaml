@@ -166,7 +166,7 @@ datasets:
         protocol_title: "Tomographic reconstruction"
         input_label: "Tilt series 16"
     assigned_annotations:
-      - label: "Coordinates from subtomogram averaging of GEM2 particles"
+      - label: "Coordinates from subtomogram averaging of GEM2 particles for dataset 1"
         file_pattern: "211206/tomograms/211206.star"
         protocol_title: "Subtomogram averaging"
         annotation_method_title: 
@@ -221,7 +221,7 @@ datasets:
         protocol_title: "Tomographic reconstruction"
         input_label: "Tilt series 17 (dataset 2)"
     assigned_annotations:
-      - label: "Coordinates from subtomogram averaging of GEM2 particles"
+      - label: "Coordinates from subtomogram averaging of GEM2 particles for dataset 2"
         file_pattern: "220330/tomograms/220330.star"
         protocol_title: "Subtomogram averaging"
         annotation_method_title: 
@@ -255,7 +255,7 @@ datasets:
         protocol_title: "Tomographic reconstruction"
         input_label: "Tilt series 30"
     assigned_annotations:
-      - label: "Coordinates from subtomogram averaging of GEM2 particles"
+      - label: "Coordinates from subtomogram averaging of GEM2 particles for dataset 3"
         file_pattern: "220504/tomograms/220504.star"
         annotation_method_title: "DeePiCt and manual particle picking"
         protocol_title: "Subtomogram averaging"
@@ -337,7 +337,7 @@ datasets:
         protocol_title: "Tomographic reconstruction"
         input_label: "Tilt series 41"
     assigned_annotations:
-      - label: "Coordinates from subtomogram averaging of GEM2 particles"
+      - label: "Coordinates from subtomogram averaging of GEM2 particles for dataset 4"
         file_pattern: "220506/tomograms/220506.star"
         protocol_title: "Subtomogram averaging"
         annotation_method_title: 
@@ -435,7 +435,7 @@ datasets:
         protocol_title: "Tomographic reconstruction"
         input_label: "Tilt series 17 (dataset 5)"
     assigned_annotations:
-      - label: "Coordinates from subtomogram averaging of GEM2 particles"
+      - label: "Coordinates from subtomogram averaging of GEM2 particles for dataset 5"
         file_pattern: "220720/tomograms/220720.star"
         protocol_title: "Subtomogram averaging"
         annotation_method_title: 
