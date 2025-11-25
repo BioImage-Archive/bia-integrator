@@ -174,7 +174,7 @@ def prep_result_data_row(
                 specimen_uuid_attr.model_dump()
             )
 
-    # Add information for first image representation if the result data is an Image.
+    # Add information for first image representation if the result data is an Image.
     if pre_requisite_ids_row["result_type"] == "http://bia/Image":
         image_rep_uuid, image_rep_uuid_attr = shared.create_image_representation_uuid(
             study_uuid,
@@ -195,7 +195,7 @@ def prep_result_data_row(
 def flatten_set_of_same_values(column: pd.Series):
     values = column.unique()
     if len(values) != 1:
-        logger.warning("More than 1 unique value in image column")
+        raise ValueError(f"More than 1 unique value in image column: {values}")
 
     return values[0]
 

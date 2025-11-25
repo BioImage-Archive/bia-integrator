@@ -28,6 +28,14 @@ def create_images_and_dependencies(
     max_workers: int,
 ) -> None:
 
+
+    # Calculate dependency chain length before trying to create any specimens, that way we fail fast prior to incorrect objects being created.
+    result_data_dataframe["dependency_chain_length"] = (
+        caluclate_dependency_chain_length(result_data_dataframe)
+    )
+    max_dependency_chain_length = result_data_dataframe["dependency_chain_length"].max()
+
+
     specimens_by_group = [
         (uuid, group_df)
         for uuid, group_df in result_data_dataframe.groupby(
@@ -47,11 +55,6 @@ def create_images_and_dependencies(
                 specimens_by_group,
             )
         )
-
-    result_data_dataframe["dependency_chain_length"] = (
-        caluclate_dependency_chain_length(result_data_dataframe)
-    )
-    max_dependency_chain_length = result_data_dataframe["dependency_chain_length"].max()
 
     for process_height in range(max_dependency_chain_length + 1):
 
@@ -310,11 +313,15 @@ def caluclate_dependency_chain_length(df) -> pd.DataFrame:
             raise ValueError(f"Cycle detected with {id}")
         visiting.add(id)
         deps = dep_map.get(id, [])
-        height = (
-            0
-            if not deps
-            else 1 + max(calculate_height(d) for d in deps if d in dep_map)
-        )
+        try:
+            height = (
+                0
+                if not deps
+                else 1 + max(calculate_height(d) for d in deps if d in dep_map)
+            )
+        except ValueError as e:
+            print(f"Failed dependecy check for {id}, dependencies: {deps}")
+            raise e
         visiting.remove(id)
         heights[id] = height
         return height
