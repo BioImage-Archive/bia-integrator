@@ -36,7 +36,7 @@ def convert(
         )
         sys.exit(2)
 
-    conversion_function(image_rep)
+    conversion_function(image_rep, conversion_config)
 
 @app.command()
 def update_recommended_vizarr_representation(
@@ -55,7 +55,7 @@ def create_thumbnail(
     logging.basicConfig(level=logging.INFO)
 
     image_rep = api_client.get_image_representation(image_rep_uuid)
-    thumbnail_uri = convert_module.convert_interactive_display_to_thumbnail(image_rep)
+    thumbnail_uri = convert_module.create_thumbnail_from_interactive_display(image_rep)
     logger.info(f"Created thumbnail at {thumbnail_uri}")
 
 
@@ -66,7 +66,7 @@ def create_static_display(
     logging.basicConfig(level=logging.INFO)
 
     image_rep = api_client.get_image_representation(image_rep_uuid)
-    static_display_uri = convert_module.convert_interactive_display_to_static_display(image_rep)
+    static_display_uri = convert_module.create_static_display_from_interactive_display(image_rep)
     logger.info(f"Created static display at {static_display_uri}")
 
 @app.command()

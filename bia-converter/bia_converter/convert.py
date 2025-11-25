@@ -78,10 +78,10 @@ def create_2d_image_and_upload_to_s3(ome_zarr_uri, dims, dst_key):
     return file_uri, size_in_bytes
 
 
-def convert_interactive_display_to_thumbnail(
+def create_thumbnail_from_interactive_display(
     input_image_rep: ImageRepresentation,
 ) -> str:
-    # Should create a 2D thumbnail from an INTERACTIVE_DISPLAY rep
+    """Create a 2D thumbnail from an INTERACTIVE_DISPLAY rep"""
 
     dims = (256, 256)
     # Get uri for multiscale image to convert
@@ -119,10 +119,10 @@ def convert_interactive_display_to_thumbnail(
 
 
 # TODO - should be able to merge these
-def convert_interactive_display_to_static_display(
+def create_static_display_from_interactive_display(
     input_image_rep: ImageRepresentation,
 ) -> str:
-    # Should convert an INTERACTIVE_DISPLAY rep, to a STATIC_DISPLAY rep
+    """Create a 2D static display from an INTERACTIVE_DISPLAY rep"""
 
     dims = (512, 512)
     # Get uri for multiscale image to convert
@@ -355,7 +355,7 @@ def fetch_ome_zarr_zip_fileref_and_unzip(
     return unpacked_zarr_dirpath
 
 
-def convert_with_bioformats2raw_pattern(
+def _convert_with_bioformats2raw_pattern(
     input_image_rep, file_references, base_image_rep
 ):
     attrs = attributes_by_name(input_image_rep)
@@ -383,7 +383,7 @@ def convert_with_bioformats2raw_pattern(
 
 
 def convert_uploaded_by_submitter_to_interactive_display(
-    input_image_rep: ImageRepresentation, conversion_parameters: dict = {}
+    input_image_rep: ImageRepresentation, conversion_config: dict = {}
 ) -> ImageRepresentation:
     # Should convert an UPLOADED_BY_SUBMITTER rep, to an INTERACTIVE_DISPLAY rep
 
@@ -399,7 +399,7 @@ def convert_uploaded_by_submitter_to_interactive_display(
             "conversion_function": "bioformats2raw",
             "version": get_bioformats2raw_version(),
         },
-        "conversion_config": conversion_parameters,
+        "conversion_config": conversion_config,
     }
     base_image_rep = create_image_representation_object(
         image, conversion_process_dict, image_format=".ome.zarr"
@@ -419,7 +419,7 @@ def convert_uploaded_by_submitter_to_interactive_display(
         )
     else:
         try:
-            output_zarr_fpath = convert_with_bioformats2raw_pattern(
+            output_zarr_fpath = _convert_with_bioformats2raw_pattern(
                 input_image_rep, file_references, base_image_rep
             )
         except (KeyError, AssertionError) as e:
@@ -455,7 +455,7 @@ def convert_uploaded_by_submitter_to_interactive_display(
     return base_image_rep
 
 
-def unzip_ome_zarr_archive(
+def convert_zipped_ome_zarr_archive(
     input_image_rep: ImageRepresentation, conversion_parameters: dict = {}
 ) -> ImageRepresentation:
     """Unzip an OME-ZARR zip archive image representation to an OME-ZARR"""

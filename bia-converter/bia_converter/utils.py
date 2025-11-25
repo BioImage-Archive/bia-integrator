@@ -300,3 +300,16 @@ def create_uri_for_extracting_2d_image_from_ome_zarr(uri):
         return find_multiscale_well_uri(ome_zarr_uri)
     else:
         raise ValueError(f"Could not get URI for multiscale image from: {uri}")
+
+def available_conversion_functions() -> list[str]:
+    """Return a list of available conversion function names"""
+
+    import bia_converter.convert as convert_module
+
+    function_names = [
+        func_name
+        for func_name in dir(convert_module)
+        if callable(getattr(convert_module, func_name))
+        and func_name.startswith("convert_")
+    ]
+    return function_names
