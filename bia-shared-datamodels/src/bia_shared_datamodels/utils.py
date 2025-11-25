@@ -13,7 +13,9 @@ def sanitise_doi(value: str) -> str:
             raise ValueError("not a DOI URL")
         sanitised_value = unquote(parsed_url.path.lstrip("/"))
     else:
-        sanitised_value = re.sub(r"(?i)^doi:\s*", "", sanitised_value)
+        # Allow dx.doi... or doi... .org optional and ':' or '/' before 10.*
+        regex = r"(?i)^(?:dx\.doi|doi)(\.org)?[/:]\s*"
+        sanitised_value = re.sub(regex, "", sanitised_value)
     if not _DOI_RX.fullmatch(sanitised_value):
         raise ValueError("invalid DOI")
     return f"https://doi.org/{sanitised_value.lower()}"
