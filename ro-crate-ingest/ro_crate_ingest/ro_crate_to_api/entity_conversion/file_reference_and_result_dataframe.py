@@ -5,7 +5,6 @@ import pathlib
 
 from ro_crate_ingest.save_utils import persist, PersistenceMode
 from numpy import nan
-from ro_crate_ingest.settings import get_settings
 from typing import Optional
 from concurrent.futures import ProcessPoolExecutor
 from functools import partial

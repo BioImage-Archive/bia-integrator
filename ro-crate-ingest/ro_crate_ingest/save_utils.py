@@ -107,10 +107,10 @@ def save_api(
                     and round_trip_object_class_from_client_to_datamodel(api_obj)
                     != api_copy_of_obj
                 ):
-                    logger.info(
+                    logger.debug(
                         f"Updating: {api_copy_of_obj.uuid} and bumping version."
                     )
-                    obj.version = api_copy_of_obj.version + 1
+                    api_obj.version = api_copy_of_obj.version + 1
                     post_function(api_obj)
             else:
                 raise e
@@ -164,5 +164,7 @@ def write_filelist(
     if not os.path.exists(filelist_path.parent):
         os.makedirs(filelist_path.parent)
 
-    filelist_dataframe.sort_values(axis=0, by=filelist_dataframe.columns[0], inplace=True)
+    filelist_dataframe.sort_values(
+        axis=0, by=filelist_dataframe.columns[0], inplace=True
+    )
     filelist_dataframe.to_csv(filelist_path, sep="\t", index=False)
