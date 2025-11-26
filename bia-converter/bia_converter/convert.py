@@ -373,7 +373,7 @@ def _convert_with_bioformats2raw_pattern(
             tmpdirname, selected_filerefs, fileref_coords_map, bfconvert_pattern
         )
 
-        # Run the conversion if we need to
+
         output_zarr_fpath = get_conversion_output_path(base_image_rep.uuid)
         logger.info(f"Converting from {conversion_input_fpath} to {output_zarr_fpath}")
         if not output_zarr_fpath.exists():
@@ -411,27 +411,20 @@ def convert_uploaded_by_submitter_to_interactive_display(
     # Get the file references we'll need
     file_references = get_all_file_references_for_image(image)
 
-    # TODO: refactor to move extraction of zips to its own function
-    if input_image_rep.image_format == ".ome.zarr.zip":
-        assert len(file_references) == 1
-        output_zarr_fpath = fetch_ome_zarr_zip_fileref_and_unzip(
-            file_references[0], base_image_rep
+    try:
+        output_zarr_fpath = _convert_with_bioformats2raw_pattern(
+            input_image_rep, file_references, base_image_rep
         )
-    else:
-        try:
-            output_zarr_fpath = _convert_with_bioformats2raw_pattern(
-                input_image_rep, file_references, base_image_rep
+    except (KeyError, AssertionError) as e:
+        if len(file_references) == 1:
+            logger.info(
+                f"Failed to convert using pattern. As image has 1 file reference will attempt to convert from this file reference with file path: {file_references[0].file_path}."
             )
-        except (KeyError, AssertionError) as e:
-            if len(file_references) == 1:
-                logger.info(
-                    f"Failed to convert using pattern. As image has 1 file reference will attempt to convert from this file reference with file path: {file_references[0].file_path}."
-                )
-                input_file_path = stage_fileref_and_get_fpath(file_references[0])
-                output_zarr_fpath = get_conversion_output_path(f"{base_image_rep.uuid}")
-                run_zarr_conversion(input_file_path, output_zarr_fpath)
-            else:
-                raise e
+            input_file_path = stage_fileref_and_get_fpath(file_references[0])
+            output_zarr_fpath = get_conversion_output_path(f"{base_image_rep.uuid}")
+            run_zarr_conversion(input_file_path, output_zarr_fpath)
+        else:
+            raise e
 
     # Upload to S3
     dst_suffix = create_s3_uri_suffix_for_image_representation(base_image_rep)
@@ -467,7 +460,7 @@ def convert_zipped_ome_zarr_archive(
 
     conversion_process_dict = {
         "image_representation_of_submitted_by_uploader": f"{input_image_rep.uuid}",
-        "conversion_function": "unzip_ome_zarr_archive",
+        "conversion_function": "convert_zipped_ome_zarr_archive",
         "conversion_config": conversion_parameters,
     }
 

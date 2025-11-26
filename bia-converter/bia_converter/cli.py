@@ -1,5 +1,6 @@
 import sys
 import logging
+import json
 from typing import Optional
 
 import typer
@@ -26,6 +27,7 @@ def convert(
     logging.basicConfig(level=logging.INFO)
 
     image_rep = api_client.get_image_representation(image_rep_uuid)
+    conversion_config_dict = json.loads(conversion_config)
 
     try:
         conversion_function = getattr(convert_module, conversion_function_name)
@@ -36,7 +38,7 @@ def convert(
         )
         sys.exit(2)
 
-    conversion_function(image_rep, conversion_config)
+    conversion_function(image_rep, conversion_config_dict)
 
 @app.command()
 def update_recommended_vizarr_representation(

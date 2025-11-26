@@ -190,7 +190,7 @@ def test_cli_unzip_and_stage_zipped_ome_zarr(
         [
             "convert",
             zipped_ome_zarr_rep_uuid,
-            "unzip_ome_zarr_archive",
+            "convert_zipped_ome_zarr_archive",
         ],
         catch_exceptions=False,
     )
