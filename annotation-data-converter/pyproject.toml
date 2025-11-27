@@ -12,7 +12,8 @@ rich = "^13.8.1"
 bia-shared-datamodels = { path = "../bia-shared-datamodels", develop = true }
 bia-integrator-api = { path = "../clients/python", develop = true }
 bia-test-data = { path = "../bia-test-data", develop = true }
-typer = "^0.17"
+curation = { path = "../curation", develop = true }
+typer = "^0.20"
 requests = "^2.32.3"
 pydantic = "^2.9.2"
 pydantic-settings = "^2.5.2"
