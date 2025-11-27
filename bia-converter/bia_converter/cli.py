@@ -8,7 +8,7 @@ from typing_extensions import Annotated
 
 from bia_converter.bia_api_client import api_client
 from bia_converter import convert as convert_module
-from bia_converter import get_available_conversion_functions
+from bia_converter.convert import get_available_conversion_functions
 from bia_converter.ng_overlay import generate_overlays, NeuroglancerLayouts
 
 app = typer.Typer()
