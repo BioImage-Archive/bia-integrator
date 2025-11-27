@@ -1,7 +1,6 @@
 from enum import Enum
 
 from pydantic import (
-    ValidationError,
     model_validator,
 )
 from typing_extensions import Self
@@ -20,11 +19,11 @@ class FieldDirective(Directive[FieldCommand]):
     def fields_match_object_type_fields(self) -> Self:
         for field in self.object_fields:
             if field not in self.object_type.model_fields:
-                raise ValidationError(
+                raise ValueError(
                     f"{field} does not exist in api model object fields."
                 )
             if field in ("version", "type", "uuid"):
-                raise ValidationError(
+                raise ValueError(
                     f"Do not attempt to modify the {field} of an api object as part of curation directive."
                 )
         return self

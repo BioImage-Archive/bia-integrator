@@ -5,7 +5,7 @@ from typing import Any
 from uuid import UUID
 
 from bia_integrator_api import models
-from pydantic import BaseModel, ValidationError, field_validator
+from pydantic import BaseModel, field_validator
 
 
 class Directive[CommandType](BaseModel, ABC):
@@ -26,7 +26,7 @@ class Directive[CommandType](BaseModel, ABC):
         elif isinstance(value, str) and value in document_type_lookup:
             return document_type_lookup[value].__name__
         else:
-            raise ValidationError(f"{value} does not correspond to an API object type.")
+            raise ValueError(f"{value} does not correspond to an API object type.")
 
     @classmethod
     @cache
