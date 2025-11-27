@@ -1,3 +1,4 @@
+import sys
 import shutil
 import logging
 import zipfile
@@ -78,10 +79,10 @@ def create_2d_image_and_upload_to_s3(ome_zarr_uri, dims, dst_key):
     return file_uri, size_in_bytes
 
 
-def convert_interactive_display_to_thumbnail(
+def create_thumbnail_from_interactive_display(
     input_image_rep: ImageRepresentation,
 ) -> str:
-    # Should create a 2D thumbnail from an INTERACTIVE_DISPLAY rep
+    """Create a 2D thumbnail from an INTERACTIVE_DISPLAY rep"""
 
     dims = (256, 256)
     # Get uri for multiscale image to convert
@@ -119,10 +120,10 @@ def convert_interactive_display_to_thumbnail(
 
 
 # TODO - should be able to merge these
-def convert_interactive_display_to_static_display(
+def create_static_display_from_interactive_display(
     input_image_rep: ImageRepresentation,
 ) -> str:
-    # Should convert an INTERACTIVE_DISPLAY rep, to a STATIC_DISPLAY rep
+    """Create a 2D static display from an INTERACTIVE_DISPLAY rep"""
 
     dims = (512, 512)
     # Get uri for multiscale image to convert
@@ -355,7 +356,7 @@ def fetch_ome_zarr_zip_fileref_and_unzip(
     return unpacked_zarr_dirpath
 
 
-def convert_with_bioformats2raw_pattern(
+def _convert_with_bioformats2raw_pattern(
     input_image_rep, file_references, base_image_rep
 ):
     attrs = attributes_by_name(input_image_rep)
@@ -373,7 +374,6 @@ def convert_with_bioformats2raw_pattern(
             tmpdirname, selected_filerefs, fileref_coords_map, bfconvert_pattern
         )
 
-        # Run the conversion if we need to
         output_zarr_fpath = get_conversion_output_path(base_image_rep.uuid)
         logger.info(f"Converting from {conversion_input_fpath} to {output_zarr_fpath}")
         if not output_zarr_fpath.exists():
@@ -383,7 +383,7 @@ def convert_with_bioformats2raw_pattern(
 
 
 def convert_uploaded_by_submitter_to_interactive_display(
-    input_image_rep: ImageRepresentation, conversion_parameters: dict = {}
+    input_image_rep: ImageRepresentation, conversion_config: dict = {}
 ) -> ImageRepresentation:
     # Should convert an UPLOADED_BY_SUBMITTER rep, to an INTERACTIVE_DISPLAY rep
 
@@ -399,7 +399,7 @@ def convert_uploaded_by_submitter_to_interactive_display(
             "conversion_function": "bioformats2raw",
             "version": get_bioformats2raw_version(),
         },
-        "conversion_config": conversion_parameters,
+        "conversion_config": conversion_config,
     }
     base_image_rep = create_image_representation_object(
         image, conversion_process_dict, image_format=".ome.zarr"
@@ -411,27 +411,20 @@ def convert_uploaded_by_submitter_to_interactive_display(
     # Get the file references we'll need
     file_references = get_all_file_references_for_image(image)
 
-    # TODO: refactor to move extraction of zips to its own function
-    if input_image_rep.image_format == ".ome.zarr.zip":
-        assert len(file_references) == 1
-        output_zarr_fpath = fetch_ome_zarr_zip_fileref_and_unzip(
-            file_references[0], base_image_rep
+    try:
+        output_zarr_fpath = _convert_with_bioformats2raw_pattern(
+            input_image_rep, file_references, base_image_rep
         )
-    else:
-        try:
-            output_zarr_fpath = convert_with_bioformats2raw_pattern(
-                input_image_rep, file_references, base_image_rep
+    except (KeyError, AssertionError) as e:
+        if len(file_references) == 1:
+            logger.info(
+                f"Failed to convert using pattern. As image has 1 file reference will attempt to convert from this file reference with file path: {file_references[0].file_path}."
             )
-        except (KeyError, AssertionError) as e:
-            if len(file_references) == 1:
-                logger.info(
-                    f"Failed to convert using pattern. As image has 1 file reference will attempt to convert from this file reference with file path: {file_references[0].file_path}."
-                )
-                input_file_path = stage_fileref_and_get_fpath(file_references[0])
-                output_zarr_fpath = get_conversion_output_path(f"{base_image_rep.uuid}")
-                run_zarr_conversion(input_file_path, output_zarr_fpath)
-            else:
-                raise e
+            input_file_path = stage_fileref_and_get_fpath(file_references[0])
+            output_zarr_fpath = get_conversion_output_path(f"{base_image_rep.uuid}")
+            run_zarr_conversion(input_file_path, output_zarr_fpath)
+        else:
+            raise e
 
     # Upload to S3
     dst_suffix = create_s3_uri_suffix_for_image_representation(base_image_rep)
@@ -455,7 +448,7 @@ def convert_uploaded_by_submitter_to_interactive_display(
     return base_image_rep
 
 
-def unzip_ome_zarr_archive(
+def convert_zipped_ome_zarr_archive(
     input_image_rep: ImageRepresentation, conversion_parameters: dict = {}
 ) -> ImageRepresentation:
     """Unzip an OME-ZARR zip archive image representation to an OME-ZARR"""
@@ -467,7 +460,7 @@ def unzip_ome_zarr_archive(
 
     conversion_process_dict = {
         "image_representation_of_submitted_by_uploader": f"{input_image_rep.uuid}",
-        "conversion_function": "unzip_ome_zarr_archive",
+        "conversion_function": "convert_zipped_ome_zarr_archive",
         "conversion_config": conversion_parameters,
     }
 
@@ -521,3 +514,17 @@ def update_recommended_vizarr_representation_for_image(image_rep: ImageRepresent
     image = api_client.get_image(image_uuid)
     add_or_update_attribute(attribute, image.additional_metadata)
     store_object_in_api_idempotent(image)
+
+
+def get_available_conversion_functions() -> list[str]:
+    """Return a list of available conversion function names"""
+
+    convert_module = sys.modules[__name__]
+    # Convention is that functions convert to .ome.zarr start with "convert_"
+    function_names = [
+        func_name
+        for func_name in dir(convert_module)
+        if callable(getattr(convert_module, func_name))
+        and func_name.startswith("convert_")
+    ]
+    return function_names

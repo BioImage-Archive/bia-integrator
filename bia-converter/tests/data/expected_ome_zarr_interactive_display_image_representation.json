@@ -1,5 +1,5 @@
 {
-  "uuid": "e7295ed2-5ffd-4670-ac4f-0b19665cada9",
+  "uuid": "f9851e79-13c9-46ad-933a-3a3b52bf864f",
   "object_creator": "bia_image_conversion",
   "version": 0,
   "model": {
@@ -11,7 +11,7 @@
       "provenance": "bia_image_conversion",
       "name": "uuid_unique_input",
       "value": {
-        "uuid_unique_input": "{'image_representation_of_submitted_by_uploader': '2ecdac48-f4ef-44aa-aa32-a69ffc937585', 'conversion_function': 'unzip_ome_zarr_archive', 'conversion_config': {}}"
+        "uuid_unique_input": "{'image_representation_of_submitted_by_uploader': '2ecdac48-f4ef-44aa-aa32-a69ffc937585', 'conversion_function': 'convert_zipped_ome_zarr_archive', 'conversion_config': {}}"
       }
     }
   ],
