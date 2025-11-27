@@ -1,3 +1,4 @@
+import sys
 import shutil
 import logging
 import zipfile
@@ -373,7 +374,6 @@ def _convert_with_bioformats2raw_pattern(
             tmpdirname, selected_filerefs, fileref_coords_map, bfconvert_pattern
         )
 
-
         output_zarr_fpath = get_conversion_output_path(base_image_rep.uuid)
         logger.info(f"Converting from {conversion_input_fpath} to {output_zarr_fpath}")
         if not output_zarr_fpath.exists():
@@ -514,3 +514,17 @@ def update_recommended_vizarr_representation_for_image(image_rep: ImageRepresent
     image = api_client.get_image(image_uuid)
     add_or_update_attribute(attribute, image.additional_metadata)
     store_object_in_api_idempotent(image)
+
+
+def get_available_conversion_functions() -> list[str]:
+    """Return a list of available conversion function names"""
+
+    convert_module = sys.modules[__name__]
+    # Convention is that functions convert to .ome.zarr start with "convert_"
+    function_names = [
+        func_name
+        for func_name in dir(convert_module)
+        if callable(getattr(convert_module, func_name))
+        and func_name.startswith("convert_")
+    ]
+    return function_names
