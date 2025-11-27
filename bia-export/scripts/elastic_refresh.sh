@@ -125,7 +125,15 @@ curl -k -X PUT "${ELASTIC_URL}/${ELASTIC_INDEX_IMAGES}" \
                         "type": "keyword"
                     }
                 }
-            }
+            },
+			"creation_process": {
+				"type": "object",
+				"properties": {
+					"input_image_uuid": {
+						"type": "keyword"
+					}
+				}
+			}
         }
     }
 }'
