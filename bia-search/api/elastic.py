@@ -77,6 +77,14 @@ class Elastic:
                                 "type": "object",
                                 "properties": {"image_format": {"type": "keyword"}},
                             },
+                            "creation_process": {
+                                "type": "object",
+                                "properties": {
+                                    "input_image_uuid": {
+                                        "type": "keyword"
+                                    }
+                                }
+                            }
                         },
                     }
                 },
