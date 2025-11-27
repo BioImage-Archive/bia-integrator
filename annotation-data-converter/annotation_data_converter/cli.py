@@ -88,7 +88,7 @@ def point_annotation_conversion(
         )
 
         # TODO: upload result to s3 & update api objects with s3 url
-        s3_url = ""
+        s3_url = "example url"
 
         directives.append(create_ng_link_directive(s3_url, image_rep.uuid))
     

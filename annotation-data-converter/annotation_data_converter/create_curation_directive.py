@@ -32,4 +32,4 @@ def write_directives(directives: Iterable[Directive]):
     )
 
     directive_writer = YamlDirectiveWriter()
-    directive_writer.write(path, directives)
+    directive_writer.update(path, directives)
