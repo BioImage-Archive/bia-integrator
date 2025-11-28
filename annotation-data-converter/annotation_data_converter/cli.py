@@ -13,6 +13,10 @@ from annotation_data_converter.point_annotations.Proposal import (
     PointAnnotationProposal,
 )
 from annotation_data_converter.settings import get_settings
+from annotation_data_converter.create_curation_directive import (
+    create_ng_link_directive,
+    write_directives,
+)
 
 logging.basicConfig(
     level="NOTSET", format="%(message)s", datefmt="[%X]", handlers=[RichHandler()]
@@ -60,6 +64,7 @@ def point_annotation_conversion(
         )
 
     proposal_list = point_annotations.collect_proposals(list_of_group_proposals)
+    directives = []
 
     for proposal in proposal_list:
         # Note, returns image and annotation data as these objects will need curating to add the s3 links.
@@ -83,6 +88,11 @@ def point_annotation_conversion(
         )
 
         # TODO: upload result to s3 & update api objects with s3 url
+        s3_url = "example url"
+
+        directives.append(create_ng_link_directive(s3_url, image_rep.uuid))
+    
+    write_directives(directives)
 
 
 if __name__ == "__main__":
