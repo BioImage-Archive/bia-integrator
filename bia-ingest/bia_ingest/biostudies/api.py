@@ -74,8 +74,8 @@ class Empty(BaseModel):
 
 
 class Section(BaseModel):
-    type: str
-    accno: Optional[str] = ""
+    type: str = ""
+    accno: str = ""
     attributes: List[Attribute] = []
     subsections: List[Union["Section", List["Section"]]] = []
     links: List[Union[Link, List[Link], Empty]] = []
