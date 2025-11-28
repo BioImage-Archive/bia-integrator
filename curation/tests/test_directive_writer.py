@@ -33,16 +33,20 @@ def test_update_written_directive(tmp_path):
     writer = YamlDirectiveWriter()
     writer.write(file_to_write_to, directives)
 
+    # Check round-tripping writer-parser of directives
     parser = YamlDirectivePaser()
     written_directives = parser.parse(file_to_write_to)
-
     assert written_directives == directives
 
+    # Check modified directive is updated
     updated_directives = deepcopy(directives)
     updated_directives[0].value = "updated_test_value_1"
-
     writer.update(file_to_write_to, [updated_directives[0]])
-    parser = YamlDirectivePaser()
     written_directives = parser.parse(file_to_write_to)
     assert written_directives != directives
+    assert written_directives == updated_directives
+
+    # Check addition of existing directive is not duplicated 
+    writer.update(file_to_write_to, [updated_directives[0]])
+    written_directives = parser.parse(file_to_write_to)
     assert written_directives == updated_directives

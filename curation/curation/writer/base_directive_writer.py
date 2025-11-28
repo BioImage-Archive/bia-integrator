@@ -45,7 +45,7 @@ class DirectiveWriter(ABC):
         for p_directive in directives_to_process:
             directives_index_to_replace = []
             for r_index, r_directive in enumerate(resulting_directives):
-                if p_directive.is_clashing(r_directive):
+                if p_directive.is_clashing(r_directive) or p_directive == r_directive:
                     directives_index_to_replace.append(r_index)
 
             if len(directives_index_to_replace) > 1:
