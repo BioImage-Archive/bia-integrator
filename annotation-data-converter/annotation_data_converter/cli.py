@@ -83,9 +83,15 @@ def point_annotation_conversion(
         )
 
         converter.load()
+        converter.validate_points()
         converter.convert_to_neuroglancer_precomputed(
-            output_directory / f"{annotation_data.uuid}_{image.uuid}/"
+            output_directory / f"{annotation_data.uuid} / {image.uuid}/", 
         )
+        
+        converter.generate_neuroglancer_view_link(
+            precomp_annotation_uri=f"http://localhost:8081/annotations/{annotation_data.uuid}/{image.uuid}/", 
+        )
+        
 
         # TODO: upload result to s3 & update api objects with s3 url
         s3_url = "example url"
