@@ -6,7 +6,7 @@ from typing import Any
 from bia_integrator_api import models
 from bia_integrator_api.models import Provenance
 from bia_shared_datamodels import attribute_models, semantic_models
-from pydantic import Field, ValidationError, field_validator, model_validator
+from pydantic import Field, field_validator, model_validator
 from typing_extensions import Self
 
 from curation.directive.base_directive import Directive
@@ -36,13 +36,13 @@ class AttributeDirective(Directive[AttributeCommand]):
         elif isinstance(value, str):
             attribute_class_lookup = cls._get_attribute_class_lookup()
             if value not in attribute_class_lookup:
-                raise ValidationError(
+                raise ValueError(
                     f"{value} is not the name of a subclass of Attribute."
                 )
             else:
                 return attribute_class_lookup[value]
         else:
-            raise ValidationError(
+            raise ValueError(
                 f"Unexpected type for attribute_model field (found: {type(value)})"
             )
 
@@ -51,7 +51,7 @@ class AttributeDirective(Directive[AttributeCommand]):
         """Delete attribute commads do not require a value, but otherwise they are necessary."""
         if self.command != AttributeCommand.DELETE_ATTRIBUTE:
             if not self.value:
-                raise ValidationError(
+                raise ValueError(
                     f"value field is required for directives performing {self.command}."
                 )
         return self
