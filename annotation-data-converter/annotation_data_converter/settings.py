@@ -33,7 +33,7 @@ class Settings(BaseSettings):
     bia_api_username: str = Field("")
     bia_api_password: str = Field("")
 
-    default_output_directory: Path = Field(Path(__file__).parents[1])
+    default_output_directory: Path = Field(Path(__file__).parents[1] / "output_data")
 
 
 def get_settings():

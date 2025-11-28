@@ -9,6 +9,7 @@ from annotation_data_converter.point_annotations.converters.PointAnnotationConve
 
 
 class StarFileConverter(PointAnnotationConverter):
+    
     def load(self):
         if file_path := self.proposal.local_file_path:
             unfiltered_dataframe = StarFileConverter._read_star_file_from_path(
