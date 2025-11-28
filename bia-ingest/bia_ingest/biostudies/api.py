@@ -74,7 +74,7 @@ class Empty(BaseModel):
 
 
 class Section(BaseModel):
-    type: str
+    type: Optional[str] = ""
     accno: Optional[str] = ""
     attributes: List[Attribute] = []
     subsections: List[Union["Section", List["Section"]]] = []
