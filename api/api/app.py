@@ -21,6 +21,7 @@ from api.auth import make_router as auth_make_router, get_current_user
 from api.search import make_router as search_make_router
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.openapi.docs import get_redoc_html
 
 from api.api_logging import log_info, log_access
 
@@ -35,7 +36,18 @@ app = FastAPI(
     debug=False,
     root_path=settings.fastapi_root_path,
     extra={"event_loop_specific": {}},
+    redoc_url=None
 )
+
+
+@app.get("/redoc", include_in_schema=False)
+async def redoc_html():
+    return get_redoc_html(
+        openapi_url=app.openapi_url,
+        title=app.title + " - ReDoc",
+        redoc_js_url="https://unpkg.com/redoc@2/bundles/redoc.standalone.js",
+    )
+
 
 app.add_middleware(
     CORSMiddleware,
