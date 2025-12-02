@@ -21,6 +21,7 @@ class Settings(BaseSettings):
         case_sensitive=False,
         extra="ignore",
     )
+
     local_bia_api_basepath: str = Field("http://localhost:8080")
     local_bia_api_username: str = Field("test@example.com")
     local_bia_api_password: str = Field("test")
@@ -34,6 +35,12 @@ class Settings(BaseSettings):
     bia_api_password: str = Field("")
 
     default_output_directory: Path = Field(Path(__file__).parents[1] / "output_data")
+    local_annotations_server: str | None = Field(None)
+
+    endpoint_url: str = Field("https://uk1s3.embassy.ebi.ac.uk")
+    bucket_name: str
+    aws_request_checksum_calculation: str = Field("WHEN_REQUIRED")
+    aws_response_checksum_validation: str = Field("WHEN_REQUIRED")
 
 
 def get_settings():

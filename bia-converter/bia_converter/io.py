@@ -1,5 +1,6 @@
 from pathlib import Path
 import logging
+import os
 import shutil
 import subprocess
 from urllib.parse import quote
@@ -23,7 +24,11 @@ def sync_dirpath_to_s3(src_dirpath, dst_suffix):
     cmd = f'aws --region us-east-1 --endpoint-url {settings.endpoint_url} s3 sync "{src_dirpath}/" s3://{dst_key} --acl public-read'
     logger.info(f"Uploading using command {cmd}")
 
-    subprocess.run(cmd, shell=True)
+    env = os.environ.copy()
+    env['AWS_REQUEST_CHECKSUM_CALCULATION'] = settings.aws_request_checksum_calculation
+    env['AWS_RESPONSE_CHECKSUM_VALIDATION'] = settings.aws_response_checksum_validation
+
+    subprocess.run(cmd, shell=True, env=env)
 
     uri = f"{settings.endpoint_url}/{dst_key}"
 

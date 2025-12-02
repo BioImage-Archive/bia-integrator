@@ -2,13 +2,12 @@ import pandas as pd
 import bia_integrator_api.models as APIModels
 import logging
 
-from bia_converter.ng_overlay import get_image_info_from_ome, get_dimensions
+from bia_converter.ng_overlay import get_image_info_from_ome
 from annotation_data_converter.point_annotations.Proposal import PointAnnotationProposal
 from pathlib import Path
 from neuroglancer import CoordinateSpace, write_annotations
-from typing import Optional, List, Tuple
+from typing import List, Tuple
 from annotation_data_converter.point_annotations.neuroglancer import (
-    BASE_URI, 
     InvlerpParameters, 
     Layer, 
     ViewerState, 
@@ -114,7 +113,7 @@ class PointAnnotationConverter:
     def convert_to_neuroglancer_precomputed(
         self, 
         ng_output_dirpath: Path,
-    ):
+    ) -> str:
 
         scales = [
             self.image_representation.voxel_physical_size_x,
@@ -133,15 +132,17 @@ class PointAnnotationConverter:
         )
 
         def create_point(
-            row: pd.Series,
-            writer: write_annotations.AnnotationWriter,
-            x_column: str | int,
-            y_column: str | int,
-            z_column: str | int,
-        ):
+                row: pd.Series,
+                writer: write_annotations.AnnotationWriter,
+                x_column: str | int,
+                y_column: str | int,
+                z_column: str | int,
+            ):
+
             x = int(row[x_column])
             y = int(row[y_column])
             z = int(row[z_column])
+            
             writer.add_point([z, y, x])
 
         self.point_annotation_data.apply(
@@ -160,39 +161,37 @@ class PointAnnotationConverter:
     def generate_neuroglancer_view_link(
         self,
         precomp_annotation_uri: str, 
-        annotation_color: str = "#FFFF00"
+        annotation_color: str = "#2DC6B2"
     ) -> str:
         """
-        Generate a Neuroglancer link for viewing the source image with point annotations.
-        
-        Args:
-            ome_zarr_uri: URI to the OME-Zarr source image
-            precomp_annotation_uri: URI to the precomputed format annotations 
-                                   (typically the output of convert_to_neuroglancer_precomputed)
-            scale_level: Which resolution level to use from the pyramid
-            annotation_color: Hex color for annotation points
-        
-        Returns:
-            Neuroglancer URL string
+        Creates the nuroglancer link for the image and precomputed annotation data,
+        returns the link as a string.
         """
-
-        local_zarr_path = f"/Users/rookyard/projects/simple-ome-zarr-server/images/zarr/{self.image_representation.uuid}.zarr/0/"
-        local_zarr_uri = f"http://localhost:8081/images/zarr/{self.image_representation.uuid}.zarr/0"
+        # TODO: allow passing in of colours
 
         file_uri_list = self.image_representation.file_uri
         if len(file_uri_list) != 1:
             raise NotImplementedError(
-                "Cannot handle cases where starfile annotation data is made up of more than one image representation."
+                "Image representation has more than one uri."
             )
+        else:
+            image_uri = f"{file_uri_list[0]}/"
+
         contrast_bounds, image_resolution, voxels, channel_info = get_image_info_from_ome(
-            local_zarr_path, 
+            image_uri, 
         )
         
         x_res, y_res, z_res = image_resolution
         lower_bound, upper_bound = contrast_bounds
         
-        # neuroglancer dimensions format
-        dimensions = get_dimensions(voxels)
+        units = "m"
+        dimensions = {
+            "t": [voxels['t'], ""],
+            "c": [voxels['c'], ""],
+            "z": [float(voxels['z']), units],
+            "y": [float(voxels['y']), units],
+            "x": [float(voxels['x']), units]
+        }
         
         # sensible defaults (?)
         position = [0, 0, 0, int(y_res/2), int(x_res/2)]
@@ -216,7 +215,7 @@ class PointAnnotationConverter:
 
         base_layer = Layer(
             type="image",
-            source=f"{local_zarr_uri}/|zarr2:",
+            source=f"{image_uri}|zarr2:",
             name="image",
             volumeRendering=False,
             shaderControls=shader_controls
@@ -238,5 +237,8 @@ class PointAnnotationConverter:
             layers=[base_layer, annotations_layer],
             layout=layout
         )
+
+        ng_view_link = state_to_ng_uri(v)
+        logger.info(f"Neuroglancer link: {ng_view_link}")
         
-        logger.info(f"NG LINK: {state_to_ng_uri(v, BASE_URI)}")
+        return ng_view_link

@@ -6,27 +6,13 @@ import urllib
 from pydantic import BaseModel
 
 BASE_URI = "https://neuroglancer-demo.appspot.com/#!"
-# class Dimension(BaseModel):
-#     Tuple[str]
-
-COLOR_SHADER = "#define true 1\n#define false 0\n\n#uicontrol invlerp normalized\n#uicontrol vec3 color color()\n#uicontrol float attenuation slider(min=1, max=50, step=1)\n#uicontrol float contrast slider(min=-3, max=3, step=0.01)\n  \nvoid main() {\n  \n#if VOLUME_RENDERING\n  float alpha = pow(normalized(), 1.0 / attenuation) * exp(contrast);\n  alpha = pow(alpha, attenuation);\n  emitRGBA(vec4(color, alpha));\n#else\n  float value = normalized() * exp(contrast);\n  emitRGB(color*value);\n#endif\n}"
-# DEFAULT_SHADER = "#define true 1\n#define false 0\n\n#uicontrol invlerp normalized\n#uicontrol vec3 color color(default=\"white\")\n#uicontrol float attenuation slider(min=1, max=50, step=1)\n#uicontrol float contrast slider(min=-3, max=3, step=0.01)\n  \nvoid main() {\n  \n#if VOLUME_RENDERING\n  float alpha = pow(normalized(), 1.0 / attenuation) * exp(contrast);\n  alpha = pow(alpha, attenuation);\n  emitRGBA(vec4(color, alpha));\n#else\n  float value = normalized() * exp(contrast);\n  emitRGB(color*value);\n#endif\n}"
-
-# class ShaderControls(BaseModel):
-#     normalized: Dict[str, List[int]]
-#     color: Optional[str] = None
-#     attenuation: Optional[int] = None
-#     contrast: Optional[float] = None
-
 
 class InvlerpParameters(BaseModel):
     range: tuple[float, float] | tuple[int, int] | None
     window: tuple[float, float] | tuple[int, int] | None
     channel: list[int] | None
 
-
 ShaderControls = dict[str, float | InvlerpParameters]
-
 
 class Layer(BaseModel):
     type: str
