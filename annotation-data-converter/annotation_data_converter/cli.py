@@ -1,28 +1,40 @@
-import typer
+import json
 import logging
 import pathlib
-import json
+import tempfile
+import typer
 
-from annotation_data_converter.point_annotations import (
-    point_annotations,
-)
-from typing import Annotated
+from enum import Enum
 from rich.logging import RichHandler
-from annotation_data_converter.api_client import get_client, APIMode
-from annotation_data_converter.point_annotations.Proposal import (
-    PointAnnotationProposal,
-)
-from annotation_data_converter.settings import get_settings
+from typing import Annotated
+
+from annotation_data_converter.api_client import APIMode, get_client
 from annotation_data_converter.create_curation_directive import (
     create_ng_link_directive,
     write_directives,
+)
+from annotation_data_converter.point_annotations import (
+    point_annotations,
+)
+from annotation_data_converter.settings import get_settings
+from annotation_data_converter.utils import (
+    generate_precomputed_annotation_path_suffix, 
+    sync_precomputed_annotation_to_s3, 
 )
 
 logging.basicConfig(
     level="NOTSET", format="%(message)s", datefmt="[%X]", handlers=[RichHandler()]
 )
 logger = logging.getLogger()
+
+settings = get_settings()
 annotation_data_convert = typer.Typer()
+
+
+class OutputMode(str, Enum):
+    BOTH = "both", 
+    LOCAL = "local", 
+    S3 = "s3",
 
 
 @annotation_data_convert.command(
@@ -37,15 +49,24 @@ def point_annotation_conversion(
             help="Path to the json proposal for the study.",
         ),
     ],
-    output_directory: Annotated[
-        pathlib.Path,
+    output_mode: Annotated[
+        OutputMode,
         typer.Option(
-            "--output_directory",
+            "--output-mode",
+            "-om",
+            case_sensitive=False,
+            help="Where to save output; options: local, s3, or both (default).",
+        ),
+    ] = OutputMode.BOTH,
+    output_directory: Annotated[
+        pathlib.Path | None,
+        typer.Option(
+            "--output-directory",
             "-od",
             case_sensitive=False,
             help="Output directory for the data.",
         ),
-    ] = get_settings().default_output_directory,
+    ] = settings.default_output_directory,
     api_mode: Annotated[
         APIMode,
         typer.Option(
@@ -84,20 +105,42 @@ def point_annotation_conversion(
 
         converter.load()
         converter.validate_points()
-        converter.convert_to_neuroglancer_precomputed(
-            output_directory / f"{annotation_data.uuid} / {image.uuid}/", 
-        )
-        
-        converter.generate_neuroglancer_view_link(
-            precomp_annotation_uri=f"http://localhost:8081/annotations/{annotation_data.uuid}/{image.uuid}/", 
-        )
-        
 
-        # TODO: upload result to s3 & update api objects with s3 url
-        s3_url = "example url"
+        precomputed_annotation_path_suffix = generate_precomputed_annotation_path_suffix(
+            annotation_data.uuid,
+            image,
+            api_client, 
+        )
 
-        directives.append(create_ng_link_directive(s3_url, image_rep.uuid))
-    
+        if output_mode in [OutputMode.LOCAL, OutputMode.BOTH]:
+            local_output_path = output_directory / precomputed_annotation_path_suffix
+            converter.convert_to_neuroglancer_precomputed(local_output_path)
+
+        if output_mode in [OutputMode.S3, OutputMode.BOTH]:
+            if output_mode == OutputMode.S3:
+                with tempfile.TemporaryDirectory() as temp_dir:
+                    temp_path = pathlib.Path(temp_dir) / precomputed_annotation_path_suffix
+                    converter.convert_to_neuroglancer_precomputed(temp_path)
+                    precomputed_annotation_url = sync_precomputed_annotation_to_s3(
+                        str(temp_path), 
+                        precomputed_annotation_path_suffix, 
+                    )
+            else:
+                precomputed_annotation_url = sync_precomputed_annotation_to_s3(
+                    str(local_output_path), 
+                    precomputed_annotation_path_suffix, 
+                )
+
+        if output_mode in [OutputMode.S3, OutputMode.BOTH]:
+            ng_view_link = converter.generate_neuroglancer_view_link(
+                precomputed_annotation_url, 
+            )
+            directives.append(create_ng_link_directive(ng_view_link, image_rep.uuid))
+        elif output_mode == OutputMode.LOCAL and settings.local_annotations_server:
+            # Construct local URL for preview
+            local_url = f"{settings.local_annotations_server.rstrip('/')}/{precomputed_annotation_path_suffix}"
+            converter.generate_neuroglancer_view_link(local_url)
+            
     write_directives(directives)
 
 

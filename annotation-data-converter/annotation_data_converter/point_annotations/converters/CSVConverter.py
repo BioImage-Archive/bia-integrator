@@ -14,10 +14,10 @@ class CSVConverter(PointAnnotationConverter):
                 file_path
             )
         else:
-            file_uri_list = self.image_representation.file_uri
+            file_uri_list = self.annotation_data_file_reference.file_path
             if len(file_uri_list) != 1:
                 raise NotImplementedError(
-                    "Cannot handle cases where starfile annotation data is made up of more than one image representation."
+                    "Cannot handle cases where starfile annotation data is made up of more than one file."
                 )
             self.point_annotation_data = CSVConverter._read_csv_from_url(
                 file_uri_list[0]
