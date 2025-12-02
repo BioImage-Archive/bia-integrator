@@ -39,17 +39,6 @@ class DateCodec(TypeCodec):
         return value.as_datetime().date()
 
 
-class AnyUrlCodec(TypeCodec):
-    python_type = AnyUrl
-    bson_type = str
-
-    def transform_python(self, value: AnyUrl) -> str:
-        return str(value)
-
-    def transform_bson(self, value: str) -> str:
-        return value
-
-
 class OverwriteMode(str, Enum):
     FAIL = "fail"
     ALLOW_IDEMPOTENT = "allow_idempotent"
@@ -88,7 +77,7 @@ class Repository:
             # Looks like explicitly setting codec_options excludes settings from the client
             #   so uuid_representation needs to be defined even if already defined in connection
             codec_options=CodecOptions(
-                type_registry=TypeRegistry([DateCodec(), AnyUrlCodec()]),
+                type_registry=TypeRegistry([DateCodec()], fallback_encoder=str),
                 uuid_representation=UuidRepresentation.STANDARD,
             ),
         )
