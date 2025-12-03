@@ -19,12 +19,13 @@ from numpy import percentile
 import logging
 from rich.logging import RichHandler
 from bia_integrator_api.exceptions import NotFoundException
-from bia_converter.bia_api_client import api_client, store_object_in_api_idempotent
+from bia_integrator_api.api.private_api import PrivateApi
+from bia_converter.bia_api_client import store_object_in_api_idempotent, ApiTarget
 from bia_converter.utils import add_or_update_attribute, attributes_by_name
 from bia_integrator_api.models import ( 
     Provenance,
     Attribute,
-    Image
+    Image,
 )
 
 
@@ -257,7 +258,7 @@ def generate_neuroglancer_url(
     return f"https://neuroglancer-demo.appspot.com/#!{encoded_json}"
 
 
-def get_ome_zar_file_uri(image_uuid: Union[UUID, str]) -> Union[str, bool]:
+def get_ome_zar_file_uri(api_client: PrivateApi, image_uuid: Union[UUID, str]) -> Union[str, bool]:
     try:
         image_reps = api_client.get_image_representation_linking_image(str(image_uuid), page_size=10)
         if len(image_reps)>0:
@@ -289,7 +290,7 @@ def annotation_filter(image: Image) -> Union[Image, bool]:
     return image
 
 
-def update_additional_metadata_source_image_with_ng_view_url(uuid: Union[UUID, str], url: str) -> Optional[bool]:
+def update_additional_metadata_source_image_with_ng_view_url(api_client: PrivateApi, uuid: Union[UUID, str], url: str) -> Optional[bool]:
     try:
         image = api_client.get_image(str(uuid))
         attribute = Attribute.model_validate(
@@ -302,14 +303,14 @@ def update_additional_metadata_source_image_with_ng_view_url(uuid: Union[UUID, s
             }
         )
         add_or_update_attribute(attribute, image.additional_metadata)
-        store_object_in_api_idempotent(image)
+        store_object_in_api_idempotent(api_client, image)
 
     except NotFoundException as e:
         logger.error(f"Could not update image object. Error was {e}.")
         return False
 
 
-def source_annotation_image_pairs(source_image_uuid: Union[UUID, str]) -> Union[List[str], bool]:
+def source_annotation_image_pairs(api_client: PrivateApi, source_image_uuid: Union[UUID, str]) -> Union[List[str], bool]:
     """
     Given a source image UUID, finds all annotation images created from it
     and returns their OME-Zarr file URIs.
@@ -326,7 +327,7 @@ def source_annotation_image_pairs(source_image_uuid: Union[UUID, str]) -> Union[
 
         # From valid annotation images, collect OME-Zarr file URIs
         annotate_image_urls = [
-            str(get_ome_zar_file_uri(ai.uuid)) for ai in annotated_images if ai
+            str(get_ome_zar_file_uri(api_client, ai.uuid)) for ai in annotated_images if ai
         ]
 
         logger.info(f"For source image: {source_image_uuid} found {len(annotate_image_urls)} annotated images.")
@@ -338,8 +339,8 @@ def source_annotation_image_pairs(source_image_uuid: Union[UUID, str]) -> Union[
 
 
 def generate_overlays(source_image_uuid: Union[UUID, str], layout: NeuroglancerLayouts) -> None:
-    source_image_url = get_ome_zar_file_uri(source_image_uuid)
-    annotation_image_urls = source_annotation_image_pairs(source_image_uuid)
+    source_image_url = get_ome_zar_file_uri(api_client, source_image_uuid)
+    annotation_image_urls = source_annotation_image_pairs(api_client, source_image_uuid)
     if source_image_url and annotation_image_urls:
         url = generate_neuroglancer_url(source_image_url, annotation_image_urls, layout)    
         update_additional_metadata_source_image_with_ng_view_url(source_image_uuid, url)

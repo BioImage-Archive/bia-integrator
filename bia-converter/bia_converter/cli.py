@@ -6,7 +6,7 @@ from typing import Optional
 import typer
 from typing_extensions import Annotated
 
-from bia_converter.bia_api_client import api_client
+from bia_converter.bia_api_client import get_api_client, ApiTarget
 from bia_converter import convert as convert_module
 from bia_converter.convert import get_available_conversion_functions
 from bia_converter.ng_overlay import generate_overlays, NeuroglancerLayouts
@@ -24,9 +24,13 @@ def convert(
         str, typer.Argument()
     ] = "convert_uploaded_by_submitter_to_interactive_display",
     conversion_config: Annotated[Optional[str], typer.Argument()] = "{}",
+    api_target: Annotated[
+        ApiTarget, typer.Option("--api", "-a", case_sensitive=False)
+    ] = ApiTarget.prod,
 ):
     logging.basicConfig(level=logging.INFO)
 
+    api_client = get_api_client(api_target)
     image_rep = api_client.get_image_representation(image_rep_uuid)
     conversion_config_dict = json.loads(conversion_config)
 
@@ -39,17 +43,21 @@ def convert(
         )
         sys.exit(2)
 
-    conversion_function(image_rep, conversion_config_dict)
+    conversion_function(api_client, image_rep, conversion_config_dict)
 
 
 @app.command()
 def update_recommended_vizarr_representation(
     image_rep_uuid: str,
+    api_target: Annotated[
+        ApiTarget, typer.Option("--api", "-a", case_sensitive=False)
+    ] = ApiTarget.prod,
 ):
     logging.basicConfig(level=logging.INFO)
 
+    api_client = get_api_client(api_target)
     image_rep = api_client.get_image_representation(image_rep_uuid)
-    convert_module.update_recommended_vizarr_representation_for_image(image_rep)
+    convert_module.update_recommended_vizarr_representation_for_image(api_client, image_rep)
     logger.info(
         f"Updated recommended vizarr representation of image with uuid {image_rep.representation_of_uuid} to {image_rep.uuid}"
     )
@@ -58,22 +66,31 @@ def update_recommended_vizarr_representation(
 @app.command()
 def create_thumbnail(
     image_rep_uuid: str,
+    api_target: Annotated[
+        ApiTarget, typer.Option("--api", "-a", case_sensitive=False)
+    ] = ApiTarget.prod,
 ):
     logging.basicConfig(level=logging.INFO)
 
+    api_client = get_api_client(api_target)
     image_rep = api_client.get_image_representation(image_rep_uuid)
-    thumbnail_uri = convert_module.create_thumbnail_from_interactive_display(image_rep)
+    thumbnail_uri = convert_module.create_thumbnail_from_interactive_display(api_client, image_rep)
     logger.info(f"Created thumbnail at {thumbnail_uri}")
 
 
 @app.command()
 def create_static_display(
     image_rep_uuid: str,
+    api_target: Annotated[
+        ApiTarget, typer.Option("--api", "-a", case_sensitive=False)
+    ] = ApiTarget.prod,
 ):
     logging.basicConfig(level=logging.INFO)
 
+    api_client = get_api_client(api_target)
     image_rep = api_client.get_image_representation(image_rep_uuid)
     static_display_uri = convert_module.create_static_display_from_interactive_display(
+        api_client,
         image_rep
     )
     logger.info(f"Created static display at {static_display_uri}")
@@ -88,8 +105,12 @@ def generate_neuroglancer_view_link(
         NeuroglancerLayouts,
         typer.Option("--layout", help="Neuroglancer layout (e.g., xy, 4panel-alt)"),
     ] = NeuroglancerLayouts.XY,
+    api_target: Annotated[
+        ApiTarget, typer.Option("--api", "-a", case_sensitive=False)
+    ] = ApiTarget.prod,
 ):
     logging.basicConfig(level=logging.INFO)
+    api_client = get_api_client(api_target)
     generate_overlays(source_image_uuid, layout)
     logger.info(f"Generated neuroglancer view link for {source_image_uuid}")
 

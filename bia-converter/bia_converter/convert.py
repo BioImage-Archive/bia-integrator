@@ -6,6 +6,7 @@ import tempfile
 from pathlib import Path
 from uuid import UUID
 
+from bia_integrator_api.api.private_api import PrivateApi
 import parse  # type: ignore
 from bia_integrator_api.models import (  # type: ignore
     Image,
@@ -21,7 +22,7 @@ from bia_shared_datamodels.package_specific_uuid_creation.image_conversion_uuid_
 from .config import settings
 from .io import copy_local_to_s3, stage_fileref_and_get_fpath, sync_dirpath_to_s3
 from .conversion import run_zarr_conversion, get_bioformats2raw_version
-from .bia_api_client import api_client, store_object_in_api_idempotent
+from .bia_api_client import store_object_in_api_idempotent
 from .rendering import generate_padded_thumbnail_from_ngff_uri
 from .utils import (
     create_s3_uri_suffix_for_image_representation,
@@ -40,6 +41,7 @@ logger = logging.getLogger(__file__)
 
 
 def create_image_representation_object(
+    api_client: PrivateApi,
     image: Image, conversion_process_dict: dict, image_format: str
 ) -> ImageRepresentation:
     # Create the base image representation object. Cannot by itself create the file_uri or
@@ -80,6 +82,7 @@ def create_2d_image_and_upload_to_s3(ome_zarr_uri, dims, dst_key):
 
 
 def create_thumbnail_from_interactive_display(
+    api_client: PrivateApi,
     input_image_rep: ImageRepresentation,
 ) -> str:
     """Create a 2D thumbnail from an INTERACTIVE_DISPLAY rep"""
@@ -94,6 +97,7 @@ def create_thumbnail_from_interactive_display(
     input_image = api_client.get_image(input_image_rep.representation_of_uuid)
 
     dst_key = create_s3_uri_suffix_for_2d_view_of_image_representation(
+        api_client,
         input_image_rep, dims=dims, name="thumbnail"
     )
     file_uri, size_in_bytes = create_2d_image_and_upload_to_s3(
@@ -114,13 +118,14 @@ def create_thumbnail_from_interactive_display(
     }
     view_details = Attribute.model_validate(view_details_dict)
     add_or_update_attribute(view_details, input_image.additional_metadata)
-    store_object_in_api_idempotent(input_image)
+    store_object_in_api_idempotent(api_client, input_image)
 
     return file_uri
 
 
 # TODO - should be able to merge these
 def create_static_display_from_interactive_display(
+    api_client: PrivateApi,
     input_image_rep: ImageRepresentation,
 ) -> str:
     """Create a 2D static display from an INTERACTIVE_DISPLAY rep"""
@@ -135,7 +140,7 @@ def create_static_display_from_interactive_display(
     input_image = api_client.get_image(input_image_rep.representation_of_uuid)
 
     dst_key = create_s3_uri_suffix_for_2d_view_of_image_representation(
-        input_image_rep, dims=dims, name="static_display"
+        api_client, input_image_rep, dims=dims, name="static_display"
     )
     file_uri, size_in_bytes = create_2d_image_and_upload_to_s3(
         ome_zarr_uri, dims, dst_key
@@ -154,12 +159,12 @@ def create_static_display_from_interactive_display(
     }
     view_details = Attribute.model_validate(view_details_dict)
     add_or_update_attribute(view_details, input_image.additional_metadata)
-    store_object_in_api_idempotent(input_image)
+    store_object_in_api_idempotent(api_client, input_image)
 
     return file_uri
 
 
-def get_all_file_references_for_image(image):
+def get_all_file_references_for_image(api_client, image):
     file_references = []
     for fr_uuid in image.original_file_reference_uuid:
         fr = api_client.get_file_reference(fr_uuid)
@@ -383,6 +388,7 @@ def _convert_with_bioformats2raw_pattern(
 
 
 def convert_uploaded_by_submitter_to_interactive_display(
+    api_client: PrivateApi,
     input_image_rep: ImageRepresentation, conversion_config: dict = {}
 ) -> ImageRepresentation:
     # Should convert an UPLOADED_BY_SUBMITTER rep, to an INTERACTIVE_DISPLAY rep
@@ -402,6 +408,7 @@ def convert_uploaded_by_submitter_to_interactive_display(
         "conversion_config": conversion_config,
     }
     base_image_rep = create_image_representation_object(
+        api_client,
         image, conversion_process_dict, image_format=".ome.zarr"
     )
     logger.info(
@@ -409,7 +416,7 @@ def convert_uploaded_by_submitter_to_interactive_display(
     )
 
     # Get the file references we'll need
-    file_references = get_all_file_references_for_image(image)
+    file_references = get_all_file_references_for_image(api_client, image)
 
     try:
         output_zarr_fpath = _convert_with_bioformats2raw_pattern(
@@ -427,7 +434,7 @@ def convert_uploaded_by_submitter_to_interactive_display(
             raise e
 
     # Upload to S3
-    dst_suffix = create_s3_uri_suffix_for_image_representation(base_image_rep)
+    dst_suffix = create_s3_uri_suffix_for_image_representation(api_client, base_image_rep)
     zarr_group_uri = sync_dirpath_to_s3(output_zarr_fpath, dst_suffix)
     ome_zarr_uri = create_vizarr_compatible_ome_zarr_uri(zarr_group_uri)
 
@@ -443,12 +450,13 @@ def convert_uploaded_by_submitter_to_interactive_display(
     base_image_rep.__dict__.update(update_dict)
 
     # Write back to API
-    store_object_in_api_idempotent(base_image_rep)
+    store_object_in_api_idempotent(api_client, base_image_rep)
 
     return base_image_rep
 
 
 def convert_zipped_ome_zarr_archive(
+    api_client: PrivateApi,
     input_image_rep: ImageRepresentation, conversion_parameters: dict = {}
 ) -> ImageRepresentation:
     """Unzip an OME-ZARR zip archive image representation to an OME-ZARR"""
@@ -466,6 +474,7 @@ def convert_zipped_ome_zarr_archive(
 
     image = api_client.get_image(input_image_rep.representation_of_uuid)
     base_image_rep = create_image_representation_object(
+        api_client,
         image, conversion_process_dict, image_format=".ome.zarr"
     )
     logger.info(
@@ -473,7 +482,7 @@ def convert_zipped_ome_zarr_archive(
     )
 
     # Get the file references we'll need
-    file_references = get_all_file_references_for_image(image)
+    file_references = get_all_file_references_for_image(api_client, image)
 
     # TODO: We will need to handle multiple zip archives here in future
     assert len(file_references) == 1
@@ -482,7 +491,7 @@ def convert_zipped_ome_zarr_archive(
     )
 
     # Upload to S3
-    dst_suffix = create_s3_uri_suffix_for_image_representation(base_image_rep)
+    dst_suffix = create_s3_uri_suffix_for_image_representation(api_client, base_image_rep)
     zarr_group_uri = sync_dirpath_to_s3(output_zarr_fpath, dst_suffix)
     ome_zarr_uri = create_vizarr_compatible_ome_zarr_uri(zarr_group_uri)
 
@@ -493,12 +502,12 @@ def convert_zipped_ome_zarr_archive(
     base_image_rep.__dict__.update(update_dict)
 
     # Write back to API
-    store_object_in_api_idempotent(base_image_rep)
+    store_object_in_api_idempotent(api_client, base_image_rep)
 
     return base_image_rep
 
 
-def update_recommended_vizarr_representation_for_image(image_rep: ImageRepresentation):
+def update_recommended_vizarr_representation_for_image(api_client: PrivateApi, image_rep: ImageRepresentation):
     """Update 'recommended_vizarr_representation' attr of underlying Image object"""
 
     attribute = Attribute.model_validate(
@@ -513,7 +522,7 @@ def update_recommended_vizarr_representation_for_image(image_rep: ImageRepresent
     image_uuid = image_rep.representation_of_uuid
     image = api_client.get_image(image_uuid)
     add_or_update_attribute(attribute, image.additional_metadata)
-    store_object_in_api_idempotent(image)
+    store_object_in_api_idempotent(api_client, image)
 
 
 def get_available_conversion_functions() -> list[str]:

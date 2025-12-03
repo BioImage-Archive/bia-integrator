@@ -23,7 +23,6 @@ LOGGING_LEVELS: dict = {
 class Settings(BaseSettings):
     # Make API target a class var set at runtime, not from env files or env vars
     _instance: ClassVar[Optional["Settings"]] = None
-    api_target: ClassVar[Optional["ApiTarget"]] = None
 
     # Note env files overwrite one another in order of the list (last element overwrites previous ones)
     # Uses api settings to get user create token when testing locally.
@@ -69,3 +68,6 @@ class Settings(BaseSettings):
             cls._instance = instance
         return cls._instance
 
+def get_settings() -> Settings:
+    """Return singleton settings instance."""
+    return Settings.get_instance()

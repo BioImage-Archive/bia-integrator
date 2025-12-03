@@ -4,13 +4,14 @@ from enum import Enum
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic.alias_generators import to_snake
+from pydantic import BaseModel
 
 import bia_integrator_api.models as api_models
 from bia_integrator_api import exceptions as api_exceptions
 from bia_integrator_api.util import get_client_private
 from bia_integrator_api import Configuration, ApiClient
 from bia_integrator_api.api import PrivateApi
-from bia_converter.settings import Settings
+from bia_converter.settings import get_settings
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -42,7 +43,7 @@ get_api_client._instances = {}
     
 
 def get_bia_api_client() -> PrivateApi:
-    settings = Settings.instance()
+    settings = get_settings()
     private_api_client = get_client_private(
         username=settings.bia_api_username,
         password=settings.bia_api_password,
@@ -77,7 +78,7 @@ def get_local_bia_api_client() -> PrivateApi:
     return private_api
 
 
-def store_object_in_api_idempotent(model_object):
+def store_object_in_api_idempotent(api_client: PrivateApi, model_object: BaseModel):
     model_name = model_object.__class__.__name__
     # converts, e.g. "BioSample" into "bio_sample"
     model_name_snake = to_snake(model_name)
@@ -114,7 +115,7 @@ def store_object_in_api_idempotent(model_object):
         post_func(model_object)
 
 
-def update_object_in_api_idempotent(model_object):
+def update_object_in_api_idempotent(api_client: PrivateApi, model_object: BaseModel):
     model_name = model_object.__class__.__name__
     # converts, e.g. "BioSample" into "bio_sample"
     model_name_snake = to_snake(model_name)

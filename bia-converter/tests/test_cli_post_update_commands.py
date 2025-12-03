@@ -8,8 +8,9 @@ from bia_converter import convert
 from typer.testing import CliRunner
 from bia_converter import cli
 from bia_converter.config import settings
-from bia_converter.bia_api_client import api_client
+from bia_converter.bia_api_client import get_api_client, ApiTarget
 
+api_client = get_api_client(target=ApiTarget.local)
 accession_id = "S-BIAD-BIACONVERTER-TEST"
 original_copy_local_to_s3 = convert.copy_local_to_s3
 
@@ -144,6 +145,8 @@ def test_cli_convert_interactive_display_to_static_display(
         [
             "create-static-display",
             interactive_image_rep_uuid,
+            "--api",
+            "local", 
         ],
         catch_exceptions=False,
     )
@@ -176,6 +179,8 @@ def test_cli_convert_interactive_display_to_thumbnail(
         [
             "create-thumbnail",
             interactive_image_rep_uuid,
+            "--api",
+            "local", 
         ],
         catch_exceptions=False,
     )
@@ -204,6 +209,8 @@ def test_cli_update_recommended_vizarr_rep_for_image(
         [
             "update-recommended-vizarr-representation",
             interactive_image_rep_uuid,
+            "--api",
+            "local",
         ],
         catch_exceptions=False,
     )

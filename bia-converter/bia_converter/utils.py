@@ -8,18 +8,17 @@ import zarr
 from pydantic_core._pydantic_core import ValidationError
 from .omezarrmeta import ZMeta
 
+from bia_integrator_api.api import PrivateApi
 from bia_integrator_api.models import (  # type: ignore
     ImageRepresentation,
     Attribute,
 )
 
-from .bia_api_client import api_client
-
-
 logger = logging.getLogger(__name__)
 
 
 def create_s3_uri_suffix_for_image_representation(
+    api_client: PrivateApi,
     representation: ImageRepresentation,
 ) -> str:
     """Create the part of the s3 uri that goes after the bucket name for an image representation"""
@@ -39,6 +38,7 @@ def image_dimensions_as_string(dims: list[int] | tuple[int, int]) -> str:
 
 
 def create_s3_uri_suffix_for_2d_view_of_image_representation(
+    api_client: PrivateApi,
     representation: ImageRepresentation,
     dims: tuple,
     name: str,
