@@ -1,7 +1,5 @@
 """Module for application settings management. Based on bia-ingest/settings.py."""
 import logging
-import os
-from enum import Enum
 from pathlib import Path
 from typing import ClassVar, Optional
 
@@ -37,9 +35,6 @@ class Settings(BaseSettings):
         extra="ignore",
     )
 
-    bia_data_dir: str = Field(
-        str(Path(os.environ.get("HOME", "")) / ".cache" / "bia-integrator-data-sm")
-    )
     local_bia_api_basepath: str = Field("http://localhost:8080")
     local_bia_api_username: str = Field("test@example.com")
     local_bia_api_password: str = Field("test")
@@ -52,9 +47,15 @@ class Settings(BaseSettings):
     bia_api_username: str = Field("")
     bia_api_password: str = Field("")
 
-    cache_root_dirpath: str = Field(str(Path.home() / ".cache" / "bia-converter"))
+    cache_root_dirpath: Path = Field(Path.home().absolute() / ".cache" / "bia-converter")
     endpoint_url: str = Field("https://uk1s3.embassy.ebi.ac.uk")
     bucket_name: str = Field("")
+
+    aws_access_key_id: str = Field("")
+    aws_secret_access_key: str = Field("")
+    aws_request_checksum_calculation: str = Field("WHEN_REQUIRED")
+    aws_response_checksum_validation: str = Field("WHEN_REQUIRED")
+
     bioformats2raw_java_home: str = Field("")
     bioformats2raw_bin: str = Field("")
     bioformats2raw_docker_tag: str = Field("")
@@ -63,8 +64,6 @@ class Settings(BaseSettings):
     def get_instance(cls) -> "Settings":
         if cls._instance is None:
             instance = cls()
-            if instance.cache_root_dirpath == "":
-                instance.cache_root_dirpath = str(Path.home() / ".cache" / "bia-converter")
             cls._instance = instance
         return cls._instance
 

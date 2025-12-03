@@ -7,10 +7,11 @@ import re
 
 from pathlib import Path
 
-from bia_converter.config import settings
+from bia_converter.settings import get_settings
 from bia_shared_datamodels import bia_data_model
 
 logger = logging.getLogger(__name__)
+settings = get_settings()
 
 
 def run_bioformats2raw_with_docker(input_fpath: Path, output_dirpath: Path):

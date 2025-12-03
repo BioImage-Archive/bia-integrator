@@ -7,12 +7,13 @@ from bia_integrator_api.exceptions import NotFoundException
 from bia_converter import convert
 from typer.testing import CliRunner
 from bia_converter import cli
-from bia_converter.config import settings
+from bia_converter.settings import get_settings
 from bia_converter.bia_api_client import get_api_client, ApiTarget
 
 api_client = get_api_client(target=ApiTarget.local)
 accession_id = "S-BIAD-BIACONVERTER-TEST"
 original_copy_local_to_s3 = convert.copy_local_to_s3
+settings = get_settings()
 
 
 @pytest.fixture

@@ -18,8 +18,7 @@ from bia_integrator_api.models import (  # type: ignore
 from bia_shared_datamodels.package_specific_uuid_creation.image_conversion_uuid_creation import (
     create_image_representation_uuid,
 )
-
-from .config import settings
+from .settings import get_settings
 from .io import copy_local_to_s3, stage_fileref_and_get_fpath, sync_dirpath_to_s3
 from .conversion import run_zarr_conversion, get_bioformats2raw_version
 from .bia_api_client import store_object_in_api_idempotent
@@ -38,6 +37,7 @@ from .utils import (
 
 
 logger = logging.getLogger(__file__)
+settings = get_settings()
 
 
 def create_image_representation_object(

@@ -111,7 +111,7 @@ def generate_neuroglancer_view_link(
 ):
     logging.basicConfig(level=logging.INFO)
     api_client = get_api_client(api_target)
-    generate_overlays(source_image_uuid, layout)
+    generate_overlays(api_client, source_image_uuid, layout)
     logger.info(f"Generated neuroglancer view link for {source_image_uuid}")
 
 

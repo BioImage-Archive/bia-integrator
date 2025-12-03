@@ -338,11 +338,11 @@ def source_annotation_image_pairs(api_client: PrivateApi, source_image_uuid: Uni
         return False
 
 
-def generate_overlays(source_image_uuid: Union[UUID, str], layout: NeuroglancerLayouts) -> None:
+def generate_overlays(api_client: PrivateApi, source_image_uuid: Union[UUID, str], layout: NeuroglancerLayouts) -> None:
     source_image_url = get_ome_zar_file_uri(api_client, source_image_uuid)
     annotation_image_urls = source_annotation_image_pairs(api_client, source_image_uuid)
     if source_image_url and annotation_image_urls:
         url = generate_neuroglancer_url(source_image_url, annotation_image_urls, layout)    
-        update_additional_metadata_source_image_with_ng_view_url(source_image_uuid, url)
+        update_additional_metadata_source_image_with_ng_view_url(api_client, source_image_uuid, url)
     else:   
         logger.info(f"No annotated images found for {source_image_uuid}.")

@@ -12,7 +12,8 @@ from bia_converter.conversion import (
     run_bioformats2raw_java_cli,
     run_zarr_conversion,
 )
-from bia_converter.config import settings
+from bia_converter.settings import get_settings
+settings = get_settings()
 
 # As of 19/03/2025 bioformats2raw docker image only built for linux/amd64.
 # Some of our macs are running arm64 -> skip docker tests in these cases.
