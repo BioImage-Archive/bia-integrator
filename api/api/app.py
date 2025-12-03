@@ -41,9 +41,12 @@ app = FastAPI(
 
 
 @app.get("/redoc", include_in_schema=False)
-async def redoc_html():
+async def redoc_html(request: Request):
+    root = request.scope.get("root_path", "").rstrip("/")
+    openapi_url = f"{root}{app.openapi_url}"
+
     return get_redoc_html(
-        openapi_url=app.openapi_url,
+        openapi_url=openapi_url,
         title=app.title + " - ReDoc",
         redoc_js_url="https://unpkg.com/redoc@2/bundles/redoc.standalone.js",
     )
