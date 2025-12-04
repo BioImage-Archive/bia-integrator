@@ -2,6 +2,7 @@ import json
 import logging
 import pathlib
 import tempfile
+import traceback
 import typer
 
 from enum import Enum
@@ -38,7 +39,8 @@ class OutputMode(str, Enum):
 
 
 @annotation_data_convert.command(
-    help="Convert star file point annotations into pre-computed neuroglancer objects. Store these in s3 & add links to them from the relevant objects.",
+    name="convert",
+    help="Convert point annotations into pre-computed neuroglancer objects. Store these in s3 & add links to them from the relevant objects.",
 )
 def point_annotation_conversion(
     proposal_path: Annotated[
@@ -104,7 +106,6 @@ def point_annotation_conversion(
         )
 
         converter.load()
-        converter.validate_points()
 
         precomputed_annotation_path_suffix = generate_precomputed_annotation_path_suffix(
             annotation_data.uuid,
@@ -142,6 +143,112 @@ def point_annotation_conversion(
             converter.generate_neuroglancer_view_link(local_url)
             
     write_directives(directives)
+
+
+@annotation_data_convert.command(
+    name="validate",
+    help="Validate point annotations to check they are within image bounds.",
+)
+def point_annotation_validation(
+    proposal_path: Annotated[
+        pathlib.Path,
+        typer.Option(
+            "--proposal",
+            "-p",
+            help="Path to the json proposal for the study.",
+        ),
+    ],
+    api_mode: Annotated[
+        APIMode,
+        typer.Option(
+            "--api-mode",
+            "-am",
+            case_sensitive=False,
+            help="Mode to persist the data. Options: local_api, bia_api. ",
+        ),
+    ] = APIMode.LOCAL_API,
+):
+    """
+    Validate point annotations from a proposal file.
+    Checks that all points fall within the bounds of their associated images.
+    """
+    api_client = get_client(api_mode)
+
+    with open(proposal_path.absolute(), "r") as proposal_file:
+        list_of_group_proposals: list[dict] = json.loads(
+            proposal_file.read(),
+        )
+
+    proposal_list = point_annotations.collect_proposals(list_of_group_proposals)
+    
+    total_proposals = len(proposal_list)
+    validation_results = []
+    
+    logger.info(f"Validating {total_proposals} annotation proposals...")
+
+    for i, proposal in enumerate(proposal_list, 1):
+        logger.info(f"Validating proposal {i}/{total_proposals}")
+        logger.info(f"  Annotation data: {proposal.annotation_data_uuid}")
+        logger.info(f"  Image representation: {proposal.image_representation_uuid}")
+        
+        try:
+            image_rep, image, annotation_data, file_reference = (
+                point_annotations.fetch_api_object_dependencies(
+                    proposal.annotation_data_uuid,
+                    proposal.image_representation_uuid,
+                    api_client,
+                )
+            )
+
+            converter = point_annotations.create_converter(
+                image_representation=image_rep,
+                annotation_data_file_reference=file_reference,
+                proposal=proposal,
+            )
+
+            converter.load()
+            converter.validate_points()
+            
+            validation_results.append({
+                "proposal": proposal,
+                "status": "PASS",
+                "error": None
+            })
+            logger.info(f"  Validation PASSED")
+            
+        except Exception as e:
+            error_details = ''.join(traceback.format_exception(type(e), e, e.__traceback__))
+            validation_results.append({
+                "proposal": proposal,
+                "status": "FAIL",
+                "error": str(e) if str(e) else repr(e),
+                "traceback": error_details
+            })
+            logger.error(f"  Validation FAILED:")
+            logger.error(f"     Exception type: {type(e).__name__}")
+            logger.error(f"     Exception message: {str(e) if str(e) else repr(e)}")
+    
+    passed = sum(1 for r in validation_results if r["status"] == "PASS")
+    failed = sum(1 for r in validation_results if r["status"] == "FAIL")
+    
+    logger.info(f"{'='*60}")
+    logger.info(f"VALIDATION SUMMARY")
+    logger.info(f"{'='*60}")
+    logger.info(f"Total proposals: {total_proposals}")
+    logger.info(f"Passed: {passed}")
+    logger.info(f"Failed: {failed}")
+    
+    if failed > 0:
+        logger.error("Failed proposals:")
+        for result in validation_results:
+            if result["status"] == "FAIL":
+                logger.error(f"  - Annotation: {result['proposal'].annotation_data_uuid}")
+                logger.error(f"    Error: {result['error']}")
+                if 'traceback' in result:
+                    logger.error(f"    Traceback:\n{result['traceback']}")
+        raise typer.Exit(code=1)
+    else:
+        logger.info(f"All proposals passed validation!")
 
 
 if __name__ == "__main__":
