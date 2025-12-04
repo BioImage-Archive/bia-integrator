@@ -1,4 +1,4 @@
-from pydantic import Field, AnyUrl, ConfigDict, BaseModel
+from pydantic import Field, AnyUrl, ConfigDict, BaseModel, field_validator
 from typing_extensions import Annotated, Optional
 from bia_shared_datamodels.linked_data.pydantic_ld.ROCrateModel import ROCrateModel
 from bia_shared_datamodels.linked_data.pydantic_ld.FieldContext import FieldContext
@@ -9,13 +9,13 @@ from bia_shared_datamodels.linked_data.pydantic_ld.LDModel import ObjectReferenc
 
 
 class Study(ROCrateModel):
-    title: Annotated[str, FieldContext("http://schema.org/name")] = Field()
+    name: Annotated[str, FieldContext("http://schema.org/name")] = Field()
     contributor: Annotated[
         list[ObjectReference],
         FieldContext("http://schema.org/author", is_id_field=True),
     ] = Field(min_length=1)
     description: Annotated[str, FieldContext("http://schema.org/description")] = Field()
-    licence: Annotated[AnyUrl, FieldContext("http://schema.org/license")] = Field()
+    license: Annotated[AnyUrl, FieldContext("http://schema.org/license")] = Field()
     datePublished: Annotated[str, FieldContext("http://schema.org/datePublished")] = (
         Field()
     )
@@ -32,6 +32,13 @@ class Study(ROCrateModel):
     accessionId: Annotated[str, FieldContext("http://schema.org/identifier")] = Field()
 
     model_config = ConfigDict(model_type="http://bia/Study")
+
+    @field_validator("id", mode="after")
+    @classmethod
+    def validate_id(cls, value: str) -> str:
+        if value != "./":
+            raise ValueError("Study id should be root ro-crate entity.")
+        return value
 
 
 class Publication(ROCrateModel):
@@ -109,7 +116,7 @@ class ExternalReference(ROCrateModel):
 
 
 class Dataset(ROCrateModel):
-    title: Annotated[str, FieldContext("http://schema.org/name")] = Field()
+    name: Annotated[str, FieldContext("http://schema.org/name")] = Field()
     description: Annotated[
         Optional[str], FieldContext("http://schema.org/description")
     ] = Field(default=None)

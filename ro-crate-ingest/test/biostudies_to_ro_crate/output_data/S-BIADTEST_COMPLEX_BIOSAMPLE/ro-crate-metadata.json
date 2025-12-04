@@ -2,112 +2,38 @@
     "@context": [
         "https://w3id.org/ro/crate/1.1/context",
         {
-            "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-            "schema": "http://schema.org/",
-            "dc": "http://purl.org/dc/terms/",
-            "bia": "http://bia/",
-            "csvw": "http://www.w3.org/ns/csvw#",
-            "displayName": {
-                "@id": "schema:name"
+            "accessionId": {
+                "@id": "schema:identifier"
+            },
+            "acknowledgement": {
+                "@id": "bia:acknowledgement"
             },
             "address": {
                 "@id": "schema:address"
             },
-            "website": {
-                "@id": "bia:website"
-            },
             "affiliation": {
                 "@id": "schema:memberOf"
-            },
-            "title": {
-                "@id": "schema:name"
-            },
-            "protocolDescription": {
-                "@id": "schema:description"
-            },
-            "annotationCriteria": {
-                "@id": "bia:annotationCriteria"
             },
             "annotationCoverage": {
                 "@id": "bia:annotationCoverage"
             },
-            "transformationDescription": {
-                "@id": "bia:transformationDescription"
-            },
-            "spatialInformation": {
-                "@id": "bia:spatialInformation"
-            },
-            "methodType": {
-                "@id": "bia:annotationMethodType"
-            },
-            "annotationSourceIndicator": {
-                "@id": "bia:annotationSourceIndicator"
-            },
-            "biologicalEntityDescription": {
-                "@id": "bia:biologicalEntityDescription"
-            },
-            "experimentalVariableDescription": {
-                "@id": "bia:experimentalVariableDescription"
-            },
-            "extrinsicVariableDescription": {
-                "@id": "bia:extrinsicVariableDescription"
-            },
-            "intrinsicVariableDescription": {
-                "@id": "bia:intrinsicVariableDescription"
-            },
-            "organismClassification": {
-                "@id": "bia:organismClassification"
-            },
-            "growthProtocol": {
-                "@id": "bia:growthProtocol"
-            },
-            "columnName": {
-                "@id": "csvw:name"
-            },
-            "propertyUrl": {
-                "@id": "csvw:propertyUrl"
-            },
-            "role": {
-                "@id": "bia:role"
-            },
-            "label": {
-                "@id": "schema:name"
-            },
-            "contactEmail": {
-                "@id": "schema:email"
-            },
-            "imageAcquisitionProtocol": {
-                "@id": "bia:imageAcquisitionProtocol"
-            },
-            "subject": {
-                "@id": "bia:subject"
-            },
-            "protocol": {
-                "@id": "bia:protocol"
+            "annotationCriteria": {
+                "@id": "bia:annotationCriteria"
             },
             "annotationMethod": {
                 "@id": "bia:annotationMethod"
             },
-            "inputImage": {
-                "@id": "bia:inputImage"
+            "annotationSourceIndicator": {
+                "@id": "bia:annotationSourceIndicator"
             },
-            "description": {
-                "@id": "schema:description"
+            "associatedAnnotationMethod": {
+                "@id": "bia:associatedAnnotationMethod"
             },
             "associatedBiologicalEntity": {
                 "@id": "bia:associatedBiologicalEntity"
             },
-            "associatedSpecimenImagingPreparationProtocol": {
-                "@id": "bia:associatedImagingPreparationProtocol"
-            },
-            "associatedSpecimen": {
-                "@id": "bia:associatedSubject"
-            },
             "associatedImageAcquisitionProtocol": {
                 "@id": "bia:associatedImageAcquisitionProtocol"
-            },
-            "associatedAnnotationMethod": {
-                "@id": "bia:associatedAnnotationMethod"
             },
             "associatedImageAnalysisMethod": {
                 "@id": "bia:associatedAnalysisMethod"
@@ -118,29 +44,65 @@
             "associatedProtocol": {
                 "@id": "bia:associatedProtocol"
             },
-            "hasPart": {
-                "@id": "schema:hasPart"
+            "associatedSpecimen": {
+                "@id": "bia:associatedSubject"
+            },
+            "associatedSpecimenImagingPreparationProtocol": {
+                "@id": "bia:associatedImagingPreparationProtocol"
             },
             "associationFileMetadata": {
                 "@id": "bia:associationFileMetadata"
             },
-            "link": {
-                "@id": "schema:url"
+            "authorNames": {
+                "@id": "bia:authorNames"
             },
-            "linkDescription": {
+            "bia": "http://bia/",
+            "biologicalEntity": {
+                "@id": "bia:sampleOf"
+            },
+            "biologicalEntityDescription": {
+                "@id": "bia:biologicalEntityDescription"
+            },
+            "channelBiologicalEntity": {
+                "@id": "bia:channelBiologicalEntity"
+            },
+            "channelContentDescription": {
+                "@id": "bia:channelContentDescription"
+            },
+            "channelLabel": {
+                "@id": "dc:identifier"
+            },
+            "column": {
+                "@id": "csvw:column"
+            },
+            "columnName": {
+                "@id": "csvw:name"
+            },
+            "commonName": {
+                "@id": "bia:commonName"
+            },
+            "contactEmail": {
+                "@id": "schema:email"
+            },
+            "contributor": {
+                "@id": "schema:author"
+            },
+            "csvw": "http://www.w3.org/ns/csvw#",
+            "datePublished": {
+                "@id": "schema:datePublished"
+            },
+            "dc": "http://purl.org/dc/terms/",
+            "description": {
                 "@id": "schema:description"
             },
-            "tableSchema": {
-                "@id": "csvw:tableSchema"
+            "displayName": {
+                "@id": "schema:name"
             },
-            "resultOf": {
-                "@id": "bia:resultOf"
+            "experimentalVariableDescription": {
+                "@id": "bia:experimentalVariableDescription"
             },
-            "imagingInstrumentDescription": {
-                "@id": "bia:imagingInstrumentDescription"
-            },
-            "imagingMethodName": {
-                "@id": "bia:imagingMethodName"
+            "extrinsicVariableDescription": {
+                "@id": "bia:extrinsicVariableDescription"
             },
             "fbbiId": {
                 "@id": "bia:fbbiId"
@@ -151,59 +113,100 @@
             "fiducialsUsed": {
                 "@id": "bia:fiducialsUsed"
             },
-            "transformationMatrix": {
-                "@id": "bia:transformationMatrix"
+            "growthProtocol": {
+                "@id": "bia:growthProtocol"
             },
-            "authorNames": {
-                "@id": "bia:authorNames"
+            "hasPart": {
+                "@id": "schema:hasPart"
             },
-            "signalContrastMechanismDescription": {
-                "@id": "bia:signalContrastMechanismDescription"
+            "imageAcquisitionProtocol": {
+                "@id": "bia:imageAcquisitionProtocol"
             },
-            "channelContentDescription": {
-                "@id": "bia:channelContentDescription"
+            "imagingInstrumentDescription": {
+                "@id": "bia:imagingInstrumentDescription"
             },
-            "channelBiologicalEntity": {
-                "@id": "bia:channelBiologicalEntity"
-            },
-            "channelLabel": {
-                "@id": "dc:identifier"
-            },
-            "biologicalEntity": {
-                "@id": "bia:sampleOf"
+            "imagingMethodName": {
+                "@id": "bia:imagingMethodName"
             },
             "imagingPreparationProtocol": {
                 "@id": "bia:imagingPreparationProtocol"
             },
-            "signalChannelInformation": {
-                "@id": "bia:signalChannelInformation"
+            "inputImage": {
+                "@id": "bia:inputImage"
             },
-            "contributor": {
-                "@id": "schema:author"
-            },
-            "licence": {
-                "@id": "schema:license"
-            },
-            "datePublished": {
-                "@id": "schema:datePublished"
+            "intrinsicVariableDescription": {
+                "@id": "bia:intrinsicVariableDescription"
             },
             "keyword": {
                 "@id": "schema:keywords"
             },
-            "acknowledgement": {
-                "@id": "bia:acknowledgement"
+            "label": {
+                "@id": "schema:name"
             },
-            "accessionId": {
-                "@id": "schema:identifier"
+            "license": {
+                "@id": "schema:license"
             },
-            "column": {
-                "@id": "csvw:column"
+            "link": {
+                "@id": "schema:url"
             },
-            "commonName": {
-                "@id": "bia:commonName"
+            "linkDescription": {
+                "@id": "schema:description"
             },
+            "methodType": {
+                "@id": "bia:annotationMethodType"
+            },
+            "name": {
+                "@id": "schema:name"
+            },
+            "organismClassification": {
+                "@id": "bia:organismClassification"
+            },
+            "propertyUrl": {
+                "@id": "csvw:propertyUrl"
+            },
+            "protocol": {
+                "@id": "bia:protocol"
+            },
+            "protocolDescription": {
+                "@id": "schema:description"
+            },
+            "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+            "resultOf": {
+                "@id": "bia:resultOf"
+            },
+            "role": {
+                "@id": "bia:role"
+            },
+            "schema": "http://schema.org/",
             "scientificName": {
                 "@id": "bia:scientificName"
+            },
+            "signalChannelInformation": {
+                "@id": "bia:signalChannelInformation"
+            },
+            "signalContrastMechanismDescription": {
+                "@id": "bia:signalContrastMechanismDescription"
+            },
+            "spatialInformation": {
+                "@id": "bia:spatialInformation"
+            },
+            "subject": {
+                "@id": "bia:subject"
+            },
+            "tableSchema": {
+                "@id": "csvw:tableSchema"
+            },
+            "title": {
+                "@id": "schema:name"
+            },
+            "transformationDescription": {
+                "@id": "bia:transformationDescription"
+            },
+            "transformationMatrix": {
+                "@id": "bia:transformationMatrix"
+            },
+            "website": {
+                "@id": "bia:website"
             }
         }
     ],
@@ -224,14 +227,14 @@
                 "Dataset",
                 "bia:Study"
             ],
-            "title": "BIADTEST AUTHOR AFFILIATION TEST",
+            "name": "BIADTEST AUTHOR AFFILIATION TEST",
             "contributor": [
                 {
                     "@id": "https://orcid.org/0009-0007-4223-1439"
                 }
             ],
             "description": "Description 1",
-            "licence": "https://creativecommons.org/publicdomain/zero/1.0/",
+            "license": "https://creativecommons.org/publicdomain/zero/1.0/",
             "datePublished": "2023-08-14",
             "keyword": [],
             "acknowledgement": null,
@@ -380,7 +383,7 @@
                 "Dataset",
                 "bia:Dataset"
             ],
-            "title": "Component 3",
+            "name": "Component 3",
             "description": "Has 2 associations with the two biosamples that should have the same taxon.",
             "associatedBiologicalEntity": [
                 {
@@ -420,7 +423,7 @@
                 "Dataset",
                 "bia:Dataset"
             ],
-            "title": "Component 2",
+            "name": "Component 2",
             "description": "Has 1 association, re-using biosample 1, but with different specimen to Component 1 (which has a growth protocol) so should have a different ro-crate biosample.",
             "associatedBiologicalEntity": [
                 {
@@ -457,7 +460,7 @@
                 "Dataset",
                 "bia:Dataset"
             ],
-            "title": "Component 1",
+            "name": "Component 1",
             "description": "Has 2 associations, with the same specimen, image aquisition, but differnt biosamples",
             "associatedBiologicalEntity": [
                 {

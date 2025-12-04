@@ -2,109 +2,38 @@
   "@context": [
     "https://w3id.org/ro/crate/1.1/context",
     {
-      "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-      "schema": "http://schema.org/",
-      "dc": "http://purl.org/dc/terms/",
-      "bia": "http://bia/",
-      "csvw": "http://www.w3.org/ns/csvw#",
-      "displayName": {
-        "@id": "schema:name"
+      "accessionId": {
+        "@id": "schema:identifier"
+      },
+      "acknowledgement": {
+        "@id": "bia:acknowledgement"
       },
       "address": {
         "@id": "schema:address"
       },
-      "website": {
-        "@id": "bia:website"
-      },
-      "title": {
-        "@id": "schema:name"
-      },
-      "protocolDescription": {
-        "@id": "schema:description"
-      },
-      "annotationCriteria": {
-        "@id": "bia:annotationCriteria"
+      "affiliation": {
+        "@id": "schema:memberOf"
       },
       "annotationCoverage": {
         "@id": "bia:annotationCoverage"
       },
-      "transformationDescription": {
-        "@id": "bia:transformationDescription"
-      },
-      "spatialInformation": {
-        "@id": "bia:spatialInformation"
-      },
-      "methodType": {
-        "@id": "bia:annotationMethodType"
-      },
-      "annotationSourceIndicator": {
-        "@id": "bia:annotationSourceIndicator"
-      },
-      "biologicalEntityDescription": {
-        "@id": "bia:biologicalEntityDescription"
-      },
-      "experimentalVariableDescription": {
-        "@id": "bia:experimentalVariableDescription"
-      },
-      "extrinsicVariableDescription": {
-        "@id": "bia:extrinsicVariableDescription"
-      },
-      "intrinsicVariableDescription": {
-        "@id": "bia:intrinsicVariableDescription"
-      },
-      "organismClassification": {
-        "@id": "bia:organismClassification"
-      },
-      "growthProtocol": {
-        "@id": "bia:growthProtocol"
-      },
-      "columnName": {
-        "@id": "csvw:name"
-      },
-      "propertyUrl": {
-        "@id": "csvw:propertyUrl"
-      },
-      "affiliation": {
-        "@id": "schema:memberOf"
-      },
-      "role": {
-        "@id": "bia:role"
-      },
-      "contactEmail": {
-        "@id": "schema:email"
-      },
-      "imageAcquisitionProtocol": {
-        "@id": "bia:imageAcquisitionProtocol"
-      },
-      "subject": {
-        "@id": "bia:subject"
-      },
-      "protocol": {
-        "@id": "bia:protocol"
+      "annotationCriteria": {
+        "@id": "bia:annotationCriteria"
       },
       "annotationMethod": {
         "@id": "bia:annotationMethod"
       },
-      "inputImage": {
-        "@id": "bia:inputImage"
+      "annotationSourceIndicator": {
+        "@id": "bia:annotationSourceIndicator"
       },
-      "description": {
-        "@id": "schema:description"
+      "associatedAnnotationMethod": {
+        "@id": "bia:associatedAnnotationMethod"
       },
       "associatedBiologicalEntity": {
         "@id": "bia:associatedBiologicalEntity"
       },
-      "associatedSpecimenImagingPreparationProtocol": {
-        "@id": "bia:associatedImagingPreparationProtocol"
-      },
-      "associatedSpecimen": {
-        "@id": "bia:associatedSubject"
-      },
       "associatedImageAcquisitionProtocol": {
         "@id": "bia:associatedImageAcquisitionProtocol"
-      },
-      "associatedAnnotationMethod": {
-        "@id": "bia:associatedAnnotationMethod"
       },
       "associatedImageAnalysisMethod": {
         "@id": "bia:associatedAnalysisMethod"
@@ -115,32 +44,65 @@
       "associatedProtocol": {
         "@id": "bia:associatedProtocol"
       },
-      "hasPart": {
-        "@id": "schema:hasPart"
+      "associatedSpecimen": {
+        "@id": "bia:associatedSubject"
+      },
+      "associatedSpecimenImagingPreparationProtocol": {
+        "@id": "bia:associatedImagingPreparationProtocol"
       },
       "associationFileMetadata": {
         "@id": "bia:associationFileMetadata"
       },
-      "link": {
-        "@id": "schema:url"
+      "authorNames": {
+        "@id": "bia:authorNames"
       },
-      "linkDescription": {
+      "bia": "http://bia/",
+      "biologicalEntity": {
+        "@id": "bia:sampleOf"
+      },
+      "biologicalEntityDescription": {
+        "@id": "bia:biologicalEntityDescription"
+      },
+      "channelBiologicalEntity": {
+        "@id": "bia:channelBiologicalEntity"
+      },
+      "channelContentDescription": {
+        "@id": "bia:channelContentDescription"
+      },
+      "channelLabel": {
+        "@id": "dc:identifier"
+      },
+      "column": {
+        "@id": "csvw:column"
+      },
+      "columnName": {
+        "@id": "csvw:name"
+      },
+      "commonName": {
+        "@id": "bia:commonName"
+      },
+      "contactEmail": {
+        "@id": "schema:email"
+      },
+      "contributor": {
+        "@id": "schema:author"
+      },
+      "csvw": "http://www.w3.org/ns/csvw#",
+      "datePublished": {
+        "@id": "schema:datePublished"
+      },
+      "dc": "http://purl.org/dc/terms/",
+      "description": {
         "@id": "schema:description"
       },
-      "tableSchema": {
-        "@id": "csvw:tableSchema"
-      },
-      "resultOf": {
-        "@id": "bia:resultOf"
-      },
-      "label": {
+      "displayName": {
         "@id": "schema:name"
       },
-      "imagingInstrumentDescription": {
-        "@id": "bia:imagingInstrumentDescription"
+      "experimentalVariableDescription": {
+        "@id": "bia:experimentalVariableDescription"
       },
-      "imagingMethodName": {
-        "@id": "bia:imagingMethodName"
+      "extrinsicVariableDescription": {
+        "@id": "bia:extrinsicVariableDescription"
       },
       "fbbiId": {
         "@id": "bia:fbbiId"
@@ -151,59 +113,100 @@
       "fiducialsUsed": {
         "@id": "bia:fiducialsUsed"
       },
-      "transformationMatrix": {
-        "@id": "bia:transformationMatrix"
+      "growthProtocol": {
+        "@id": "bia:growthProtocol"
       },
-      "authorNames": {
-        "@id": "bia:authorNames"
+      "hasPart": {
+        "@id": "schema:hasPart"
       },
-      "signalContrastMechanismDescription": {
-        "@id": "bia:signalContrastMechanismDescription"
+      "imageAcquisitionProtocol": {
+        "@id": "bia:imageAcquisitionProtocol"
       },
-      "channelContentDescription": {
-        "@id": "bia:channelContentDescription"
+      "imagingInstrumentDescription": {
+        "@id": "bia:imagingInstrumentDescription"
       },
-      "channelBiologicalEntity": {
-        "@id": "bia:channelBiologicalEntity"
-      },
-      "channelLabel": {
-        "@id": "dc:identifier"
-      },
-      "biologicalEntity": {
-        "@id": "bia:sampleOf"
+      "imagingMethodName": {
+        "@id": "bia:imagingMethodName"
       },
       "imagingPreparationProtocol": {
         "@id": "bia:imagingPreparationProtocol"
       },
-      "signalChannelInformation": {
-        "@id": "bia:signalChannelInformation"
+      "inputImage": {
+        "@id": "bia:inputImage"
       },
-      "contributor": {
-        "@id": "schema:author"
-      },
-      "licence": {
-        "@id": "schema:license"
-      },
-      "datePublished": {
-        "@id": "schema:datePublished"
+      "intrinsicVariableDescription": {
+        "@id": "bia:intrinsicVariableDescription"
       },
       "keyword": {
         "@id": "schema:keywords"
       },
-      "acknowledgement": {
-        "@id": "bia:acknowledgement"
+      "label": {
+        "@id": "schema:name"
       },
-      "accessionId": {
-        "@id": "schema:identifier"
+      "license": {
+        "@id": "schema:license"
       },
-      "column": {
-        "@id": "csvw:column"
+      "link": {
+        "@id": "schema:url"
       },
-      "commonName": {
-        "@id": "bia:commonName"
+      "linkDescription": {
+        "@id": "schema:description"
       },
+      "methodType": {
+        "@id": "bia:annotationMethodType"
+      },
+      "name": {
+        "@id": "schema:name"
+      },
+      "organismClassification": {
+        "@id": "bia:organismClassification"
+      },
+      "propertyUrl": {
+        "@id": "csvw:propertyUrl"
+      },
+      "protocol": {
+        "@id": "bia:protocol"
+      },
+      "protocolDescription": {
+        "@id": "schema:description"
+      },
+      "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+      "resultOf": {
+        "@id": "bia:resultOf"
+      },
+      "role": {
+        "@id": "bia:role"
+      },
+      "schema": "http://schema.org/",
       "scientificName": {
         "@id": "bia:scientificName"
+      },
+      "signalChannelInformation": {
+        "@id": "bia:signalChannelInformation"
+      },
+      "signalContrastMechanismDescription": {
+        "@id": "bia:signalContrastMechanismDescription"
+      },
+      "spatialInformation": {
+        "@id": "bia:spatialInformation"
+      },
+      "subject": {
+        "@id": "bia:subject"
+      },
+      "tableSchema": {
+        "@id": "csvw:tableSchema"
+      },
+      "title": {
+        "@id": "schema:name"
+      },
+      "transformationDescription": {
+        "@id": "bia:transformationDescription"
+      },
+      "transformationMatrix": {
+        "@id": "bia:transformationMatrix"
+      },
+      "website": {
+        "@id": "bia:website"
       }
     }
   ],
@@ -224,13 +227,13 @@
         "Dataset",
         "bia:Study"
       ],
-      "title": "Test invalid RO crate - required description field is missing",
+      "name": "Test invalid RO crate - required description field is missing",
       "contributor": [
         {
           "@id": "https://orcid.org/9999-0001-2222-3333"
         }
       ],
-      "licence": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "license": "https://creativecommons.org/publicdomain/zero/1.0/",
       "datePublished": "2023-09-05",
       "keyword": [],
       "acknowledgement": null,
@@ -264,7 +267,7 @@
         "Dataset",
         "bia:Dataset"
       ],
-      "title": "Example title.",
+      "name": "Example title.",
       "description": "Example description",
       "associatedBiologicalEntity": [
         {
@@ -293,7 +296,7 @@
       "@type": [
         "Dataset"
       ],
-      "title": "Dataset not included in ro-crate",
+      "name": "Dataset not included in ro-crate",
       "description": "Example description",
       "hasPart": [
         {
@@ -304,7 +307,8 @@
     {
       "@id": "data 3 - with invalid URI does not error",
       "@type": [
-        "bia:Dataset", "Dataset"
+        "bia:Dataset",
+        "Dataset"
       ],
       "title": "Dataset with invalid id does not error",
       "description": "Example description"
@@ -312,7 +316,8 @@
     {
       "@id": "missing_has_part.tiff",
       "@type": [
-        "File", "bia:Image"
+        "File",
+        "bia:Image"
       ],
       "title": "Image that is not connected via hasPart to a dataset",
       "description": "Example description"
@@ -323,7 +328,9 @@
         "bia:SpecimenImagingPreparationProtocol"
       ],
       "title": "Specimen preparation",
-      "protocolDescription": ["ERROR This shouldn't be a list"]
+      "protocolDescription": [
+        "ERROR This shouldn't be a list"
+      ]
     },
     {
       "@id": "_:ImageAcquisitionProtocol1",

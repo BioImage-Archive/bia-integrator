@@ -66,8 +66,8 @@ def convert_dataset(
 ) -> APIModels.Dataset:
 
     title = None
-    if ro_crate_dataset.title:
-        title = ro_crate_dataset.title
+    if ro_crate_dataset.name:
+        title = ro_crate_dataset.name
     elif ro_crate_dataset.id:
         title = ro_crate_dataset.id
 

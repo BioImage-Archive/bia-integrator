@@ -31,7 +31,7 @@ def create_root_dataset_for_submission(root_section: Section):
     model_dict = {
         "@id": id,
         "@type": ["Dataset", "bia:Dataset"],
-        "title": root_attributes["title"],
+        "name": root_attributes["title"],
         "description": root_attributes["description"],
         "hasPart": [filelist_id_ref],
         "associationFileMetadata": filelist_id_ref,
