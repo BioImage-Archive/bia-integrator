@@ -101,6 +101,17 @@ should be used when the images being referred to have a `label` field, while the
 
 can be used if the images referred to have a `label_prefix` field. Note that string values, not lists, are assumed in this case; in the unlikely situation of more than one many:many file:object mapping being referred to as an input image, a manually created list of `input_label` will be necessary. 
 
+
+## Validator
+
+To run:
+
+```
+poetry run ro-crate-ingest validate path/to/crate
+```
+
+This will run through a number of validator and output success / error messages for each. Tests example ro-crate for validation passes/failures can be found under test/validator/input_ro_crate
+
 ## Testing
 
 Docker is required to run tests. 
