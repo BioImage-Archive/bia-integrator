@@ -23,7 +23,13 @@ Directive are written out for subsequent curation. These can be found in the bia
 
 # CLI commands
 
-## Options
+The CLI provides two main commands: `convert` for converting annotations and `validate` for checking annotation data before conversion.
+
+## Convert
+
+Converts point annotations into pre-computed neuroglancer format.
+
+### Options
 
 | Option | Short | Type/Values | Description | Default |
 |--------|-------|-------------|-------------|---------|
@@ -35,9 +41,32 @@ Directive are written out for subsequent curation. These can be found in the bia
 
 Note that, if run in local-only output mode, directives are not written, since there is no appropriate neuroglancer link to generate (but the link is still created if running a testing configuration, as described in *A useful testing setup*, below). 
 
+## Validate
+
+Validates point annotations to ensure they fall within image bounds before conversion. To run validation on the test data, you'll need to have the correct object in the local api. Thus, run once:
+
+```
+docker compose up --build --force-recreate --remove-orphans -d --wait
+poetry run pytest
+```
+
+Then, to validate:
+
+```
+poetry run annotation-data-converter validate -p proposals/point_annotations/test_proposal.json -am local_api
+```
+
+The validate command will:
+- Load each proposal and check that all points are within the bounds of their associated images
+- Provide detailed logging for each proposal
+- Display a summary of passed/failed validations
+- Exit with error code 1 if any validation fails
+
+It is recommended to run validation before conversion.
+
 ## Point Annotation
 
-You can run the point annotation on the test data (but this require running the tests first to set up the correct objects in your local api). Therefore, you need to run once:
+You can run the point annotation on the test data (but this require running the tests first to set up the correct objects in your local api). Therefore, as above, you need to run once (but not again if you already did it for validation):
 
 ```
 docker compose up --build --force-recreate --remove-orphans -d --wait
@@ -47,14 +76,18 @@ poetry run pytest
 Then you can run:
 
 ```
-poetry run annotation-data-converter -p proposals/point_annotations/test_proposal.json -am local_api
+poetry run annotation-data-converter convert -p proposals/point_annotations/test_proposal.json -am local_api -om local
 ```
 
 Which will create a precomputed neuroglancer file of the point annotations.
 
 ### Validation
 
-Currently, it is assumed that point annotations have been defined in voxel units, and validation consists of checking their values are within the bounds of the corresponding image. 
+Point annotations are assumed to be defined in voxel units. Validation checks that point values fall within the bounds of the corresponding image. As described above, run validation separately using the `validate` command before conversion:
+
+```
+poetry run annotation-data-converter validate -p proposals/point_annotations/test_proposal.json -am local_api -om local
+```
 
 
 # *A useful testing setup*
