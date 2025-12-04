@@ -17,7 +17,7 @@ class CSVConverter(PointAnnotationConverter):
             file_uri_list = self.annotation_data_file_reference.file_path
             if len(file_uri_list) != 1:
                 raise NotImplementedError(
-                    "Cannot handle cases where starfile annotation data is made up of more than one file."
+                    "Cannot handle cases where CSV annotation data is made up of more than one file."
                 )
             self.point_annotation_data = CSVConverter._read_csv_from_url(
                 file_uri_list[0]
@@ -25,9 +25,11 @@ class CSVConverter(PointAnnotationConverter):
 
     @staticmethod
     def _read_csv_from_path(file_path: Path):
-        return pd.read_csv(file_path)
+        # Read CSV without header since we're using numeric column indices
+        return pd.read_csv(file_path, header=None)
 
     @staticmethod
     def _read_csv_from_url(url):
         with urlopen(url) as response:
-            return pd.read_csv(response)
+            # Read CSV without header since we're using numeric column indices
+            return pd.read_csv(response, header=None)
