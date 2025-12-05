@@ -14,8 +14,8 @@ def get_study(
         "@id": "./",
         "@type": ["Dataset", "bia:Study"],
         "accessionId": accession_id,
-        "title": empiar_api_entry.title,
-        "licence": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "name": empiar_api_entry.title,
+        "license": "https://creativecommons.org/publicdomain/zero/1.0/",
         "datePublished": empiar_api_entry.release_date,
         "description": "",  # RO-Crate root objects must has a description
         "acknowledgement": None,

@@ -84,7 +84,7 @@ def get_dataset_from_study_component(
     model_dict = association_dict | {
         "@id": roc_id,
         "@type": ["Dataset", "bia:Dataset"],
-        "title": attr_dict["name"],
+        "name": attr_dict["name"],
         "description": attr_dict["description"],
         "hasPart": [filelist_id_ref],
         "associationFileMetadata": filelist_id_ref,
@@ -104,7 +104,7 @@ def get_dataset_from_annotation_component(
     model_dict = {
         "@id": roc_id,
         "@type": ["Dataset", "bia:Dataset"],
-        "title": attr_dict["title"],
+        "name": attr_dict["title"],
         "description": attr_dict.get("annotation overview", None),
         "associatedAnnotationMethod": [
             {"@id": annotation_methods[attr_dict["title"]].id}
@@ -131,7 +131,7 @@ def get_dataset_from_generic_filelist_section(
     model_dict = {
         "@id": roc_id,
         "@type": ["Dataset", "bia:Dataset"],
-        "title": f"{section.accno}",
+        "name": f"{section.accno}",
         "description": attr_dict.get("Description", None),
         "associatedProtocol": [
             {"@id": protocols[accno].id} for accno in protocol_subsections_ids

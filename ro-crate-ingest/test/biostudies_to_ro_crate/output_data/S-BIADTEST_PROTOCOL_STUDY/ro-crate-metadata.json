@@ -2,109 +2,38 @@
     "@context": [
         "https://w3id.org/ro/crate/1.1/context",
         {
-            "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-            "schema": "http://schema.org/",
-            "dc": "http://purl.org/dc/terms/",
-            "bia": "http://bia/",
-            "csvw": "http://www.w3.org/ns/csvw#",
-            "displayName": {
-                "@id": "schema:name"
+            "accessionId": {
+                "@id": "schema:identifier"
+            },
+            "acknowledgement": {
+                "@id": "bia:acknowledgement"
             },
             "address": {
                 "@id": "schema:address"
             },
-            "website": {
-                "@id": "bia:website"
-            },
             "affiliation": {
                 "@id": "schema:memberOf"
-            },
-            "title": {
-                "@id": "schema:name"
-            },
-            "protocolDescription": {
-                "@id": "schema:description"
-            },
-            "annotationCriteria": {
-                "@id": "bia:annotationCriteria"
             },
             "annotationCoverage": {
                 "@id": "bia:annotationCoverage"
             },
-            "transformationDescription": {
-                "@id": "bia:transformationDescription"
-            },
-            "spatialInformation": {
-                "@id": "bia:spatialInformation"
-            },
-            "methodType": {
-                "@id": "bia:annotationMethodType"
-            },
-            "annotationSourceIndicator": {
-                "@id": "bia:annotationSourceIndicator"
-            },
-            "biologicalEntityDescription": {
-                "@id": "bia:biologicalEntityDescription"
-            },
-            "experimentalVariableDescription": {
-                "@id": "bia:experimentalVariableDescription"
-            },
-            "extrinsicVariableDescription": {
-                "@id": "bia:extrinsicVariableDescription"
-            },
-            "intrinsicVariableDescription": {
-                "@id": "bia:intrinsicVariableDescription"
-            },
-            "organismClassification": {
-                "@id": "bia:organismClassification"
-            },
-            "growthProtocol": {
-                "@id": "bia:growthProtocol"
-            },
-            "columnName": {
-                "@id": "csvw:name"
-            },
-            "propertyUrl": {
-                "@id": "csvw:propertyUrl"
-            },
-            "role": {
-                "@id": "bia:role"
-            },
-            "contactEmail": {
-                "@id": "schema:email"
-            },
-            "imageAcquisitionProtocol": {
-                "@id": "bia:imageAcquisitionProtocol"
-            },
-            "subject": {
-                "@id": "bia:subject"
-            },
-            "protocol": {
-                "@id": "bia:protocol"
+            "annotationCriteria": {
+                "@id": "bia:annotationCriteria"
             },
             "annotationMethod": {
                 "@id": "bia:annotationMethod"
             },
-            "inputImage": {
-                "@id": "bia:inputImage"
+            "annotationSourceIndicator": {
+                "@id": "bia:annotationSourceIndicator"
             },
-            "description": {
-                "@id": "schema:description"
+            "associatedAnnotationMethod": {
+                "@id": "bia:associatedAnnotationMethod"
             },
             "associatedBiologicalEntity": {
                 "@id": "bia:associatedBiologicalEntity"
             },
-            "associatedSpecimenImagingPreparationProtocol": {
-                "@id": "bia:associatedImagingPreparationProtocol"
-            },
-            "associatedSpecimen": {
-                "@id": "bia:associatedSubject"
-            },
             "associatedImageAcquisitionProtocol": {
                 "@id": "bia:associatedImageAcquisitionProtocol"
-            },
-            "associatedAnnotationMethod": {
-                "@id": "bia:associatedAnnotationMethod"
             },
             "associatedImageAnalysisMethod": {
                 "@id": "bia:associatedAnalysisMethod"
@@ -115,29 +44,65 @@
             "associatedProtocol": {
                 "@id": "bia:associatedProtocol"
             },
-            "hasPart": {
-                "@id": "schema:hasPart"
+            "associatedSpecimen": {
+                "@id": "bia:associatedSubject"
+            },
+            "associatedSpecimenImagingPreparationProtocol": {
+                "@id": "bia:associatedImagingPreparationProtocol"
             },
             "associationFileMetadata": {
                 "@id": "bia:associationFileMetadata"
             },
-            "link": {
-                "@id": "schema:url"
+            "authorNames": {
+                "@id": "bia:authorNames"
             },
-            "linkDescription": {
+            "bia": "http://bia/",
+            "biologicalEntity": {
+                "@id": "bia:sampleOf"
+            },
+            "biologicalEntityDescription": {
+                "@id": "bia:biologicalEntityDescription"
+            },
+            "channelBiologicalEntity": {
+                "@id": "bia:channelBiologicalEntity"
+            },
+            "channelContentDescription": {
+                "@id": "bia:channelContentDescription"
+            },
+            "channelLabel": {
+                "@id": "dc:identifier"
+            },
+            "column": {
+                "@id": "csvw:column"
+            },
+            "columnName": {
+                "@id": "csvw:name"
+            },
+            "commonName": {
+                "@id": "bia:commonName"
+            },
+            "contactEmail": {
+                "@id": "schema:email"
+            },
+            "contributor": {
+                "@id": "schema:author"
+            },
+            "csvw": "http://www.w3.org/ns/csvw#",
+            "datePublished": {
+                "@id": "schema:datePublished"
+            },
+            "dc": "http://purl.org/dc/terms/",
+            "description": {
                 "@id": "schema:description"
             },
-            "tableSchema": {
-                "@id": "csvw:tableSchema"
+            "displayName": {
+                "@id": "schema:name"
             },
-            "resultOf": {
-                "@id": "bia:resultOf"
+            "experimentalVariableDescription": {
+                "@id": "bia:experimentalVariableDescription"
             },
-            "imagingInstrumentDescription": {
-                "@id": "bia:imagingInstrumentDescription"
-            },
-            "imagingMethodName": {
-                "@id": "bia:imagingMethodName"
+            "extrinsicVariableDescription": {
+                "@id": "bia:extrinsicVariableDescription"
             },
             "fbbiId": {
                 "@id": "bia:fbbiId"
@@ -148,41 +113,29 @@
             "fiducialsUsed": {
                 "@id": "bia:fiducialsUsed"
             },
-            "transformationMatrix": {
-                "@id": "bia:transformationMatrix"
+            "growthProtocol": {
+                "@id": "bia:growthProtocol"
             },
-            "authorNames": {
-                "@id": "bia:authorNames"
+            "hasPart": {
+                "@id": "schema:hasPart"
             },
-            "signalContrastMechanismDescription": {
-                "@id": "bia:signalContrastMechanismDescription"
+            "imageAcquisitionProtocol": {
+                "@id": "bia:imageAcquisitionProtocol"
             },
-            "channelContentDescription": {
-                "@id": "bia:channelContentDescription"
+            "imagingInstrumentDescription": {
+                "@id": "bia:imagingInstrumentDescription"
             },
-            "channelBiologicalEntity": {
-                "@id": "bia:channelBiologicalEntity"
-            },
-            "channelLabel": {
-                "@id": "dc:identifier"
-            },
-            "biologicalEntity": {
-                "@id": "bia:sampleOf"
+            "imagingMethodName": {
+                "@id": "bia:imagingMethodName"
             },
             "imagingPreparationProtocol": {
                 "@id": "bia:imagingPreparationProtocol"
             },
-            "signalChannelInformation": {
-                "@id": "bia:signalChannelInformation"
+            "inputImage": {
+                "@id": "bia:inputImage"
             },
-            "contributor": {
-                "@id": "schema:author"
-            },
-            "licence": {
-                "@id": "schema:license"
-            },
-            "datePublished": {
-                "@id": "schema:datePublished"
+            "intrinsicVariableDescription": {
+                "@id": "bia:intrinsicVariableDescription"
             },
             "keyword": {
                 "@id": "schema:keywords"
@@ -190,20 +143,70 @@
             "label": {
                 "@id": "schema:name"
             },
-            "acknowledgement": {
-                "@id": "bia:acknowledgement"
+            "license": {
+                "@id": "schema:license"
             },
-            "accessionId": {
-                "@id": "schema:identifier"
+            "link": {
+                "@id": "schema:url"
             },
-            "column": {
-                "@id": "csvw:column"
+            "linkDescription": {
+                "@id": "schema:description"
             },
-            "commonName": {
-                "@id": "bia:commonName"
+            "methodType": {
+                "@id": "bia:annotationMethodType"
             },
+            "name": {
+                "@id": "schema:name"
+            },
+            "organismClassification": {
+                "@id": "bia:organismClassification"
+            },
+            "propertyUrl": {
+                "@id": "csvw:propertyUrl"
+            },
+            "protocol": {
+                "@id": "bia:protocol"
+            },
+            "protocolDescription": {
+                "@id": "schema:description"
+            },
+            "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+            "resultOf": {
+                "@id": "bia:resultOf"
+            },
+            "role": {
+                "@id": "bia:role"
+            },
+            "schema": "http://schema.org/",
             "scientificName": {
                 "@id": "bia:scientificName"
+            },
+            "signalChannelInformation": {
+                "@id": "bia:signalChannelInformation"
+            },
+            "signalContrastMechanismDescription": {
+                "@id": "bia:signalContrastMechanismDescription"
+            },
+            "spatialInformation": {
+                "@id": "bia:spatialInformation"
+            },
+            "subject": {
+                "@id": "bia:subject"
+            },
+            "tableSchema": {
+                "@id": "csvw:tableSchema"
+            },
+            "title": {
+                "@id": "schema:name"
+            },
+            "transformationDescription": {
+                "@id": "bia:transformationDescription"
+            },
+            "transformationMatrix": {
+                "@id": "bia:transformationMatrix"
+            },
+            "website": {
+                "@id": "bia:website"
             }
         }
     ],
@@ -224,14 +227,14 @@
                 "Dataset",
                 "bia:Study"
             ],
-            "title": "Spatiotemporal dissection of the cell cycle with single-cell proteogenomics",
+            "name": "Spatiotemporal dissection of the cell cycle with single-cell proteogenomics",
             "contributor": [
                 {
                     "@id": "https://orcid.org/0000-0000-0111-0202"
                 }
             ],
             "description": "Cellular division is a fundamental source of variability between individual cells, and while studies of transcript and protein abundances have revealed several hundred genes that are regulated by the cell cycle, none provide single-cell resolution of protein expression. Here, we present the first comprehensive map of spatiotemporal heterogeneity of the human proteome by integrating proteomics at subcellular resolution, single-cell transcriptomics, and pseudotime measurements of individual cells within the cell cycle. We identify that 18% of the human proteome displays cell-to-cell variability, of which 27% is correlated to cell cycle progression, and we present the first evidence of cell cycle association for 301 proteins. Only 15% of proteomic cell cycle regulation is due to transcriptomic cycling, which points to other means of regulation such as post-translational modifications. For proteins regulated at the transcript level, we observe a 8.6 hour delay between peak expression of transcript and protein on average. This spatially resolved proteomic map of the cell cycle has been integrated into the Human Protein Atlas and serves as a valuable resource for accelerating molecular studies of the human cell cycle and cell proliferation.",
-            "licence": "https://creativecommons.org/publicdomain/zero/1.0/",
+            "license": "https://creativecommons.org/publicdomain/zero/1.0/",
             "datePublished": "2020-12-17",
             "keyword": [],
             "acknowledgement": null,
@@ -371,7 +374,7 @@
                 "Dataset",
                 "bia:Dataset"
             ],
-            "title": "experimentB",
+            "name": "experimentB",
             "description": null,
             "associatedBiologicalEntity": [],
             "associatedSpecimenImagingPreparationProtocol": [],

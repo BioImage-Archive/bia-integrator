@@ -68,7 +68,7 @@ def get_dataset(
     model_dict = {
         "@id": id,
         "@type": ["Dataset", "bia:Dataset"],
-        "title": imageset.name,
+        "name": imageset.name,
         "description": imageset.details,
         "hasPart": [{"@id": filelist_id}],
         "associatedImageAcquisitionProtocol": association_yaml_fields[

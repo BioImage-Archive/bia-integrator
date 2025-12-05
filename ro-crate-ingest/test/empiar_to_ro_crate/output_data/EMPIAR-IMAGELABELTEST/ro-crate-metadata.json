@@ -2,115 +2,38 @@
     "@context": [
         "https://w3id.org/ro/crate/1.1/context",
         {
-            "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-            "schema": "http://schema.org/",
-            "dc": "http://purl.org/dc/terms/",
-            "bia": "http://bia/",
-            "csvw": "http://www.w3.org/ns/csvw#",
-            "displayName": {
-                "@id": "schema:name"
+            "accessionId": {
+                "@id": "schema:identifier"
+            },
+            "acknowledgement": {
+                "@id": "bia:acknowledgement"
             },
             "address": {
                 "@id": "schema:address"
             },
-            "website": {
-                "@id": "bia:website"
-            },
-            "resultOf": {
-                "@id": "bia:resultOf"
-            },
-            "label": {
-                "@id": "schema:name"
-            },
-            "title": {
-                "@id": "schema:name"
-            },
-            "protocolDescription": {
-                "@id": "schema:description"
-            },
-            "annotationCriteria": {
-                "@id": "bia:annotationCriteria"
+            "affiliation": {
+                "@id": "schema:memberOf"
             },
             "annotationCoverage": {
                 "@id": "bia:annotationCoverage"
             },
-            "transformationDescription": {
-                "@id": "bia:transformationDescription"
-            },
-            "spatialInformation": {
-                "@id": "bia:spatialInformation"
-            },
-            "methodType": {
-                "@id": "bia:annotationMethodType"
-            },
-            "annotationSourceIndicator": {
-                "@id": "bia:annotationSourceIndicator"
-            },
-            "biologicalEntityDescription": {
-                "@id": "bia:biologicalEntityDescription"
-            },
-            "experimentalVariableDescription": {
-                "@id": "bia:experimentalVariableDescription"
-            },
-            "extrinsicVariableDescription": {
-                "@id": "bia:extrinsicVariableDescription"
-            },
-            "intrinsicVariableDescription": {
-                "@id": "bia:intrinsicVariableDescription"
-            },
-            "organismClassification": {
-                "@id": "bia:organismClassification"
-            },
-            "growthProtocol": {
-                "@id": "bia:growthProtocol"
-            },
-            "columnName": {
-                "@id": "csvw:name"
-            },
-            "propertyUrl": {
-                "@id": "csvw:propertyUrl"
-            },
-            "affiliation": {
-                "@id": "schema:memberOf"
-            },
-            "role": {
-                "@id": "bia:role"
-            },
-            "contactEmail": {
-                "@id": "schema:email"
-            },
-            "imageAcquisitionProtocol": {
-                "@id": "bia:imageAcquisitionProtocol"
-            },
-            "subject": {
-                "@id": "bia:subject"
-            },
-            "protocol": {
-                "@id": "bia:protocol"
+            "annotationCriteria": {
+                "@id": "bia:annotationCriteria"
             },
             "annotationMethod": {
                 "@id": "bia:annotationMethod"
             },
-            "inputImage": {
-                "@id": "bia:inputImage"
+            "annotationSourceIndicator": {
+                "@id": "bia:annotationSourceIndicator"
             },
-            "description": {
-                "@id": "schema:description"
+            "associatedAnnotationMethod": {
+                "@id": "bia:associatedAnnotationMethod"
             },
             "associatedBiologicalEntity": {
                 "@id": "bia:associatedBiologicalEntity"
             },
-            "associatedSpecimenImagingPreparationProtocol": {
-                "@id": "bia:associatedImagingPreparationProtocol"
-            },
-            "associatedSpecimen": {
-                "@id": "bia:associatedSubject"
-            },
             "associatedImageAcquisitionProtocol": {
                 "@id": "bia:associatedImageAcquisitionProtocol"
-            },
-            "associatedAnnotationMethod": {
-                "@id": "bia:associatedAnnotationMethod"
             },
             "associatedImageAnalysisMethod": {
                 "@id": "bia:associatedAnalysisMethod"
@@ -121,26 +44,65 @@
             "associatedProtocol": {
                 "@id": "bia:associatedProtocol"
             },
-            "hasPart": {
-                "@id": "schema:hasPart"
+            "associatedSpecimen": {
+                "@id": "bia:associatedSubject"
+            },
+            "associatedSpecimenImagingPreparationProtocol": {
+                "@id": "bia:associatedImagingPreparationProtocol"
             },
             "associationFileMetadata": {
                 "@id": "bia:associationFileMetadata"
             },
-            "link": {
-                "@id": "schema:url"
+            "authorNames": {
+                "@id": "bia:authorNames"
             },
-            "linkDescription": {
+            "bia": "http://bia/",
+            "biologicalEntity": {
+                "@id": "bia:sampleOf"
+            },
+            "biologicalEntityDescription": {
+                "@id": "bia:biologicalEntityDescription"
+            },
+            "channelBiologicalEntity": {
+                "@id": "bia:channelBiologicalEntity"
+            },
+            "channelContentDescription": {
+                "@id": "bia:channelContentDescription"
+            },
+            "channelLabel": {
+                "@id": "dc:identifier"
+            },
+            "column": {
+                "@id": "csvw:column"
+            },
+            "columnName": {
+                "@id": "csvw:name"
+            },
+            "commonName": {
+                "@id": "bia:commonName"
+            },
+            "contactEmail": {
+                "@id": "schema:email"
+            },
+            "contributor": {
+                "@id": "schema:author"
+            },
+            "csvw": "http://www.w3.org/ns/csvw#",
+            "datePublished": {
+                "@id": "schema:datePublished"
+            },
+            "dc": "http://purl.org/dc/terms/",
+            "description": {
                 "@id": "schema:description"
             },
-            "tableSchema": {
-                "@id": "csvw:tableSchema"
+            "displayName": {
+                "@id": "schema:name"
             },
-            "imagingInstrumentDescription": {
-                "@id": "bia:imagingInstrumentDescription"
+            "experimentalVariableDescription": {
+                "@id": "bia:experimentalVariableDescription"
             },
-            "imagingMethodName": {
-                "@id": "bia:imagingMethodName"
+            "extrinsicVariableDescription": {
+                "@id": "bia:extrinsicVariableDescription"
             },
             "fbbiId": {
                 "@id": "bia:fbbiId"
@@ -151,59 +113,100 @@
             "fiducialsUsed": {
                 "@id": "bia:fiducialsUsed"
             },
-            "transformationMatrix": {
-                "@id": "bia:transformationMatrix"
+            "growthProtocol": {
+                "@id": "bia:growthProtocol"
             },
-            "authorNames": {
-                "@id": "bia:authorNames"
+            "hasPart": {
+                "@id": "schema:hasPart"
             },
-            "signalContrastMechanismDescription": {
-                "@id": "bia:signalContrastMechanismDescription"
+            "imageAcquisitionProtocol": {
+                "@id": "bia:imageAcquisitionProtocol"
             },
-            "channelContentDescription": {
-                "@id": "bia:channelContentDescription"
+            "imagingInstrumentDescription": {
+                "@id": "bia:imagingInstrumentDescription"
             },
-            "channelBiologicalEntity": {
-                "@id": "bia:channelBiologicalEntity"
-            },
-            "channelLabel": {
-                "@id": "dc:identifier"
-            },
-            "biologicalEntity": {
-                "@id": "bia:sampleOf"
+            "imagingMethodName": {
+                "@id": "bia:imagingMethodName"
             },
             "imagingPreparationProtocol": {
                 "@id": "bia:imagingPreparationProtocol"
             },
-            "signalChannelInformation": {
-                "@id": "bia:signalChannelInformation"
+            "inputImage": {
+                "@id": "bia:inputImage"
             },
-            "contributor": {
-                "@id": "schema:author"
-            },
-            "licence": {
-                "@id": "schema:license"
-            },
-            "datePublished": {
-                "@id": "schema:datePublished"
+            "intrinsicVariableDescription": {
+                "@id": "bia:intrinsicVariableDescription"
             },
             "keyword": {
                 "@id": "schema:keywords"
             },
-            "acknowledgement": {
-                "@id": "bia:acknowledgement"
+            "label": {
+                "@id": "schema:name"
             },
-            "accessionId": {
-                "@id": "schema:identifier"
+            "license": {
+                "@id": "schema:license"
             },
-            "column": {
-                "@id": "csvw:column"
+            "link": {
+                "@id": "schema:url"
             },
-            "commonName": {
-                "@id": "bia:commonName"
+            "linkDescription": {
+                "@id": "schema:description"
             },
+            "methodType": {
+                "@id": "bia:annotationMethodType"
+            },
+            "name": {
+                "@id": "schema:name"
+            },
+            "organismClassification": {
+                "@id": "bia:organismClassification"
+            },
+            "propertyUrl": {
+                "@id": "csvw:propertyUrl"
+            },
+            "protocol": {
+                "@id": "bia:protocol"
+            },
+            "protocolDescription": {
+                "@id": "schema:description"
+            },
+            "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+            "resultOf": {
+                "@id": "bia:resultOf"
+            },
+            "role": {
+                "@id": "bia:role"
+            },
+            "schema": "http://schema.org/",
             "scientificName": {
                 "@id": "bia:scientificName"
+            },
+            "signalChannelInformation": {
+                "@id": "bia:signalChannelInformation"
+            },
+            "signalContrastMechanismDescription": {
+                "@id": "bia:signalContrastMechanismDescription"
+            },
+            "spatialInformation": {
+                "@id": "bia:spatialInformation"
+            },
+            "subject": {
+                "@id": "bia:subject"
+            },
+            "tableSchema": {
+                "@id": "csvw:tableSchema"
+            },
+            "title": {
+                "@id": "schema:name"
+            },
+            "transformationDescription": {
+                "@id": "bia:transformationDescription"
+            },
+            "transformationMatrix": {
+                "@id": "bia:transformationMatrix"
+            },
+            "website": {
+                "@id": "bia:website"
             }
         }
     ],
@@ -224,14 +227,14 @@
                 "Dataset",
                 "bia:Study"
             ],
-            "title": "Defocus and Volta potential phase plate cryo-electron tomography of S. pombe cryo-FIB lamellae with comprehensive annotations of structures and macromolecules",
+            "name": "Defocus and Volta potential phase plate cryo-electron tomography of S. pombe cryo-FIB lamellae with comprehensive annotations of structures and macromolecules",
             "contributor": [
                 {
                     "@id": "_:c0"
                 }
             ],
             "description": "",
-            "licence": "https://creativecommons.org/publicdomain/zero/1.0/",
+            "license": "https://creativecommons.org/publicdomain/zero/1.0/",
             "datePublished": "2022-11-17",
             "keyword": [],
             "acknowledgement": null,
@@ -396,7 +399,7 @@
                 "Dataset",
                 "bia:Dataset"
             ],
-            "title": "Tomograms",
+            "name": "Tomograms",
             "description": "Tomograms (4-times binned reconstructions, original pixel size 3.3702 \u00c5) from aligned frame stacks (st files in metadata folder, tif files in frames folder), mdoc and xf alignment files (in metadata folder). Naming from TS_026 to TS_045 corresponds to TS_0011 to TS_0020 in the original publication.\nFor each of the 10 tomograms, comprehensive segmentation volumes (32 bit floats, 928x960, 13.48 \u00c5 voxel size) of ribosomes, fatty acid synthase (FAS), membranes, organelles (labels) and cytosol are provided in the labels folder. Voxel labels of individual organelles in labels files are defined in organelle_labels.txt.\nRibosome and FAS particle coordinates (csv files) are provided in the corresponding particle_lists folder (in csv files with x, y, z coordinates in columns 1, 2, 3 respectively, 4-times binned pixels with original pixel size 3.3702 \u00c5).",
             "associatedBiologicalEntity": [],
             "associatedSpecimenImagingPreparationProtocol": [],
@@ -429,7 +432,7 @@
                 "Dataset",
                 "bia:Dataset"
             ],
-            "title": "Tilt series",
+            "name": "Tilt series",
             "description": "Tilt series stacks (st files from Warp) from aligned frame stacks (in frames folder), tilt series alignment files (xf from etomo, IMOD) and acquisition metadata files modified to match tilt series stacks (in mdocs_modified) to reconstruct tomograms (in tomograms folder). Naming from TS_026 to TS_045 corresponds to TS_0011 to TS_0020 in the original publication.",
             "associatedBiologicalEntity": [],
             "associatedSpecimenImagingPreparationProtocol": [],
@@ -458,7 +461,7 @@
                 "Dataset",
                 "bia:Dataset"
             ],
-            "title": "Movie stacks",
+            "name": "Movie stacks",
             "description": "Raw unaligned multi-frame micrographs were aligned, sorted and combined into tilt series stacks using Warp (st files in metadata folder) and tomograms reconstructed using etomo (IMOD) (rec files in tomgrams folder). Naming from TS_026 to TS_045 corresponds to TS_0011 to TS_0020 in the original publication.\nOriginal metadata files (mdocs_ori) and the count ref file (dm4 file) are provided in the frames folder.",
             "associatedBiologicalEntity": [
                 {

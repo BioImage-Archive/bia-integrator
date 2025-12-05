@@ -48,7 +48,7 @@ def get_test_ro_crate_path(accession_id, test_folder="validator") -> Path:
             1,
             [
                 (
-                    "At displayName",
+                    "At accessionId",
                     "Term has been remapped in context",
                 ),
             ],
