@@ -24,7 +24,7 @@ def get_study(
         "@id": "./",
         "@type": ["Dataset", "bia:Study"],
         "accessionId": submission.accno,
-        "title": study_title_from_submission(submission),
+        "name": study_title_from_submission(submission),
         "license": get_license(study_attributes),
         "datePublished": submission_attributes["releasedate"],
         "description": study_attributes.get("description", None),
