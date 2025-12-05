@@ -6,7 +6,11 @@ from typing_extensions import Annotated
 
 from bia_integrator_api.exceptions import NotFoundException
 from bia_integrator_api.api import PrivateApi
-from bia_converter.bia_api_client import get_api_client, update_object_in_api_idempotent, ApiTarget
+from bia_converter.bia_api_client import (
+    get_api_client,
+    update_object_in_api_idempotent,
+    ApiTarget,
+)
 from bia_converter.utils import attributes_by_name
 
 import logging
@@ -79,7 +83,7 @@ def main(
     ] = UpdateMode.REPLACE,
     api_target: Annotated[
         ApiTarget, typer.Option("--api", "-a", case_sensitive=False)
-    ] = ApiTarget.prod,
+    ] = ApiTarget.local,
 ):
     api_client = get_api_client(api_target)
     update_example_image_uri(api_client, image_uuid, update_mode)

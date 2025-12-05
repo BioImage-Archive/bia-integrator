@@ -23,7 +23,6 @@ class ApiTarget(str, Enum):
 
 def get_api_client(target: ApiTarget) -> PrivateApi:
     """Return client pointing to prod or local API using Singleton pattern."""
-    print(get_api_client._instances)
 
     def get_instance(target: ApiTarget):
         if target not in get_api_client._instances:
@@ -34,11 +33,13 @@ def get_api_client(target: ApiTarget) -> PrivateApi:
             else:
                 raise Exception(f"No API target corresponds to profile {target} ")
         return get_api_client._instances[target]
-    return get_instance(target) 
+
+    return get_instance(target)
+
+
 # Initialise the instances dictionary for the singleton pattern
 get_api_client._instances = {}
 
-    
 
 def get_bia_api_client() -> PrivateApi:
     settings = get_settings()

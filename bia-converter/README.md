@@ -23,8 +23,8 @@ The cli commands in this module take image representations as inputs. If the ima
 
 ### API Profiles
 All CLI commands support the `--api` (or `-a`) flag to specify which API environment to target:
-- `prod` (default): Production BIA API
-- `local`: Local development API instance
+- `local`(default): Local development API instance
+- `prod` : Production BIA API
 
 **Example**:
 ```bash
@@ -133,7 +133,7 @@ poetry run bia-converter generate-neuroglancer-view-link <SOURCE_IMAGE_UUID> [--
 **Example**:
 
 ```bash
-poetry run bia-converter generate-neuroglancer-view-link 123e4567-e89b-12d3-a456-426614174000 --layout xy
+poetry run bia-converter generate-neuroglancer-view-link 123e4567-e89b-12d3-a456-426614174000 --layout xy --api local
 ```
 
 This will generate and log the Neuroglancer view link for the specified image
@@ -179,4 +179,10 @@ The `.env_template` in this directory contains the items that can be configured 
 
 
 ## Scripts
-The [scripts](./scripts) sub-directory contains a bash script for a sample workflow to produce converted images for a BIA study.
+The [scripts](./scripts) sub-directory contains a script to update a dataset's example image uri property with the url(s) of an image(s) representative of the dataset. The input to the script is the uuid of an image representation for which a static display has been generated.
+
+**Example**:
+
+```bash
+poetry run python scripts/update_example_image_uri_for_dataset.py bf92449a-5e02-42d7-90be-ffece489aaae --api local
+```
