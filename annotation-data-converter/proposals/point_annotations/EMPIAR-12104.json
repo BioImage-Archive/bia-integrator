@@ -1,0 +1,17 @@
+[
+  {
+    "mode": "star",
+    "proposal": [
+      {
+        "annotation_data_uuid": "52430b02-4831-4938-ac8a-560703455b8c",
+        "image_representation_uuid": "bd4f5b78-4fed-442e-b408-6520a109d052",
+        "filter_value": "TS_006.tomostar",
+        "filter_column": "rlnMicrographName",
+        "x_column": "rlnCoordinateX",
+        "y_column": "rlnCoordinateY",
+        "z_column": "rlnCoordinateZ",
+        "local_file_path": "annotations/point/EMPIAR-12104/all_ribo_cleaned.star"
+      }
+    ]
+  }
+]
