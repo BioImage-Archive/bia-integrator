@@ -53,7 +53,7 @@ class Settings(BaseSettings):
 
     bioformats2raw_java_home: str = Field("")
     bioformats2raw_bin: str = Field("")
-    bioformats2raw_docker_tag: str = Field("")
+    bioformats2raw_docker_tag: str = "latest"
 
     @classmethod
     def get_instance(cls) -> "Settings":
