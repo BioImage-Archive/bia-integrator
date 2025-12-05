@@ -12,7 +12,7 @@ from ro_crate_ingest.empiar_to_ro_crate.entity_conversion import (
     annotation_method,
     image_acquisition_protocol,
     specimen_imaging_preparation_protocol,
-    specimen, 
+    specimen,
     image_analysis_method,
     image_correlation_method,
     dataset,
@@ -22,6 +22,7 @@ from ro_crate_ingest.empiar_to_ro_crate.entity_conversion import (
     protocol,
 )
 import logging
+from ro_crate_ingest.empiar_to_ro_crate.empiar.proposal import Proposal
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -30,6 +31,10 @@ def convert_empiar_proposal_to_ro_crate(proposal_path: Path, crate_path: Path | 
 
     with open(proposal_path) as f:
         yaml_file = yaml.safe_load(f)
+
+    # Just for validation TODO: wire up class usage everywhere
+    proposal = Proposal(**yaml_file)
+    
     accession_id = yaml_file["accession_id"]
     empiar_api_entry = load_empiar_entry(accession_id)
 
@@ -51,9 +56,7 @@ def convert_empiar_proposal_to_ro_crate(proposal_path: Path, crate_path: Path | 
     )
     graph += roc_specimen_imaging_preparation_protocol
 
-    roc_specimen = specimen.get_specimens(
-        yaml_file
-    )
+    roc_specimen = specimen.get_specimens(yaml_file)
     graph += roc_specimen
 
     roc_annotation_method = annotation_method.get_annotation_methods(yaml_file)
@@ -64,8 +67,8 @@ def convert_empiar_proposal_to_ro_crate(proposal_path: Path, crate_path: Path | 
     )
     graph += roc_image_correlation_method
 
-    roc_image_analysis_methods = (
-        image_analysis_method.get_image_analysis_methods(yaml_file)
+    roc_image_analysis_methods = image_analysis_method.get_image_analysis_methods(
+        yaml_file
     )
     graph += roc_image_analysis_methods
 
