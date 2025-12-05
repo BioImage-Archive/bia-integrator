@@ -9,11 +9,13 @@ from bia_converter import io
 from bia_converter import convert
 from typer.testing import CliRunner
 from bia_converter import cli
-from bia_converter.config import settings
-from bia_converter.bia_api_client import api_client
+from bia_converter.settings import get_settings
+from bia_converter.bia_api_client import get_api_client, ApiTarget
 from bia_converter.conversion import get_bioformats2raw_version
 
 accession_id = "S-BIAD-BIACONVERTER-TEST"
+api_client = get_api_client(target=ApiTarget.local)
+settings = get_settings()
 
 
 @pytest.fixture
@@ -156,6 +158,8 @@ def test_cli_convert_uploaded_by_submitter_to_interactive_display(
             "convert",
             uploaded_by_submitter_rep_uuid,
             "convert_uploaded_by_submitter_to_interactive_display",
+            "--api",
+            "local",
         ],
         catch_exceptions=False,
     )
@@ -191,6 +195,8 @@ def test_cli_unzip_and_stage_zipped_ome_zarr(
             "convert",
             zipped_ome_zarr_rep_uuid,
             "convert_zipped_ome_zarr_archive",
+            "--api",
+            "local",
         ],
         catch_exceptions=False,
     )

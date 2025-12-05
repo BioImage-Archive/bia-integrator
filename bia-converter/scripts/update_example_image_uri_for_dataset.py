@@ -5,7 +5,12 @@ import typer
 from typing_extensions import Annotated
 
 from bia_integrator_api.exceptions import NotFoundException
-from bia_converter.bia_api_client import api_client, update_object_in_api_idempotent
+from bia_integrator_api.api import PrivateApi
+from bia_converter.bia_api_client import (
+    get_api_client,
+    update_object_in_api_idempotent,
+    ApiTarget,
+)
 from bia_converter.utils import attributes_by_name
 
 import logging
@@ -28,6 +33,7 @@ logger = logging.getLogger()
 
 
 def update_example_image_uri(
+    api_client: PrivateApi,
     image_uuid: Union[UUID, str],
     update_mode: UpdateMode = UpdateMode.REPLACE,
 ) -> bool:
@@ -57,7 +63,7 @@ def update_example_image_uri(
                 f"Invalid update mode {update_mode}. Expected 'APPEND', 'PREPEND' or 'REPLACE'"
             )
         )
-    update_object_in_api_idempotent(dataset)
+    update_object_in_api_idempotent(api_client, dataset)
 
     logger.info(
         f"Updated example image uri of dataset {dataset.uuid} to {dataset.example_image_uri}"
@@ -65,6 +71,7 @@ def update_example_image_uri(
     return True
 
 
+# TODO: Add tests
 @app.command()
 def main(
     image_uuid: Annotated[
@@ -74,8 +81,12 @@ def main(
     update_mode: Annotated[
         UpdateMode, typer.Option("--update-mode", "-m")
     ] = UpdateMode.REPLACE,
+    api_target: Annotated[
+        ApiTarget, typer.Option("--api", "-a", case_sensitive=False)
+    ] = ApiTarget.local,
 ):
-    update_example_image_uri(image_uuid, update_mode)
+    api_client = get_api_client(api_target)
+    update_example_image_uri(api_client, image_uuid, update_mode)
 
 
 if __name__ == "__main__":
