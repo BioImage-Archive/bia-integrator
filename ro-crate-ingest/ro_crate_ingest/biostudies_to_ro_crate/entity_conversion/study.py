@@ -25,7 +25,7 @@ def get_study(
         "@type": ["Dataset", "bia:Study"],
         "accessionId": submission.accno,
         "title": study_title_from_submission(submission),
-        "licence": get_licence(study_attributes),
+        "licence": get_license(study_attributes),
         "datePublished": submission_attributes["releasedate"],
         "description": study_attributes.get("description", None),
         "acknowledgement": study_attributes.get("acknowledgements", None),
@@ -49,7 +49,7 @@ def study_title_from_submission(submission: Submission) -> str:
     return study_title
 
 
-def get_licence(study_attributes: dict[str, Any]) -> semantic_models.Licence:
+def get_license(study_attributes: dict[str, Any]) -> semantic_models.Licence:
     """
     Return enum version of licence of study
     """
