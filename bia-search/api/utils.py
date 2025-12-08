@@ -221,7 +221,7 @@ class QueryBuilder:
         if not should_blocks:
             return {"match_all": {}}
 
-        # Using OR operator here - since two indexes (study and image). 
+        # Using OR operator here - since two indexes (study and image).
         return {"bool": {"should": should_blocks, "minimum_should_match": 1}}
 
     async def search(

@@ -167,16 +167,19 @@ async def advanced_search(
     params = build_params_as_list(request)
 
     qb = QueryBuilder(text_query=query)
-    qb.parse_text_filters(params, "study")
-
     qb.parse_text_filters(params, "image")
     qb.parse_numeric_filters(params)
+
+    elastic_indexes = [elastic.index_image]
+    if not qb.numeric_filters:
+        qb.parse_text_filters(params, "study")
+        elastic_indexes.append(elastic.index_study)
 
     pagination = build_pagination(page, page_size)
 
     rsp = await qb.search(
         client=elastic.client,
-        index=[elastic.index_study, elastic.index_image],
+        index=elastic_indexes,
         offset=pagination["offset"],
         size=pagination["page_size"],
     )

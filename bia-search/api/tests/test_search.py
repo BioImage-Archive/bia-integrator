@@ -351,6 +351,14 @@ def test_advanced_search(api_client: TestClient):
     body = rsp.json()
     assert body["hits"]["total"]["value"] == 1
 
+    rsp = api_client.get(
+        f"/search/advanced",
+        params={"query": "fluorescence microscopy", "size_x.gt": "1024"},
+    )
+    assert rsp.status_code == 200
+    body = rsp.json()
+    assert body["hits"]["total"]["value"] == 2
+
 
 def test_advanced_search_paging(api_client: TestClient):
     rsp = api_client.get(
