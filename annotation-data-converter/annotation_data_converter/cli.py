@@ -61,7 +61,7 @@ def point_annotation_conversion(
         ),
     ] = OutputMode.BOTH,
     output_directory: Annotated[
-        pathlib.Path | None,
+        pathlib.Path,
         typer.Option(
             "--output-directory",
             "-od",

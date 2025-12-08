@@ -5,7 +5,6 @@ import urllib
 
 from pydantic import BaseModel
 
-BASE_URI = "https://neuroglancer-demo.appspot.com/#!"
 
 class InvlerpParameters(BaseModel):
     range: tuple[float, float] | tuple[int, int] | None
@@ -40,7 +39,10 @@ class ViewerState(BaseModel):
     layout: str = "4panel"
         
         
-def state_to_ng_uri(state: ViewerState, base_uri=BASE_URI) -> str:
+def state_to_ng_uri(
+        state: ViewerState, 
+        base_uri: str = "https://neuroglancer-demo.appspot.com/#!"
+) -> str:
     viewer_json_str = state.json(exclude_none=True)
     viewer_state_no_spaces = viewer_json_str.replace(" ", "")
     
