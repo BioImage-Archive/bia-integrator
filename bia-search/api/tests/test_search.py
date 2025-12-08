@@ -214,7 +214,7 @@ def test_fts_image_no_query(api_client: TestClient):
     assert len(body["hits"]["hits"]) == 3
 
     rsp = api_client.get(
-        f"/search/fts/image", params={"facet.organism": ["Homo sapiens"]}
+        f"/search/fts/image", params={"facet.organism.eq": ["Homo sapiens"]}
     )
     assert rsp.status_code == 200
     body = rsp.json()
@@ -225,7 +225,7 @@ def test_fts_image_use_facet_imaging_method(api_client: TestClient):
     rsp = api_client.get(
         f"/search/fts/image",
         params={
-            "facet.imaging_method": ["confocal microscopy", "fluorescence microscopy"]
+            "facet.imaging_method.or": ["confocal microscopy", "fluorescence microscopy"]
         },
     )
     assert rsp.status_code == 200
@@ -336,6 +336,16 @@ def test_advanced_search(api_client: TestClient):
     rsp = api_client.get(
         f"/search/advanced",
         params={
+            "size_c.eq": "2",
+        },
+    )
+    assert rsp.status_code == 200
+    body = rsp.json()
+    assert body["hits"]["total"]["value"] == 1
+
+    rsp = api_client.get(
+        f"/search/advanced",
+        params={
             "query": "Homo sapiens",
         },
     )
@@ -345,7 +355,7 @@ def test_advanced_search(api_client: TestClient):
 
     rsp = api_client.get(
         f"/search/advanced",
-        params={"facet.organism": "Homo sapiens", "size_x.gt": "1024"},
+        params={"facet.organism.eq": "Homo sapiens", "size_x.gt": "1024"},
     )
     assert rsp.status_code == 200
     body = rsp.json()
@@ -353,11 +363,31 @@ def test_advanced_search(api_client: TestClient):
 
     rsp = api_client.get(
         f"/search/advanced",
-        params={"query": "fluorescence microscopy", "size_x.gt": "1024"},
+        params={
+            "facet.organism.not": "Homo sapiens",
+        },
     )
     assert rsp.status_code == 200
     body = rsp.json()
-    assert body["hits"]["total"]["value"] == 2
+    assert body["hits"]["total"]["value"] == 4
+
+    rsp = api_client.get(
+        f"/search/advanced",
+        params={
+            "facet.organism.or": "Homo sapiens,Mus musculus",
+        },
+    )
+    assert rsp.status_code == 200
+    body = rsp.json()
+    assert body["hits"]["total"]["value"] == 6
+
+    rsp = api_client.get(
+        f"/search/advanced",
+        params={"query": "fluorescence microscopy", "size_y.lt": "1024"},
+    )
+    assert rsp.status_code == 200
+    body = rsp.json()
+    assert body["hits"]["total"]["value"] == 1
 
 
 def test_advanced_search_paging(api_client: TestClient):

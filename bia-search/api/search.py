@@ -110,8 +110,9 @@ async def fts_image(
     # Normal text search
     params = build_params_as_list(request)
     qb = QueryBuilder(text_query=query)
+    qb.parse_text_query(query)
     qb.parse_numeric_filters(params)
-    qb.parse_text_filters(params, "image")
+    qb.parse_boolean_filters(params, "image")
     pagination = build_pagination(page, page_size)
 
     rsp = await qb.search(
@@ -167,12 +168,13 @@ async def advanced_search(
     params = build_params_as_list(request)
 
     qb = QueryBuilder(text_query=query)
-    qb.parse_text_filters(params, "image")
+    qb.parse_text_query(query)
+    qb.parse_boolean_filters(params, "image")
     qb.parse_numeric_filters(params)
 
     elastic_indexes = [elastic.index_image]
     if not qb.numeric_filters:
-        qb.parse_text_filters(params, "study")
+        qb.parse_boolean_filters(params, "study")
         elastic_indexes.append(elastic.index_study)
 
     pagination = build_pagination(page, page_size)

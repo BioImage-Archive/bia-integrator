@@ -26,7 +26,7 @@ study_text_fields_map = {
 }
 
 operators_map = {
-    "eq": "term",
+    "eq": "",
     "gt": "gt",
     "gte": "gte",
     "lt": "lt",
@@ -64,6 +64,8 @@ image_aggregations = {
         "terms": {"field": "creation_process.acquisition_process.imaging_method_name"}
     },
 }
+
+boolean_operators = {"and", "or", "not"}
 
 
 def is_valid_uuid(uuid: str):
@@ -142,9 +144,27 @@ def build_params_as_list(request: Request):
 @dataclass
 class QueryBuilder:
     text_query: Optional[str] = None
-    numeric_filters: List[Dict[str, Any]] = field(default_factory=list)
-    study_filters: List[Dict[str, Any]] = field(default_factory=list)
-    image_filters: List[Dict[str, Any]] = field(default_factory=list)
+    numeric_filters: bool = False
+
+    must: List[Dict[str, Any]] = field(default_factory=list)
+    should: List[Dict[str, Any]] = field(default_factory=list)
+    filter: List[Dict[str, Any]] = field(default_factory=list)
+    must_not: List[Dict[str, Any]] = field(default_factory=list)
+
+    def parse_text_query(self, query: Optional[str]):
+        if not query:
+            return
+
+        self.must.append(
+            {
+                "multi_match": {
+                    "query": query,
+                    "fields": ["*"],
+                    "type": "best_fields",
+                    "fuzziness": "AUTO",
+                }
+            },
+        )
 
     def parse_numeric_filters(self, params: Dict[str, Any]):
         for param, value in params.items():
@@ -166,63 +186,86 @@ class QueryBuilder:
                 continue
 
             if operator == "eq":
-                self.numeric_filters.append(
-                    {operators_map[operator]: {elastic_field: value}}
+                self.filter.append(
+                    {"range": {elastic_field: {"gte": value, "lte": value}}}
                 )
             else:
-                self.numeric_filters.append(
+                self.filter.append(
                     {"range": {elastic_field: {operators_map[operator]: value}}}
                 )
+            self.numeric_filters = True
 
-    def parse_text_filters(self, params: Dict[str, Any], index_type: str):
-        if index_type == "study":
-            fields_map = study_text_fields_map
-            filters = self.study_filters
-        else:
-            fields_map = image_text_fields_map
-            filters = self.image_filters
+    def parse_boolean_filters(self, params: Dict[str, Any], index_type: str):
+        """
+        Parse filters of form:
+            field.eq=value
+            field.or=value1,value2
+            field.not=value
+        Into proper ES must/filter/should/must_not blocks.
+        """
 
-        for key, value in params.items():
-            if key not in fields_map:
+        for param, value in params.items():
+            parts = param.split(".")
+
+            if len(parts) < 2 or parts[0] in numeric_fields_map:
                 continue
-            if isinstance(value, list):
-                filters.append(
-                    {
-                        "bool": {
-                            "should": [{"term": {fields_map[key]: v}} for v in value],
-                            "minimum_should_match": 1,
-                        }
-                    }
-                )
+
+            if len(parts) == 2:
+                operator = "or"
             else:
-                filters.append({"term": {fields_map[key]: value}})
+                operator = parts[-1]
+            field_key = f"{parts[0]}.{parts[1]}"
+
+            es_field = (
+                study_text_fields_map.get(field_key)
+                if index_type == "study"
+                else image_text_fields_map.get(field_key)
+            )
+
+            if not es_field:
+                continue
+
+            values = (
+                value.split(",") if isinstance(value, str) and "," in value else value
+            )
+
+            if operator == "eq":
+                if isinstance(values, list):
+                    self.filter.append({"terms": {es_field: values}})
+                else:
+                    self.filter.append({"term": {es_field: values}})
+                continue
+
+            if operator == "or":
+                if isinstance(values, list):
+                    should_clause = [{"term": {es_field: v}} for v in values]
+                else:
+                    should_clause = [{"term": {es_field: values}}]
+
+                self.should.append(
+                    {"bool": {"should": should_clause, "minimum_should_match": 1}}
+                )
+                continue
+
+            if operator == "not":
+                if isinstance(values, list):
+                    self.must_not.append({"terms": {es_field: values}})
+                else:
+                    self.must_not.append({"term": {es_field: values}})
+                continue
 
     def build(self) -> Dict[str, Any]:
-        should_blocks = []
-
-        # Study filters are only applied if no image rep fields are used
-        if self.study_filters and not self.numeric_filters:
-            should_blocks.append({"bool": {"filter": self.study_filters}})
-
-        # Applying image filters
-        img_filters = []
-        img_filters.extend(self.image_filters)
-        img_filters.extend(self.numeric_filters)
-
-        if img_filters:
-            should_blocks.append({"bool": {"filter": img_filters}})
-
-        # text search
-        text = build_text_query(self.text_query)
-        if text:
-            should_blocks.extend(text["should"])
-
-        # Case for no query and filters used
-        if not should_blocks:
+        if not (self.must or self.filter or self.should or self.must_not):
             return {"match_all": {}}
 
-        # Using OR operator here - since two indexes (study and image).
-        return {"bool": {"should": should_blocks, "minimum_should_match": 1}}
+        return {
+            "bool": {
+                "must": self.must,
+                "filter": self.filter,
+                "should": self.should,
+                "must_not": self.must_not,
+            }
+        }
 
     async def search(
         self, client, index: str | list[str], offset: int, size: int, aggs: dict = None
