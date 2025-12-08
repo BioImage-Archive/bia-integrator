@@ -38,7 +38,7 @@ class Settings(BaseSettings):
     local_annotations_server: str | None = Field(None)
 
     endpoint_url: str = Field("https://uk1s3.embassy.ebi.ac.uk")
-    bucket_name: str
+    bucket_name: str | None = Field(None)
     aws_request_checksum_calculation: str = Field("WHEN_REQUIRED")
     aws_response_checksum_validation: str = Field("WHEN_REQUIRED")
 

@@ -43,7 +43,7 @@ Note that, if run in local-only output mode, directives are not written, since t
 
 ## Validate
 
-Validates point annotations to ensure they fall within image bounds before conversion. To run validation on the test data, you'll need to have the correct object in the local api. Thus, run once:
+It can be quite clear if annotations are not scaled correctly in a way that makes their range smaller than the image bounds — this shows up as a cluster of points forming a rectangle within the image — yet, it is difficult to spot if annotations are scaled so that they reach beyond the image, as only the portion that is within the image bounds gets displayed, and this can look perfectly normal. Thus, validation checks point annotations to ensure they fall within image bounds before conversion. To run validation on the test data, you'll need to have the correct object in the local api. Thus, run once:
 
 ```
 docker compose up --build --force-recreate --remove-orphans -d --wait
