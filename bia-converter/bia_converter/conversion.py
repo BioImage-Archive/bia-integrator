@@ -7,10 +7,11 @@ import re
 
 from pathlib import Path
 
-from bia_converter.config import settings
+from bia_converter.settings import get_settings
 from bia_shared_datamodels import bia_data_model
 
 logger = logging.getLogger(__name__)
+settings = get_settings()
 
 
 def run_bioformats2raw_with_docker(input_fpath: Path, output_dirpath: Path):
@@ -47,7 +48,7 @@ def run_bioformats2raw_with_singularity(input_fpath: Path, output_dirpath: Path)
         f"openmicroscopy/bioformats2raw:{settings.bioformats2raw_docker_tag} "
     )
     zarr_cmd = (
-        f'singularity run docker://{docker_image} "{input_fpath}" "{output_dirpath}"'
+        f'singularity run docker://{docker_image} --overwrite "{input_fpath}" "{output_dirpath}"'
     )
 
     logger.info(f"Converting with {zarr_cmd}")

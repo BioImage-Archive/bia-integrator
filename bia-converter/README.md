@@ -21,17 +21,28 @@ See [Post installation configuration section](#post-installation-configuration) 
 ## Usage
 The cli commands in this module take image representations as inputs. If the image representation is that of the image that was originally uploaded by the user, the *assignment* of a `BIA Image` object **must** have been carried out - see the [bia-assign-image subpackage](../bia-assign-image/README.md)
 
+### API Profiles
+All CLI commands support the `--api` (or `-a`) flag to specify which API environment to target:
+- `local`(default): Local development API instance
+- `prod` : Production BIA API
+
+**Example**:
+```bash
+poetry run bia-converter convert <IMAGE_REP_UUID> --api local
+```
+
 ### `convert`
 
 Run a specified image conversion function on a given image representation.
 
 ```bash
-poetry run bia-converter convert <IMAGE_REP_UUID> [CONVERSION_FUNCTION_NAME] [CONVERSION_CONFIG]
+poetry run bia-converter convert <IMAGE_REP_UUID> [CONVERSION_FUNCTION_NAME] [CONVERSION_CONFIG] [--api {prod|local}]
 ```
 
 - `IMAGE_REP_UUID`: UUID of the image representation.
 - `CONVERSION_FUNCTION_NAME` (optional): Name of the function in `bia_converter.convert` to run. Defaults to `convert_uploaded_by_submitter_to_interactive_display`.
 - `CONVERSION_CONFIG` (optional): JSON string with config options (not currently used).
+- `--api, -a` (optional): API target environment. Defaults to `local`.
 
 **Examples**:
 
@@ -40,7 +51,11 @@ poetry run bia-converter convert 123e4567-e89b-12d3-a456-426614174000
 ```
 
 ```bash
-poetry run bia-converter convert 123e4567-e89b-12d3-a456-426614174000 convert_interactive_display_to_static_display
+poetry run bia-converter convert 123e4567-e89b-12d3-a456-426614174000 convert_interactive_display_to_static_display --api local
+```
+
+```bash
+poetry run bia-converter convert 123e4567-e89b-12d3-a456-426614174000 --api local
 ```
 
 ---
@@ -50,13 +65,17 @@ poetry run bia-converter convert 123e4567-e89b-12d3-a456-426614174000 convert_in
 Create a thumbnail from an `INTERACTIVE_DISPLAY` image representation.
 
 ```bash
-poetry run bia-converter create-thumbnail <IMAGE_REP_UUID>
+poetry run bia-converter create-thumbnail <IMAGE_REP_UUID> [--api {prod|local}]
 ```
 
 **Example**:
 
 ```bash
 poetry run bia-converter create-thumbnail 123e4567-e89b-12d3-a456-426614174000
+```
+
+```bash
+poetry run bia-converter create-thumbnail 123e4567-e89b-12d3-a456-426614174000 --api local
 ```
 
 This will log the URI of the generated thumbnail after processing.
@@ -68,13 +87,17 @@ This will log the URI of the generated thumbnail after processing.
 Create a static display from an `INTERACTIVE_DISPLAY` image representation.
 
 ```bash
-poetry run bia-converter create-static-display <IMAGE_REP_UUID>
+poetry run bia-converter create-static-display <IMAGE_REP_UUID> [--api {prod|local}]
 ```
 
 **Example**:
 
 ```bash
 poetry run bia-converter create-static-display 123e4567-e89b-12d3-a456-426614174000
+```
+
+```bash
+poetry run bia-converter create-static-display 123e4567-e89b-12d3-a456-426614174000 --api local
 ```
 
 This will log the URI of the generated static display image after processing.
@@ -84,7 +107,7 @@ This will log the URI of the generated static display image after processing.
 Updated the recommended-vizarr-representation attribute of an image
 
 ```bash
-poetry run bia-converter update-recommended-vizarr-representation <IMAGE_REP_UUID>
+poetry run bia-converter update-recommended-vizarr-representation <IMAGE_REP_UUID> [--api {prod|local}]
 ```
 
 **Example**:
@@ -93,7 +116,27 @@ poetry run bia-converter update-recommended-vizarr-representation <IMAGE_REP_UUI
 poetry run bia-converter update-recommended-vizarr-representation 123e4567-e89b-12d3-a456-426614174000
 ```
 
+```bash
+poetry run bia-converter update-recommended-vizarr-representation 123e4567-e89b-12d3-a456-426614174000 --api local
+```
+
 This will log the UUID of the image updated and that of the recommended zarr representation
+
+### `generate-neuroglancer-view-link`
+
+Generate a Neuroglancer visualization link for an image with annotations.
+
+```bash
+poetry run bia-converter generate-neuroglancer-view-link <SOURCE_IMAGE_UUID> [--layout {xy|4panel-alt}] [--api {prod|local}]
+```
+
+**Example**:
+
+```bash
+poetry run bia-converter generate-neuroglancer-view-link 123e4567-e89b-12d3-a456-426614174000 --layout xy --api local
+```
+
+This will generate and log the Neuroglancer view link for the specified image
 ## TODO
 
 * Allow overrides when units are not set correctly
@@ -112,7 +155,7 @@ The `.env_template` in this directory contains the items that can be configured 
      - ``bia_api_username``
      - ``bia_api_password``
 
-  - **For caching downloaded/converted images locally**, the default location is ``~/.cache/bia-converter/``. Change this by setting:
+  - **For caching downloaded/converted images locally**, the default location is ``~/.cache/bia-converter/``. Change this by setting (using absolute path):
 
      - ``cache_root_dirpath``
 
@@ -127,11 +170,19 @@ The `.env_template` in this directory contains the items that can be configured 
      - ``endpoint_url``
      - ``bucket_name``
 
-   - The AWS credentials for the endpoint also need to be set. This can be done exclusively via environment variables. Either:
+   - The AWS credentials for the endpoint also need to be set. This can be done via environment variables or the relevant values in the `.env` file. Either:
 
      - ``AWS_ACCESS_KEY_ID`` *and* ``AWS_SECRET_ACCESS_KEY``
      - OR use ``AWS_SHARED_CREDENTIALS_FILE`` with optional ``AWS_PROFILE`` and/or ``AWS_CONFIG_FILE``
 
+     There are two additional AWS variables set by default to facillitate transfer to S3 (``AWS_REQUEST_CHECKSUM_CALCULATION`` and ``AWS_RESPONSE_CHECKSUM_VALIDATION``)
+
 
 ## Scripts
-The [scripts](./scripts) sub-directory contains a bash script for a sample workflow to produce converted images for a BIA study. The sub-directory also contains a script to generate neuroglancer links for source and annotated image pairs from the exported image.json and returns a json object with source UUID and overlayed neuroglancer URLs. 
+The [scripts](./scripts) sub-directory contains a script to update a dataset's example image uri property with the url(s) of an image(s) representative of the dataset. The input to the script is the uuid of an image representation for which a static display has been generated.
+
+**Example**:
+
+```bash
+poetry run python scripts/update_example_image_uri_for_dataset.py bf92449a-5e02-42d7-90be-ffece489aaae --api local
+```

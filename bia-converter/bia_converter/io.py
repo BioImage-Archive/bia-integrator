@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 import logging
 import shutil
@@ -8,11 +9,20 @@ import requests
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
-from .config import settings
+from .settings import get_settings
+
+settings = get_settings()    # Ensure required env vars are set for AWS CLI
+env = os.environ.copy()
+env["AWS_ACCESS_KEY_ID"] = settings.aws_access_key_id
+env["AWS_SECRET_ACCESS_KEY"] = settings.aws_secret_access_key
+env["AWS_REQUEST_CHECKSUM_CALCULATION"] = settings.aws_request_checksum_calculation
+env["AWS_RESPONSE_CHECKSUM_VALIDATION"] = settings.aws_response_checksum_validation
+ 
 
 
 logger = logging.getLogger(__name__)
 
+# TODO: It would be helpful to have tests that check these functions (as opposed to mocking them)
 
 def sync_dirpath_to_s3(src_dirpath, dst_suffix):
     bucket_name = settings.bucket_name
@@ -23,7 +33,7 @@ def sync_dirpath_to_s3(src_dirpath, dst_suffix):
     cmd = f'aws --region us-east-1 --endpoint-url {settings.endpoint_url} s3 sync "{src_dirpath}/" s3://{dst_key} --acl public-read'
     logger.info(f"Uploading using command {cmd}")
 
-    subprocess.run(cmd, shell=True)
+    subprocess.run(cmd, shell=True, env=env)
 
     uri = f"{settings.endpoint_url}/{dst_key}"
 
@@ -103,7 +113,7 @@ def copy_local_to_s3(src_fpath: Path, dst_key: str, dry_run: bool = False) -> st
     else:
         logger.info(f"Uploading {src_fpath} to {dst_key}")
         retval = subprocess.run(
-            cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+            cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env
         )
         assert (
             retval.returncode == 0
