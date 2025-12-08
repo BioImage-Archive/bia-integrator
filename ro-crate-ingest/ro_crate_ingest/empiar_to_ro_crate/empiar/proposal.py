@@ -132,7 +132,7 @@ class DatasetRembiByType(ClosedBaseModel):
     )
 
 
-class FileReferenceMixin:
+class FileReferenceMixin(BaseModel):
     file_pattern: str | None = Field(None)
 
 
@@ -154,9 +154,15 @@ class ResultData(ClosedBaseModel, FileReferenceMixin):
 
 class Image(ResultData):
     specimen_title: str | None = Field(None)
-    biosample_title: str | None = Field(None)
-    image_acquisition_protocol_title: str | None = Field(None)
-    specimen_imaging_preparation_protocol_title: str | None = Field(None)
+    biosample_title: Annotated[list[str], BeforeValidator(string_to_list)] = Field(
+        default_factory=list
+    )
+    image_acquisition_protocol_title: Annotated[
+        list[str], BeforeValidator(string_to_list)
+    ] = Field(default_factory=list)
+    specimen_imaging_preparation_protocol_title: Annotated[
+        list[str], BeforeValidator(string_to_list)
+    ] = Field(default_factory=list)
 
 
 class Annotation(ResultData):
