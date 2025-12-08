@@ -35,7 +35,7 @@ class Elastic:
                             "dataset": {
                                 "type": "object",
                                 "properties": {
-                                    "uuid": { "type": "keyword" },
+                                    "uuid": {"type": "keyword"},
                                     "biological_entity": {
                                         "type": "object",
                                         "properties": {
@@ -75,16 +75,49 @@ class Elastic:
                             "uuid": {"type": "keyword"},
                             "representation": {
                                 "type": "object",
-                                "properties": {"image_format": {"type": "keyword"}},
+                                "properties": {
+                                    "image_format": {"type": "keyword"},
+                                    "size_x": {"type": "integer"},
+                                    "size_y": {"type": "integer"},
+                                    "size_z": {"type": "integer"},
+                                    "size_c": {"type": "integer"},
+                                    "size_t": {"type": "integer"},
+                                    "total_size_in_bytes": {"type": "long"},
+                                    "voxel_physical_size_x": {"type": "float"},
+                                    "voxel_physical_size_y": {"type": "float"},
+                                    "voxel_physical_size_z": {"type": "float"},
+                                },
                             },
                             "creation_process": {
                                 "type": "object",
                                 "properties": {
-                                    "input_image_uuid": {
-                                        "type": "keyword"
-                                    }
-                                }
-                            }
+                                    "input_image_uuid": {"type": "keyword"},
+                                    "acquisition_process": {
+                                        "type": "object",
+                                        "properties": {
+                                            "imaging_method_name": {"type": "keyword"},
+                                        },
+                                    },
+                                    "subject": {
+                                        "type": "object",
+                                        "properties": {
+                                            "sample_of": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "organism_classification": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "scientific_name": {
+                                                                "type": "keyword"
+                                                            },
+                                                        },
+                                                    },
+                                                },
+                                            },
+                                        },
+                                    },
+                                },
+                            },
                         },
                     }
                 },

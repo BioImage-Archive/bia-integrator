@@ -1,7 +1,17 @@
-from fastapi import APIRouter, Depends, Query
-from typing import Annotated
+from fastapi import APIRouter, Depends, Query, Request
+from typing import Annotated, Any
 from api.elastic import Elastic
 from api.app import get_elastic
+from api.utils import (
+    QueryBuilder,
+    build_pagination,
+    build_text_query,
+    format_elastic_results,
+    is_valid_uuid,
+    build_params_as_list,
+    study_aggregations,
+    image_aggregations,
+)
 
 router = APIRouter(prefix="/search")
 
@@ -61,107 +71,114 @@ async def fts(
             "filter": filters,
         }
     }
-    if query:
-        query_body["bool"]["should"] = [
-            {
-                "multi_match": {
-                    "query": query,
-                    "fields": ["*"],
-                    "type": "phrase",
-                }
-            },
-            {"simple_query_string": {"query": f"*{query}*", "fields": ["*"]}},
-        ]
-        query_body["bool"]["minimum_should_match"] = 1
+    query_body["bool"].update(build_text_query(query))
 
-    # Calculate offset from page and page_size
-    offset = (page - 1) * page_size
+    pagination = build_pagination(page, page_size)
 
     rsp = await elastic.client.search(
         index=elastic.index_study,
         query=query_body,
-        from_=offset,
-        size=page_size,
-        aggs={
-            "scientific_name": {
-                "terms": {
-                    "field": "dataset.biological_entity.organism_classification.scientific_name"
-                }
-            },
-            "release_date": {
-                "date_histogram": {
-                    "field": "release_date",
-                    "calendar_interval": "1y",
-                    "format": "yyyy",
-                }
-            },
-            "imaging_method": {
-                "terms": {
-                    "field": "dataset.acquisition_process.imaging_method_name",
-                }
-            },
-        },
+        from_=pagination["offset"],
+        size=pagination["page_size"],
+        aggs=study_aggregations,
     )
 
-    total = rsp.body["hits"]["total"]["value"]
-    total_pages = (total + page_size - 1) // page_size if page_size > 0 else 0
-
-    return {
-        "hits": rsp.body["hits"],
-        "facets": rsp.body["aggregations"],
-        "pagination": {
-            "page": page,
-            "page_size": page_size,
-            "total_pages": total_pages,
-        },
-    }
+    return format_elastic_results(rsp, pagination)
 
 
 @router.get("/fts/image")
 async def fts_image(
+    request: Request,
     elastic: Annotated[Elastic, Depends(get_elastic)],
     query: Annotated[str | None, Query()] = None,
     includeDerivedImages: Annotated[bool, Query()] = False,
     page: Annotated[int, Query(ge=1, alias="pagination.page", le=100)] = 1,
     page_size: Annotated[int, Query(ge=1, le=100, alias="pagination.page_size")] = 50,
 ) -> dict:
-    filters = []
+    pagination = build_pagination(page, page_size)
+
+    # Fast-path for UUID lookup + deriveImagesLookup
+    if query and is_valid_uuid(query):
+        return await uuid_search(
+            elastic,
+            query=query,
+            aggregations=image_aggregations,
+            pagination=pagination,
+            includeDerivedImages=includeDerivedImages,
+        )
+
+    # Normal text search
+    params = build_params_as_list(request)
+    qb = QueryBuilder(text_query=query)
+    qb.parse_numeric_filters(params)
+    qb.parse_text_filters(params, "image")
+    pagination = build_pagination(page, page_size)
+
+    rsp = await qb.search(
+        client=elastic.client,
+        index=elastic.index_image,
+        offset=pagination["offset"],
+        size=pagination["page_size"],
+        aggs=image_aggregations,
+    )
+
+    return format_elastic_results(rsp, pagination)
+
+
+async def uuid_search(
+    elastic: Elastic,
+    query: str,
+    aggregations: dict[str, Any],
+    pagination: dict[str, int],
+    includeDerivedImages: bool = False,
+) -> dict:
+    """
+    Fast path for UUID lookup + optional derived images.
+    """
+    should = [{"term": {"uuid": query}}]
+
+    if includeDerivedImages:
+        should.append({"term": {"creation_process.input_image_uuid": query}})
+
     query_body = {
         "bool": {
-            "filter": filters,
+            "should": should,
+            "minimum_should_match": 1,
         }
     }
-
-    if query:
-        query_body["bool"]["should"] = [
-            {"term": {"uuid": query}}
-        ]
-        if includeDerivedImages:
-            query_body["bool"]["should"].append(
-                {"term": {"creation_process.input_image_uuid": query}}
-            )
-        query_body["bool"]["minimum_should_match"] = 1
-
-    # Calculate offset from page and page_size
-    offset = (page - 1) * page_size
-
     rsp = await elastic.client.search(
         index=elastic.index_image,
         query=query_body,
-        from_=offset,
-        size=page_size,
-        aggs={"image_format": {"terms": {"field": "representation.image_format"}}},
+        from_=pagination["offset"],
+        size=pagination["page_size"],
+        aggs=aggregations,
+    )
+    return format_elastic_results(rsp, pagination)
+
+
+@router.get("/advanced")
+async def advanced_search(
+    request: Request,
+    elastic: Annotated[Elastic, Depends(get_elastic)],
+    query: Annotated[str | None, Query()] = None,
+    page: Annotated[int, Query(ge=1, alias="pagination.page", le=100)] = 1,
+    page_size: Annotated[int, Query(ge=1, le=100, alias="pagination.page_size")] = 50,
+):
+    params = build_params_as_list(request)
+
+    qb = QueryBuilder(text_query=query)
+    qb.parse_text_filters(params, "study")
+
+    qb.parse_text_filters(params, "image")
+    qb.parse_numeric_filters(params)
+
+    pagination = build_pagination(page, page_size)
+
+    rsp = await qb.search(
+        client=elastic.client,
+        index=[elastic.index_study, elastic.index_image],
+        offset=pagination["offset"],
+        size=pagination["page_size"],
     )
 
-    total = rsp.body["hits"]["total"]["value"]
-    total_pages = (total + page_size - 1) // page_size if page_size > 0 else 0
-
-    return {
-        "hits": rsp.body["hits"],
-        "facets": rsp.body["aggregations"],
-        "pagination": {
-            "page": page,
-            "page_size": page_size,
-            "total_pages": total_pages,
-        },
-    }
+    return format_elastic_results(rsp, pagination)
