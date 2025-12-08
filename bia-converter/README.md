@@ -42,7 +42,7 @@ poetry run bia-converter convert <IMAGE_REP_UUID> [CONVERSION_FUNCTION_NAME] [CO
 - `IMAGE_REP_UUID`: UUID of the image representation.
 - `CONVERSION_FUNCTION_NAME` (optional): Name of the function in `bia_converter.convert` to run. Defaults to `convert_uploaded_by_submitter_to_interactive_display`.
 - `CONVERSION_CONFIG` (optional): JSON string with config options (not currently used).
-- `--api, -a` (optional): API target environment. Defaults to `prod`.
+- `--api, -a` (optional): API target environment. Defaults to `local`.
 
 **Examples**:
 
@@ -51,7 +51,7 @@ poetry run bia-converter convert 123e4567-e89b-12d3-a456-426614174000
 ```
 
 ```bash
-poetry run bia-converter convert 123e4567-e89b-12d3-a456-426614174000 convert_interactive_display_to_static_display --api prod
+poetry run bia-converter convert 123e4567-e89b-12d3-a456-426614174000 convert_interactive_display_to_static_display --api local
 ```
 
 ```bash
