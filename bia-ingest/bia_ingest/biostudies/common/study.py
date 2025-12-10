@@ -357,9 +357,6 @@ def get_related_publications(
         }
 
         if publication["doi"] is not None:
-            publication["doi"], _ = sanitise_link_and_link_type(
-                publication["doi"], "doi"
-            )
             logger.debug(f"get_related_publications: publication: {publication}")
 
         # Check all fields are not None because new ST allowed
