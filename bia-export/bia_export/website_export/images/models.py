@@ -49,6 +49,9 @@ class Image(api_models.Image):
         default_factory=list,
         description="""The concrete image representations of the image.""",
     )
+    total_physical_size: Optional[dict] = Field(
+        description="""total_physical_size""",
+    )
 
 
 class ImageCLIContext(CLIContext):
