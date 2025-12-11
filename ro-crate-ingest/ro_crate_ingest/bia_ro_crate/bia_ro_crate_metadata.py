@@ -7,27 +7,32 @@ from bia_shared_datamodels.linked_data.ld_context.SimpleJSONLDContext import (
 )
 from bia_shared_datamodels.linked_data.pydantic_ld.ROCrateModel import ROCrateModel
 from rdflib import Graph
+from pathlib import Path
 
 
 class BIAROCrateMetadata:
 
     _graph_bia_entities: dict[str, ROCrateModel]
     _context: SimpleJSONLDContext
+    _base_path: Path
 
     def __init__(
         self,
         graph_bia_entities: dict[str, ROCrateModel],
         context: SimpleJSONLDContext,
+        base_path: Path,
     ) -> None:
         self._graph_bia_entities = graph_bia_entities
         self._context = context
+        self._base_path = base_path
 
     def to_graph(self) -> Graph:
-        # TODO: need some way of converting between a the entities and its graph, and preferably keeping both in sync.
-        # This is not straightforward, as the paths for certain objects should consistently relative to the root of the ro-crate.
-        # Could potentially store the graph rather than the objects and convert the opposite way.
-        # For now: use parse_to_graph from BIAROCrateMetadataParser
-        raise NotImplementedError
+        graph = Graph()
+
+        for entity in self._graph_bia_entities.values():
+            graph += entity.to_graph(self._context, self._base_path)
+
+        return graph
 
     def to_dict(self) -> dict:
         context_dict = self._context.to_dict()

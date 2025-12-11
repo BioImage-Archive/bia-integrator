@@ -1,17 +1,10 @@
 import json
 import os
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 from pathlib import Path
 from bia_shared_datamodels.linked_data.pydantic_ld.ROCrateModel import ROCrateModel
 from bia_shared_datamodels import ro_crate_generator_utils
-
-
-class ROCrateCreativeWork(BaseModel):
-    id: str = Field(alias="@id", default="ro-crate-metadata.json")
-    type: str = Field(alias="@type", default="CreativeWork")
-    conformsTo: dict = Field(default={"@id": "https://w3id.org/ro/crate/1.1"})
-    about: dict = Field(default={"@id": "./"})
 
 
 def get_default_context():

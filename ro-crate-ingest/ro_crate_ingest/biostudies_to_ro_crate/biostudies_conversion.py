@@ -25,11 +25,11 @@ from bia_shared_datamodels.package_specific_uuid_creation.shared import (
     create_study_uuid,
 )
 from ro_crate_ingest.ro_crate_defaults import (
-    ROCrateCreativeWork,
     get_default_context,
     write_ro_crate_metadata,
     create_ro_crate_folder,
 )
+from bia_shared_datamodels.ro_crate_models import ROCrateCreativeWork
 
 logger = logging.getLogger("__main__." + __name__)
 

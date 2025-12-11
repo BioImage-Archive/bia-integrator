@@ -1,7 +1,12 @@
-from .LDModel import LDModel
+from .LDModel import LDModel, ObjectReference
 from pydantic import Field, field_validator, model_validator
-from rdflib import URIRef
+from rdflib import URIRef, Graph, Literal, RDF, BNode
 from typing import Union
+from ..ld_context.SimpleJSONLDContext import SimpleJSONLDContext
+from ..ld_context.ContextTerm import ContextTerm
+from .FieldContext import FieldContext
+import json
+from pathlib import Path
 
 
 class ROCrateModel(LDModel):
@@ -22,9 +27,12 @@ class ROCrateModel(LDModel):
         Note, this assume the object has either been expanded to have full urls for the types, or the standard bia context is being used. The actual document context is not checked.
         """
         expected_class: str = cls.model_config.get("model_type")
-        short_string = expected_class.replace(
-            "http://www.w3.org/ns/csvw#", "csvw:"
-        ).replace("http://bia/", "bia:")
+        short_string = (
+            expected_class.replace("http://www.w3.org/ns/csvw#", "csvw:")
+            .replace("http://bia/", "bia:")
+            .replace("http://schema.org/", "")
+            .replace("https://schema.org/", "")
+        )
 
         if isinstance(value, str):
             if value != expected_class and value != short_string:
@@ -52,3 +60,19 @@ class ROCrateModel(LDModel):
                 self.id = f"{self.id}/" if not str.endswith(self.id, "/") else self.id
 
         return self
+
+    def to_graph(self, context: SimpleJSONLDContext, base_path: Path) -> Graph:
+        graph = Graph()
+
+        json_ld = {
+            "@context": context.to_dict(),
+            "@graph": [self.model_dump(mode="json", by_alias=True)],
+        }
+        json_ld_string = json.dumps(json_ld)
+
+        base_file_uri = str(base_path.as_uri())
+        graph.parse(
+            data=json_ld_string, format="json-ld", publicID=f"{base_file_uri}/"
+        )
+
+        return graph

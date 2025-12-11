@@ -36,7 +36,7 @@ def convert_ro_crate_to_bia_api(
     ro_crate_metadata_parser = JSONLDMetadataParser()
     ro_crate_metadata_parser.parse(crate_path)
     roc_metadata = ro_crate_metadata_parser.result
-    crate_graph = JSONLDMetadataParser().parse_to_graph(crate_path)
+    crate_graph = roc_metadata.to_graph()
 
     api_objects = []
     api_study = study.create_api_study(roc_metadata.get_object_lookup())
