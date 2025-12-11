@@ -2,15 +2,16 @@ from fastapi import APIRouter, Depends, Query, Request
 from typing import Annotated, Any
 from api.elastic import Elastic
 from api.app import get_elastic
+from api.queryBuilder import QueryBuilder
 from api.utils import (
-    QueryBuilder,
+    ImageSearchFilters,
+    StudySearchFilters,
+    AdvancedSearchFilters,
     build_pagination,
-    build_text_query,
     format_elastic_results,
     is_valid_uuid,
     build_params_as_list,
-    study_aggregations,
-    image_aggregations,
+    aggregations,
 )
 
 router = APIRouter(prefix="/search")
@@ -19,68 +20,23 @@ router = APIRouter(prefix="/search")
 @router.get("/fts")
 async def fts(
     elastic: Annotated[Elastic, Depends(get_elastic)],
+    request: Request,
+    filters: StudySearchFilters = Depends(),
     query: Annotated[str | None, Query()] = None,
-    organism: Annotated[
-        list[str] | None, Query(max_length=4, alias="facet.organism")
-    ] = None,
-    imaging_method: Annotated[
-        list[str] | None, Query(max_length=4, alias="facet.imaging_method")
-    ] = None,
-    year: Annotated[list[str] | None, Query(max_length=4, alias="facet.year")] = None,
     page: Annotated[int, Query(ge=1, alias="pagination.page", le=100)] = 1,
     page_size: Annotated[int, Query(ge=1, le=100, alias="pagination.page_size")] = 50,
 ) -> dict:
-    filters = []
-    if organism:
-        filters.append(
-            {
-                "terms": {
-                    "dataset.biological_entity.organism_classification.scientific_name": organism,
-                }
-            }
-        )
-    if imaging_method:
-        filters.append(
-            {
-                "terms": {
-                    "dataset.acquisition_process.imaging_method_name": imaging_method,
-                }
-            }
-        )
-    if year:
-        filters.append(
-            {
-                "bool": {
-                    "should": [
-                        {
-                            "range": {
-                                "release_date": {
-                                    "gte": f"{i}-01-01",
-                                    "lte": f"{i}-12-31",
-                                }
-                            }
-                        }
-                        for i in year
-                    ],
-                },
-            }
-        )
-
-    query_body = {
-        "bool": {
-            "filter": filters,
-        }
-    }
-    query_body["bool"].update(build_text_query(query))
-
+    params = build_params_as_list(request)
+    qb = QueryBuilder(text_query=query)
+    qb.parse_text_query(query)
+    qb.parse_boolean_filters(params, "study")
     pagination = build_pagination(page, page_size)
-
-    rsp = await elastic.client.search(
+    rsp = await qb.search(
+        client=elastic.client,
         index=elastic.index_study,
-        query=query_body,
-        from_=pagination["offset"],
+        offset=pagination["offset"],
         size=pagination["page_size"],
-        aggs=study_aggregations,
+        aggs=aggregations["study"],
     )
 
     return format_elastic_results(rsp, pagination)
@@ -90,6 +46,7 @@ async def fts(
 async def fts_image(
     request: Request,
     elastic: Annotated[Elastic, Depends(get_elastic)],
+    filters: ImageSearchFilters = Depends(),
     query: Annotated[str | None, Query()] = None,
     includeDerivedImages: Annotated[bool, Query()] = False,
     page: Annotated[int, Query(ge=1, alias="pagination.page", le=100)] = 1,
@@ -102,7 +59,7 @@ async def fts_image(
         return await uuid_search(
             elastic,
             query=query,
-            aggregations=image_aggregations,
+            aggregations=aggregations["image"],
             pagination=pagination,
             includeDerivedImages=includeDerivedImages,
         )
@@ -120,7 +77,7 @@ async def fts_image(
         index=elastic.index_image,
         offset=pagination["offset"],
         size=pagination["page_size"],
-        aggs=image_aggregations,
+        aggs=aggregations["image"],
     )
 
     return format_elastic_results(rsp, pagination)
@@ -135,18 +92,34 @@ async def uuid_search(
 ) -> dict:
     """
     Fast path for UUID lookup + optional derived images.
+    Function score makes sure the source image is the first result
     """
+
     should = [{"term": {"uuid": query}}]
 
     if includeDerivedImages:
         should.append({"term": {"creation_process.input_image_uuid": query}})
 
     query_body = {
-        "bool": {
-            "should": should,
-            "minimum_should_match": 1,
+        "function_score": {
+            "query": {
+                "bool": {
+                    "should": should,
+                    "minimum_should_match": 1,
+                }
+            },
+            "functions": [
+                {"filter": {"term": {"uuid": query}}, "weight": 100},
+                {
+                    "filter": {"term": {"creation_process.input_image_uuid": query}},
+                    "weight": 10,
+                },
+            ],
+            "score_mode": "max",
+            "boost_mode": "sum",
         }
     }
+
     rsp = await elastic.client.search(
         index=elastic.index_image,
         query=query_body,
@@ -161,6 +134,7 @@ async def uuid_search(
 async def advanced_search(
     request: Request,
     elastic: Annotated[Elastic, Depends(get_elastic)],
+    filters: AdvancedSearchFilters = Depends(),
     query: Annotated[str | None, Query()] = None,
     page: Annotated[int, Query(ge=1, alias="pagination.page", le=100)] = 1,
     page_size: Annotated[int, Query(ge=1, le=100, alias="pagination.page_size")] = 50,
@@ -169,12 +143,12 @@ async def advanced_search(
 
     qb = QueryBuilder(text_query=query)
     qb.parse_text_query(query)
-    qb.parse_boolean_filters(params, "image")
+    qb.parse_boolean_filters(params, "image", True)
     qb.parse_numeric_filters(params)
 
     elastic_indexes = [elastic.index_image]
     if not qb.numeric_filters:
-        qb.parse_boolean_filters(params, "study")
+        qb.parse_boolean_filters(params, "study", True)
         elastic_indexes.append(elastic.index_study)
 
     pagination = build_pagination(page, page_size)

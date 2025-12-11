@@ -953,7 +953,7 @@
                         }
                     }
                 ],
-                "image_format": ".tiff",
+                "image_format": ".mcd",
                 "file_uri": [
                     "https://www.ebi.ac.uk/biostudies/files/S-BIAD634/dataset/groundtruth/otherspecimen_3.tif"
                 ],

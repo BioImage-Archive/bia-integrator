@@ -1,71 +1,65 @@
-from typing import Any, Dict, List, Optional
-from dataclasses import dataclass, field
+from typing import Any, Optional
+from pydantic import create_model, Field
 from uuid import UUID
-from fastapi import Request
+from fastapi import Request, Query
+from inspect import Signature, Parameter
 
-numeric_fields_map = {
-    "size_x": "representation.size_x",
-    "size_y": "representation.size_y",
-    "size_z": "representation.size_z",
-    "size_c": "representation.size_c",
-    "size_t": "representation.size_t",
-    "total_size_in_bytes": "representation.total_size_in_bytes",
-    "voxel_physical_size_x": "representation.voxel_physical_size_x",
-    "voxel_physical_size_y": "representation.voxel_physical_size_y",
-    "voxel_physical_size_z": "representation.voxel_physical_size_z",
-}
-
-image_text_fields_map = {
-    "facet.organism": "creation_process.subject.sample_of.organism_classification.scientific_name",
-    "facet.imaging_method": "creation_process.acquisition_process.imaging_method_name",
-}
-
-study_text_fields_map = {
-    "facet.organism": "dataset.biological_entity.organism_classification.scientific_name",
-    "facet.imaging_method": "dataset.acquisition_process.imaging_method_name",
+fields_map = {
+    "study": {
+        "facet.organism": "dataset.biological_entity.organism_classification.scientific_name",
+        "facet.imaging_method": "dataset.acquisition_process.imaging_method_name",
+        "facet.year": "release_date",
+        "facet.licence": "licence"
+    },
+    "image": {
+        "facet.organism": "creation_process.subject.sample_of.organism_classification.scientific_name",
+        "facet.imaging_method": "creation_process.acquisition_process.imaging_method_name",
+        "facet.image_format": "representation.image_format",
+    },
+    "numeric": {
+        "size_x": "representation.size_x",
+        "size_y": "representation.size_y",
+        "size_z": "representation.size_z",
+        "size_c": "representation.size_c",
+        "size_t": "representation.size_t",
+        "total_size_in_bytes": "representation.total_size_in_bytes",
+        "voxel_physical_size_x": "representation.voxel_physical_size_x",
+        "voxel_physical_size_y": "representation.voxel_physical_size_y",
+        "voxel_physical_size_z": "representation.voxel_physical_size_z",
+        "total_physical_size_x": "total_physical_size_x",
+        "total_physical_size_y": "total_physical_size_y",
+        "total_physical_size_z": "total_physical_size_z",
+    }
 }
 
 operators_map = {
-    "eq": "",
-    "gt": "gt",
-    "gte": "gte",
-    "lt": "lt",
-    "lte": "lte",
-}
+    "numeric": {
+        "eq": "",
+        "gt": "gt",
+        "gte": "gte",
+        "lt": "lt",
+        "lte": "lte",
+    },
+    "boolean_operators": {"and", "or", "not"}}
 
-study_aggregations = {
-    "scientific_name": {
-        "terms": {
-            "field": "dataset.biological_entity.organism_classification.scientific_name"
-        }
-    },
-    "release_date": {
-        "date_histogram": {
-            "field": "release_date",
-            "calendar_interval": "1y",
-            "format": "yyyy",
-        }
-    },
-    "imaging_method": {
-        "terms": {
-            "field": "dataset.acquisition_process.imaging_method_name",
-        }
-    },
+aggregations = {
+    "study": {
+        "scientific_name": { "terms": {"field": fields_map["study"]["facet.organism"] }},
+        "release_date": {
+            "date_histogram": {
+                "field": fields_map["study"]["facet.year"],
+                "calendar_interval": "1y",
+                "format": "yyyy",
+            }
+        },
+        "imaging_method": { "terms": {"field": fields_map["study"]["facet.imaging_method"] }},
+    }, 
+    "image" : {
+        "image_format": { "terms": {"field": fields_map["image"]["facet.image_format"] }},
+        "scientific_name": { "terms": {"field": fields_map["image"]["facet.organism"] }},
+        "imaging_method": { "terms": {"field": fields_map["image"]["facet.imaging_method"]}},
+    }
 }
-
-image_aggregations = {
-    "image_format": {"terms": {"field": "representation.image_format"}},
-    "scientific_name": {
-        "terms": {
-            "field": "creation_process.subject.sample_of.organism_classification.scientific_name"
-        }
-    },
-    "imaging_method": {
-        "terms": {"field": "creation_process.acquisition_process.imaging_method_name"}
-    },
-}
-
-boolean_operators = {"and", "or", "not"}
 
 
 def is_valid_uuid(uuid: str):
@@ -88,30 +82,6 @@ def calculate_total_pages(total: int, page_size: int) -> int:
     return (total + page_size - 1) // page_size if page_size > 0 else 0
 
 
-def build_text_query(query: Optional[str]) -> dict[str, Any]:
-    if not query:
-        return {}
-
-    return {
-        "should": [
-            {
-                "multi_match": {
-                    "query": query,
-                    "fields": ["*"],
-                    "type": "phrase",
-                }
-            },
-            {
-                "simple_query_string": {
-                    "query": f"*{query}*",
-                    "fields": ["*"],
-                }
-            },
-        ],
-        "minimum_should_match": 1,
-    }
-
-
 def format_elastic_results(rsp, pagination):
     total = rsp.body["hits"]["total"]["value"]
     total_pages = calculate_total_pages(total, pagination["page_size"])
@@ -128,7 +98,7 @@ def format_elastic_results(rsp, pagination):
 
 
 def build_params_as_list(request: Request):
-    params: Dict[str, Any] = {}
+    params: dict[str, Any] = {}
     for key, value in request.query_params.multi_items():
         if key in params:
             existing = params[key]
@@ -141,141 +111,62 @@ def build_params_as_list(request: Request):
     return params
 
 
-@dataclass
-class QueryBuilder:
-    text_query: Optional[str] = None
-    numeric_filters: bool = False
+def force_query_params(facet_dict: dict[str, str], generate_numeric_params: bool = False):
+    """
+    Forces FastAPI to treat every field in a dependency model as a query parameter
+    rather than a request body.
+    """
+    params = []
+    
+    fields = {}
 
-    must: List[Dict[str, Any]] = field(default_factory=list)
-    should: List[Dict[str, Any]] = field(default_factory=list)
-    filter: List[Dict[str, Any]] = field(default_factory=list)
-    must_not: List[Dict[str, Any]] = field(default_factory=list)
-
-    def parse_text_query(self, query: Optional[str]):
-        if not query:
-            return
-
-        self.must.append(
-            {
-                "multi_match": {
-                    "query": query,
-                    "fields": ["*"],
-                    "type": "best_fields",
-                    "fuzziness": "AUTO",
-                }
-            },
+    for facet_alias in facet_dict.keys():
+        description = (
+            f"Filter by `{facet_alias.replace('facet.', '')}`.\n\n"
+            f"Works with operators: `{"`, `".join(["eq", "or", "not"])}`. Default operator is `or`.\n\n"
+            f"Examples: `?{facet_alias}.eq=value`, `?{facet_alias}.or=value1,value2`, `?{facet_alias}=value1,value2`"
+        )
+        fields[facet_alias.replace(".", "_")] = (
+            Optional[list[str]],
+            Field(
+                None,
+                alias=facet_alias,
+                alias_priority=1,
+                description=description,
+            )
         )
 
-    def parse_numeric_filters(self, params: Dict[str, Any]):
-        for param, value in params.items():
-            if "." not in param:
-                continue
-
-            field, operator = param.split(".", 1)
-
-            if field not in numeric_fields_map:
-                continue
-            if operator not in operators_map:
-                continue
-
-            elastic_field = numeric_fields_map[field]
-
-            try:
-                value = float(value)
-            except Exception:
-                continue
-
-            if operator == "eq":
-                self.filter.append(
-                    {"range": {elastic_field: {"gte": value, "lte": value}}}
-                )
-            else:
-                self.filter.append(
-                    {"range": {elastic_field: {operators_map[operator]: value}}}
-                )
-            self.numeric_filters = True
-
-    def parse_boolean_filters(self, params: Dict[str, Any], index_type: str):
-        """
-        Parse filters of form:
-            field.eq=value
-            field.or=value1,value2
-            field.not=value
-        Into proper ES must/filter/should/must_not blocks.
-        """
-
-        for param, value in params.items():
-            parts = param.split(".")
-
-            if len(parts) < 2 or parts[0] in numeric_fields_map:
-                continue
-
-            if len(parts) == 2:
-                operator = "or"
-            else:
-                operator = parts[-1]
-            field_key = f"{parts[0]}.{parts[1]}"
-
-            es_field = (
-                study_text_fields_map.get(field_key)
-                if index_type == "study"
-                else image_text_fields_map.get(field_key)
+    if generate_numeric_params:
+        for field in fields_map["numeric"].keys():
+            description = (
+                f"Filter by `{field}`.\n\n"
+                f"Works with operators: `{"`, `".join(operators_map.keys())}`.\n\n"
+                f"Examples: `?{field}.gt=1`, `?{field}.lt=3`"
             )
+            fields[f"{field}"] = (Optional[float], Field(None, title=field, description=description, alias=field))
 
-            if not es_field:
-                continue
+    param_model = create_model("Query", **fields)
 
-            values = (
-                value.split(",") if isinstance(value, str) and "," in value else value
+    for name, field in param_model.model_fields.items():
+        default = Query(
+            default=field.default,
+            alias=field.alias,
+            description=field.description,
+        )
+
+        params.append(
+            Parameter(
+                name=name,
+                kind=Parameter.KEYWORD_ONLY,
+                default=default,
+                annotation=field.annotation,
             )
+        )
 
-            if operator == "eq":
-                if isinstance(values, list):
-                    self.filter.append({"terms": {es_field: values}})
-                else:
-                    self.filter.append({"term": {es_field: values}})
-                continue
+    param_model.__signature__ = Signature(params)
+    return param_model
 
-            if operator == "or":
-                if isinstance(values, list):
-                    should_clause = [{"term": {es_field: v}} for v in values]
-                else:
-                    should_clause = [{"term": {es_field: values}}]
 
-                self.should.append(
-                    {"bool": {"should": should_clause, "minimum_should_match": 1}}
-                )
-                continue
-
-            if operator == "not":
-                if isinstance(values, list):
-                    self.must_not.append({"terms": {es_field: values}})
-                else:
-                    self.must_not.append({"term": {es_field: values}})
-                continue
-
-    def build(self) -> Dict[str, Any]:
-        if not (self.must or self.filter or self.should or self.must_not):
-            return {"match_all": {}}
-
-        return {
-            "bool": {
-                "must": self.must,
-                "filter": self.filter,
-                "should": self.should,
-                "must_not": self.must_not,
-            }
-        }
-
-    async def search(
-        self, client, index: str | list[str], offset: int, size: int, aggs: dict = None
-    ):
-        body = {
-            "query": self.build(),
-            "from_": offset,
-            "size": size,
-        }
-        if aggs:
-            body["aggs"] = aggs
-
-        return await client.search(index=index, **body)
+AdvancedSearchFilters = force_query_params(fields_map["study"] | fields_map["image"], True)
+ImageSearchFilters = force_query_params(fields_map["image"], True)
+StudySearchFilters = force_query_params(fields_map["study"])

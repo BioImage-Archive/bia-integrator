@@ -32,6 +32,7 @@ class Elastic:
                             "keyword": {"type": "keyword"},
                             "author": {"type": "flattened"},
                             "grant": {"type": "flattened"},
+                            "licence": {"type": "keyword"},
                             "dataset": {
                                 "type": "object",
                                 "properties": {
@@ -88,6 +89,9 @@ class Elastic:
                                     "voxel_physical_size_z": {"type": "float"},
                                 },
                             },
+                            "total_physical_size_x": {"type": "float"},
+                            "total_physical_size_y": {"type": "float"},
+                            "total_physical_size_z": {"type": "float"},
                             "creation_process": {
                                 "type": "object",
                                 "properties": {
@@ -104,6 +108,9 @@ class Elastic:
                                             "sample_of": {
                                                 "type": "object",
                                                 "properties": {
+                                                    "biological_entity_description": {
+                                                        "type": "keyword"
+                                                    },
                                                     "organism_classification": {
                                                         "type": "object",
                                                         "properties": {

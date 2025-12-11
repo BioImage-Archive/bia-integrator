@@ -53,6 +53,7 @@ curl -k -X PUT "${ELASTIC_URL}/${ELASTIC_INDEX}" \
 				"grant": {
 					"type": "flattened"
 				},
+				"licence": {"type": "keyword"},
 				"dataset": {
 					"type": "object",
 					"properties": {
@@ -152,6 +153,7 @@ curl -k -X PUT "${ELASTIC_URL}/${ELASTIC_INDEX_IMAGES}" \
 							"sample_of": {
 								"type": "object",
 								"properties": {
+									"biological_entity_description": { "type": "keyword" },
 									"organism_classification": {
 										"type": "object",
 										"properties": {
