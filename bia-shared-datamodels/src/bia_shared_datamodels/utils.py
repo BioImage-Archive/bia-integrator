@@ -6,7 +6,7 @@ _DOI_TEMPLATE = "https://doi.org/{}"
 
 
 def sanitise_doi(value: str) -> str:
-    sanitised_value = value.strip().lower()
+    sanitised_value = unquote(value.strip().lower())
 
     # If user supplied sanitized value return it
     if _DOI_RX.fullmatch(sanitised_value):
@@ -17,7 +17,7 @@ def sanitise_doi(value: str) -> str:
         host = parsed_url.netloc
         if host not in {"doi.org", "dx.doi.org"}:
             raise ValueError(f"not a DOI URL. host:{host} extracted from {value}")
-        sanitised_value = unquote(parsed_url.path.lstrip("/"))
+        sanitised_value = parsed_url.path.lstrip("/")
     else:
         # Allow dx.doi... or doi... .org optional and ':' or '/' before 10.*
         regex = r"(?i)^(?:dx\.doi|doi)(\.org)?[/:]\s*"
