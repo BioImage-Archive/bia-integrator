@@ -5,7 +5,10 @@ from api.utils import (
     fields_map,
 )
 
-"""
+
+@dataclass
+class QueryBuilder:
+    """
     QueryBuilder transforms incoming URL query parameters into a valid Elasticsearch
     bool query. It supports:
 
@@ -14,12 +17,8 @@ from api.utils import (
     - Handles the facet.year by converting into a range filter
 
     The builder accumulates clauses in must, filter, should, and must_not lists,
-    then produces a complete Elasticsearch bool query using `build()`.
-"""
+    then produces a complete Elasticsearch bool query using `build()`."""
 
-
-@dataclass
-class QueryBuilder:
     text_query: str | None
     numeric_filters: bool = False
 
