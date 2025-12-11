@@ -54,7 +54,7 @@ def transform_image(api_image: api_models.Image, context: ImageCLIContext) -> Im
     image_dict = api_image.model_dump() | {
         "representation": api_img_rep,
         "creation_process": creation_process,
-        "total_physical_size": physical_sizes,
+        **physical_sizes,
     }
 
     return Image(**image_dict)

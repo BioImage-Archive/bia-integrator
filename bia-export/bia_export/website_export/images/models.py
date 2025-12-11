@@ -49,8 +49,14 @@ class Image(api_models.Image):
         default_factory=list,
         description="""The concrete image representations of the image.""",
     )
-    total_physical_size: Optional[dict] = Field(
-        description="""total_physical_size""",
+    total_physical_size_x: Optional[float | None] = Field(
+        description="""total_physical_size_x""",
+    )
+    total_physical_size_y: Optional[float | None] = Field(
+        description="""total_physical_size_y""",
+    )
+    total_physical_size_z: Optional[float | None] = Field(
+        description="""total_physical_size_z""",
     )
 
 
