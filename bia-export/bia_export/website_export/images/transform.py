@@ -49,7 +49,7 @@ def transform_image(api_image: api_models.Image, context: ImageCLIContext) -> Im
 
     api_img_rep = retrieve_representations(api_image.uuid, context)
 
-    physical_sizes = transform_physical_size_from_image_rep(api_img_rep)
+    physical_sizes = transform_physical_size_xyz_from_image_rep(api_img_rep)
 
     image_dict = api_image.model_dump() | {
         "representation": api_img_rep,
@@ -160,9 +160,15 @@ def transform_details_object_list(
     return obj_list
 
 
-def transform_physical_size_from_image_rep(
+def transform_physical_size_xyz_from_image_rep(
     api_image_reps: list[api_models.ImageRepresentation],
 ) -> dict:
+    """
+    Calculates the total sample physical size from
+    the first OME.ZARR image rep by multiplying the
+    pixel size (size_x,size_y,size_z) with repective
+    the voxel_physical_size.
+    """
     img_rep = [
         img_rep for img_rep in api_image_reps if img_rep.image_format == ".ome.zarr"
     ]

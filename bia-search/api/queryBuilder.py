@@ -5,6 +5,18 @@ from api.utils import (
     fields_map,
 )
 
+"""
+    QueryBuilder transforms incoming URL query parameters into a valid Elasticsearch
+    bool query. It supports:
+
+    - Text search, Numeric filters, Boolean facet filters
+    - Allows eq (AND), or (OR), not (NOT)
+    - Handles the facet.year by converting into a range filter
+
+    The builder accumulates clauses in must, filter, should, and must_not lists,
+    then produces a complete Elasticsearch bool query using `build()`.
+"""
+
 
 @dataclass
 class QueryBuilder:
@@ -61,10 +73,7 @@ class QueryBuilder:
         self, params: dict[str, Any], index_type: str, allow_root_should: bool = False
     ):
         """
-        Parse filters of form:
-            field.eq=value
-            field.or=value1,value2
-            field.not=value
+        Parse filters of form: field.eq=value, field.or=value1,value2, field.not=value
         Into proper ES must/filter/should/must_not blocks.
         """
         field_map = fields_map[index_type]
@@ -87,9 +96,9 @@ class QueryBuilder:
 
             field_key = f"{parts[0]}.{parts[1]}"
 
-            es_field = field_map.get(field_key)
+            elastic_field = field_map.get(field_key)
 
-            if not es_field:
+            if not elastic_field:
                 continue
 
             values = (
@@ -103,20 +112,20 @@ class QueryBuilder:
 
             handler = operator_handlers.get(operator)
             if handler:
-                handler(es_field, values)
+                handler(elastic_field, values)
 
-    def _handle_eq(self, es_field: str, values: Any):
+    def _handle_eq(self, elastic_field: str, values: Any):
         if isinstance(values, list):
             for v in values:
-                self.filter.append({"term": {es_field: v}})
+                self.filter.append({"term": {elastic_field: v}})
         else:
-            self.filter.append({"term": {es_field: values}})
+            self.filter.append({"term": {elastic_field: values}})
 
-    def _handle_or(self, es_field: str, values: Any, allow_root_should: bool):
+    def _handle_or(self, elastic_field: str, values: Any, allow_root_should: bool):
         should_clause = (
-            [{"term": {es_field: v}} for v in values]
+            [{"term": {elastic_field: v}} for v in values]
             if isinstance(values, list)
-            else [{"term": {es_field: values}}]
+            else [{"term": {elastic_field: values}}]
         )
 
         if allow_root_should:
@@ -132,11 +141,11 @@ class QueryBuilder:
                 }
             )
 
-    def _handle_not(self, es_field: str, values: Any):
+    def _handle_not(self, elastic_field: str, values: Any):
         if isinstance(values, list):
-            self.must_not.append({"terms": {es_field: values}})
+            self.must_not.append({"terms": {elastic_field: values}})
         else:
-            self.must_not.append({"term": {es_field: values}})
+            self.must_not.append({"term": {elastic_field: values}})
 
     def parse_year_filter(self, values):
         def _year_to_range(year: str) -> dict[str, Any]:
