@@ -9,16 +9,17 @@ from annotation_data_converter.point_annotations.converters.PointAnnotationConve
 
 
 class StarFileConverter(PointAnnotationConverter):
+    
     def load(self):
         if file_path := self.proposal.local_file_path:
             unfiltered_dataframe = StarFileConverter._read_star_file_from_path(
                 file_path
             )
         else:
-            file_uri_list = self.image_representation.file_uri
+            file_uri_list = self.annotation_data_file_reference.file_path
             if len(file_uri_list) != 1:
                 raise NotImplementedError(
-                    "Cannot handle cases where starfile annotation data is made up of more than one image representation."
+                    "Cannot handle cases where starfile annotation data is made up of more than one file."
                 )
             unfiltered_dataframe = StarFileConverter._read_star_file_from_url(
                 file_uri_list[0]
