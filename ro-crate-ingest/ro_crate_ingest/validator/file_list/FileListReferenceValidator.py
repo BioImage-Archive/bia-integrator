@@ -84,7 +84,7 @@ class FileListReferenceValidator(Validator):
             )
 
         tsv_file_list_parser = TSVMetadataParser(
-            ro_crate_root=self.ro_crate_root, ro_crate_metadata=self.ro_crate_objects
+            ro_crate_metadata=self.ro_crate_objects
         )
 
         for file_list_id in file_lists_roc_objects:

@@ -39,13 +39,12 @@ class OSVMetadataParser(MetadataParser[FileList]):
     def __init__(
         self,
         ro_crate_metadata: BIAROCrateMetadata,
-        ro_crate_root: Path,
         *,
         context: dict | None = None,
     ) -> None:
 
-        self.ro_crate_root = ro_crate_root
         self.bia_rocrate_metadata = ro_crate_metadata
+        self.ro_crate_root = ro_crate_metadata.get_base_path()
 
         multivalued_properties_key = "multivalued_properties"
         if context and multivalued_properties_key in context:

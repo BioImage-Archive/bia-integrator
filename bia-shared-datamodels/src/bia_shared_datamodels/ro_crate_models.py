@@ -5,6 +5,15 @@ from bia_shared_datamodels.linked_data.pydantic_ld.FieldContext import FieldCont
 from bia_shared_datamodels.linked_data.pydantic_ld.LDModel import ObjectReference
 
 
+class ROCrateCreativeWork(ROCrateModel):
+    id: str = Field(alias="@id", default="ro-crate-metadata.json")
+    type: str | list[str] = Field(alias="@type", default="CreativeWork")
+    conformsTo: dict = Field(default={"@id": "https://w3id.org/ro/crate/1.1"})
+    about: dict = Field(default={"@id": "./"})
+
+    model_config = ConfigDict(model_type="http://schema.org/CreativeWork")
+
+
 # Studies and Publications
 
 

@@ -27,9 +27,11 @@ class ReferenceValidation(Validator):
         self,
         ro_crate_metadata_path: Path,
     ):
-        self.ro_crate_metadata_graph = JSONLDMetadataParser().parse_to_graph(
-            ro_crate_metadata_path
-        )
+        
+        ro_crate_metatadata_parser = JSONLDMetadataParser()
+        ro_crate_metatadata_parser.parse(ro_crate_metadata_path)
+        ro_crate_metadata = ro_crate_metatadata_parser.result
+        self.ro_crate_metadata_graph = ro_crate_metadata.to_graph()
 
         super().__init__()
 

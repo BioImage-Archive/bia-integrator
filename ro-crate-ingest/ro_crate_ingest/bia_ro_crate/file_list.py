@@ -103,19 +103,6 @@ class FileList:
     def align_data_columns_to_schema(self):
         self.data = self.data[list(self.schema.keys())]
 
-    def merge(self, other: "FileList", align_schema_with_data: bool = True):
-        self.add_filelist_id_column()
-        other.add_filelist_id_column()
-        combined = pd.concat([self.data, other.data], ignore_index=True)
-        self.data = combined
-
-        self.schema = other.schema | self.schema
-
-        if align_schema_with_data:
-            self.align_schema_to_data_columns()
-        else:
-            self.align_data_columns_to_schema()
-
     def to_processable_data(self) -> pd.DataFrame:
         semantic_column_map = {}
         non_semantic_column_map = {}

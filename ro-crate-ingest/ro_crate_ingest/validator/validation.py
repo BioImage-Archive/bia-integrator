@@ -51,7 +51,7 @@ def bia_roc_validation(ro_crate_directory: Path):
         )
     )
 
-    validate(FileListReferenceValidator.FileListReferenceValidator(ro_crate_directory))
+    validate(FileListReferenceValidator.FileListReferenceValidator(metadata_path))
 
     # TODO: validate file / image references
 
