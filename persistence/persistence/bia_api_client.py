@@ -10,7 +10,7 @@ from bia_shared_datamodels import bia_data_model
 from pydantic import BaseModel
 from pydantic.alias_generators import to_snake
 
-from persistance.settings import Settings
+from persistence.settings import Settings
 
 logger = logging.getLogger("__main__." + __name__)
 

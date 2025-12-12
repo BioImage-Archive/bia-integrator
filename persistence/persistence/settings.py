@@ -36,17 +36,19 @@ class Settings(BaseSettings):
     bia_api_password: str = Field("")
 
     @model_validator(mode="after")
-    def copy_other_field(
-        self,
-    ) -> Self:
-        for field in ("bia_api_basepath", "bia_api_username", "bia_api_password"):
-            self.__setattr__(field, self.__getattribute__(f"local_{field}"))
+    def copy_other_field(self) -> Self:
+        self.set_to_local_api()
         return self
 
     def set_to_dev_api(self):
         self.bia_api_basepath = self.dev_api_basepath
         self.bia_api_username = self.dev_api_username
         self.bia_api_password = self.dev_api_password
+
+    def set_to_local_api(self):
+        self.bia_api_basepath = self.local_bia_api_basepath
+        self.bia_api_username = self.local_bia_api_username
+        self.bia_api_password = self.local_bia_api_password
 
 
 def get_settings() -> Settings:

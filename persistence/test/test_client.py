@@ -5,7 +5,7 @@ import pytest
 from bia_integrator_api.models.study import Study
 from bia_shared_datamodels import bia_data_model, mock_objects
 
-from persistance.bia_api_client import BIAAPIClient
+from persistence.bia_api_client import BIAAPIClient
 
 
 @pytest.fixture()
