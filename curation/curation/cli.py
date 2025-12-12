@@ -6,7 +6,7 @@ from typing import Annotated
 import typer
 from rich.logging import RichHandler
 
-from curation.bia_api_client import BIAAPIClient
+from persistence.bia_api_client import BIAAPIClient
 from curation.curator.object_attribute_curator import ObjectAttributeCurator
 from curation.curator.object_field_curator import ObjectFieldCurator
 from curation.directive.attribute_directive import AttributeDirective
@@ -44,7 +44,7 @@ def apply_directive(
     settings = get_settings()
 
     if api_mode == APIMode.DEV:
-        settings.configure_for_dev_api()
+        settings.set_to_dev_api()
 
     api_client = BIAAPIClient(settings=settings)
 

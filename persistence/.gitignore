@@ -1,0 +1,4 @@
+.aider*
+.env
+__pycache__
+poetry.lock
