@@ -2,16 +2,14 @@ from rdflib.graph import Graph
 from pathlib import Path
 import pytest
 import os
-from dotenv import dotenv_values
-from bia_integrator_api.util import get_client
 import json
+from persistence.utils import create_test_user, set_dev_settings_to_local
+from persistence.bia_api_client import BIAAPIClient
+from ro_crate_ingest.settings import get_settings
 
 
 def pytest_configure(config: pytest.Config):
-    env_settings = dotenv_values(str(Path(__file__).parents[1] / ".env_template"))
-    os.environ["bia_api_basepath"] = env_settings["local_bia_api_basepath"]
-    os.environ["bia_api_username"] = env_settings["local_bia_api_username"]
-    os.environ["bia_api_password"] = env_settings["local_bia_api_password"]
+    set_dev_settings_to_local()
 
 
 @pytest.fixture(scope="session")
@@ -23,7 +21,9 @@ def tmp_bia_data_dir(tmp_path_factory):
 
 @pytest.fixture()
 def get_bia_api_client():
-    return get_client(os.environ.get("bia_api_basepath"))
+    settings = get_settings()
+    create_test_user(settings)
+    return BIAAPIClient(settings)
 
 
 @pytest.fixture(scope="session")

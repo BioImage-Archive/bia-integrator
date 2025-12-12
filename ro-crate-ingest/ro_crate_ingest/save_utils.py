@@ -10,8 +10,7 @@ import os
 from typing import Type
 from enum import Enum
 from pydantic.alias_generators import to_snake
-import bia_integrator_api.models as api_models
-from bia_integrator_api.exceptions import NotFoundException, ApiException
+from bia_integrator_api.exceptions import NotFoundException
 import pandas as pd
 import logging
 
@@ -70,50 +69,19 @@ def fetch_document(
 
 
 def save_local_api(
-    object_type: Type[bia_data_model.DocumentMixin],
     objects_to_save: list[bia_data_model.DocumentMixin],
 ):
     client = get_local_bia_api_client()
-    save_api(client, object_type, objects_to_save)
+    for obj in objects_to_save:
+        client.put_object(obj)
 
 
 def save_bia_api(
-    object_type: Type[bia_data_model.DocumentMixin],
     objects_to_save: list[bia_data_model.DocumentMixin],
 ):
     client = get_bia_api_client()
-    save_api(client, object_type, objects_to_save)
-
-
-def save_api(
-    client,
-    object_type: Type[bia_data_model.DocumentMixin],
-    objects_to_save: list[bia_data_model.DocumentMixin],
-):
     for obj in objects_to_save:
-
-        api_obj = getattr(api_models, object_type.__name__).model_validate_json(
-            obj.model_dump_json()
-        )
-        api_creation_method = f"post_{to_snake(object_type.__name__)}"
-        post_function = getattr(client, api_creation_method)
-        try:
-            post_function(api_obj)
-        except ApiException as e:
-            if e.reason == "Conflict":
-                api_copy_of_obj = fetch_document(object_type, obj, client)
-                if (
-                    api_copy_of_obj
-                    and round_trip_object_class_from_client_to_datamodel(api_obj)
-                    != api_copy_of_obj
-                ):
-                    logger.debug(
-                        f"Updating: {api_copy_of_obj.uuid} and bumping version."
-                    )
-                    api_obj.version = api_copy_of_obj.version + 1
-                    post_function(api_obj)
-            else:
-                raise e
+        client.put_object(obj)
 
 
 def persist(
@@ -129,9 +97,9 @@ def persist(
     if persistence_mode == PersistenceMode.LOCAL_FILE:
         save_local_file(accession_id, object_type, objects_to_save)
     elif persistence_mode == PersistenceMode.LOCAL_API:
-        save_local_api(object_type, objects_to_save)
+        save_local_api(objects_to_save)
     elif persistence_mode == PersistenceMode.BIA_API:
-        save_bia_api(object_type, objects_to_save)
+        save_bia_api(objects_to_save)
     else:
         raise ValueError(
             f"Something went wrong with the persistance mode: {persistence_mode}"
