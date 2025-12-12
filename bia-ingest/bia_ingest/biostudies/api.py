@@ -243,6 +243,13 @@ def load_submission(accession_id: str) -> Submission:
         "S-BIAD2250": "Dataset cannot find Specimen Imaging Prepration Protocol that exists in its associations: All specimens",
         "S-BIAD1500": "Extraenous '.' at end of publication doi causing pydantic validation failure. Also note that study had a zip file > 2TB (greater than FIRE size limit), so we asked for study to be deleted.",
         "S-BSST592": "links section has a meaningless input -> url: LC3 and p62 ",
+        "S-BIAD1879": "One publication DOI has an errant space in it",
+        "S-BIAD1926": "Publication DOI has ' Funding' appended to it",
+        "S-BIAD1043": "Url to publication was put in DOI field. Replace with actual DOI",
+        "S-BIAD1388": "Remove incomplete publicaiton section",
+        "S-BIAD1763": "Add missing '1' to start of DOI",
+        "S-BIAD1982": "DOI mising leading '10 and entered incorrectly. Correct errors in DOI",
+        "S-BIAD2324": "Changed DOI of publication from arXiv:2504.18737v1 to 10.48550/arXiv.2504.18737",
     }
     if accession_id in overrides:
         return read_override(accession_id)
