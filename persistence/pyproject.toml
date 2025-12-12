@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "persistence"
+version = "0.1.0"
+description = ""
+authors = ["Francois <fsherwood@ebi.ac.uk>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.13"
+bia-integrator-api = { path = "../clients/python", develop = true }
+bia-shared-datamodels = { path = "../bia-shared-datamodels", develop = true }
+pydantic = "^2.9.2"
+pydantic-settings = "^2.5.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
