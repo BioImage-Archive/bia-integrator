@@ -1,0 +1,681 @@
+{
+  "accno": "S-BIAD1043",
+  "attributes": [
+    {
+      "name": "Template",
+      "value": "BioImages.v4"
+    },
+    {
+      "name": "ReleaseDate",
+      "value": "2024-03-01"
+    },
+    {
+      "name": "AttachTo",
+      "value": "BioImages"
+    }
+  ],
+  "section": {
+    "type": "Study",
+    "attributes": [
+      {
+        "name": "Title",
+        "value": "HiTIPS: High-Throughput Image Processing Software for the Study of Nuclear Architecture and Gene Expression"
+      },
+      {
+        "name": "Description",
+        "value": "High-throughput imaging (HTI) generates complex imaging datasets from a large number of\nexperimental perturbations. Commercial HTI software for image analysis workflows does not\nallow full customization and adoption of new image processing algorithms in the analysis modules.\nWhile open-source HTI analysis platforms provide individual modules in the workflow, like nuclei\nsegmentation, spot detection, or cell tracking, they are often limited in integrating novel analysis\nmodules or algorithms. Here, we introduce the High-Throughput Image Processing Software\n(HiTIPS) to expand the range and customization of existing HTI analysis capabilities. HiTIPS\nincorporates advanced image processing and machine learning algorithms for automated cell and\nnuclei segmentation, spot signal detection, nucleus tracking, spot tracking, and quantification of\nspot signal intensity. Furthermore, HiTIPS features a graphical user interface that is open to\nintegration of new algorithms for existing analysis pipelines and to adding new analysis pipelines\nthrough separate plugins. To demonstrate the utility of HiTIPS, we present three examples of\nimage analysis workflows for high-throughput DNA FISH, immunofluorescence (IF), and live-\ncell imaging of transcription in single cells. Altogether, we demonstrate that HiTIPS is a user-\nfriendly, flexible, and open-source HTI analysis platform for a variety of cell biology applications"
+      },
+      {
+        "name": "Keywords",
+        "value": "Microscopy"
+      },
+      {
+        "name": "Keywords",
+        "value": "Image Analysis"
+      },
+      {
+        "name": "Keywords",
+        "value": "High-throughput imaging"
+      },
+      {
+        "name": "License",
+        "value": "CC BY 4.0",
+        "valqual": [
+          {
+            "name": "URL",
+            "value": "https://creativecommons.org/licenses/by/4.0/legalcode"
+          }
+        ]
+      },
+      {
+        "name": "Funding statement",
+        "value": "Research in the Misteli Lab, Larson Lab, and HiTIF was supported by the Intramural Research Program of the NIH, NCI, Center for Cancer Research via 1-ZIA-BC010309-24, 1-ZIA-BC011383-12, and 1-ZIC-BC011567-09, respectively."
+      }
+    ],
+    "subsections": [
+      {
+        "type": "author",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Adib Keikhosravi"
+          },
+          {
+            "name": "E-mail",
+            "value": "adib.keikhosravi@nih.gov"
+          },
+          {
+            "name": "affiliation",
+            "value": "o1",
+            "reference": true
+          }
+        ]
+      },
+      {
+        "type": "author",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Faisal Almansour"
+          },
+          {
+            "name": "affiliation",
+            "value": "o1",
+            "reference": true
+          }
+        ]
+      },
+      {
+        "type": "author",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Christopher H. Bohrer"
+          },
+          {
+            "name": "affiliation",
+            "value": "o1",
+            "reference": true
+          }
+        ]
+      },
+      {
+        "type": "author",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Nadezda A. Fursova"
+          },
+          {
+            "name": "affiliation",
+            "value": "o1",
+            "reference": true
+          }
+        ]
+      },
+      {
+        "type": "author",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Krishnendu Guin"
+          },
+          {
+            "name": "affiliation",
+            "value": "o1",
+            "reference": true
+          }
+        ]
+      },
+      {
+        "type": "author",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Varun Sood"
+          },
+          {
+            "name": "affiliation",
+            "value": "o1",
+            "reference": true
+          }
+        ]
+      },
+      {
+        "type": "author",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Tom Misteli"
+          },
+          {
+            "name": "affiliation",
+            "value": "o1",
+            "reference": true
+          }
+        ]
+      },
+      {
+        "type": "author",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Daniel R. Larson"
+          },
+          {
+            "name": "affiliation",
+            "value": "o1",
+            "reference": true
+          }
+        ]
+      },
+      {
+        "type": "author",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Gianluca Pegoraro"
+          },
+          {
+            "name": "E-mail",
+            "value": "gianluca.pegoraro@nih.gov"
+          },
+          {
+            "name": "affiliation",
+            "value": "o1",
+            "reference": true
+          }
+        ]
+      },
+      {
+        "accno": "o1",
+        "type": "organisation",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "National Cancer Institute"
+          }
+        ]
+      },
+      {
+        "type": "Publication",
+        "attributes": [
+          {
+            "name": "Pubmed ID",
+            "value": "High-throughput image processing software for the study of nuclear architecture and gene expression"
+          },
+          {
+            "name": "Title",
+            "value": "HiTIPS: High-Throughput Image Processing Software for the Study of Nuclear Architecture and Gene Expression"
+          },
+          {
+            "name": "Authors",
+            "value": "Adib Keikhosravi, Faisal Almansour, Christopher H. Bohrer, Nadezda A. Fursova, Krishnendu Guin, Varun Sood, Tom Misteli, Daniel R. Larson, Gianluca Pegoraro"
+          },
+          {
+            "name": "DOI",
+            "value": "https://doi.org/10.1038/s41598-024-66600-1"
+          },
+          {
+            "name": "Year",
+            "value": "2024"
+          }
+        ]
+      },
+      {
+        "type": "Funding",
+        "attributes": [
+          {
+            "name": "Agency",
+            "value": "National Institute of Health"
+          },
+          {
+            "name": "grant_id",
+            "value": "1-ZIA-BC010309-24"
+          }
+        ]
+      },
+      {
+        "type": "Funding",
+        "attributes": [
+          {
+            "name": "Agency",
+            "value": "National Institute of Health"
+          },
+          {
+            "name": "grant_id",
+            "value": "1-ZIA-BC011383-12"
+          }
+        ]
+      },
+      {
+        "type": "Funding",
+        "attributes": [
+          {
+            "name": "Agency",
+            "value": "National Institute of Health"
+          },
+          {
+            "name": "grant_id",
+            "value": "1-ZIC-BC011567-09"
+          }
+        ]
+      },
+      {
+        "accno": "Biosample-1",
+        "type": "Biosample",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "DNA FISH DMSO"
+          },
+          {
+            "name": "Organism",
+            "value": "Homo sapiens (human)"
+          },
+          {
+            "name": "Biological entity",
+            "value": "HCT116 RAD21-mAID-mClover (RAD21-mAC) cells"
+          },
+          {
+            "name": "Extrinsic variable",
+            "value": "DMSO"
+          }
+        ]
+      },
+      {
+        "accno": "Biosample-7",
+        "type": "Biosample",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "Biosample IF siNCAPH2"
+          },
+          {
+            "name": "Organism",
+            "value": "Homo sapiens (human)"
+          },
+          {
+            "name": "Biological entity",
+            "value": "HCT116-Cas9 cells"
+          },
+          {
+            "name": "Extrinsic variable",
+            "value": "siNCAPH2"
+          }
+        ]
+      },
+      {
+        "accno": "Biosample-13",
+        "type": "Biosample",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "Biosample Live ERRFI1"
+          },
+          {
+            "name": "Organism",
+            "value": "Homo sapiens (human)"
+          },
+          {
+            "name": "Biological entity",
+            "value": "Bronchial epithelial cell line (HBEC3-KT)"
+          },
+          {
+            "name": "Extrinsic variable",
+            "value": "ERRFI1 Nascent RNA"
+          }
+        ]
+      },
+      {
+        "accno": "Biosample-13",
+        "type": "Biosample",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "DNA FISH AUXIN"
+          },
+          {
+            "name": "Organism",
+            "value": "Homo sapiens (human)"
+          },
+          {
+            "name": "Biological entity",
+            "value": "HCT116 RAD21-mAID-mClover (RAD21-mAC) cells"
+          },
+          {
+            "name": "Extrinsic variable",
+            "value": "AUXIN"
+          }
+        ]
+      },
+      {
+        "accno": "Biosample-14",
+        "type": "Biosample",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "Biosample IF siScrambled"
+          },
+          {
+            "name": "Organism",
+            "value": "Homo sapiens (human)"
+          },
+          {
+            "name": "Biological entity",
+            "value": "HCT116-Cas9 cells"
+          },
+          {
+            "name": "Extrinsic variable",
+            "value": "siScrambled"
+          }
+        ]
+      },
+      {
+        "accno": "Biosample-15",
+        "type": "Biosample",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "Biosample Live KPNB1"
+          },
+          {
+            "name": "Organism",
+            "value": "Homo sapiens (human)"
+          },
+          {
+            "name": "Biological entity",
+            "value": "Bronchial epithelial cell lines (HBEC3-KT)"
+          },
+          {
+            "name": "Extrinsic variable",
+            "value": "KPNB1 Nascent RNA"
+          }
+        ]
+      },
+      {
+        "accno": "Specimen-2",
+        "type": "Specimen",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "Figure 3 Specimen"
+          },
+          {
+            "name": "Sample preparation protocol",
+            "value": "The cells were fixed in 4% PFA (Electron Microscopy Sciences,\nCat. No. 15710) in PBS for 10 minutes. After fixation, the plates were rinsed three times in PBS\nand stored in PBS at 4 °C. We then conducted high-throughput fluorescence in situ hybridization (hiFISH). Briefly, BAC FISH probes were selected to hybridize to the boundary regions of the topologically associated domain (TAD) on chromosome 7 containing the EGFR gene. Fluorescently labeled BAC probes were generated by nick translation at 14°C for 1 hour and 20 minutes. The reaction mixture included 40 ng/ml DNA, 0.05 M Tris-HCl pH 8.0, 5 mM MgCl2, 0.05 mg/ml BSA, 0.05 mM dNTPs (including fluorescently tagged dUTP), 1 mM β-mercaptoethanol, 0.5 U/ml E. coli DNA Polymerase, and 0.5 mg/ml DNase I. The reaction was stopped by adding 1 µl of EDTA per 50 µl reaction volume, followed by a heat shock at 72 °C for 10 minutes. Probes were labeled either with DY549P1-dUTP (Dyomics, Cat. # 549P1-34) or with DY647P1-dUTP (Dyomics, Cat. # 647P1-34). The reaction was then stored at -20 °C overnight. Next, the two probes (0.5 mg per probe) were combined, precipitated with ethanol, and resuspended in 14 µl of hybridization buffer (50% formamide pH 7.0, 10% Dextran Sulfate, and 1% Tween-20 in 2X SSC) per well. Cells were rinsed twice with PBS and subjected to permeabilization. Permeabilization was performed at room temperature for 20 min using 0.5% w/v saponin/0.5% v/v Triton X-100 in PBS. After rinsing the cells with PBS twice, cells were deproteinated for 15 minutes in 0.1 N HCl and neutralized for 5 minutes in 2X SSC at room temperature. Cells were equilibrated overnight in 50% formamide/2X SSC at 4°C. The probe mix was warmed to 72 °C prior to the hybridization reaction. Next, 14 µl/well of resuspended probe mix was added to the plate and denatured at 85 °C for 7 min, followed by immediate transfer to a 37 °C incubator for a 48-hour hybridization period. Post-hybridization, plates were rinsed once at room temperature with 2X SSC, followed by three rinses with 1X SSC and 0.1X SSC, all warmed to 45 °C. Cells were stained with 3 µg/ml DAPI for 15 minutes, then rinsed and mounted in PBS"
+          },
+          {
+            "name": "Growth protocol",
+            "value": "HCT116 RAD21-mAID-mClover (RAD21-mAC) cells 25 were cultured at 37 °C in 5% CO2 in\nMcCoy's 5A medium supplemented with 10% FBS, 2 mM L-glutamine, 100 U/ml penicillin, and\n100 μg/ml streptomycin. For the FISH experiment, cells were plated at a density of 8000 cells per\nwell in 384-well imaging plates (PhenoPlate 384-well, Revvity, Cat. No. 6057500) and allowed to\ngrow overnight. The following day, the medium was replaced with either supplemented medium\ncontaining 170 mM Auxin (Sigma-Aldrich, Cat. No. I3750) to induce the degradation of RAD21,\nor with medium with an equivalent amount of DMSO alone as vehicle control. The cells were then incubated with or without Auxin for 3 hours."
+          }
+        ]
+      },
+      {
+        "accno": "Specimen-8",
+        "type": "Specimen",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "Figure 4 Specimen"
+          },
+          {
+            "name": "Sample preparation protocol",
+            "value": "Fixed cells were washed three times with PBS. Cells were then\npermeabilized using a 0.5% Triton X-100 (Milipore Sigma, Cat No. 9036-19-5) solution in PBS\nfor 15 minutes at RT, washed three times with 50 μl PBS, and blocked in a 5% BSA (Milipore\nSigma, Cat No. 9048-46-8) solution in PBS for 15 minutes at RT. Immunofluorescence staining\nagainst the centromeric protein CENPC was performed using a primary CENPC antibody (MBL\nBio Science, Cat. No. PD030, raised in Guinea pig) at 1:1000 dilution for 1 hour at RT, and a Goat\nAnti-Guinea pig IgG H&L secondary antibody (AlexaFluor 488, Abcam, Cat. No. Ab150185) at\n1:500 dilution for 1 hour at RT. For nuclear staining, 40 μl of a 5 mg/ml DAPI 4′,6-diamidino-2-\nphenylindole (DAPI , Thermo Fisher Scientific, Cat. No. 62248) solution in PBS were added to\neach well."
+          },
+          {
+            "name": "Growth protocol",
+            "value": "HCT116-Cas9 cells 34 were grown in RPMI-1640 medium (ATCC, Cat. No. 30-2001)\nsupplemented with 10% fetal bovine serum (FBS, Gibco, Cat. No. 10-082-147) and maintained at\n37°C in 5% CO2. siRNA Reverse transfection and Immunofluorescence staining were performed\nin a 384-well glass bottom plate (CellVis, Cat. No. P384-1.5H-N). The siRNAs were siNCAPH2\n(Thermo Fisher Scientific, Cat. No. 4392420, Assay ID s26585), and siScrambled (Thermo Fisher\nScientific, Cat. No. 4390847). For the reverse transfection, 150 nl of 5 mM siRNA and 50 nl of\nLipofectamine RNAiMAX reagent (Invitrogen, Cat. No. 13778075) were individually diluted in\n20 μl of serum-free OptiMEM medium (Thermo Fisher Scientific, Cat. No. 31985070) and\nsequentially added to each well. The siRNA and RNAiMAX mix was incubated for 30 min at RT.\nCells were trypsinized, and a cell suspension (2000 cells in a volume of 20 μl) was prepared in\nOptiMEM supplemented with 20% FBS. 20 μl of the cell suspension was added to each well\ncontaining the RNAiMAX/siRNA oligo complexes. Transfected cells were grown for 72 hours in\na cell incubator at 37°C and then fixed with 2% paraformaldehyde (PFA, Electron Microscopy\nSciences, Cat. No. 15710) in PBS."
+          }
+        ]
+      },
+      {
+        "accno": "Specimen-14",
+        "type": "Specimen",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "Figure 5 Specimen"
+          },
+          {
+            "name": "Sample preparation protocol",
+            "value": "For imaging experiments, cells were cultured in 384 well plates (PhenoPlate 384-well, Revvity, Cat. No. 6057500) and imaged at 37°C, 5% CO2, 80% humidity."
+          },
+          {
+            "name": "Growth protocol",
+            "value": "Human bronchial epithelial cell lines (HBEC3-KT) with a monoallelic insertion of an MS2 array in the intron of the model genes were used. To enable visualization of the nascent RNA, the viral MS2 capsid protein (MCP) fused to GFP, and an NLS (nuclear localization signal) tag were stably introduced into the cells using lentiviral expression vectors. Cells were grown in Keratinocyte serum-free medium (Thermo Fisher Scientific, Cat. No. 17005042) supplemented with bovine pituitary extract (Thermo Fisher Scientific, Cat. No. 13028014) and human growth hormone (Thermo Fisher Scientific, Cat. No. 1045013)."
+          }
+        ]
+      },
+      {
+        "accno": "Image acquisition-3",
+        "type": "Image acquisition",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "Figure 3 Image acquisition"
+          },
+          {
+            "name": "Imaging instrument",
+            "value": "CellVoyager CV7000/CV8000"
+          },
+          {
+            "name": "Image acquisition parameters",
+            "value": "For DNA FISH experiments, we used 405 nm (DAPI Channel), 561 nm (Probe A channel), or 640\nnm (Probe B channel) excitation lasers. In addition, we used a 405/488/561/640 nm excitation\ndichroic mirror, a 60X water objective (NA 1.2), and 445/45 nm (DAPI Channel), 600/37 nm\n(Probe A channel), or 676/29 nm (Probe B channel) bandpass emission mirrors in front of a 16-bit\nsCMOS camera (2048 X 2048 pixels, binning 1X1, pixel size: 0.108 microns). Z-stacks of 7\nmicrons were acquired at 1 micron intervals and maximally projected on the fly. Images were\nacquired in 32 fields of view (FOV) per well."
+          },
+          {
+            "name": "Imaging method",
+            "value": "spinning disk confocal microscopy"
+          }
+        ]
+      },
+      {
+        "accno": "Image acquisition-9",
+        "type": "Image acquisition",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "Figure 4 Image acquisition"
+          },
+          {
+            "name": "Imaging instrument",
+            "value": "CellVoyager CV7000/CV8000"
+          },
+          {
+            "name": "Image acquisition parameters",
+            "value": "we used 405 nm (DAPI Channel) or 488 nm (CENPC channel) excitation\nlasers, a 405/488/561/640 nm excitation dichroic mirror, a 60X water objective (NA 1.2), 445/45\n(DAPI Channel) or 525/50 nm (CENPC Channel) bandpass emission mirrors, and a 16-bit sCMOS\ncamera (2048 X 2048 pixels, binning 1X1, pixel size: 0.108 microns). Z-stacks of 14 microns were\nacquired at 1 micron intervals and maximally projected on the fly. Images were acquired in 22\nFOV per well."
+          },
+          {
+            "name": "Imaging method",
+            "value": "spinning disk confocal microscopy"
+          }
+        ]
+      },
+      {
+        "accno": "Image acquisition-15",
+        "type": "Image acquisition",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "Figure 5 Image acquisition"
+          },
+          {
+            "name": "Imaging instrument",
+            "value": "CellVoyager CV7000/CV8000"
+          },
+          {
+            "name": "Image acquisition parameters",
+            "value": "We used a 488 nm excitation laser, a 405/488/561/640 nm excitation dichroic mirror, either a 40X air objective (NA 0.95) or a 40X water objective (NA 1.15), a 525/50 nm bandpass emission mirror, and a 16-bit sCMOS camera (2048 X 2048 pixels, binning 2X2, pixel size: 0.325 microns). Z-stacks of 0.5 microns were acquired at 100 sec intervals and maximally projected on the fly, every 100s for 10 hours."
+          },
+          {
+            "name": "Imaging method",
+            "value": "spinning disk confocal microscopy"
+          }
+        ]
+      },
+      {
+        "accno": "Study Component-4",
+        "type": "Study Component",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Figure 3 Experiment"
+          },
+          {
+            "name": "Description",
+            "value": "Using this dataset, we wanted to benchmark HiTIPS in a high-throughput DNA FISH assay by testing whether we could measure changes in the physical distances of the boundaries of the TAD containing the human EGFR gene on Chr 7 upon acute depletion of RAD21. "
+          },
+          {
+            "name": "File List",
+            "value": "HiTIPS_paper_data/fig_3/file_list_fig3.json"
+          }
+        ],
+        "subsections": [
+          {
+            "type": "Associations",
+            "attributes": [
+              {
+                "name": "Biosample",
+                "value": "DNA FISH DMSO"
+              },
+              {
+                "name": "Specimen",
+                "value": "Figure 3 Specimen"
+              },
+              {
+                "name": "Image acquisition",
+                "value": "Figure 3 Image acquisition"
+              }
+            ]
+          },
+          {
+            "type": "Associations",
+            "attributes": [
+              {
+                "name": "Biosample",
+                "value": "DNA FISH AUXIN"
+              },
+              {
+                "name": "Specimen",
+                "value": "Figure 3 Specimen"
+              },
+              {
+                "name": "Image acquisition",
+                "value": "Figure 3 Image acquisition"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "accno": "Study Component-10",
+        "type": "Study Component",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Figure 5 Experiment"
+          },
+          {
+            "name": "Description",
+            "value": "Random or targeted intronic integration of endogenous genes with arrays of MS2 hairpins in cells stably expressing a fluorescently tagged fusion of the MS2 capsid protein (MCP) has been instrumental in demonstrating that in mammalian cells transcription happens in bursts of activity 9 followed by periods of inactivity, and that splicing of long introns is recursive. HTI acquisition and analysis has been used to measure the dynamics of these events in large numbers of single live cells. We aimed to compare HiTIPS with our previous image analysis pipeline to show that it can be applied to precisely quantify transcriptional dynamics in live cells at the single-cell level (Fig. 5). To this end, we ran the full HiTIPS analysis pipeline on HTI datasets from two clonal human bronchial epithelial (HBEC) cell lines, in which the ERRFI1 and KPNB1 genes have been endogenously tagged with 24xMS2 loops, enabling visualization of their nascent transcription with MCP-GFP. MS2/MCP-GFP labelled transcription sites in these nuclei were detected, registered, grouped into tracks, and the integrated fluorescence intensity was measured at the site of transcription."
+          },
+          {
+            "name": "File List",
+            "value": "HiTIPS_paper_data/fig_5/file_list_fig5.json"
+          }
+        ],
+        "subsections": [
+          {
+            "type": "Associations",
+            "attributes": [
+              {
+                "name": "Biosample",
+                "value": "Biosample Live ERRFI1"
+              },
+              {
+                "name": "Specimen",
+                "value": "Figure 5 Specimen"
+              },
+              {
+                "name": "Image acquisition",
+                "value": "Figure 5 Image acquisition"
+              }
+            ]
+          },
+          {
+            "type": "Associations",
+            "attributes": [
+              {
+                "name": "Biosample",
+                "value": "Biosample Live KPNB1"
+              },
+              {
+                "name": "Specimen",
+                "value": "Figure 5 Specimen"
+              },
+              {
+                "name": "Image acquisition",
+                "value": "Figure 5 Image acquisition"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "accno": "Study Component-12",
+        "type": "Study Component",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Figure 4 Experiment"
+          },
+          {
+            "name": "Description",
+            "value": "We used this dataset to test whether we could use HiTIPS to measure spatial clustering of centromeres at the single- nucleus level. To this end, we reverse-transfected HCT116-Cas9 cells with siRNA oligos against the NCAPH2 gene, or a scrambled negative siRNA control in 384-well plates. Cells were fixed and stained with DAPI for nuclei segmentation and with a CENPC-specific antibody to visualize centromeres. Stained cells were then imaged in 3D, and maximally projected images were analyzed using HiTPS for nuclear segmentation and spot finding/localization. "
+          },
+          {
+            "name": "File List",
+            "value": "HiTIPS_paper_data/fig_4/file_list_fig4.json"
+          }
+        ],
+        "subsections": [
+          {
+            "type": "Associations",
+            "attributes": [
+              {
+                "name": "Biosample",
+                "value": "Biosample IF siNCAPH2"
+              },
+              {
+                "name": "Specimen",
+                "value": "Figure 4 Specimen"
+              },
+              {
+                "name": "Image acquisition",
+                "value": "Figure 4 Image acquisition"
+              }
+            ]
+          },
+          {
+            "type": "Associations",
+            "attributes": [
+              {
+                "name": "Biosample",
+                "value": "Biosample IF siScrambled"
+              },
+              {
+                "name": "Specimen",
+                "value": "Figure 4 Specimen"
+              },
+              {
+                "name": "Image acquisition",
+                "value": "Figure 4 Image acquisition"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "type": "submission"
+}

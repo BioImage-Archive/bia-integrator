@@ -1,0 +1,260 @@
+{
+  "accno": "S-BIAD1926",
+  "attributes": [
+    {
+      "name": "Template",
+      "value": "BioImages.v4"
+    },
+    {
+      "name": "DOI",
+      "value": "10.6019/S-BIAD1926"
+    },
+    {
+      "name": "ReleaseDate",
+      "value": "2025-05-09"
+    },
+    {
+      "name": "AttachTo",
+      "value": "BioImages"
+    }
+  ],
+  "section": {
+    "type": "Study",
+    "attributes": [
+      {
+        "name": "Title",
+        "value": "Limb bud HCR for Sox9, Hoxa11 and Hoxa13 for \"LimbLab: Pipeline for 3D Analysis and Visualisation of Limb Bud Gene Expression\""
+      },
+      {
+        "name": "Description",
+        "value": "This dataset accompanies the preprint \"LimbLab: Pipeline for 3D Analysis and Visualisation of Limb Bud Gene Expression\". It contains 3D lightsheet images of cleared tissue labeled with HCR probes for Sox9, Hoxa11, and Hoxa13."
+      },
+      {
+        "name": "Keywords",
+        "value": "HCR"
+      },
+      {
+        "name": "Keywords",
+        "value": "Limb Development"
+      },
+      {
+        "name": "Keywords",
+        "value": "Sox9"
+      },
+      {
+        "name": "Keywords",
+        "value": "Hoxa11"
+      },
+      {
+        "name": "Keywords",
+        "value": "Hoxa13"
+      },
+      {
+        "name": "Acknowledgements",
+        "value": "The authors thank the Mesoscopic Imaging Facility from EMBL\nBarcelona for their access to light-sheet microscopy. Specially\nto Montserrat Coll-Llado and Jurgen Mayer for the MuViSPIM\ntraining and support. We thank the Animal Facility at PRBB for their support in\nanimal welfare, maintenance, and services provided."
+      },
+      {
+        "name": "License",
+        "value": "CC BY 4.0",
+        "valqual": [
+          {
+            "name": "URL",
+            "value": "https://creativecommons.org/licenses/by/4.0/legalcode"
+          }
+        ]
+      },
+      {
+        "name": "Funding statement",
+        "value": "This study and the contributions of authors L.A.-E., H.C.-\nB, M.M., A.M. and J.S. were supported by funding from the\nEuropean Molecular Biology Laboratory, and the Plan Estatal\ngrant 5972 from MCIU (Ministerio de Ciencia, Innovaci´on y\nUniversidades)."
+      }
+    ],
+    "subsections": [
+      {
+        "type": "author",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Laura"
+          },
+          {
+            "name": "E-mail",
+            "value": "laura.avino@embl.es"
+          },
+          {
+            "name": "affiliation",
+            "value": "o1",
+            "reference": true
+          }
+        ]
+      },
+      {
+        "type": "author",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Heura"
+          },
+          {
+            "name": "E-mail",
+            "value": "heura.cardona@embl.es"
+          },
+          {
+            "name": "affiliation",
+            "value": "o1",
+            "reference": true
+          }
+        ]
+      },
+      {
+        "type": "author",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "James"
+          },
+          {
+            "name": "E-mail",
+            "value": "james.sharpe@embl.es"
+          },
+          {
+            "name": "affiliation",
+            "value": "o1",
+            "reference": true
+          }
+        ]
+      },
+      {
+        "accno": "o1",
+        "type": "organisation",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "European Molecular Biology Laboratory"
+          },
+          {
+            "name": "RORID",
+            "value": "https://ror.org/01yr73893"
+          }
+        ]
+      },
+      {
+        "type": "Publication",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "LimbLab: Pipeline for 3D Analysis and Visualisation of Limb Bud Gene Expression"
+          },
+          {
+            "name": "DOI",
+            "value": "https://doi.org/10.1101/2025.04.08.647723"
+          }
+        ]
+      },
+      {
+        "type": "Funding",
+        "attributes": [
+          {
+            "name": "Agency",
+            "value": "Ministerio de Ciencia, Innovacion y Universidades"
+          },
+          {
+            "name": "grant_id",
+            "value": "5972"
+          }
+        ]
+      },
+      {
+        "accno": "Biosample-1",
+        "type": "Biosample",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "Volume 2"
+          },
+          {
+            "name": "Organism",
+            "value": "Mus musculus (mouse)"
+          },
+          {
+            "name": "Biological entity",
+            "value": "Limb Bud"
+          }
+        ]
+      },
+      {
+        "accno": "Specimen-2",
+        "type": "Specimen",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "Speciment 2"
+          },
+          {
+            "name": "Sample preparation protocol",
+            "value": "In order to perform the HCR, we followed the protocol exactly\nas described in Angela Morabito et al. Optimized\nprotocol for whole-mount rna fluorescent in situ hybridization\nusing oxidation-mediated autofluorescence reduction on mouse\nembryos. STAR Protocols, 4(4):102603, December 2023..\n\nIn summary, HCR procotol consists of\nseveral steps: fixation, photcochemical bleaching, detection,\nand amplification of HCR™RNA-FISH, clearing, and sample\npreparation.\n\nSample Preparation\nAfter clearing samples with Fructose-Glycerol solution for a couple\nof days, samples were embedded in 1% low melting agarose in 10\nmM Tris pH 7.4. The agarose gel containing the sample was then\ncut into octagonal prism shapes of approximately 1 cm3 and placed\non a 24 well plate with fructose-glycerol clearing solution in order\nto clear the agarose. This is incubated for a minimum of 24 hours\nat room temperature protected from light.\n"
+          }
+        ]
+      },
+      {
+        "accno": "Image acquisition-3",
+        "type": "Image acquisition",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "Image Acquisition"
+          },
+          {
+            "name": "Imaging instrument",
+            "value": "Luxendo MuViSPIM light-sheet microscope"
+          },
+          {
+            "name": "Image acquisition parameters",
+            "value": "Light sheet imaging was performed using MuViSPIM from\nLuxendo. Dual side illumination was performed with the\nillumination objectives Nikon CFI Plan Apo Lambda 4× and collar\nwas adjusted to 1.47, matching the refractive index from GlycerolFructose clearing solution. Fluorescence was then captured with\nimmersion 10X Refractive Index adjustment 1.33-1.51 0.5NA glyc\nWD 5.5 objective. The block of agarose containing the sample was\nattached to a 3D printed holder and afterwards was immersed in\nthe cuvette containing Fructose-Glycerol clearing solution."
+          },
+          {
+            "name": "Imaging method",
+            "value": "Light Sheet Imaging"
+          }
+        ]
+      },
+      {
+        "accno": "Study Component-4",
+        "type": "Study Component",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "HCR11 HOXA11 HOXA13 L1"
+          },
+          {
+            "name": "Description",
+            "value": "HCR multi channel volume (Sox9, Hoxa11, Hoxa13 and control channels)"
+          },
+          {
+            "name": "File List",
+            "value": "demo-2.json"
+          }
+        ],
+        "subsections": [
+          {
+            "type": "Associations",
+            "attributes": [
+              {
+                "name": "Biosample",
+                "value": "Volume 2"
+              },
+              {
+                "name": "Specimen",
+                "value": "Speciment 2"
+              },
+              {
+                "name": "Image acquisition",
+                "value": "Image Acquisition"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "type": "submission"
+}

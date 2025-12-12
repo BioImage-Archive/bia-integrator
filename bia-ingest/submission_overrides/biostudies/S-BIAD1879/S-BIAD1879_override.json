@@ -1,0 +1,413 @@
+{
+  "accno": "S-BIAD1879",
+  "attributes": [
+    {
+      "name": "Template",
+      "value": "BioImages.v4"
+    },
+    {
+      "name": "DOI",
+      "value": "10.6019/S-BIAD1879"
+    },
+    {
+      "name": "ReleaseDate",
+      "value": "2025-04-28"
+    },
+    {
+      "name": "AttachTo",
+      "value": "BioImages"
+    }
+  ],
+  "section": {
+    "type": "Study",
+    "attributes": [
+      {
+        "name": "Title",
+        "value": "Precision-cut tumor tissue slices, a novel tool to study the tumor microenvironment interactions with chimeric antigen receptor (CAR) T cells "
+      },
+      {
+        "name": "Description",
+        "value": "Use of precision-cut tumor tissue slices prepared from human high grade serous ovarian carcinoma (HGSOC) patient material to study the interactions of the tumor microenvironment  with FOLR1-targeted chimeric antigen receptor (CAR) T cells"
+      },
+      {
+        "name": "Keywords",
+        "value": "CAR T cells"
+      },
+      {
+        "name": "Keywords",
+        "value": "HGSOC"
+      },
+      {
+        "name": "Keywords",
+        "value": "ACT"
+      },
+      {
+        "name": "Keywords",
+        "value": "cell therapy"
+      },
+      {
+        "name": "Keywords",
+        "value": "human"
+      },
+      {
+        "name": "Keywords",
+        "value": "ovarian carcinoma"
+      },
+      {
+        "name": "Keywords",
+        "value": "cancer"
+      },
+      {
+        "name": "Keywords",
+        "value": "TME"
+      },
+      {
+        "name": "Keywords",
+        "value": "Tumor microenvironment"
+      },
+      {
+        "name": "Keywords",
+        "value": "CAR-T cells"
+      },
+      {
+        "name": "Keywords",
+        "value": "immunology"
+      },
+      {
+        "name": "Keywords",
+        "value": "oncology"
+      },
+      {
+        "name": "License",
+        "value": "CC0",
+        "valqual": [
+          {
+            "name": "URL",
+            "value": "https://creativecommons.org/publicdomain/zero/1.0/legalcode"
+          }
+        ]
+      },
+      {
+        "name": "Funding statement",
+        "value": "This project has received funding from the European Union’s Horizon 2020 research and innovation program under the Marie Skłodowska-Curie grant agreement No 955575"
+      }
+    ],
+    "subsections": [
+      {
+        "type": "author",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Valeria Durante"
+          },
+          {
+            "name": "E-mail",
+            "value": "valeria862durante@gmail.com"
+          },
+          {
+            "name": "ORCID",
+            "value": "0009-0009-3293-2607"
+          },
+          {
+            "name": "affiliation",
+            "value": "o1",
+            "reference": true
+          }
+        ]
+      },
+      {
+        "type": "author",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Alina Wittwer"
+          },
+          {
+            "name": "affiliation",
+            "value": "o1",
+            "reference": true
+          }
+        ]
+      },
+      {
+        "type": "author",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Benjamin Theek"
+          },
+          {
+            "name": "affiliation",
+            "value": "o1",
+            "reference": true
+          }
+        ]
+      },
+      {
+        "type": "author",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Manuel Martinez-Osuna"
+          },
+          {
+            "name": "affiliation",
+            "value": "o1",
+            "reference": true
+          }
+        ]
+      },
+      {
+        "type": "author",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Emmanuel Donnadieu"
+          },
+          {
+            "name": "affiliation",
+            "value": "o2",
+            "reference": true
+          }
+        ]
+      },
+      {
+        "type": "author",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Olaf Hardt"
+          },
+          {
+            "name": "affiliation",
+            "value": "o1",
+            "reference": true
+          }
+        ]
+      },
+      {
+        "type": "author",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Dominik Eckardt"
+          },
+          {
+            "name": "affiliation",
+            "value": "o1",
+            "reference": true
+          }
+        ]
+      },
+      {
+        "type": "author",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Andreas Bosio"
+          },
+          {
+            "name": "affiliation",
+            "value": "o1",
+            "reference": true
+          }
+        ]
+      },
+      {
+        "type": "author",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Sonja Schallenberg"
+          },
+          {
+            "name": "affiliation",
+            "value": "o1",
+            "reference": true
+          }
+        ]
+      },
+      {
+        "type": "author",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Christoph Herbel"
+          },
+          {
+            "name": "affiliation",
+            "value": "o1",
+            "reference": true
+          }
+        ]
+      },
+      {
+        "accno": "o1",
+        "type": "organisation",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Miltenyi Biotec B.V. & Co. KG, Bergisch Gladbach, Germany"
+          }
+        ]
+      },
+      {
+        "accno": "o2",
+        "type": "organisation",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Université Paris Cité, CNRS, Inserm, Institut Cochin, Equipe Labellisée Ligue Contre le Cancer,Paris, France"
+          }
+        ]
+      },
+      {
+        "type": "Publication",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "Precision-cut tumor tissue slices, a novel tool to study the tumor microenvironment interactions with chimeric antigen receptor (CAR) T cells"
+          },
+          {
+            "name": "Authors",
+            "value": " Valeria Durante, Alina Wittwer, Benjamin Theek, Manuel Martinez-Osuna, Emmanuel Donnadieu, Olaf Hardt, Dominik Eckardt, Andreas Bosio, Sonja Schallenberg, Christoph Herbel"
+          },
+          {
+            "name": "DOI",
+            "value": "https://dx.doi.org/10.17504/protocols.io.rm7vz7qx8lx1/v1"
+          }
+        ]
+      },
+      {
+        "type": "Publication",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "Precision-cut tumor tissue slices, a novel tool to study the tumor microenvironment interactions with chimeric antigen receptor (CAR) T cells"
+          },
+          {
+            "name": "Authors",
+            "value": " Valeria Durante, Alina Wittwer, Benjamin Theek, Manuel Martinez-Osuna, Emmanuel Donnadieu, Olaf Hardt, Dominik Eckardt, Andreas Bosio, Sonja Schallenberg, Christoph Herbel"
+          }
+        ]
+      },
+      {
+        "type": "Funding",
+        "attributes": [
+          {
+            "name": "Agency",
+            "value": "European Union’s Horizon 2020 research and innovation program "
+          },
+          {
+            "name": "grant_id",
+            "value": "955575"
+          }
+        ]
+      },
+      {
+        "accno": "Biosample-1",
+        "type": "Biosample",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "Precision-cut tumor tissue slices from human high grade serous ovarian carcinoma (HGSOC) co-cultured with no additional cells (NT), untransduced T cells (UTD) or FOLR1-CAR-T cells after 24h of co-culture"
+          },
+          {
+            "name": "Organism",
+            "value": "Homo sapiens (human)"
+          },
+          {
+            "name": "Description",
+            "value": "tumor tissue slices prepared from human high grade serous ovarian carcinoma (HGSOC)  co-cultured with no additional cells (NT), untransduced T cells (UTD) or FOLR1-CAR-T cells after 24h of co-culture"
+          },
+          {
+            "name": "Biological entity",
+            "value": "tumor tissue slices from human high grade serous ovarian carcinoma (HGSOC)"
+          },
+          {
+            "name": "Experimental variable",
+            "value": "Treatment"
+          }
+        ]
+      },
+      {
+        "accno": "Specimen-2",
+        "type": "Specimen",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "Specimen 1"
+          },
+          {
+            "name": "Sample preparation protocol",
+            "value": "Tissue slices were prepared by embedding a small tumor biopsy in 5% (w/v) low gelling agarose (in PBS), and then cutting it to 400 µm slices with an 8 mm diameter using the Krumdieck Alabama R&D MD6000 Tissue Slicer (TSE Systems, Bad Homburg, Germany). Subsequently, either no cells, 500,000 untransduced (UTD) T cells or 500,000 FOLR1 CAR-T cells were added. After 24h, the tissue slices were fixed in 4% PFA, frozen in liquid nitrogen, and stored at -70 °C, for subsequent preparation of 8 µm sections for spatial multiplexed imaging with the MACSima™ System"
+          },
+          {
+            "name": "Growth protocol",
+            "value": "TumorMACS™ Medium  supplemented with ovarian TumorMACS™ supplement (quantities according to manufacturer instructions), plus 100 U/mLof penicillin and 100 µg/mL of streptomycin"
+          }
+        ]
+      },
+      {
+        "accno": "Image acquisition-3",
+        "type": "Image acquisition",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "MACSima™ System run"
+          },
+          {
+            "name": "Imaging instrument",
+            "value": "MACSima™ System"
+          },
+          {
+            "name": "Image acquisition parameters",
+            "value": "The MACSima  Imaging System is a fully automated instrument combining liquid handling with widefeld microscopy for cyclic  immunofuorescence imaging. In brief, staining cycles consisted of the following automated steps: immunofluorescent staining, sample washing, multi-feld imaging, and signal erasure via photobleaching. All microscope images on the MACSima System are obtained using an epifuorescence setup with \none of three diferent objectives: 20×objective (NA 0.75, 170-micron coverslip glass), long-working-distance  20×objective (NA 0.45, objective slides 1.0 mm), and 2× (NA 0.1). Fluorescence excitation is achieved with \ncustom-designed illumination based on a set of LEDs (infrared, red, green, blue, UV) with LED-specifc flters  to narrow the excitation light spectrum. Additional excitation/dichroic/emission filter sets define the epifluorescence channels optimized for standard dyes (e.g. DAPI, FITC, PE, APC, and Vio 780). Images are captured by  a monochromatic scientifc CMOS (SCMOS) camera with 106 nm/pixel for the 20×objectives and 1060 nm/ pixel for the 2×objective. Autofocusing is achieved via hardware autofocus, i.e. measuring the position  on the glass surface using infrared light to a precision of<1 µm. "
+          },
+          {
+            "name": "Imaging method",
+            "value": "fluorescence microscopy"
+          }
+        ]
+      },
+      {
+        "accno": "Study Component-4",
+        "type": "Study Component",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "human HGSOC tumor tissue slices 24h co-cultures"
+          },
+          {
+            "name": "Description",
+            "value": "Precision-cut tumor tissue slices from human high grade serous ovarian carcinoma (HGSOC) co-cultured with no additional cells (NT), untransduced T cells (UTD) or FOLR1-CAR-T cells after 24h of co-culture"
+          },
+          {
+            "name": "File List",
+            "value": "File list bioimage archive.json"
+          }
+        ],
+        "subsections": [
+          {
+            "type": "Associations",
+            "attributes": [
+              {
+                "name": "Biosample",
+                "value": "Precision-cut tumor tissue slices from human high grade serous ovarian carcinoma (HGSOC) co-cultured with no additional cells (NT), untransduced T cells (UTD) or FOLR1-CAR-T cells after 24h of co-culture"
+              },
+              {
+                "name": "Specimen",
+                "value": "Specimen 1"
+              },
+              {
+                "name": "Image acquisition",
+                "value": "MACSima™ System run"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "type": "submission"
+}
