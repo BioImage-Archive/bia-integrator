@@ -1,5 +1,5 @@
 from persistence.bia_api_client import BIAAPIClient
-from persistence.testing_utils import create_test_user
+from persistence.utils import create_test_user
 
 import logging
 from .settings import get_settings
