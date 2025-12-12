@@ -117,13 +117,13 @@ def get_test_ro_crate_path(accession_id, test_folder="validator") -> Path:
             1,
             [
                 (
-                    "filelist: data1/file_list_with_missing_required_column.tsv",
+                    "filelist: data1/file_list_with_missing_references.tsv",
                     "row: example_file_1.tiff",
                     "NCBI:txid9606",
                     "unexpected type",
                 ),
                 (
-                    "filelist: data1/file_list_with_missing_required_column.tsv",
+                    "filelist: data1/file_list_with_missing_references.tsv",
                     "row: example_file_2.tiff",
                     "_:not_present",
                     "does not exist",

@@ -268,15 +268,15 @@
       "description": "missing required columns.",
       "hasPart": [
         {
-          "@id": "data1/file_list_with_missing_required_column.tsv"
+          "@id": "data1/file_list_with_missing_references.tsv"
         }
       ],
       "associationFileMetadata": {
-        "@id": "data1/file_list_with_missing_required_column.tsv"
+        "@id": "data1/file_list_with_missing_references.tsv"
       }
     },
     {
-      "@id": "data1/file_list_with_missing_required_column.tsv",
+      "@id": "data1/file_list_with_missing_references.tsv",
       "@type": [
         "File",
         "bia:FileList",

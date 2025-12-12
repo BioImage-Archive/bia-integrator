@@ -58,6 +58,9 @@ class BIAROCrateMetadata:
     def get_object(self, id: str) -> ROCrateModel | None:
         return self._graph_bia_entities.get(id)
 
+    def get_base_path(self) -> Path:
+        return self._base_path
+
     def get_objects_by_type(
         self,
     ) -> dict[type, dict[str, ROCrateModel]]:
