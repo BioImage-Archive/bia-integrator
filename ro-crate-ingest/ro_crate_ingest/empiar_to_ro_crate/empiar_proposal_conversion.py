@@ -2,7 +2,6 @@ from pathlib import Path
 from ro_crate_ingest.empiar_to_ro_crate.empiar.entry_api import load_empiar_entry
 import yaml
 from ro_crate_ingest.ro_crate_defaults import (
-    ROCrateCreativeWork,
     get_default_context,
     write_ro_crate_metadata,
     create_ro_crate_folder,
@@ -23,6 +22,7 @@ from ro_crate_ingest.empiar_to_ro_crate.entity_conversion import (
 )
 import logging
 from ro_crate_ingest.empiar_to_ro_crate.empiar.proposal import Proposal
+from bia_shared_datamodels.ro_crate_models import ROCrateCreativeWork
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -34,7 +34,7 @@ def convert_empiar_proposal_to_ro_crate(proposal_path: Path, crate_path: Path | 
 
     # Just for validation TODO: wire up class usage everywhere
     proposal = Proposal(**yaml_file)
-    
+
     accession_id = yaml_file["accession_id"]
     empiar_api_entry = load_empiar_entry(accession_id)
 

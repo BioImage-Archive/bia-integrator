@@ -1,5 +1,5 @@
-from typing import Optional
 from rdflib import URIRef
+from ..ld_context.ContextTerm import ContextTerm
 
 
 class FieldContext:
@@ -12,3 +12,14 @@ class FieldContext:
         self.uri = URIRef(uri)
         self.is_id_field = is_id_field
         self.is_reverse_field = is_reverse_field
+
+    def to_context_term(self, field_name: str) -> ContextTerm:
+        type_mapping = None
+        if self.is_id_field:
+            type_mapping = "@id"
+        return ContextTerm(
+            full_uri=self.uri,
+            field_name=field_name,
+            is_reverse=self.is_reverse_field,
+            type_mapping=type_mapping,
+        )

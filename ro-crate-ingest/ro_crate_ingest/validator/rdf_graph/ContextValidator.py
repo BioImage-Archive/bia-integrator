@@ -32,8 +32,7 @@ class ContextValidator(Validator):
 
     def validate(self) -> ValidationResult:
 
-        for term in self.expected_bia_context_terms.terms:
-            term_key = term.field_name
+        for term_key, term in self.expected_bia_context_terms.terms.items():
             if term_key in self.context_to_check:
                 id_mapping = self.context_to_check[term_key]
                 expected_uri = str(term.full_uri)

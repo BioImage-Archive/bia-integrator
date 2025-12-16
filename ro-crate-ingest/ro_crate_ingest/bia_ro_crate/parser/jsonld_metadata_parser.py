@@ -57,16 +57,9 @@ class JSONLDMetadataParser(MetadataParser[BIAROCrateMetadata]):
         self._result = BIAROCrateMetadata(
             graph_bia_entities=rocrate_objects_by_id,
             context=context,
+            base_path=crate_metadata_path.parent,
         )
 
-    def parse_to_graph(self, path_to_ro_crate: Path) -> Graph:
-        """
-        This function exists here until a BIAROCrateMetadata can create a graph of it's data - at which point that should probably be used instead.
-        """
-        crate_metadata_path = self._get_metadata_path(path_to_ro_crate)
-        graph = Graph()
-        graph.parse(crate_metadata_path, format="json-ld")
-        return graph
 
     @staticmethod
     def _get_metadata_path(path: Path):
