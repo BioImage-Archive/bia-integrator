@@ -1,10 +1,11 @@
-from pathlib import Path
-import os
 import logging
+import os
+from functools import cache
+from pathlib import Path
 
+from persistence.settings import Settings as ApiSettings
 from pydantic import Field
 from pydantic_settings import SettingsConfigDict
-from persistence.settings import Settings as ApiSettings
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -15,7 +16,7 @@ class Settings(ApiSettings):
     model_config = SettingsConfigDict(
         env_file=[
             *ApiSettings.model_config["env_file"],
-            str(Path(__file__).parents[1] / ".env_template"),
+            # str(Path(__file__).parents[1] / ".env_template"),
             str(Path(__file__).parents[1] / ".env"),
         ],
         env_file_encoding="utf-8",
@@ -44,6 +45,6 @@ class Settings(ApiSettings):
 
     parallelisation_max_workers: int = Field(4)
 
-
+@cache
 def get_settings() -> Settings:
-    return Settings()  # pyright: ignore[reportCallIssue]
+    return Settings()

@@ -1,6 +1,8 @@
+from functools import cache
 from pathlib import Path
-from pydantic_settings import SettingsConfigDict
+
 from persistence.settings import Settings as ApiSettings
+from pydantic_settings import SettingsConfigDict
 
 
 class Settings(ApiSettings):
@@ -18,7 +20,7 @@ class Settings(ApiSettings):
     bucket_name: str = "bia-integrator-data"
     cache_root_dirpath: Path = Path.home() / ".cache" / "bia-converter"
 
-
+@cache
 def get_settings() -> Settings:
     return (
         Settings()

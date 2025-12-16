@@ -28,7 +28,7 @@ def test_put_object(bia_api_client: BIAAPIClient, study_object: Study):
     assert response == study_object
 
 
-def test_put_object_exisiting_same(bia_api_client: BIAAPIClient, study_object: Study):
+def test_put_object_existing_same(bia_api_client: BIAAPIClient, study_object: Study):
 
     bia_api_client.put_object(study_object)
 
@@ -39,7 +39,7 @@ def test_put_object_exisiting_same(bia_api_client: BIAAPIClient, study_object: S
     assert response == study_object
 
 
-def test_put_object_exisiting_different(
+def test_put_object_existing_different(
     bia_api_client: BIAAPIClient, study_object: Study
 ):
 
