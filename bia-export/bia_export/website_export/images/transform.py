@@ -34,7 +34,6 @@ def transform_images(context: ImageCLIContext) -> Image:
         context.image_to_rep_uuid_map = get_local_img_rep_map(context)
 
     for api_image in api_images:
-
         image = transform_image(api_image, context)
 
         image_map[str(image.uuid)] = image.model_dump(mode="json")
@@ -43,7 +42,6 @@ def transform_images(context: ImageCLIContext) -> Image:
 
 
 def transform_image(api_image: api_models.Image, context: ImageCLIContext) -> Image:
-
     api_creation_process = retrieve_object(
         api_image.creation_process_uuid, api_models.CreationProcess, context
     )
@@ -51,9 +49,12 @@ def transform_image(api_image: api_models.Image, context: ImageCLIContext) -> Im
 
     api_img_rep = retrieve_representations(api_image.uuid, context)
 
+    physical_sizes = transform_physical_size_xyz_from_image_rep(api_img_rep)
+
     image_dict = api_image.model_dump() | {
         "representation": api_img_rep,
         "creation_process": creation_process,
+        **physical_sizes,
     }
 
     return Image(**image_dict)
@@ -114,7 +115,6 @@ def transform_creation_process(
 def transform_specimen(
     api_specimen: api_models.Specimen, context: ImageCLIContext
 ) -> Specimen:
-
     api_bio_samples = retrieve_object_list(
         api_specimen.sample_of_uuid, api_models.BioSample, context
     )
@@ -158,3 +158,46 @@ def transform_details_object_list(
         obj_dict = api_obj.model_dump() | {"default_open": True}
         obj_list.append(website_class(**obj_dict))
     return obj_list
+
+
+def transform_physical_size_xyz_from_image_rep(
+    api_image_reps: list[api_models.ImageRepresentation],
+) -> dict:
+    """
+    Calculates the total sample physical size from
+    the first OME.ZARR image rep by multiplying the
+    pixel size (size_x,size_y,size_z) with repective
+    the voxel_physical_size.
+    """
+    img_rep = [
+        img_rep for img_rep in api_image_reps if img_rep.image_format == ".ome.zarr"
+    ]
+
+    if len(img_rep) == 0:
+        return {
+            "total_physical_size_x": None,
+            "total_physical_size_y": None,
+            "total_physical_size_z": None,
+        }
+    # TO-DO: Maybe calculate/check which rep has the voxels sizes?
+    img_rep = img_rep[0]
+
+    physical_size = {}
+    physical_size["total_physical_size_x"] = calculate_total_physical_size(
+        img_rep.size_x, img_rep.voxel_physical_size_x
+    )
+    physical_size["total_physical_size_y"] = calculate_total_physical_size(
+        img_rep.size_y, img_rep.voxel_physical_size_y
+    )
+    physical_size["total_physical_size_z"] = calculate_total_physical_size(
+        img_rep.size_z, img_rep.voxel_physical_size_z
+    )
+
+    return physical_size
+
+
+def calculate_total_physical_size(pixels, voxel_physical_size) -> float | None:
+    try:
+        return float(pixels) * float(voxel_physical_size)
+    except:
+        return None

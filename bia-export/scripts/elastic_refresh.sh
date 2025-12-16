@@ -53,6 +53,7 @@ curl -k -X PUT "${ELASTIC_URL}/${ELASTIC_INDEX}" \
 				"grant": {
 					"type": "flattened"
 				},
+				"licence": {"type": "keyword"},
 				"dataset": {
 					"type": "object",
 					"properties": {
@@ -118,29 +119,68 @@ curl -k -X PUT "${ELASTIC_URL}/${ELASTIC_INDEX_IMAGES}" \
             "uuid": {
                 "type": "keyword"
             },
+			"total_physical_size_x": {"type": "float"},
+			"total_physical_size_y": {"type": "float"},
+			"total_physical_size_z": {"type": "float"},
             "representation": {
                 "type": "object",
                 "properties": {
-                    "image_format": {
-                        "type": "keyword"
-                    }
+                    "image_format": { "type": "keyword"},
+					"size_x": {"type": "integer"},
+					"size_y": {"type": "integer"},
+					"size_z": {"type": "integer"},
+					"size_c": {"type": "integer"},
+					"size_t": {"type": "integer"},
+					"total_size_in_bytes": {"type": "long"},
+					"voxel_physical_size_x": {"type": "float"},
+					"voxel_physical_size_y": {"type": "float"},
+					"voxel_physical_size_z": {"type": "float"}
                 }
             },
 			"creation_process": {
 				"type": "object",
 				"properties": {
-					"input_image_uuid": {
-						"type": "keyword"
+					"input_image_uuid": { "type": "keyword" },
+					"acquisition_process": {
+						"type": "object",
+						"properties": {
+							"imaging_method_name": { "type": "keyword" }
+						}
+					},
+					"subject": {
+						"type": "object",
+						"properties": {
+							"sample_of": {
+								"type": "object",
+								"properties": {
+									"biological_entity_description": { "type": "keyword" },
+									"organism_classification": {
+										"type": "object",
+										"properties": {
+											"scientific_name": { "type": "keyword" }
+										}
+									}
+								}
+							}
+						}
 					}
 				}
 			}
         }
     }
 }'
-curl -k -u "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" \
-	-H  "Content-Type: application/x-ndjson" \
-	-XPOST "${ELASTIC_URL}/_bulk?pretty&error_trace=true" \
-	--data-binary @${EXPORT_JSON_OUT_FILE}.bulk | jq '.items[] | select(.index.status != 201)'
+
+split -l 5000 ${EXPORT_JSON_OUT_FILE}.bulk ${EXPORT_JSON_OUT_FILE}_bulk_part_
+
+for f in ${EXPORT_JSON_OUT_FILE}_bulk_part_*; do
+  echo "Uploading $f"
+  curl -k -u "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" \
+       -H "Content-Type: application/x-ndjson" \
+       -XPOST "${ELASTIC_URL}/_bulk?pretty&error_trace=true" \
+       --data-binary "@$f" | jq '.items[] | select(.index.status != 201)'
+  rm -rf $f
+done
+
 curl -k -u "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -X POST "${ELASTIC_URL}/${ELASTIC_INDEX_IMAGES}/_refresh"
 
 echo -e "\n\n==============================================\nIndex Status: ${ELASTIC_INDEX}\n"
