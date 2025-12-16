@@ -78,9 +78,9 @@ class FileListDefinitionValidator(Validator):
             Iterable[str | rdflib.URIRef] | None
         ) = None,
     ):
-        ro_crate_metatadata_parser = JSONLDMetadataParser()
-        ro_crate_metatadata_parser.parse(ro_crate_metadata_path)
-        ro_crate_metadata = ro_crate_metatadata_parser.result
+        ro_crate_metadata_parser = JSONLDMetadataParser()
+        ro_crate_metadata_parser.parse(ro_crate_metadata_path)
+        ro_crate_metadata = ro_crate_metadata_parser.result
         self.ro_crate_metadata_graph = ro_crate_metadata.to_graph()
 
         self.required_properties = set()
