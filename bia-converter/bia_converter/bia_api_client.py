@@ -1,13 +1,8 @@
 import logging
 from enum import Enum
 
-from pydantic.alias_generators import to_snake
 from pydantic import BaseModel
 
-import bia_integrator_api.models as api_models
-from bia_integrator_api import exceptions as api_exceptions
-from bia_integrator_api.util import get_client_private
-from bia_integrator_api import Configuration, ApiClient
 from bia_integrator_api.api import PrivateApi
 from bia_converter.settings import get_settings
 from persistence.bia_api_client import BIAAPIClient
