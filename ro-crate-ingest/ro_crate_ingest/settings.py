@@ -1,20 +1,22 @@
-from pathlib import Path
-import os
 import logging
+import os
+from functools import cache
+from pathlib import Path
 
-from pydantic import Field, AliasChoices
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from persistence.settings import Settings as ApiSettings
+from pydantic import Field
+from pydantic_settings import SettingsConfigDict
 
 logger = logging.getLogger("__main__." + __name__)
 
 
-class Settings(BaseSettings):
+class Settings(ApiSettings):
     # Note env files overwrite one another in order of the list (last element overwrites previous ones)
     # Uses api settings to get user create token when testing locally.
     model_config = SettingsConfigDict(
         env_file=[
-            str(Path(__file__).parents[2] / "api" / ".env_compose"),
-            str(Path(__file__).parents[1] / ".env_template"),
+            *ApiSettings.model_config["env_file"],
+            # str(Path(__file__).parents[1] / ".env_template"),
             str(Path(__file__).parents[1] / ".env"),
         ],
         env_file_encoding="utf-8",
@@ -25,17 +27,6 @@ class Settings(BaseSettings):
     bia_data_dir: str = Field(
         str(Path(os.environ.get("HOME", "")) / ".cache" / "ro-crate-ingest"),
     )
-    local_bia_api_basepath: str = Field("http://localhost:8080")
-    local_bia_api_username: str = Field("test@example.com")
-    local_bia_api_password: str = Field("test")
-    local_user_create_secret_token: str = Field(
-        validation_alias=AliasChoices(
-            "local_user_create_secret_token", "USER_CREATE_SECRET_TOKEN"
-        )
-    )
-    bia_api_basepath: str = Field("")
-    bia_api_username: str = Field("")
-    bia_api_password: str = Field("")
 
     biostudies_override_dir: str = Field(
         str(Path(__file__).parents[1] / "override_data" / "biostudies")
@@ -54,6 +45,6 @@ class Settings(BaseSettings):
 
     parallelisation_max_workers: int = Field(4)
 
-
+@cache
 def get_settings() -> Settings:
     return Settings()
