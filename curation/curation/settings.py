@@ -9,7 +9,6 @@ class Settings(ApiSettings):
     model_config = SettingsConfigDict(
         env_file=[
             *ApiSettings.model_config["env_file"],
-            str(Path(__file__).parents[1] / ".env_template"),
             str(Path(__file__).parents[1] / ".env"),
         ],
         env_file_encoding="utf-8",
