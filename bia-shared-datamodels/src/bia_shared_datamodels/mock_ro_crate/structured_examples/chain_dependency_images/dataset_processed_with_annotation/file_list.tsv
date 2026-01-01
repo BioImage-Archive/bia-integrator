@@ -1,0 +1,4 @@
+file_path	source_image_path	type	associated_protocol	associated_annotation_method
+dataset_processed_with_annotation/image_1_p2.tomo	dataset_processed/image_1_p2.tiff	htpp://bia/Image	_:P-1	
+dataset_processed_with_annotation/image_2_p2.tomo	dataset_processed/image_2_p2.tiff	htpp://bia/Image	_:P-1	
+dataset_processed_with_annotation/non_image_annotation.star	[dataset_processed_with_annotation/image_1_p2.tomo, dataset_processed_with_annotation/image_2_p2.tomo]	htpp://bia/AnnotationData		_:AM-1
