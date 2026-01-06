@@ -24,6 +24,8 @@ typer = "^0.17.4"
 rich = "^13.7.0"
 ruamel-yaml = "^0.18.5"
 deepdiff = "6.7.1"
+sentence-transformers = "^5.2.0"
+protobuf = "^6.33.2"
 
 
 [tool.poetry.group.dev.dependencies]

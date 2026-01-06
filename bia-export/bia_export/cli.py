@@ -144,6 +144,7 @@ def website_study(
             help="If update file specified then update the file with studies provided.",
         ),
     ] = None,
+    embed: Annotated[Optional[bool], typer.Option("--embed", "-e")] = False,
 ):
 
     validate_cli_inputs(id_list=id_list, update_file=update_file)
@@ -167,6 +168,11 @@ def website_study(
         sorted_map = dict(sorted(studies_map.items(), key=lambda item_tuple: study_sort_key(item_tuple[1]), reverse=True))
     else:
         sorted_map = studies_map
+
+    if embed:
+        from bia_export.test_embed import embed_study
+        for study in sorted_map.values():
+            embed_study(study)
 
     logging.info(f"Writing study info to {output_filename.absolute()}")
     with open(output_filename, "w") as output:

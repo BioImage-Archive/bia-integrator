@@ -27,3 +27,5 @@ search.up:
 
 search.down:
 	docker compose down
+
+-include Makefile.local

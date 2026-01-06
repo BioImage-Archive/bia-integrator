@@ -17,6 +17,33 @@ class Elastic:
         self.index_study = settings.elastic_index_study
         self.index_image = settings.elastic_index_image
 
+        embeddings = {
+            "type": "object",
+            "properties": {
+                model_name: {
+                    "type": "object",
+                    "properties": {
+                        "embedding": {
+                            "type": "dense_vector",
+                            "dims": model_dims,  # Dimension of the vector (384 for all-MiniLM-L6-v2)
+                            "index": True,
+                            #! quantization (ex images)
+                            # "index_options": {
+                            #    "type": "int8_hnsw"
+                            # }
+                            "similarity": "cosine"  # default for sentence embedding models
+                        }
+                    }
+                }
+                for (model_name, model_dims) in [
+                    ("sentence-transformers/all-MiniLM-L6-v2", 384),
+                    ("sentence-transformers/msmarco-distilbert-base-tas-b", 768),
+                    ("sentence-transformers/all-roberta-large-v1", 1024)
+                ]
+            },
+        }
+
+
         if not await self.client.indices.exists(index=self.index_study):
             await self.client.indices.create(
                 index=self.index_study,
@@ -61,7 +88,8 @@ class Elastic:
                                 },
                             },
                             "release_date": {"type": "date"},
-                        },
+                            "embeddings": embeddings
+                            },
                     },
                 },
             )
