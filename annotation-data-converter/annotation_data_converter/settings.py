@@ -14,7 +14,6 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=[
             str(Path(__file__).parents[2] / "api" / ".env_compose"),
-            str(Path(__file__).parents[1] / ".env_template"),
             str(Path(__file__).parents[1] / ".env"),
         ],
         env_file_encoding="utf-8",

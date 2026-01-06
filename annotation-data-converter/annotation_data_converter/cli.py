@@ -57,9 +57,9 @@ def point_annotation_conversion(
             "--output-mode",
             "-om",
             case_sensitive=False,
-            help="Where to save output; options: local, s3, or both (default).",
+            help="Where to save output; options: local (default), s3, or both.",
         ),
-    ] = OutputMode.BOTH,
+    ] = OutputMode.LOCAL,
     output_directory: Annotated[
         pathlib.Path,
         typer.Option(

@@ -8,10 +8,10 @@ poetry env use python3.13
 poetry install
 ```
 
-To actually push to the api, copy the .env_template and fill in your details (no need for local api / testing only). For local testing, you need to have docker installed.
+To actually push to the api, copy the .env_template to .env and fill in your details. For local testing, you need to have the local api set up first.
 
 # Output data configuration
-Output data can be saved locally, uploaded to s3, or both (the default). This, and where local data is saved, can be specified with inputs to the CLI, namely --output-mode and --output-directory — see *CLI commands*, below. 
+Output data can be saved locally (the default), uploaded to s3, or both. This, and where local data is saved, can be specified with inputs to the CLI, namely --output-mode and --output-directory — see *CLI commands*, below. 
 
 If uploading to s3, the `endpoint_url` and `bucket_name` must be set in the .env file; an example is in the .env_template. Note the two additional aws_... fields — they're necessary for s3 upload but require no further configuration. 
 
@@ -19,7 +19,7 @@ The default output directory can also be set, save specifying it on the command 
 
 # Output directives
 
-Directive are written out for subsequent curation. These can be found in the bia-integrator curation package. 
+Directives are created for subsequent curation, written to the bia-integrator curation package. An example directive file can be seen in `test/output_data/curation_directive.yaml` — see the curation package for use of directives. 
 
 # CLI commands
 
@@ -27,14 +27,16 @@ The CLI provides two main commands: `convert` for converting annotations and `va
 
 ## Convert
 
-Converts point annotations into pre-computed neuroglancer format.
+The principal annotation conversion command. Note, it is recommended to run validation prior to conversion (see *Validate*, below).
+
+It is expected that different types of annotations will be handled here, but currently, only point annotations are expected, and are converted into pre-computed neuroglancer format. Furthermore, just one annotation per image can be converted, but extension for hanling many is anticipated. For specific details on point annotations, see *Point Annotation*, further below. 
 
 ### Options
 
 | Option | Short | Type/Values | Description | Default |
 |--------|-------|-------------|-------------|---------|
 | `--proposal` | `-p` | PATH | Path to the json proposal for the study. [required] | - |
-| `--output-mode` | `-om` | [both\|local\|s3] | Where to save output; options: local, s3, or both (default). | both |
+| `--output-mode` | `-om` | [both\|local\|s3] | Where to save output; options: local (default), s3, or both. | local |
 | `--output-directory` | `-od` | PATH | Output directory for the data. | ../output_data |
 | `--api-mode` | `-am` | [local_api\|dev_api] | Mode to persist the data. Options: local_api, bia_api. | local_api |
 | `--help` | - | - | Show this message and exit. | - |
@@ -42,6 +44,8 @@ Converts point annotations into pre-computed neuroglancer format.
 Note that, if run in local-only output mode, directives are not written, since there is no appropriate neuroglancer link to generate (but the link is still created if running a testing configuration, as described in *A useful testing setup*, below). 
 
 ## Validate
+
+It is recommended to run validation before conversion. 
 
 It can be quite clear if annotations are not scaled correctly in a way that makes their range smaller than the image bounds — this shows up as a cluster of points forming a rectangle within the image — yet, it is difficult to spot if annotations are scaled so that they reach beyond the image, as only the portion that is within the image bounds gets displayed, and this can look perfectly normal. Thus, validation checks point annotations to ensure they fall within image bounds before conversion. To run validation on the test data, you'll need to have the correct object in the local api. Thus, run once:
 
@@ -62,9 +66,7 @@ The validate command will:
 - Display a summary of passed/failed validations
 - Exit with error code 1 if any validation fails
 
-It is recommended to run validation before conversion.
-
-## Point Annotation
+# Point Annotation
 
 You can run the point annotation on the test data (but this require running the tests first to set up the correct objects in your local api). Therefore, as above, you need to run once (but not again if you already did it for validation):
 
