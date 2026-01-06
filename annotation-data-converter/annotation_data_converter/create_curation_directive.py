@@ -8,7 +8,8 @@ from pathlib import Path
 
 
 def create_ng_link_directive(
-    ng_view_link: str, image_representation_uuid: UUID | str
+    ng_view_link: str, 
+    image_representation_uuid: UUID | str
 ) -> AttributeDirective:
     attribute_directive_dict = {
         "target_uuid": image_representation_uuid,
