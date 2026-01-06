@@ -168,6 +168,7 @@ class PointAnnotationConverter:
         returns the link as a string.
         """
         # TODO: allow passing in of colours
+        # TODO: handle multiple annotation layers
 
         file_uri_list = self.image_representation.file_uri
         if len(file_uri_list) != 1:
