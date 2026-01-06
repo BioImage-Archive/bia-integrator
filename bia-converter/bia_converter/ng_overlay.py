@@ -102,9 +102,10 @@ def get_image_info_from_ome(
     x, y, z = data.shape[-1], data.shape[-2], data.shape[-3]
 
     if use_percentiles:
-        logger.info("Calculating contrast values with percentiles — can take some time...")
-        min_val = float(percentile(data.__array__(), 1))
-        max_val = float(percentile(data.__array__(), 99))
+        logger.info("Calculating contrast values with percentiles (of maximally downsampled image) — can take some time...")
+        percentile_data = source.images[-1].data
+        min_val = float(percentile(percentile_data.__array__(), 1))
+        max_val = float(percentile(percentile_data.__array__(), 99))
     elif channel_info:
         first_channel = list(channel_info.values())[0]
         min_val = float(first_channel['min'])
