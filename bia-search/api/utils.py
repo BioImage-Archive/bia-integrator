@@ -52,12 +52,30 @@ aggregations = {
                 "format": "yyyy",
             }
         },
-        "imaging_method": { "terms": {"field": fields_map["study"]["facet.imaging_method"] }},
+        "imaging_method": { "terms": {"field": fields_map["study"]["facet.imaging_method"] }}
     }, 
     "image" : {
-        "image_format": { "terms": {"field": fields_map["image"]["facet.image_format"] }},
         "scientific_name": { "terms": {"field": fields_map["image"]["facet.organism"] }},
+        "image_format": { "terms": {"field": fields_map["image"]["facet.image_format"] }},
         "imaging_method": { "terms": {"field": fields_map["image"]["facet.imaging_method"]}},
+        "image_pixel_x": {"stats": {"field": fields_map["numeric"]["size_x"]}},
+        "image_pixel_y": {"stats": {"field": fields_map["numeric"]["size_y"]}},
+        "number_of_channels": {
+            "filters": {
+                "keyed": False,
+                "filters": {
+                    "1":  { "term":  { fields_map["numeric"]["size_c"]: 1 } }, "2":  { "term":  { fields_map["numeric"]["size_c"]: 2 } }, 
+                    "3":  { "term":  { fields_map["numeric"]["size_c"]: 3 } }, "4":  { "term":  { fields_map["numeric"]["size_c"]: 4 } }, 
+                    "5":  { "term":  { fields_map["numeric"]["size_c"]: 5 } }, "More than 5": { "range": { fields_map["numeric"]["size_c"]: { "gt": 5 } } }
+                }
+            }
+        },
+        "z_planes": {"stats": {"field": fields_map["numeric"]["size_z"]}},
+        "time_steps": {"stats": {"field": fields_map["numeric"]["size_t"]}},
+        "total_size_in_bytes": {"stats": {"field": fields_map["numeric"]["total_size_in_bytes"]}},
+        "total_physical_size_x": {"stats": {"field": fields_map["numeric"]["total_physical_size_x"]}},
+        "total_physical_size_y": {"stats": {"field": fields_map["numeric"]["total_physical_size_y"]}},
+        "total_physical_size_z": {"stats": {"field": fields_map["numeric"]["total_physical_size_z"]}}
     }
 }
 
@@ -95,6 +113,21 @@ def format_elastic_results(rsp, pagination):
             "total_pages": total_pages,
         },
     }
+
+def reorder_dict_by_spec(spec: dict, data: dict) -> dict:
+    """
+    Reorders keys in `data` to match `spec` (only for keys present in spec),
+    and appends any extra keys at the end.
+    """
+    out = {}
+    for k in spec.keys():
+        if k in data:
+            out[k] = data[k]
+    # keep anything unexpected (if any)
+    for k, v in data.items():
+        if k not in out:
+            out[k] = v
+    return out
 
 
 def build_params_as_list(request: Request):

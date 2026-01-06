@@ -1,9 +1,6 @@
 from dataclasses import dataclass, field
 from typing import Any
-from api.utils import (
-    operators_map,
-    fields_map,
-)
+from api.utils import operators_map, fields_map, reorder_dict_by_spec
 
 
 @dataclass
@@ -193,4 +190,9 @@ class QueryBuilder:
         if aggs:
             body["aggs"] = aggs
 
-        return await client.search(index=index, **body)
+        rsp = await client.search(index=index, **body)
+        if "aggregations" in rsp and aggs:
+            rsp.body["aggregations"] = reorder_dict_by_spec(
+                aggs, rsp.body["aggregations"]
+            )
+        return rsp
