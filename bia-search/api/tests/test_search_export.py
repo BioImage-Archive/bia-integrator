@@ -130,3 +130,119 @@ async def test_search_exclude_term(elastic: Elastic):
     assert by_accno["sentence-transformers/all-MiniLM-L6-v2"][0] == "S-BIAD1350"
     assert by_accno["sentence-transformers/msmarco-distilbert-base-tas-b"][0] == "S-BIAD1350"
     assert by_accno["sentence-transformers/all-roberta-large-v1"][0] == "S-BSST564"
+
+@pytest.mark.asyncio
+async def test_search_approx_clusters(elastic: Elastic):
+    """
+    Approximate clusters around 2025 submissions
+    """
+    rsp = await elastic.client.search(
+        index=elastic.index_study,
+        query={
+            "bool": {
+                "should": [
+                    {
+                        "range": {
+                            "release_date": {
+                                "gte": f"{i}-01-01",
+                                "lte": f"{i}-12-31",
+                            }
+                        }
+                    }
+                    for i in [2025]
+                ],
+            },
+        },
+        size=1000
+    )
+
+    assert rsp.body['hits']['total']['value'] == 355
+
+    centroid_treshold = 0.95
+    cluster_treshold = 0.8
+    clusters_by_model_by_centroid = {}
+    for idx, h in enumerate(rsp.body['hits']['hits']):
+        doc = h['_source']
+
+        for model_name, val in doc['embeddings'].items():
+            clusters_by_model_by_centroid[model_name] = clusters_by_model_by_centroid.get(model_name, {})
+            in_cluster = any([
+                doc['accession_id'] in v
+                for v in clusters_by_model_by_centroid[model_name].values()
+            ])
+            if in_cluster: continue
+
+            similar = await elastic.client.search(
+                index=elastic.index_study,
+                #! source={"excludes": ["embeddings_*"]},
+                knn={
+                    "field": f"embeddings.{model_name}.embedding",
+                    "query_vector": val['embedding'],
+                    "k": 1000,
+                    "num_candidates": 1000
+                },
+                min_score=cluster_treshold,
+                size=1000
+            )
+            
+            is_center = len([
+                s['_source']
+                for s in similar.body['hits']['hits']
+                if s['_score'] < 1 and s['_score'] >= centroid_treshold
+            ]) > 0
+            if is_center:
+                clusters_by_model_by_centroid[model_name][doc['accession_id']] = [
+                    doc['_source']['accession_id'] for doc in similar.body['hits']['hits']
+                ]
+    
+    #! Found a duplicate
+    assert clusters_by_model_by_centroid['sentence-transformers/all-MiniLM-L6-v2']['S-BIAD2438'] == ['S-BIAD2438', 'S-BIAD2432']
+
+    #! Found studies relating viruses and macrophages
+    assert clusters_by_model_by_centroid['sentence-transformers/all-MiniLM-L6-v2']['S-BIAD2327'] == [
+        'S-BIAD2327',
+        'S-BIAD931'
+    ]
+
+    # Clusters together studies where description refers to some figure in the manuscript
+
+@pytest.mark.asyncio
+async def test_single_knn_timing(elastic: Elastic):
+    """
+    timing for db of all submissions on website, on local
+    """
+    study = (await elastic.client.search(
+        index=elastic.index_study,
+        query={
+            "term": {
+                "accession_id": "S-BIAD2437"
+            }
+        }
+    )).body['hits']['hits'][0]['_source']
+
+    model_name = "sentence-transformers/all-roberta-large-v1"
+    similar_1k = await elastic.client.search(
+        index=elastic.index_study,
+        #! source={"excludes": ["embeddings_*"]},
+        knn={
+            "field": f"embeddings.{model_name}.embedding",
+            "query_vector": study['embeddings'][model_name]['embedding'],
+            "k": 1000,
+            "num_candidates": 1000
+        },
+        size=1000
+    )
+    assert similar_1k['took'] > 200 and similar_1k['took'] < 300
+
+    similar_10 = await elastic.client.search(
+        index=elastic.index_study,
+        #! source={"excludes": ["embeddings_*"]},
+        knn={
+            "field": f"embeddings.{model_name}.embedding",
+            "query_vector": study['embeddings'][model_name]['embedding'],
+            "k": 10,
+            "num_candidates": 100
+        },
+        size=1000
+    )
+    assert similar_10['took'] < 10
