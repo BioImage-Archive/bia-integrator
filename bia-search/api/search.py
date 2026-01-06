@@ -161,3 +161,32 @@ async def advanced_search(
     )
 
     return format_elastic_results(rsp, pagination)
+
+@router.get("/similar/dataset/{dataset_uuid}")
+async def similar_datasets(
+    dataset_uuid: str,
+    elastic: Annotated[Elastic, Depends(get_elastic)],
+    k: Annotated[int, Query(max=100)] = 10,
+    model_name: Annotated[str, Query()] = "sentence-transformers/all-roberta-large-v1"
+) -> dict:
+    study = (await elastic.client.search(
+        index=elastic.index_study,
+        query={
+            "term": {
+                "uuid": dataset_uuid
+            }
+        }
+    )).body['hits']['hits'][0]['_source']
+
+    similar_10 = await elastic.client.search(
+        index=elastic.index_study,
+        source={"excludes": ["embeddings"]},
+        knn={
+            "field": f"embeddings.{model_name}.embedding",
+            "query_vector": study['embeddings'][model_name]['embedding'],
+            "k": k,
+            "num_candidates": 10*k
+        },
+        size=k
+    )
+    return similar_10.body['hits']

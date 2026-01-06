@@ -176,3 +176,12 @@ def test_fts_paging(api_client: TestClient):
     uuid_1 = page_1["hits"]["hits"][0]["_source"]["uuid"]
     uuid_2 = page_2["hits"]["hits"][0]["_source"]["uuid"]
     assert [uuid_1, uuid_2] == uuids_in_both
+
+def test_similar_datasets(api_client: TestClient):
+    test_dataset_uuid = "7f94fac8-cc43-4db3-9dd4-4ed2cf5c184a"
+    rsp = api_client.get(
+        f"/search/similar/dataset/{test_dataset_uuid}"
+    )
+    assert rsp.status_code == 200
+    rsp = rsp.json()
+    assert len(rsp["hits"]) == 10

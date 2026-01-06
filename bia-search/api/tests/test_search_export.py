@@ -223,7 +223,6 @@ async def test_single_knn_timing(elastic: Elastic):
     model_name = "sentence-transformers/all-roberta-large-v1"
     similar_1k = await elastic.client.search(
         index=elastic.index_study,
-        #! source={"excludes": ["embeddings_*"]},
         knn={
             "field": f"embeddings.{model_name}.embedding",
             "query_vector": study['embeddings'][model_name]['embedding'],
@@ -236,13 +235,11 @@ async def test_single_knn_timing(elastic: Elastic):
 
     similar_10 = await elastic.client.search(
         index=elastic.index_study,
-        #! source={"excludes": ["embeddings_*"]},
         knn={
             "field": f"embeddings.{model_name}.embedding",
             "query_vector": study['embeddings'][model_name]['embedding'],
             "k": 10,
             "num_candidates": 100
-        },
-        size=1000
+        }
     )
     assert similar_10['took'] < 10
