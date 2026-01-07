@@ -1,7 +1,6 @@
 import os
 from pathlib import Path
 import logging
-import os
 import shutil
 import subprocess
 from urllib.parse import quote
