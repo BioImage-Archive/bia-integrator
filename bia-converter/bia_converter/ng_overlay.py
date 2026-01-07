@@ -7,7 +7,6 @@ Functions for generating overlays for source and annotation images using neurogl
 
 """
 
-
 import json
 import ngff_zarr as nz
 import urllib.parse
@@ -103,12 +102,19 @@ def get_image_info_from_ome(
     x, y, z = data.shape[-1], data.shape[-2], data.shape[-3]
 
     if use_percentiles:
-        min_val = percentile(data.__array__(), 1)
-        max_val = percentile(data.__array__(), 99)
+        logger.info("Calculating contrast values with percentiles (of maximally downsampled image) — can take some time...")
+        percentile_data = source.images[-1].data
+        min_val = float(percentile(percentile_data.__array__(), 1))
+        max_val = float(percentile(percentile_data.__array__(), 99))
+    elif channel_info:
+        first_channel = list(channel_info.values())[0]
+        min_val = float(first_channel['min'])
+        max_val = float(first_channel['max'])
     else:
-        min_val = min(data.__array__().flatten())
-        max_val = max(data.__array__().flatten())
-    return [[int(min_val), int(max_val)], [x,y,z], voxels, channel_info]
+        min_val = float(data.min().compute())
+        max_val = float(data.max().compute())
+
+    return [[min_val, max_val], [x,y,z], voxels, channel_info]
 
 
 def get_dimensions(dims: dict) -> dict:

@@ -23,11 +23,11 @@
   "voxel_physical_size_x": 20,
   "voxel_physical_size_y": 20,
   "voxel_physical_size_z": 20,
-  "size_x": null,
-  "size_y": null,
-  "size_z": null,
-  "size_c": null,
-  "size_t": null,
+  "size_x": 3000,
+  "size_y": 3500,
+  "size_z": 1100,
+  "size_c": 1,
+  "size_t": 1,
   "image_viewer_setting": [],
   "representation_of_uuid": "f0444894-c673-458c-a07d-fd63994fce1e"
 }

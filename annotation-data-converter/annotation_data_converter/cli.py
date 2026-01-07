@@ -1,32 +1,46 @@
-import typer
+import json
 import logging
 import pathlib
-import json
+import tempfile
+import traceback
+import typer
 
-from annotation_data_converter.point_annotations import (
-    point_annotations,
-)
-from typing import Annotated
+from enum import Enum
 from rich.logging import RichHandler
-from annotation_data_converter.api_client import get_client, APIMode
-from annotation_data_converter.point_annotations.Proposal import (
-    PointAnnotationProposal,
-)
-from annotation_data_converter.settings import get_settings
+from typing import Annotated
+
+from annotation_data_converter.api_client import APIMode, get_client
 from annotation_data_converter.create_curation_directive import (
     create_ng_link_directive,
     write_directives,
+)
+from annotation_data_converter.point_annotations import (
+    point_annotations,
+)
+from annotation_data_converter.settings import get_settings
+from annotation_data_converter.utils import (
+    generate_precomputed_annotation_path_suffix, 
+    sync_precomputed_annotation_to_s3, 
 )
 
 logging.basicConfig(
     level="NOTSET", format="%(message)s", datefmt="[%X]", handlers=[RichHandler()]
 )
 logger = logging.getLogger()
+
+settings = get_settings()
 annotation_data_convert = typer.Typer()
 
 
+class OutputMode(str, Enum):
+    BOTH = "both", 
+    LOCAL = "local", 
+    S3 = "s3",
+
+
 @annotation_data_convert.command(
-    help="Convert star file point annotations into pre-computed neuroglancer objects. Store these in s3 & add links to them from the relevant objects.",
+    name="convert",
+    help="Convert point annotations into pre-computed neuroglancer objects. Store these in s3 & add links to them from the relevant objects.",
 )
 def point_annotation_conversion(
     proposal_path: Annotated[
@@ -37,15 +51,24 @@ def point_annotation_conversion(
             help="Path to the json proposal for the study.",
         ),
     ],
+    output_mode: Annotated[
+        OutputMode,
+        typer.Option(
+            "--output-mode",
+            "-om",
+            case_sensitive=False,
+            help="Where to save output; options: local (default), s3, or both.",
+        ),
+    ] = OutputMode.LOCAL,
     output_directory: Annotated[
         pathlib.Path,
         typer.Option(
-            "--output_directory",
+            "--output-directory",
             "-od",
             case_sensitive=False,
             help="Output directory for the data.",
         ),
-    ] = get_settings().default_output_directory,
+    ] = settings.default_output_directory,
     api_mode: Annotated[
         APIMode,
         typer.Option(
@@ -83,16 +106,149 @@ def point_annotation_conversion(
         )
 
         converter.load()
-        converter.convert_to_neuroglancer_precomputed(
-            output_directory / f"{annotation_data.uuid}_{image.uuid}/"
+
+        precomputed_annotation_path_suffix = generate_precomputed_annotation_path_suffix(
+            annotation_data.uuid,
+            image,
+            api_client, 
         )
 
-        # TODO: upload result to s3 & update api objects with s3 url
-        s3_url = "example url"
+        if output_mode in [OutputMode.LOCAL, OutputMode.BOTH]:
+            local_output_path = output_directory / precomputed_annotation_path_suffix
+            converter.convert_to_neuroglancer_precomputed(local_output_path)
 
-        directives.append(create_ng_link_directive(s3_url, image_rep.uuid))
-    
+        if output_mode in [OutputMode.S3, OutputMode.BOTH]:
+            if output_mode == OutputMode.S3:
+                with tempfile.TemporaryDirectory() as temp_dir:
+                    temp_path = pathlib.Path(temp_dir) / precomputed_annotation_path_suffix
+                    converter.convert_to_neuroglancer_precomputed(temp_path)
+                    precomputed_annotation_url = sync_precomputed_annotation_to_s3(
+                        str(temp_path), 
+                        precomputed_annotation_path_suffix, 
+                    )
+            else:
+                precomputed_annotation_url = sync_precomputed_annotation_to_s3(
+                    str(local_output_path), 
+                    precomputed_annotation_path_suffix, 
+                )
+
+        if output_mode in [OutputMode.S3, OutputMode.BOTH]:
+            ng_view_link = converter.generate_neuroglancer_view_link(
+                precomputed_annotation_url, 
+            )
+            directives.append(create_ng_link_directive(ng_view_link, image_rep.uuid))
+        elif output_mode == OutputMode.LOCAL and settings.local_annotations_server:
+            # Construct local URL for preview
+            local_url = f"{settings.local_annotations_server.rstrip('/')}/{precomputed_annotation_path_suffix}"
+            converter.generate_neuroglancer_view_link(local_url)
+            
     write_directives(directives)
+
+
+@annotation_data_convert.command(
+    name="validate",
+    help="Validate point annotations to check they are within image bounds.",
+)
+def point_annotation_validation(
+    proposal_path: Annotated[
+        pathlib.Path,
+        typer.Option(
+            "--proposal",
+            "-p",
+            help="Path to the json proposal for the study.",
+        ),
+    ],
+    api_mode: Annotated[
+        APIMode,
+        typer.Option(
+            "--api-mode",
+            "-am",
+            case_sensitive=False,
+            help="Mode to persist the data. Options: local_api, bia_api. ",
+        ),
+    ] = APIMode.LOCAL_API,
+):
+    """
+    Validate point annotations from a proposal file.
+    Checks that all points fall within the bounds of their associated images.
+    """
+    api_client = get_client(api_mode)
+
+    with open(proposal_path.absolute(), "r") as proposal_file:
+        list_of_group_proposals: list[dict] = json.loads(
+            proposal_file.read(),
+        )
+
+    proposal_list = point_annotations.collect_proposals(list_of_group_proposals)
+    
+    total_proposals = len(proposal_list)
+    validation_results = []
+    
+    logger.info(f"Validating {total_proposals} annotation proposals...")
+
+    for i, proposal in enumerate(proposal_list, 1):
+        logger.info(f"Validating proposal {i}/{total_proposals}")
+        logger.info(f"  Annotation data: {proposal.annotation_data_uuid}")
+        logger.info(f"  Image representation: {proposal.image_representation_uuid}")
+        
+        try:
+            image_rep, image, annotation_data, file_reference = (
+                point_annotations.fetch_api_object_dependencies(
+                    proposal.annotation_data_uuid,
+                    proposal.image_representation_uuid,
+                    api_client,
+                )
+            )
+
+            converter = point_annotations.create_converter(
+                image_representation=image_rep,
+                annotation_data_file_reference=file_reference,
+                proposal=proposal,
+            )
+
+            converter.load()
+            converter.validate_points()
+            
+            validation_results.append({
+                "proposal": proposal,
+                "status": "PASS",
+                "error": None
+            })
+            logger.info(f"  Validation PASSED")
+            
+        except Exception as e:
+            error_details = ''.join(traceback.format_exception(type(e), e, e.__traceback__))
+            validation_results.append({
+                "proposal": proposal,
+                "status": "FAIL",
+                "error": str(e) if str(e) else repr(e),
+                "traceback": error_details
+            })
+            logger.error(f"  Validation FAILED:")
+            logger.error(f"     Exception type: {type(e).__name__}")
+            logger.error(f"     Exception message: {str(e) if str(e) else repr(e)}")
+    
+    passed = sum(1 for r in validation_results if r["status"] == "PASS")
+    failed = sum(1 for r in validation_results if r["status"] == "FAIL")
+    
+    logger.info(f"{'='*60}")
+    logger.info(f"VALIDATION SUMMARY")
+    logger.info(f"{'='*60}")
+    logger.info(f"Total proposals: {total_proposals}")
+    logger.info(f"Passed: {passed}")
+    logger.info(f"Failed: {failed}")
+    
+    if failed > 0:
+        logger.error("Failed proposals:")
+        for result in validation_results:
+            if result["status"] == "FAIL":
+                logger.error(f"  - Annotation: {result['proposal'].annotation_data_uuid}")
+                logger.error(f"    Error: {result['error']}")
+                if 'traceback' in result:
+                    logger.error(f"    Traceback:\n{result['traceback']}")
+        raise typer.Exit(code=1)
+    else:
+        logger.info(f"All proposals passed validation!")
 
 
 if __name__ == "__main__":
