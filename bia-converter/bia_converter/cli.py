@@ -26,7 +26,10 @@ def convert(
     conversion_config: Annotated[Optional[str], typer.Argument()] = "{}",
     api_target: Annotated[
         ApiTarget, typer.Option("--api", "-a", case_sensitive=False)
-    ] = ApiTarget.local,
+    ] = ApiTarget.local, 
+    dry_run: Annotated[
+        bool, typer.Option("--dry-run", help="If set, do not actually upload to s3")
+    ] = False,
 ):
     logging.basicConfig(level=logging.INFO)
 
@@ -43,7 +46,7 @@ def convert(
         )
         sys.exit(2)
 
-    conversion_function(api_client, image_rep, conversion_config_dict)
+    conversion_function(api_client, image_rep, conversion_config_dict, dry_run=dry_run)
 
 
 @app.command()
@@ -70,14 +73,17 @@ def create_thumbnail(
     image_rep_uuid: str,
     api_target: Annotated[
         ApiTarget, typer.Option("--api", "-a", case_sensitive=False)
-    ] = ApiTarget.local,
+    ] = ApiTarget.local, 
+    dry_run: Annotated[
+        bool, typer.Option("--dry-run", help="If set, do not actually upload thumbnail to s3")
+    ] = False,
 ):
     logging.basicConfig(level=logging.INFO)
 
     api_client = get_api_client(api_target)
     image_rep = api_client.get_image_representation(image_rep_uuid)
     thumbnail_uri = convert_module.create_thumbnail_from_interactive_display(
-        api_client, image_rep
+        api_client, image_rep, dry_run=dry_run
     )
     logger.info(f"Created thumbnail at {thumbnail_uri}")
 
@@ -88,13 +94,16 @@ def create_static_display(
     api_target: Annotated[
         ApiTarget, typer.Option("--api", "-a", case_sensitive=False)
     ] = ApiTarget.local,
+    dry_run: Annotated[
+        bool, typer.Option("--dry-run", help="If set, do not actually upload image to s3")
+    ] = False,
 ):
     logging.basicConfig(level=logging.INFO)
 
     api_client = get_api_client(api_target)
     image_rep = api_client.get_image_representation(image_rep_uuid)
     static_display_uri = convert_module.create_static_display_from_interactive_display(
-        api_client, image_rep
+        api_client, image_rep, dry_run=dry_run
     )
     logger.info(f"Created static display at {static_display_uri}")
 

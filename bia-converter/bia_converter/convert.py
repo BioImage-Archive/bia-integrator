@@ -18,8 +18,9 @@ from bia_integrator_api.models import (  # type: ignore
 from bia_shared_datamodels.package_specific_uuid_creation.image_conversion_uuid_creation import (
     create_image_representation_uuid,
 )
+from persistence.s3 import upload_to_s3, UploadMode
 from .settings import get_settings
-from .io import copy_local_to_s3, stage_fileref_and_get_fpath, sync_dirpath_to_s3
+from .io import stage_fileref_and_get_fpath
 from .conversion import run_zarr_conversion, get_bioformats2raw_version
 from .bia_api_client import store_object_in_api_idempotent
 from .rendering import generate_padded_thumbnail_from_ngff_uri
@@ -69,12 +70,28 @@ def create_image_representation_object(
     return image_rep
 
 
-def create_2d_image_and_upload_to_s3(ome_zarr_uri, dims, dst_key):
+def create_2d_image_and_upload_to_s3(
+    ome_zarr_uri: str, 
+    dims: tuple, 
+    dst_suffix: str, 
+    dry_run: bool = False
+) -> tuple[str, int]:
     im = generate_padded_thumbnail_from_ngff_uri(ome_zarr_uri, dims)
 
     with tempfile.NamedTemporaryFile(suffix=".png") as fh:
         im.save(fh)
-        file_uri = copy_local_to_s3(Path(fh.name), dst_key)
+
+        s3_bucket_name = settings.s3_bucket_name
+        s3_endpoint_url = settings.s3_endpoint_url
+        file_uri = upload_to_s3(
+            fh.name, 
+            dst_suffix, 
+            s3_bucket_name, 
+            UploadMode.COPY, 
+            s3_endpoint_url, 
+            dry_run=dry_run
+        )
+
         logger.info(f"Wrote thumbnail to {file_uri}")
         size_in_bytes = Path(fh.name).stat().st_size
 
@@ -83,7 +100,8 @@ def create_2d_image_and_upload_to_s3(ome_zarr_uri, dims, dst_key):
 
 def create_thumbnail_from_interactive_display(
     api_client: PrivateApi,
-    input_image_rep: ImageRepresentation,
+    input_image_rep: ImageRepresentation, 
+    dry_run: bool = False, 
 ) -> str:
     """Create a 2D thumbnail from an INTERACTIVE_DISPLAY rep"""
 
@@ -96,12 +114,12 @@ def create_thumbnail_from_interactive_display(
     # Retrieve model objects
     input_image = api_client.get_image(input_image_rep.representation_of_uuid)
 
-    dst_key = create_s3_uri_suffix_for_2d_view_of_image_representation(
+    dst_suffix = create_s3_uri_suffix_for_2d_view_of_image_representation(
         api_client,
         input_image_rep, dims=dims, name="thumbnail"
     )
     file_uri, size_in_bytes = create_2d_image_and_upload_to_s3(
-        ome_zarr_uri, dims, dst_key
+        ome_zarr_uri, dims, dst_suffix, dry_run=dry_run
     )
 
     # Update the BIA Image object with uri for this 2D view
@@ -126,7 +144,8 @@ def create_thumbnail_from_interactive_display(
 # TODO - should be able to merge these
 def create_static_display_from_interactive_display(
     api_client: PrivateApi,
-    input_image_rep: ImageRepresentation,
+    input_image_rep: ImageRepresentation, 
+    dry_run: bool = False, 
 ) -> str:
     """Create a 2D static display from an INTERACTIVE_DISPLAY rep"""
 
@@ -139,11 +158,11 @@ def create_static_display_from_interactive_display(
     # Retrieve model ibjects
     input_image = api_client.get_image(input_image_rep.representation_of_uuid)
 
-    dst_key = create_s3_uri_suffix_for_2d_view_of_image_representation(
+    dst_suffix = create_s3_uri_suffix_for_2d_view_of_image_representation(
         api_client, input_image_rep, dims=dims, name="static_display"
     )
     file_uri, size_in_bytes = create_2d_image_and_upload_to_s3(
-        ome_zarr_uri, dims, dst_key
+        ome_zarr_uri, dims, dst_suffix, dry_run=dry_run
     )
 
     # Update the BIA Image object with uri for this 2D view
@@ -389,7 +408,9 @@ def _convert_with_bioformats2raw_pattern(
 
 def convert_uploaded_by_submitter_to_interactive_display(
     api_client: PrivateApi,
-    input_image_rep: ImageRepresentation, conversion_config: dict = {}
+    input_image_rep: ImageRepresentation, 
+    conversion_config: dict = {}, 
+    dry_run: bool = False, 
 ) -> ImageRepresentation:
     # Should convert an UPLOADED_BY_SUBMITTER rep, to an INTERACTIVE_DISPLAY rep
 
@@ -434,8 +455,17 @@ def convert_uploaded_by_submitter_to_interactive_display(
             raise e
 
     # Upload to S3
+    s3_bucket_name = settings.s3_bucket_name
+    s3_endpoint_url = settings.s3_endpoint_url
     dst_suffix = create_s3_uri_suffix_for_image_representation(api_client, base_image_rep)
-    zarr_group_uri = sync_dirpath_to_s3(output_zarr_fpath, dst_suffix)
+    zarr_group_uri = upload_to_s3(
+        output_zarr_fpath, 
+        dst_suffix, 
+        s3_bucket_name, 
+        UploadMode.SYNC, 
+        s3_endpoint_url, 
+        dry_run=dry_run
+    )
     ome_zarr_uri = create_vizarr_compatible_ome_zarr_uri(zarr_group_uri)
 
     # Set image_rep properties that we now know
@@ -457,7 +487,9 @@ def convert_uploaded_by_submitter_to_interactive_display(
 
 def convert_zipped_ome_zarr_archive(
     api_client: PrivateApi,
-    input_image_rep: ImageRepresentation, conversion_parameters: dict = {}
+    input_image_rep: ImageRepresentation, 
+    conversion_parameters: dict = {}, 
+    dry_run: bool = False, 
 ) -> ImageRepresentation:
     """Unzip an OME-ZARR zip archive image representation to an OME-ZARR"""
 
@@ -492,7 +524,17 @@ def convert_zipped_ome_zarr_archive(
 
     # Upload to S3
     dst_suffix = create_s3_uri_suffix_for_image_representation(api_client, base_image_rep)
-    zarr_group_uri = sync_dirpath_to_s3(output_zarr_fpath, dst_suffix)
+    s3_bucket_name = settings.s3_bucket_name
+    s3_endpoint_url = settings.s3_endpoint_url
+    dst_suffix = create_s3_uri_suffix_for_image_representation(api_client, base_image_rep)
+    zarr_group_uri = upload_to_s3(
+        output_zarr_fpath, 
+        dst_suffix, 
+        s3_bucket_name, 
+        UploadMode.SYNC, 
+        s3_endpoint_url, 
+        dry_run=dry_run
+    )
     ome_zarr_uri = create_vizarr_compatible_ome_zarr_uri(zarr_group_uri)
 
     # Set image_rep properties that we now know
