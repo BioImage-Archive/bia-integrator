@@ -5,11 +5,13 @@ import tempfile
 import traceback
 import typer
 
+from contextlib import nullcontext
 from enum import Enum
 from rich.logging import RichHandler
 from typing import Annotated
 
-from annotation_data_converter.api_client import APIMode, get_client
+from persistence.s3 import upload_to_s3, UploadMode
+from annotation_data_converter.api_client import get_api_client, ApiTarget
 from annotation_data_converter.create_curation_directive import (
     create_ng_link_directive,
     write_directives,
@@ -17,11 +19,8 @@ from annotation_data_converter.create_curation_directive import (
 from annotation_data_converter.point_annotations import (
     point_annotations,
 )
-from annotation_data_converter.settings import get_settings
-from annotation_data_converter.utils import (
-    generate_precomputed_annotation_path_suffix, 
-    sync_precomputed_annotation_to_s3, 
-)
+from annotation_data_converter.settings import get_settings, OutputMode
+from annotation_data_converter.utils import generate_precomputed_annotation_path_suffix
 
 logging.basicConfig(
     level="NOTSET", format="%(message)s", datefmt="[%X]", handlers=[RichHandler()]
@@ -30,12 +29,6 @@ logger = logging.getLogger()
 
 settings = get_settings()
 annotation_data_convert = typer.Typer()
-
-
-class OutputMode(str, Enum):
-    BOTH = "both", 
-    LOCAL = "local", 
-    S3 = "s3",
 
 
 @annotation_data_convert.command(
@@ -57,9 +50,9 @@ def point_annotation_conversion(
             "--output-mode",
             "-om",
             case_sensitive=False,
-            help="Where to save output; options: local (default), s3, or both.",
+            help="Where to put output; options: local, s3, both, or dry_run (the default — does a dry run of s3 upload, saves output locally).",
         ),
-    ] = OutputMode.LOCAL,
+    ] = settings.output_mode,
     output_directory: Annotated[
         pathlib.Path,
         typer.Option(
@@ -70,16 +63,16 @@ def point_annotation_conversion(
         ),
     ] = settings.default_output_directory,
     api_mode: Annotated[
-        APIMode,
+        ApiTarget,
         typer.Option(
             "--api-mode",
             "-am",
             case_sensitive=False,
             help="Mode to persist the data. Options: local_api, bia_api. ",
         ),
-    ] = APIMode.LOCAL_API,
+    ] = ApiTarget.local,
 ):
-    api_client = get_client(api_mode)
+    api_client = get_api_client(api_mode)
 
     with open(proposal_path.absolute(), "r") as proposal_file:
         list_of_group_proposals: list[dict] = json.loads(
@@ -88,6 +81,11 @@ def point_annotation_conversion(
 
     proposal_list = point_annotations.collect_proposals(list_of_group_proposals)
     directives = []
+
+    if output_mode != OutputMode.LOCAL:
+        settings = get_settings()
+        s3_bucket_name = settings.s3_bucket_name
+        s3_endpoint_url = settings.s3_endpoint_url
 
     for proposal in proposal_list:
         # Note, returns image and annotation data as these objects will need curating to add the s3 links.
@@ -113,30 +111,36 @@ def point_annotation_conversion(
             api_client, 
         )
 
-        if output_mode in [OutputMode.LOCAL, OutputMode.BOTH]:
-            local_output_path = output_directory / precomputed_annotation_path_suffix
-            converter.convert_to_neuroglancer_precomputed(local_output_path)
-
-        if output_mode in [OutputMode.S3, OutputMode.BOTH]:
-            if output_mode == OutputMode.S3:
-                with tempfile.TemporaryDirectory() as temp_dir:
-                    temp_path = pathlib.Path(temp_dir) / precomputed_annotation_path_suffix
-                    converter.convert_to_neuroglancer_precomputed(temp_path)
-                    precomputed_annotation_url = sync_precomputed_annotation_to_s3(
-                        str(temp_path), 
-                        precomputed_annotation_path_suffix, 
-                    )
-            else:
-                precomputed_annotation_url = sync_precomputed_annotation_to_s3(
-                    str(local_output_path), 
+        dry_run = False
+        if output_mode != OutputMode.S3:
+            precomp_path = output_directory / precomputed_annotation_path_suffix
+            ctx = nullcontext()
+            if output_mode == OutputMode.DRY_RUN:
+                dry_run = True
+        else:
+            precomp_path = None
+            ctx = tempfile.TemporaryDirectory()
+        
+        if output_mode !=  OutputMode.LOCAL:
+            with ctx as temp_dir:
+                if precomp_path is None:
+                    precomp_path = pathlib.Path(temp_dir) / precomputed_annotation_path_suffix
+                
+                converter.convert_to_neuroglancer_precomputed(precomp_path)
+                precomputed_annotation_url = upload_to_s3(
+                    precomp_path, 
                     precomputed_annotation_path_suffix, 
+                    s3_bucket_name, 
+                    UploadMode.SYNC, 
+                    s3_endpoint_url, 
+                    dry_run=dry_run
                 )
 
-        if output_mode in [OutputMode.S3, OutputMode.BOTH]:
             ng_view_link = converter.generate_neuroglancer_view_link(
                 precomputed_annotation_url, 
             )
             directives.append(create_ng_link_directive(ng_view_link, image_rep.uuid))
+        
         elif output_mode == OutputMode.LOCAL and settings.local_annotations_server:
             # Construct local URL for preview
             local_url = f"{settings.local_annotations_server.rstrip('/')}/{precomputed_annotation_path_suffix}"
@@ -159,20 +163,20 @@ def point_annotation_validation(
         ),
     ],
     api_mode: Annotated[
-        APIMode,
+        ApiTarget,
         typer.Option(
             "--api-mode",
             "-am",
             case_sensitive=False,
             help="Mode to persist the data. Options: local_api, bia_api. ",
         ),
-    ] = APIMode.LOCAL_API,
+    ] = ApiTarget.local,
 ):
     """
     Validate point annotations from a proposal file.
     Checks that all points fall within the bounds of their associated images.
     """
-    api_client = get_client(api_mode)
+    api_client = get_api_client(api_mode)
 
     with open(proposal_path.absolute(), "r") as proposal_file:
         list_of_group_proposals: list[dict] = json.loads(

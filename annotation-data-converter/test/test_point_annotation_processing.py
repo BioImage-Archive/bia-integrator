@@ -13,11 +13,7 @@ runner = CliRunner()
 
 def test_starfile_convert_to_neuroglancer(data_in_api, tmp_bia_data_dir):
     
-    # these three mock functions bypass s3 interaction and writing files to curation package
-    def mock_s3_sync(local_path, remote_path):
-        """Mock S3 sync that returns a made-up URL without uploading"""
-        return f"https://fake-s3.example.com/testbucket/{remote_path}"
-    
+    # Mock functions for getting image info (because no real s3 image to find) and to avoid writing directives in curation package
     def mock_get_image_info(image_uri):
         """Return fake but plausible OME image metadata"""
         contrast_bounds = (0.0, 1.0)
@@ -32,8 +28,7 @@ def test_starfile_convert_to_neuroglancer(data_in_api, tmp_bia_data_dir):
         directive_writer = YamlDirectiveWriter()
         directive_writer.update(output_path, directives)
     
-    with patch('annotation_data_converter.cli.sync_precomputed_annotation_to_s3', side_effect=mock_s3_sync), \
-        patch('annotation_data_converter.point_annotations.converters.PointAnnotationConverter.get_image_info_from_ome', side_effect=mock_get_image_info), \
+    with patch('annotation_data_converter.point_annotations.converters.PointAnnotationConverter.get_image_info_from_ome', side_effect=mock_get_image_info), \
         patch('annotation_data_converter.cli.write_directives', side_effect=mock_write_to_tmp):
         
         commands = [
@@ -43,9 +38,9 @@ def test_starfile_convert_to_neuroglancer(data_in_api, tmp_bia_data_dir):
             "-od",
             str(tmp_bia_data_dir), 
             "-om",
-            "both", 
+            "dry_run", 
             "-am",
-            "local_api",
+            "local", 
         ]
 
         result = runner.invoke(annotation_data_convert, commands)

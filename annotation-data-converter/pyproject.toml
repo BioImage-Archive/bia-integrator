@@ -14,6 +14,7 @@ bia-integrator-api = { path = "../clients/python", develop = true }
 bia-test-data = { path = "../bia-test-data", develop = true }
 bia-converter = { path = "../bia-converter", develop = true }
 curation = { path = "../curation", develop = true }
+persistence = { path = "../persistence", develop = true }
 typer = "^0.20"
 requests = "^2.32.3"
 pydantic = "^2.9.2"
