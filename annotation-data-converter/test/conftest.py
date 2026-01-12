@@ -9,6 +9,11 @@ from bia_test_data.data_to_api import add_objects_to_api, get_object_creation_cl
 from annotation_data_converter.settings import get_settings
 
 
+def pytest_configure(config: pytest.Config):
+    """s3 bucket name has no default, so it is set here for testing"""
+    os.environ["s3_bucket_name"] = "testbucket"
+
+
 @pytest.fixture(scope="session")
 def private_client():
     settings = get_settings()
