@@ -65,6 +65,7 @@ def create_image_representation_object(
         ],
         total_size_in_bytes=0,
         file_uri=[],
+        image_viewer_setting = []
     )
 
     return image_rep
