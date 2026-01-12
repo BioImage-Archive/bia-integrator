@@ -146,6 +146,7 @@ def reset_expected_interactive_display_in_api(expected_interactive_display, expe
             im_rep.voxel_physical_size_x = 0.0
             im_rep.voxel_physical_size_y = 0.0
             im_rep.voxel_physical_size_z = 0.0
+            im_rep.image_viewer_setting = []
 
             im_rep.version += 1
             api_client.post_image_representation(im_rep)
