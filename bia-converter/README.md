@@ -36,13 +36,14 @@ poetry run bia-converter convert <IMAGE_REP_UUID> --api local
 Run a specified image conversion function on a given image representation.
 
 ```bash
-poetry run bia-converter convert <IMAGE_REP_UUID> [CONVERSION_FUNCTION_NAME] [CONVERSION_CONFIG] [--api {prod|local}]
+poetry run bia-converter convert <IMAGE_REP_UUID> [CONVERSION_FUNCTION_NAME] [CONVERSION_CONFIG] [--api {prod|local}] [--dry_run {True\False}]
 ```
 
 - `IMAGE_REP_UUID`: UUID of the image representation.
 - `CONVERSION_FUNCTION_NAME` (optional): Name of the function in `bia_converter.convert` to run. Defaults to `convert_uploaded_by_submitter_to_interactive_display`.
 - `CONVERSION_CONFIG` (optional): JSON string with config options (not currently used).
 - `--api, -a` (optional): API target environment. Defaults to `local`.
+- `--dry_run, -dr` (optional): Whether to do the actual upload to S3. Default is `False` (i.e., do the upload). 
 
 **Examples**:
 
@@ -65,7 +66,7 @@ poetry run bia-converter convert 123e4567-e89b-12d3-a456-426614174000 --api loca
 Create a thumbnail from an `INTERACTIVE_DISPLAY` image representation.
 
 ```bash
-poetry run bia-converter create-thumbnail <IMAGE_REP_UUID> [--api {prod|local}]
+poetry run bia-converter create-thumbnail <IMAGE_REP_UUID> [--api {prod|local}] [--dry_run {True\False}]
 ```
 
 **Example**:
@@ -87,7 +88,7 @@ This will log the URI of the generated thumbnail after processing.
 Create a static display from an `INTERACTIVE_DISPLAY` image representation.
 
 ```bash
-poetry run bia-converter create-static-display <IMAGE_REP_UUID> [--api {prod|local}]
+poetry run bia-converter create-static-display <IMAGE_REP_UUID> [--api {prod|local}] [--dry_run {True\False}]
 ```
 
 **Example**:
@@ -167,15 +168,13 @@ The `.env_template` in this directory contains the items that can be configured 
 
    - **For uploading to S3**, set:
 
-     - ``endpoint_url``
-     - ``bucket_name``
+     - ``s3_bucket_name``
+     - (optionally) ``endpoint_url``, if different from default in [Persistence](https://github.com/BioImage-Archive/bia-integrator/tree/main/persistence).
 
    - The AWS credentials for the endpoint also need to be set. This can be done via environment variables or the relevant values in the `.env` file. Either:
 
      - ``AWS_ACCESS_KEY_ID`` *and* ``AWS_SECRET_ACCESS_KEY``
      - OR use ``AWS_SHARED_CREDENTIALS_FILE`` with optional ``AWS_PROFILE`` and/or ``AWS_CONFIG_FILE``
-
-     There are two additional AWS variables set by default to facillitate transfer to S3 (``AWS_REQUEST_CHECKSUM_CALCULATION`` and ``AWS_RESPONSE_CHECKSUM_VALIDATION``)
 
 
 ## Scripts

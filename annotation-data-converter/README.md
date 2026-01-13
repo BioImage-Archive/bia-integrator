@@ -13,7 +13,7 @@ To actually push to the api, copy the .env_template to .env and fill in your det
 # Output data configuration
 The main conversion command, `convert`, can save data locally, upload it to s3, both of those, or as a "dry run" (the default), in which data is saved locally and the s3 uri specified and returned, but no data is actually uploaded to s3 — this has obvious utility for checking that everything will run as expected before doing it properly. The output mode, and where local data is saved, can be specified with inputs to the CLI, namely --output-mode and --output-directory — see *CLI commands*, below. 
 
-If uploading to s3, the `s3_bucket_name` must be set in the .env file; the `s3_endpoint_url` can also be set there, if different from the default value — an example is in the .env_template. If further configuration for s3 is required, for example, setting credentials, this can be done in the [Persistence](https://github.com/BioImage-Archive/bia-integrator/tree/main/persistence) package.
+If uploading to s3, the `s3_bucket_name` must be set in the .env file; the `s3_endpoint_url` can also be set there, if different from the default value — an example is in the .env_template. If further configuration for s3 is required, for example, setting credentials, this can be done in [Persistence](https://github.com/BioImage-Archive/bia-integrator/tree/main/persistence).
 
 # Output directives
 
