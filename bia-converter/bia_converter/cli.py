@@ -28,7 +28,7 @@ def convert(
         ApiTarget, typer.Option("--api", "-a", case_sensitive=False)
     ] = ApiTarget.local, 
     dry_run: Annotated[
-        bool, typer.Option("--dry-run", "-dr", help="If set, do not actually upload to s3")
+        bool, typer.Option("--dry-run", "-dr", help="If this argument is specified, do not actually upload to s3")
     ] = False,
 ):
     logging.basicConfig(level=logging.INFO)
@@ -75,7 +75,7 @@ def create_thumbnail(
         ApiTarget, typer.Option("--api", "-a", case_sensitive=False)
     ] = ApiTarget.local, 
     dry_run: Annotated[
-        bool, typer.Option("--dry-run", "-dr", help="If set, do not actually upload thumbnail to s3")
+        bool, typer.Option("--dry-run", "-dr", help="If this argument is specified, do not actually upload to s3")
     ] = False,
 ):
     logging.basicConfig(level=logging.INFO)
@@ -85,7 +85,8 @@ def create_thumbnail(
     thumbnail_uri = convert_module.create_thumbnail_from_interactive_display(
         api_client, image_rep, dry_run=dry_run
     )
-    logger.info(f"Created thumbnail at {thumbnail_uri}")
+    if not dry_run:
+        logger.info(f"Created thumbnail at {thumbnail_uri}")
 
 
 @app.command()
@@ -95,7 +96,7 @@ def create_static_display(
         ApiTarget, typer.Option("--api", "-a", case_sensitive=False)
     ] = ApiTarget.local,
     dry_run: Annotated[
-        bool, typer.Option("--dry-run", "-dr", help="If set, do not actually upload image to s3")
+        bool, typer.Option("--dry-run", "-dr", help="If this argument is specified, do not actually upload to s3")
     ] = False,
 ):
     logging.basicConfig(level=logging.INFO)
@@ -105,7 +106,8 @@ def create_static_display(
     static_display_uri = convert_module.create_static_display_from_interactive_display(
         api_client, image_rep, dry_run=dry_run
     )
-    logger.info(f"Created static display at {static_display_uri}")
+    if not dry_run:
+        logger.info(f"Created static display at {static_display_uri}")
 
 
 @app.command()

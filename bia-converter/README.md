@@ -43,7 +43,7 @@ poetry run bia-converter convert <IMAGE_REP_UUID> [CONVERSION_FUNCTION_NAME] [CO
 - `CONVERSION_FUNCTION_NAME` (optional): Name of the function in `bia_converter.convert` to run. Defaults to `convert_uploaded_by_submitter_to_interactive_display`.
 - `CONVERSION_CONFIG` (optional): JSON string with config options (not currently used).
 - `--api, -a` (optional): API target environment. Defaults to `local`.
-- `--dry_run, -dr` (optional): Whether to do the actual upload to S3. Default is `False` (i.e., do the upload). 
+- `--dry_run, -dr` (optional): Whether to do the actual upload to S3, and create/modify API objects accordingly. Just pass the option itself to specify a dry run; no value is needed. Default is `False` (i.e., do the upload and API object creation/modification). If set when calling `convert`, the created Image Representation object is saved locally at `cache_root_dirpath/image_rep/dry_run_image_rep.json`.
 
 **Examples**:
 
@@ -52,7 +52,7 @@ poetry run bia-converter convert 123e4567-e89b-12d3-a456-426614174000
 ```
 
 ```bash
-poetry run bia-converter convert 123e4567-e89b-12d3-a456-426614174000 convert_interactive_display_to_static_display --api local
+poetry run bia-converter convert 123e4567-e89b-12d3-a456-426614174000 convert_interactive_display_to_static_display --api local --dr
 ```
 
 ```bash
