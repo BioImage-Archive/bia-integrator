@@ -82,8 +82,8 @@ def point_annotation_conversion(
     proposal_list = point_annotations.collect_proposals(list_of_group_proposals)
     directives = []
 
+    settings = get_settings()
     if output_mode != OutputMode.LOCAL:
-        settings = get_settings()
         s3_bucket_name = settings.s3_bucket_name
         s3_endpoint_url = settings.s3_endpoint_url
 
@@ -121,12 +121,14 @@ def point_annotation_conversion(
             precomp_path = None
             ctx = tempfile.TemporaryDirectory()
         
-        if output_mode !=  OutputMode.LOCAL:
-            with ctx as temp_dir:
-                if precomp_path is None:
-                    precomp_path = pathlib.Path(temp_dir) / precomputed_annotation_path_suffix
-                
-                converter.convert_to_neuroglancer_precomputed(precomp_path)
+        with ctx as temp_dir:
+            if precomp_path is None:
+                precomp_path = pathlib.Path(temp_dir) / precomputed_annotation_path_suffix
+            
+            converter.convert_to_neuroglancer_precomputed(precomp_path)
+
+            if output_mode !=  OutputMode.LOCAL:
+
                 precomputed_annotation_url = upload_to_s3(
                     precomp_path, 
                     precomputed_annotation_path_suffix, 
@@ -136,17 +138,17 @@ def point_annotation_conversion(
                     dry_run=dry_run
                 )
 
-            ng_view_link = converter.generate_neuroglancer_view_link(
-                precomputed_annotation_url, 
-            )
-            directives.append(create_ng_link_directive(ng_view_link, image_rep.uuid))
+                ng_view_link = converter.generate_neuroglancer_view_link(
+                    precomputed_annotation_url, 
+                )
+                directives.append(create_ng_link_directive(ng_view_link, image_rep.uuid))
         
-        elif output_mode == OutputMode.LOCAL and settings.local_annotations_server:
-            # Construct local URL for preview
-            local_url = f"{settings.local_annotations_server.rstrip('/')}/{precomputed_annotation_path_suffix}"
-            converter.generate_neuroglancer_view_link(local_url)
+            elif output_mode == OutputMode.LOCAL and settings.local_annotations_server:
+                # Construct local URL for preview
+                local_url = f"{settings.local_annotations_server.rstrip('/')}/{precomputed_annotation_path_suffix}"
+                converter.generate_neuroglancer_view_link(local_url)
             
-    write_directives(directives)
+    write_directives(directives, dry_run)
 
 
 @annotation_data_convert.command(
