@@ -33,11 +33,11 @@ It is expected that different types of annotations will be handled here, but cur
 
 | Option | Short | Values | Description | Default |
 |--------|-------|-------------|-------------|---------|
-| `--proposal` | `-p` | — [PATH \| str] | Path to the json proposal for the study. [required] | - |
+| `--proposal` | `-p` | — [PATH \| str] | Path to the json proposal for the study. [required] | — |
 | `--output-mode` | `-om` | dry_run \| local \| s3 \| both | Output data creation and saving setting. | dry_run |
 | `--output-directory` | `-od` | — [PATH \| str] | Output directory for the data. | ../output_data |
 | `--api-mode` | `-am` | local \| prod | Mode to persist the data. | local |
-| `--help` | - | - | Show help. | - |
+| `--help` | — | — | Show help. | — |
 
 Note that, if run in local-only output mode, directives are not written, since there is no appropriate neuroglancer link to generate (but the link is still created if running a testing configuration, as described in *A useful testing setup*, below). 
 
@@ -45,17 +45,16 @@ Note that, if run in local-only output mode, directives are not written, since t
 
 It is recommended to run validation before conversion. 
 
-It can be quite clear if annotations are not scaled correctly in a way that makes their range smaller than the image bounds — this shows up as a cluster of points forming a rectangle within the image — yet, it is difficult to spot if annotations are scaled so that they reach beyond the image, as only the portion that is within the image bounds gets displayed, and this can look perfectly normal. Thus, validation checks point annotations to ensure they fall within image bounds before conversion. To run validation on the test data, you'll need to have the correct object in the local api. Thus, run once:
+It can be quite clear if annotations are not scaled correctly in a way that makes their range smaller than the image bounds — this shows up as a cluster of points forming a rectangle within the image — yet, it is difficult to spot if annotations are scaled so that they reach beyond the image, as only the portion that is within the image bounds gets displayed, and this can look perfectly normal. Thus, validation checks point annotations to ensure they fall within image bounds before conversion. To run validation on the test data, you'll need to have the correct object in the local api. Thus, assuming you have the local api set up (see *Install package dependencies*, above):
 
 ```
-docker compose up --build --force-recreate --remove-orphans -d --wait
 poetry run pytest
 ```
 
 Then, to validate:
 
 ```
-poetry run annotation-data-converter validate -p proposals/point_annotations/test_proposal.json -am local_api
+poetry run annotation-data-converter validate -p proposals/point_annotations/test_proposal.json -am local
 ```
 
 The validate command will:
@@ -64,29 +63,36 @@ The validate command will:
 - Display a summary of passed/failed validations
 - Exit with error code 1 if any validation fails
 
+### Options
+
+| Option | Short | Values | Description | Default |
+|--------|-------|-------------|-------------|---------|
+| `--proposal` | `-p` | — [PATH \| str] | Path to the json proposal for the study. [required] | — |
+| `--api-mode` | `-am` | local \| prod | Mode to persist the data. | local |
+| `--help` | — | — | Show help. | — |
+
 # Point Annotation
 
-You can run the point annotation on the test data (but this require running the tests first to set up the correct objects in your local api). Therefore, as above, you need to run once (but not again if you already did it for validation):
+You can run the point annotation on the test data, and again, this requires running the tests first to set up the correct objects in your local api — see details in *Validate*, directly above.
 
 ```
-docker compose up --build --force-recreate --remove-orphans -d --wait
 poetry run pytest
 ```
 
 Then you can run:
 
 ```
-poetry run annotation-data-converter convert -p proposals/point_annotations/test_proposal.json -am local_api -om local
+poetry run annotation-data-converter convert -p proposals/point_annotations/test_proposal.json -am local -om local
 ```
 
-Which will create a precomputed neuroglancer file of the point annotations.
+Which will create a precomputed neuroglancer file of the point annotations — see *Convert* in *CLI commands*, above, for more details of options for this command.
 
 ### Validation
 
-Point annotations are assumed to be defined in voxel units. Validation checks that point values fall within the bounds of the corresponding image. As described above, run validation separately using the `validate` command before conversion:
+Point annotations are assumed to be defined in voxel units. Validation checks that point values fall within the bounds of the corresponding image. As described above in *Validate*, under *CLI commands*, run validation separately using the `validate` command before conversion:
 
 ```
-poetry run annotation-data-converter validate -p proposals/point_annotations/test_proposal.json -am local_api -om local
+poetry run annotation-data-converter validate -p proposals/point_annotations/test_proposal.json -am local -om local
 ```
  
 # *A useful testing setup*
