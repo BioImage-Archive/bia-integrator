@@ -8,18 +8,16 @@ poetry env use python3.13
 poetry install
 ```
 
-To actually push to the api, copy the .env_template to .env and fill in your details. For local testing, you need to have the local api set up first.
+To actually push to the api, copy the .env_template to .env and fill in your details. For local testing, you need to have the local api set up first — see [api](https://github.com/BioImage-Archive/bia-integrator/tree/main/api).
 
 # Output data configuration
-Output data can be saved locally (the default), uploaded to s3, or both. This, and where local data is saved, can be specified with inputs to the CLI, namely --output-mode and --output-directory — see *CLI commands*, below. 
+The main conversion command, `convert`, can save data locally, upload it to s3, both of those, or as a "dry run" (the default), in which data is saved locally and the s3 uri specified and returned, but no data is actually uploaded to s3 — this has obvious utility for checking that everything will run as expected before doing it properly. The output mode, and where local data is saved, can be specified with inputs to the CLI, namely --output-mode and --output-directory — see *CLI commands*, below. 
 
-If uploading to s3, the `endpoint_url` and `bucket_name` must be set in the .env file; an example is in the .env_template. Note the two additional aws_... fields — they're necessary for s3 upload but require no further configuration. 
-
-The default output directory can also be set, save specifying it on the command line. That can also be found in the .env_template, to copy to your .env file. 
+If uploading to s3, the `s3_bucket_name` must be set in the .env file; the `s3_endpoint_url` can also be set there, if different from the default value — an example is in the .env_template. If further configuration for s3 is required, for example, setting credentials, this can be done in the [Persistence](https://github.com/BioImage-Archive/bia-integrator/tree/main/persistence) package.
 
 # Output directives
 
-Directives are created for subsequent curation, written to the bia-integrator curation package. An example directive file can be seen in `test/output_data/curation_directive.yaml` — see the curation package for use of directives. 
+Directives are created for subsequent curation, and are written to the bia-integrator curation package, under `/directives/point_annotation_ng_view_links.yaml` unless the output mode is `dry_run` or `local`, in which case a directive is saved to the configured output directory, or not created at all, respectively. An example directive file can be seen in `test/output_data/curation_directive.yaml` — see the curation package for use of directives. 
 
 # CLI commands
 
@@ -33,13 +31,13 @@ It is expected that different types of annotations will be handled here, but cur
 
 ### Options
 
-| Option | Short | Type/Values | Description | Default |
+| Option | Short | Values | Description | Default |
 |--------|-------|-------------|-------------|---------|
-| `--proposal` | `-p` | PATH | Path to the json proposal for the study. [required] | - |
-| `--output-mode` | `-om` | [both\|local\|s3] | Where to save output; options: local (default), s3, or both. | local |
-| `--output-directory` | `-od` | PATH | Output directory for the data. | ../output_data |
-| `--api-mode` | `-am` | [local_api\|dev_api] | Mode to persist the data. Options: local_api, bia_api. | local_api |
-| `--help` | - | - | Show this message and exit. | - |
+| `--proposal` | `-p` | — [PATH \| str] | Path to the json proposal for the study. [required] | - |
+| `--output-mode` | `-om` | dry_run \| local \| s3 \| both | Output data creation and saving setting. | dry_run |
+| `--output-directory` | `-od` | — [PATH \| str] | Output directory for the data. | ../output_data |
+| `--api-mode` | `-am` | local \| prod | Mode to persist the data. | local |
+| `--help` | - | - | Show help. | - |
 
 Note that, if run in local-only output mode, directives are not written, since there is no appropriate neuroglancer link to generate (but the link is still created if running a testing configuration, as described in *A useful testing setup*, below). 
 
@@ -90,8 +88,7 @@ Point annotations are assumed to be defined in voxel units. Validation checks th
 ```
 poetry run annotation-data-converter validate -p proposals/point_annotations/test_proposal.json -am local_api -om local
 ```
-
-
+ 
 # *A useful testing setup*
 
 Given that annotation conversion is prone to mishaps — units errors, axis flips, dimensions mix-ups, and so on — it is helpful to have a testing setup, before uploading to s3. If you make a simple local server to serve your precomputed annotation, you can check it visually first. The configuration for this should look something like:
