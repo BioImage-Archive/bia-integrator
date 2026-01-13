@@ -171,11 +171,7 @@ The `.env_template` in this directory contains the items that can be configured 
      - ``s3_bucket_name``
      - (optionally) ``endpoint_url``, if different from default in [Persistence](https://github.com/BioImage-Archive/bia-integrator/tree/main/persistence).
 
-   - The AWS credentials for the endpoint also need to be set. This can be done via environment variables or the relevant values in the `.env` file. Either:
-
-     - ``AWS_ACCESS_KEY_ID`` *and* ``AWS_SECRET_ACCESS_KEY``
-     - OR use ``AWS_SHARED_CREDENTIALS_FILE`` with optional ``AWS_PROFILE`` and/or ``AWS_CONFIG_FILE``
-
+   - Further configuration for s3, for example, setting credentials, can be done in [Persistence](https://github.com/BioImage-Archive/bia-integrator/tree/main/persistence)
 
 ## Scripts
 The [scripts](./scripts) sub-directory contains a script to update a dataset's example image uri property with the url(s) of an image(s) representative of the dataset. The input to the script is the uuid of an image representation for which a static display has been generated.

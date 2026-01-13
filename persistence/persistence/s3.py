@@ -79,6 +79,8 @@ def upload_to_s3(
     env = os.environ.copy()
     env["AWS_REQUEST_CHECKSUM_CALCULATION"] = settings.aws_request_checksum_calculation
     env["AWS_RESPONSE_CHECKSUM_VALIDATION"] = settings.aws_response_checksum_validation
+    env["AWS_ACCESS_KEY_ID"] = settings.aws_access_key_id
+    env["AWS_SECRET_ACCESS_KEY"] = settings.aws_secret_access_key
     
     logger.info(
         f"Uploading {source_path} to s3://{dst_key} "
