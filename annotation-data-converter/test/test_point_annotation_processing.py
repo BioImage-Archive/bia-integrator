@@ -22,7 +22,7 @@ def test_starfile_convert_to_neuroglancer(data_in_api, tmp_bia_data_dir):
         channel_info = None
         return contrast_bounds, image_resolution, voxels, channel_info
     
-    def mock_write_to_tmp(directives):
+    def mock_write_to_tmp(directives, dry_run):
         """Write directives to temp directory instead of curation"""
         output_path = tmp_bia_data_dir / "test_directive.yaml"
         directive_writer = YamlDirectiveWriter()
