@@ -8,7 +8,7 @@ def test_fts_image_facet_discovery_organism(api_client: TestClient):
     body = rsp.json()
     assert len(body["facets"]["scientific_name"]["buckets"]) == 1
     assert {
-        "key": "Homo sapiens",
+        "key": "homo sapiens",
         "doc_count": 2,
     } in body["facets"][
         "scientific_name"
@@ -32,7 +32,7 @@ def test_fts_image_no_query(api_client: TestClient):
     facet_homo_sapiens = next(
         bucket
         for bucket in body["facets"]["scientific_name"]["buckets"]
-        if bucket["key"] == "Homo sapiens"
+        if bucket["key"] == "homo sapiens"
     )["doc_count"]
     assert len(body["hits"]["hits"]) == 3
 

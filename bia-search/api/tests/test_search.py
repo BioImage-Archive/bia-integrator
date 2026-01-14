@@ -18,19 +18,19 @@ def test_fts_facet_discovery_organism(api_client: TestClient):
     body = rsp.json()
     assert len(body["facets"]["scientific_name"]["buckets"]) == 3
     assert {
-        "key": "Homo sapiens",
+        "key": "homo sapiens",
         "doc_count": 1,
     } in body["facets"][
         "scientific_name"
     ]["buckets"]
     assert {
-        "key": "Drosophila melanogaster",
+        "key": "drosophila melanogaster",
         "doc_count": 1,
     } in body["facets"][
         "scientific_name"
     ]["buckets"]
     assert {
-        "key": "Mus musculus",
+        "key": "mus musculus",
         "doc_count": 2,
     } in body["facets"][
         "scientific_name"
@@ -76,7 +76,7 @@ def test_fts_no_query(api_client: TestClient):
     facet_homo_sapiens = next(
         bucket
         for bucket in body["facets"]["scientific_name"]["buckets"]
-        if bucket["key"] == "Homo sapiens"
+        if bucket["key"] == "homo sapiens"
     )["doc_count"]
     assert len(body["hits"]["hits"]) == 5
 
