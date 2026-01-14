@@ -26,6 +26,23 @@ curl -k -X PUT "${ELASTIC_URL}/${ELASTIC_INDEX}" \
 	-u "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" \
 	-H "Content-Type: application/json" \
 	-d '{
+		"settings": {
+			"analysis": {
+				"analyzer": {
+					"default": { "type": "whitespace" },
+					"analyzerCaseInsensitive": {
+						"tokenizer": "whitespace",
+						"filter": ["lowercase"]
+					}
+				},
+				"normalizer": {
+					"lowercase_norm": {
+						"type": "custom",
+						"filter": ["lowercase"]
+					}
+				}
+			}
+		},
 		"mappings": {
 			"dynamic": false,
 			"properties": {
@@ -33,16 +50,16 @@ curl -k -X PUT "${ELASTIC_URL}/${ELASTIC_INDEX}" \
 					"type": "keyword"
 				},
 				"accession_id": {
-					"type": "keyword"
+					"type": "keyword", "normalizer": "lowercase_norm" 
 				},
 				"title": {
-					"type": "text"
+					"type": "text", "analyzer": "analyzerCaseInsensitive"
 				},
 				"description": {
-					"type": "text"
+					"type": "text", "analyzer": "analyzerCaseInsensitive"
 				},
 				"funding_statement": {
-					"type": "text"
+					"type": "text", "analyzer": "analyzerCaseInsensitive"
 				},
 				"keyword": {
 					"type": "keyword"
@@ -65,10 +82,10 @@ curl -k -X PUT "${ELASTIC_URL}/${ELASTIC_INDEX}" \
 									"type": "object",
 									"properties": {
 										"scientific_name": {
-											"type": "keyword"
+											"type": "keyword", "normalizer": "lowercase_norm" 
 										},
 										"common_name": {
-											"type": "keyword"
+											"type": "keyword", "normalizer": "lowercase_norm" 
 										},
 										"ncbi_id": {
 											"type": "keyword"
@@ -81,7 +98,15 @@ curl -k -X PUT "${ELASTIC_URL}/${ELASTIC_INDEX}" \
 							"type": "object",
 							"properties": {
 								"imaging_method_name": {
-									"type": "keyword"
+									"type": "keyword", "normalizer": "lowercase_norm" 
+								}
+							}
+						},
+						"annotation_process" : {
+							"type": "object",
+							"properties": {
+								"method_type": {
+									"type": "keyword", "normalizer": "lowercase_norm" 
 								}
 							}
 						}
@@ -113,6 +138,35 @@ curl -k -X PUT "${ELASTIC_URL}/${ELASTIC_INDEX_IMAGES}" \
 	-u "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" \
 	-H "Content-Type: application/json" \
 	-d '{
+	"settings": {
+		"analysis": {
+			"analyzer": {
+				"default": { "type": "whitespace" },
+				"analyzerCaseInsensitive": {
+					"tokenizer": "whitespace",
+					"filter": ["lowercase"]
+				}
+			},
+			"char_filter": {
+				"replace_file_format": {
+					"type": "pattern_replace",
+					"pattern": "^\\.",
+					"replacement": ""
+				}
+			},
+			"normalizer": {
+				"lowercase_norm": {
+					"type": "custom",
+					"filter": ["lowercase"]
+				},
+				"file_format_norm": {
+					"type": "custom",
+          			"char_filter": ["replace_file_format"],
+					"filter": ["lowercase"]
+				}
+			}
+		}
+	},
     "mappings": {
         "dynamic": false,
         "properties": {
@@ -125,7 +179,7 @@ curl -k -X PUT "${ELASTIC_URL}/${ELASTIC_INDEX_IMAGES}" \
             "representation": {
                 "type": "object",
                 "properties": {
-                    "image_format": { "type": "keyword"},
+                    "image_format": { "type": "keyword", "normalizer": "file_format_norm"},
 					"size_x": {"type": "integer"},
 					"size_y": {"type": "integer"},
 					"size_z": {"type": "integer"},
@@ -144,7 +198,7 @@ curl -k -X PUT "${ELASTIC_URL}/${ELASTIC_INDEX_IMAGES}" \
 					"acquisition_process": {
 						"type": "object",
 						"properties": {
-							"imaging_method_name": { "type": "keyword" }
+							"imaging_method_name": { "type": "keyword", "normalizer": "lowercase_norm" }
 						}
 					},
 					"subject": {
@@ -153,11 +207,13 @@ curl -k -X PUT "${ELASTIC_URL}/${ELASTIC_INDEX_IMAGES}" \
 							"sample_of": {
 								"type": "object",
 								"properties": {
-									"biological_entity_description": { "type": "keyword" },
+									"biological_entity_description": { "type": "text", "analyzer": "analyzerCaseInsensitive" },
 									"organism_classification": {
 										"type": "object",
 										"properties": {
-											"scientific_name": { "type": "keyword" }
+											"common_name": { "type": "text", "analyzer": "analyzerCaseInsensitive"},
+											"ncbi_id": { "type": "keyword" },
+											"scientific_name": { "type": "keyword", "normalizer": "lowercase_norm" }
 										}
 									}
 								}

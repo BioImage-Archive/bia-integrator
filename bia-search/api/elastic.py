@@ -21,14 +21,43 @@ class Elastic:
             await self.client.indices.create(
                 index=self.index_study,
                 body={
+                    "settings": {
+                        "analysis": {
+                            "analyzer": {
+                                "default": {"type": "whitespace"},
+                                "analyzerCaseInsensitive": {
+                                    "tokenizer": "whitespace",
+                                    "filter": ["lowercase"],
+                                },
+                            },
+                            "normalizer": {
+                                "lowercase_norm": {
+                                    "type": "custom",
+                                    "filter": ["lowercase"],
+                                }
+                            },
+                        }
+                    },
                     "mappings": {
                         "dynamic": False,
                         "properties": {
                             "uuid": {"type": "keyword"},
-                            "accession_id": {"type": "keyword"},
-                            "title": {"type": "text"},
-                            "description": {"type": "text"},
-                            "funding_statement": {"type": "text"},
+                            "accession_id": {
+                                "type": "keyword",
+                                "normalizer": "lowercase_norm",
+                            },
+                            "title": {
+                                "type": "text",
+                                "analyzer": "analyzerCaseInsensitive",
+                            },
+                            "description": {
+                                "type": "text",
+                                "analyzer": "analyzerCaseInsensitive",
+                            },
+                            "funding_statement": {
+                                "type": "text",
+                                "analyzer": "analyzerCaseInsensitive",
+                            },
                             "keyword": {"type": "keyword"},
                             "author": {"type": "flattened"},
                             "grant": {"type": "flattened"},
@@ -44,9 +73,13 @@ class Elastic:
                                                 "type": "object",
                                                 "properties": {
                                                     "scientific_name": {
-                                                        "type": "keyword"
+                                                        "type": "keyword",
+                                                        "normalizer": "lowercase_norm",
                                                     },
-                                                    "common_name": {"type": "keyword"},
+                                                    "common_name": {
+                                                        "type": "keyword",
+                                                        "normalizer": "lowercase_norm",
+                                                    },
                                                     "ncbi_id": {"type": "keyword"},
                                                 },
                                             }
@@ -55,7 +88,19 @@ class Elastic:
                                     "acquisition_process": {
                                         "type": "object",
                                         "properties": {
-                                            "imaging_method_name": {"type": "keyword"},
+                                            "imaging_method_name": {
+                                                "type": "keyword",
+                                                "normalizer": "lowercase_norm",
+                                            }
+                                        },
+                                    },
+                                    "annotation_process": {
+                                        "type": "object",
+                                        "properties": {
+                                            "method_type": {
+                                                "type": "keyword",
+                                                "normalizer": "lowercase_norm",
+                                            }
                                         },
                                     },
                                 },
@@ -70,14 +115,49 @@ class Elastic:
             await self.client.indices.create(
                 index=self.index_image,
                 body={
+                    "settings": {
+                        "analysis": {
+                            "analyzer": {
+                                "default": {"type": "whitespace"},
+                                "analyzerCaseInsensitive": {
+                                    "tokenizer": "whitespace",
+                                    "filter": ["lowercase"],
+                                },
+                            },
+                            "char_filter": {
+                                "replace_file_format": {
+                                    "type": "pattern_replace",
+                                    "pattern": "^\\.",
+                                    "replacement": "",
+                                }
+                            },
+                            "normalizer": {
+                                "lowercase_norm": {
+                                    "type": "custom",
+                                    "filter": ["lowercase"],
+                                },
+                                "file_format_norm": {
+                                    "type": "custom",
+                                    "char_filter": ["replace_file_format"],
+                                    "filter": ["lowercase"],
+                                },
+                            },
+                        }
+                    },
                     "mappings": {
                         "dynamic": False,
                         "properties": {
                             "uuid": {"type": "keyword"},
+                            "total_physical_size_x": {"type": "float"},
+                            "total_physical_size_y": {"type": "float"},
+                            "total_physical_size_z": {"type": "float"},
                             "representation": {
                                 "type": "object",
                                 "properties": {
-                                    "image_format": {"type": "keyword"},
+                                    "image_format": {
+                                        "type": "keyword",
+                                        "normalizer": "file_format_norm",
+                                    },
                                     "size_x": {"type": "integer"},
                                     "size_y": {"type": "integer"},
                                     "size_z": {"type": "integer"},
@@ -89,9 +169,6 @@ class Elastic:
                                     "voxel_physical_size_z": {"type": "float"},
                                 },
                             },
-                            "total_physical_size_x": {"type": "float"},
-                            "total_physical_size_y": {"type": "float"},
-                            "total_physical_size_z": {"type": "float"},
                             "creation_process": {
                                 "type": "object",
                                 "properties": {
@@ -99,7 +176,10 @@ class Elastic:
                                     "acquisition_process": {
                                         "type": "object",
                                         "properties": {
-                                            "imaging_method_name": {"type": "keyword"},
+                                            "imaging_method_name": {
+                                                "type": "keyword",
+                                                "normalizer": "lowercase_norm",
+                                            }
                                         },
                                     },
                                     "subject": {
@@ -109,24 +189,33 @@ class Elastic:
                                                 "type": "object",
                                                 "properties": {
                                                     "biological_entity_description": {
-                                                        "type": "keyword"
+                                                        "type": "text",
+                                                        "analyzer": "analyzerCaseInsensitive",
                                                     },
                                                     "organism_classification": {
                                                         "type": "object",
                                                         "properties": {
-                                                            "scientific_name": {
+                                                            "common_name": {
+                                                                "type": "text",
+                                                                "analyzer": "analyzerCaseInsensitive",
+                                                            },
+                                                            "ncbi_id": {
                                                                 "type": "keyword"
+                                                            },
+                                                            "scientific_name": {
+                                                                "type": "keyword",
+                                                                "normalizer": "lowercase_norm",
                                                             },
                                                         },
                                                     },
                                                 },
-                                            },
+                                            }
                                         },
                                     },
                                 },
                             },
                         },
-                    }
+                    },
                 },
             )
 
