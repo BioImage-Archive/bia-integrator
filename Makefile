@@ -27,3 +27,6 @@ search.up:
 
 search.down:
 	docker compose down
+
+# add developer-specific utility scripts here
+-include Makefile.local

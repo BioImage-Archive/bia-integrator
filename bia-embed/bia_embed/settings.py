@@ -4,7 +4,7 @@ from pathlib import Path
 
 
 class Settings(BaseSettings):
-    api_base_url: str = Field(default="https://wwwdev.ebi.ac.uk/bioimage-archive/api")
+    api_base_url: str = Field(default="http://localhost:8080")
 
     # Note that Pydantic will prefer current ENV values over those in the file.
     # This is useful & used to override values for testing.

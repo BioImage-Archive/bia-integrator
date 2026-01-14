@@ -15,6 +15,8 @@ bia-test-data = { path = "../bia-test-data", develop = true }
 persistence = { path = "../persistence", develop = true }
 typer = "^0.20"
 pytest = "^7.0"
+sentence-transformers = "^5.2.0"
+protobuf = "^6.33.2"
 
 [tool.poetry.scripts]
 bia-embed = "bia_embed.cli:app"

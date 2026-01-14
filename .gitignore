@@ -7,3 +7,4 @@ tools/.DS_Store
 **/.env
 **.egg-info
 **/.vscode/
+Makefile.local
