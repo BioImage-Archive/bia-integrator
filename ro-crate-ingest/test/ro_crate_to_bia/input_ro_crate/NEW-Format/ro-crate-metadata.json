@@ -1,0 +1,204 @@
+{
+  "@context": [],
+  "@graph": [
+    {
+      "@id": "ro-crate-metadata.json",
+      "@type": "CreativeWork",
+      "conformsTo": {
+        "@id": "https://w3id.org/ro/crate/1.1"
+      },
+      "about": {
+        "@id": "./"
+      }
+    },
+    {
+      "@id": "./",
+      "@type": [
+        "Dataset",
+        "bia:Study"
+      ],
+      "name": "Test specimen creation",
+      "contributor": [
+        {
+          "@id": "https://orcid.org/9999-0001-2222-3333"
+        }
+      ],
+      "description": "",
+      "license": "https://creativecommons.org/publicdomain/zero/1.0/",
+      "datePublished": "2023-09-05",
+      "keyword": [],
+      "acknowledgement": null,
+      "hasPart": [
+        {
+          "@id": "file_list.tsv"
+        }
+      ],
+      "accessionId": "S-TEST_specimen"
+    },
+    {
+      "@id": "https://orcid.org/9999-0001-2222-3333",
+      "@type": [
+        "Person",
+        "bia:Contributor"
+      ],
+      "displayName": "Test Author",
+      "address": null,
+      "website": null,
+      "affiliation": [],
+      "role": [],
+      "contactEmail": null
+    },
+    {
+      "@id": "#Imaging Dataset",
+      "@type": [
+        "bia:Dataset"
+      ]
+    },
+    {
+      "@id": "#Annotation Dataset",
+      "@type": [
+        "bia:Dataset"
+      ],
+      "bia:associatedAnnotationMethod": [
+        {
+          "@id": "#Annotation Method"
+        }
+      ]
+    },
+    {
+      "@id": "#Annotation Method",
+      "@type": [
+        "bia:AnnotationMethod"
+      ],
+      "bia:associatedImageAcquisitionProtocol": [
+        {
+          "@id": "#Annotation Method"
+        }
+      ]
+    },
+    {
+      "@id": "#Imaging Method",
+      "@type": [
+        "bia:ImageAquisitionProtocol"
+      ]
+    },
+    {
+      "@id": "file_list.tsv",
+      "@type": [
+        "File",
+        "bia:FileList",
+        "csvw:Table"
+      ],
+      "tableSchema": {
+        "@id": "_:ts1"
+      }
+    },
+    {
+      "@id": "_:col8",
+      "@type": [
+        "csvw:Column"
+      ],
+      "columnName": "dataset",
+      "propertyUrl": "http://schema.org/isPartOf"
+    },
+    {
+      "@id": "_:col7",
+      "@type": [
+        "csvw:Column"
+      ],
+      "columnName": "associated_protocol",
+      "propertyUrl": "http://bia/associatedProtocol"
+    },
+    {
+      "@id": "_:col6",
+      "@type": [
+        "csvw:Column"
+      ],
+      "columnName": "associated_annotation_method",
+      "propertyUrl": "http://bia/associatedAnnotationMethod"
+    },
+    {
+      "@id": "_:col5",
+      "@type": [
+        "csvw:Column"
+      ],
+      "columnName": "associated_specimen",
+      "propertyUrl": "http://bia/associatedSubject"
+    },
+    {
+      "@id": "_:col4",
+      "@type": [
+        "csvw:Column"
+      ],
+      "columnName": "source_image_label",
+      "propertyUrl": "http://bia/sourceImageLabel"
+    },
+    {
+      "@id": "_:col3",
+      "@type": [
+        "csvw:Column"
+      ],
+      "columnName": "label",
+      "propertyUrl": "http://schema.org/name"
+    },
+    {
+      "@id": "_:col2",
+      "@type": [
+        "csvw:Column"
+      ],
+      "columnName": "type",
+      "propertyUrl": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+    },
+    {
+      "@id": "_:col1",
+      "@type": [
+        "csvw:Column"
+      ],
+      "columnName": "size_in_bytes",
+      "propertyUrl": "http://bia/sizeInBytes"
+    },
+    {
+      "@id": "_:col0",
+      "@type": [
+        "csvw:Column"
+      ],
+      "columnName": "file_path",
+      "propertyUrl": "http://bia/filePath"
+    },
+    {
+      "@id": "_:ts0",
+      "@type": [
+        "csvw:Schema"
+      ],
+      "column": [
+        {
+          "@id": "_:col0"
+        },
+        {
+          "@id": "_:col1"
+        },
+        {
+          "@id": "_:col8"
+        },
+        {
+          "@id": "_:col2"
+        },
+        {
+          "@id": "_:col3"
+        },
+        {
+          "@id": "_:col4"
+        },
+        {
+          "@id": "_:col5"
+        },
+        {
+          "@id": "_:col6"
+        },
+        {
+          "@id": "_:col7"
+        }
+      ]
+    }
+  ]
+}
