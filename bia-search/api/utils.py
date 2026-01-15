@@ -9,7 +9,8 @@ fields_map = {
         "facet.organism": "dataset.biological_entity.organism_classification.scientific_name",
         "facet.imaging_method": "dataset.acquisition_process.imaging_method_name",
         "facet.year": "release_date",
-        "facet.licence": "licence"
+        "facet.licence": "licence",
+        "facet.annotation_type": "dataset.annotation_process.method_type"
     },
     "image": {
         "facet.organism": "creation_process.subject.sample_of.organism_classification.scientific_name",
@@ -39,6 +40,8 @@ operators_map = {
         "gte": "gte",
         "lt": "lt",
         "lte": "lte",
+        "or": "or",
+        "not": "not"
     },
     "boolean_operators": {"and", "or", "not"}}
 
@@ -52,14 +55,14 @@ aggregations = {
                 "format": "yyyy",
             }
         },
-        "imaging_method": { "terms": {"field": fields_map["study"]["facet.imaging_method"] }}
+        "imaging_method": { "terms": {"field": fields_map["study"]["facet.imaging_method"] }},
+        "annotation_type": { "terms": {"field": fields_map["study"]["facet.annotation_type"] }},
+        "licence": { "terms": {"field": fields_map["study"]["facet.licence"] }},
     }, 
     "image" : {
         "scientific_name": { "terms": {"field": fields_map["image"]["facet.organism"] }},
         "image_format": { "terms": {"field": fields_map["image"]["facet.image_format"] }},
         "imaging_method": { "terms": {"field": fields_map["image"]["facet.imaging_method"]}},
-        "image_pixel_x": {"stats": {"field": fields_map["numeric"]["size_x"]}},
-        "image_pixel_y": {"stats": {"field": fields_map["numeric"]["size_y"]}},
         "number_of_channels": {
             "filters": {
                 "keyed": False,
@@ -69,15 +72,62 @@ aggregations = {
                     "5":  { "term":  { fields_map["numeric"]["size_c"]: 5 } }, "More than 5": { "range": { fields_map["numeric"]["size_c"]: { "gt": 5 } } }
                 }
             }
-        },
-        "z_planes": {"stats": {"field": fields_map["numeric"]["size_z"]}},
-        "time_steps": {"stats": {"field": fields_map["numeric"]["size_t"]}},
-        "total_size_in_bytes": {"stats": {"field": fields_map["numeric"]["total_size_in_bytes"]}},
-        "total_physical_size_x": {"stats": {"field": fields_map["numeric"]["total_physical_size_x"]}},
-        "total_physical_size_y": {"stats": {"field": fields_map["numeric"]["total_physical_size_y"]}},
-        "total_physical_size_z": {"stats": {"field": fields_map["numeric"]["total_physical_size_z"]}}
+        }
     }
 }
+
+numeric_aggs = {
+    "image_pixel_x": fields_map["numeric"]["size_x"],
+    "image_pixel_y": fields_map["numeric"]["size_y"],
+    "z_planes": fields_map["numeric"]["size_z"],
+    "time_steps": fields_map["numeric"]["size_t"],
+    "total_size_in_bytes": fields_map["numeric"]["total_size_in_bytes"],
+    "total_physical_size_x": fields_map["numeric"]["total_physical_size_x"],
+    "total_physical_size_y": fields_map["numeric"]["total_physical_size_y"],
+    "total_physical_size_z": fields_map["numeric"]["total_physical_size_z"],
+}
+
+aggregations["image"]["selected"] = {
+    "filter": {"match_all": {}},
+    "aggs": {k: {"stats": {"field": f}} for k, f in numeric_aggs.items()},
+}
+
+aggregations["image"]["all_stats"] = {
+    "global": {},
+    "aggs": {k: {"stats": {"field": f}} for k, f in numeric_aggs.items()},
+}
+
+def handle_numeric_fields_aggs_results(data: dict) -> dict:
+    selected = data.get("selected")
+    global_ = data.get("all_stats")
+    if not isinstance(selected, dict) or not isinstance(global_, dict):
+        return data
+
+    sel_doc_count = selected.get("doc_count")
+    glob_doc_count = global_.get("doc_count")
+
+    glob_map = {"min": "globalMin", "max": "globalMax", "avg": "globalAvg", "sum": "globalSum"}
+
+    for k in numeric_aggs:
+        sel_stats = selected.get(k)
+        glob_stats = global_.get(k)
+        if not isinstance(sel_stats, dict) and not isinstance(glob_stats, dict):
+            continue
+
+        merged = dict(sel_stats or {})
+        if sel_doc_count is not None:
+            merged["count"] = sel_doc_count
+        if isinstance(glob_stats, dict):
+            merged.update({out_k: glob_stats[in_k] for in_k, out_k in glob_map.items() if in_k in glob_stats})
+        if glob_doc_count is not None:
+            merged["globalCount"] = glob_doc_count
+
+        data[k] = merged
+
+    data.pop("selected", None)
+    data.pop("all_stats", None)
+    return data
+
 
 
 def is_valid_uuid(uuid: str):

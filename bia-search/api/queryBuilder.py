@@ -1,6 +1,11 @@
 from dataclasses import dataclass, field
 from typing import Any
-from api.utils import operators_map, fields_map, reorder_dict_by_spec
+from api.utils import (
+    operators_map,
+    fields_map,
+    reorder_dict_by_spec,
+    handle_numeric_fields_aggs_results,
+)
 
 
 @dataclass
@@ -37,33 +42,71 @@ class QueryBuilder:
             )
 
     def parse_numeric_filters(self, params: dict[str, Any]):
-        for param, value in params.items():
-            if "." not in param:
-                continue
+        ops = operators_map["numeric"]
+        exact: dict[str, set[float]] = {}
+        rng: dict[str, dict[str, float]] = {}
 
-            field, operator = param.split(".", 1)
-
-            if field not in fields_map["numeric"] and operator not in operators_map:
-                continue
-
-            elastic_field = fields_map["numeric"][field]
-
-            try:
-                value = float(value)
-            except Exception:
-                continue
-
-            if operator == "eq":
-                range_filter = {"range": {elastic_field: {"gte": value, "lte": value}}}
-
+        def floats(v: Any) -> list[float]:
+            if v is None:
+                return []
+            if isinstance(v, list):
+                out = []
+                for x in v:
+                    out += floats(x)
+                return out
+            if isinstance(v, str) and "," in v:
+                v = [s.strip() for s in v.split(",") if s.strip()]
             else:
-                range_filter = {
-                    "range": {
-                        elastic_field: {operators_map["numeric"][operator]: value}
-                    }
-                }
-            self.filter.append(range_filter)
+                v = [v]
+            out = []
+            for x in v:
+                try:
+                    out.append(float(x))
+                except Exception:
+                    pass
+            return out
+
+        for k, v in params.items():
+            field, op = (k.split(".", 1) + ["or"])[:2] if "." in k else (k, "or")
+            if field not in fields_map["numeric"] or op not in (
+                *ops.keys(),
+                "or",
+                "not",
+            ):
+                continue
+
+            f, xs = fields_map["numeric"][field], floats(v)
+            if not xs:
+                continue
+
+            if op in ("or", "eq"):
+                exact.setdefault(f, set()).update(xs)
+            elif op == "not":
+                xs = list(dict.fromkeys(xs))
+                self.must_not.append(
+                    {"terms": {f: xs}} if len(xs) > 1 else {"term": {f: xs[0]}}
+                )
+            else:
+                rng.setdefault(f, {})[ops[op]] = xs[
+                    0
+                ]  # merges bounds => AND within range
+
             self.numeric_filters = True
+
+        for f in set(exact) | set(rng):
+            shoulds = []
+            if f in exact:
+                xs = sorted(exact[f])
+                shoulds.append(
+                    {"terms": {f: xs}} if len(xs) > 1 else {"term": {f: xs[0]}}
+                )
+            if f in rng:
+                shoulds.append({"range": {f: rng[f]}})
+            self.filter.append(
+                shoulds[0]
+                if len(shoulds) == 1
+                else {"bool": {"should": shoulds, "minimum_should_match": 1}}
+            )
 
     def parse_boolean_filters(
         self, params: dict[str, Any], index_type: str, allow_root_should: bool = False
@@ -191,8 +234,11 @@ class QueryBuilder:
             body["aggs"] = aggs
 
         rsp = await client.search(index=index, **body)
-        if "aggregations" in rsp and aggs:
+        if "aggregations" in rsp.body and aggs:
             rsp.body["aggregations"] = reorder_dict_by_spec(
                 aggs, rsp.body["aggregations"]
+            )
+            rsp.body["aggregations"] = handle_numeric_fields_aggs_results(
+                rsp.body["aggregations"]
             )
         return rsp
