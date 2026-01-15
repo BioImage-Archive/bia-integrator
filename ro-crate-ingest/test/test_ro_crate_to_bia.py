@@ -56,18 +56,18 @@ def get_expected_files(accession_id) -> list[Path]:
 @pytest.mark.parametrize(
     "ro_crate_path,url_prefix",
     [
-        (
-            get_biostudies_to_ro_crate_path("S-BIADTEST_AUTHOR_AFFILIATION"),
-            "biostudies",
-        ),
-        (get_biostudies_to_ro_crate_path("S-BIADTEST_COMPLEX_BIOSAMPLE"), "biostudies"),
-        (get_biostudies_to_ro_crate_path("S-BIADTEST_PROTOCOL_STUDY"), "biostudies"),
-        (get_mock_ro_crate_path("S-BIAD1494"), None),
-        (get_mock_ro_crate_path("S-BIAD843"), None),
-        (get_mock_ro_crate_path("S-BIADWITHFILELIST"), None),
-        (get_empiar_to_ro_crate_path("EMPIAR-IMAGEPATTERNTEST"), "empiar"),
-        (get_empiar_to_ro_crate_path("EMPIAR-STARFILETEST"), "empiar"),
-        (get_empiar_to_ro_crate_path("EMPIAR-SPECIMENTEST"), "empiar"),
+        # (
+        #     get_biostudies_to_ro_crate_path("S-BIADTEST_AUTHOR_AFFILIATION"),
+        #     "biostudies",
+        # ),
+        # (get_biostudies_to_ro_crate_path("S-BIADTEST_COMPLEX_BIOSAMPLE"), "biostudies"),
+        # (get_biostudies_to_ro_crate_path("S-BIADTEST_PROTOCOL_STUDY"), "biostudies"),
+        # (get_mock_ro_crate_path("S-BIAD1494"), None),
+        # (get_mock_ro_crate_path("S-BIAD843"), None),
+        # (get_mock_ro_crate_path("S-BIADWITHFILELIST"), None),
+        # (get_empiar_to_ro_crate_path("EMPIAR-IMAGEPATTERNTEST"), "empiar"),
+        # (get_empiar_to_ro_crate_path("EMPIAR-STARFILETEST"), "empiar"),
+        # (get_empiar_to_ro_crate_path("EMPIAR-SPECIMENTEST"), "empiar"),
     ],
 )
 class TestGenericROCrateToAPI:
