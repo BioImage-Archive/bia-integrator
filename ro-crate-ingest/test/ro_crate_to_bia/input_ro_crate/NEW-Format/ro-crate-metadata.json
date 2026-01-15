@@ -1,5 +1,215 @@
 {
-  "@context": [],
+  "@context": [
+    "https://w3id.org/ro/crate/1.1/context",
+    {
+      "accessionId": {
+        "@id": "schema:identifier"
+      },
+      "acknowledgement": {
+        "@id": "bia:acknowledgement"
+      },
+      "address": {
+        "@id": "schema:address"
+      },
+      "affiliation": {
+        "@id": "schema:memberOf"
+      },
+      "annotationCoverage": {
+        "@id": "bia:annotationCoverage"
+      },
+      "annotationCriteria": {
+        "@id": "bia:annotationCriteria"
+      },
+      "annotationMethod": {
+        "@id": "bia:annotationMethod"
+      },
+      "annotationSourceIndicator": {
+        "@id": "bia:annotationSourceIndicator"
+      },
+      "associatedAnnotationMethod": {
+        "@id": "bia:associatedAnnotationMethod"
+      },
+      "associatedBiologicalEntity": {
+        "@id": "bia:associatedBiologicalEntity"
+      },
+      "associatedImageAcquisitionProtocol": {
+        "@id": "bia:associatedImageAcquisitionProtocol"
+      },
+      "associatedImageAnalysisMethod": {
+        "@id": "bia:associatedAnalysisMethod"
+      },
+      "associatedImageCorrelationMethod": {
+        "@id": "bia:associatedCorrelationMethod"
+      },
+      "associatedProtocol": {
+        "@id": "bia:associatedProtocol"
+      },
+      "associatedSpecimen": {
+        "@id": "bia:associatedSubject"
+      },
+      "associatedSpecimenImagingPreparationProtocol": {
+        "@id": "bia:associatedImagingPreparationProtocol"
+      },
+      "associationFileMetadata": {
+        "@id": "bia:associationFileMetadata"
+      },
+      "authorNames": {
+        "@id": "bia:authorNames"
+      },
+      "bia": "http://bia/",
+      "biologicalEntity": {
+        "@id": "bia:sampleOf"
+      },
+      "biologicalEntityDescription": {
+        "@id": "bia:biologicalEntityDescription"
+      },
+      "channelBiologicalEntity": {
+        "@id": "bia:channelBiologicalEntity"
+      },
+      "channelContentDescription": {
+        "@id": "bia:channelContentDescription"
+      },
+      "channelLabel": {
+        "@id": "dc:identifier"
+      },
+      "column": {
+        "@id": "csvw:column"
+      },
+      "columnName": {
+        "@id": "csvw:name"
+      },
+      "commonName": {
+        "@id": "bia:commonName"
+      },
+      "contactEmail": {
+        "@id": "schema:email"
+      },
+      "contributor": {
+        "@id": "schema:author"
+      },
+      "csvw": "http://www.w3.org/ns/csvw#",
+      "datePublished": {
+        "@id": "schema:datePublished"
+      },
+      "dc": "http://purl.org/dc/terms/",
+      "description": {
+        "@id": "schema:description"
+      },
+      "displayName": {
+        "@id": "schema:name"
+      },
+      "experimentalVariableDescription": {
+        "@id": "bia:experimentalVariableDescription"
+      },
+      "extrinsicVariableDescription": {
+        "@id": "bia:extrinsicVariableDescription"
+      },
+      "fbbiId": {
+        "@id": "bia:fbbiId"
+      },
+      "featuresAnalysed": {
+        "@id": "bia:featuresAnalysed"
+      },
+      "fiducialsUsed": {
+        "@id": "bia:fiducialsUsed"
+      },
+      "growthProtocol": {
+        "@id": "bia:growthProtocol"
+      },
+      "hasPart": {
+        "@id": "schema:hasPart"
+      },
+      "imageAcquisitionProtocol": {
+        "@id": "bia:imageAcquisitionProtocol"
+      },
+      "imagingInstrumentDescription": {
+        "@id": "bia:imagingInstrumentDescription"
+      },
+      "imagingMethodName": {
+        "@id": "bia:imagingMethodName"
+      },
+      "imagingPreparationProtocol": {
+        "@id": "bia:imagingPreparationProtocol"
+      },
+      "inputImage": {
+        "@id": "bia:inputImage"
+      },
+      "intrinsicVariableDescription": {
+        "@id": "bia:intrinsicVariableDescription"
+      },
+      "keyword": {
+        "@id": "schema:keywords"
+      },
+      "label": {
+        "@id": "schema:name"
+      },
+      "license": {
+        "@id": "schema:license"
+      },
+      "link": {
+        "@id": "schema:url"
+      },
+      "linkDescription": {
+        "@id": "schema:description"
+      },
+      "methodType": {
+        "@id": "bia:annotationMethodType"
+      },
+      "name": {
+        "@id": "schema:name"
+      },
+      "organismClassification": {
+        "@id": "bia:organismClassification"
+      },
+      "propertyUrl": {
+        "@id": "csvw:propertyUrl"
+      },
+      "protocol": {
+        "@id": "bia:protocol"
+      },
+      "protocolDescription": {
+        "@id": "schema:description"
+      },
+      "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+      "resultOf": {
+        "@id": "bia:resultOf"
+      },
+      "role": {
+        "@id": "bia:role"
+      },
+      "schema": "http://schema.org/",
+      "scientificName": {
+        "@id": "bia:scientificName"
+      },
+      "signalChannelInformation": {
+        "@id": "bia:signalChannelInformation"
+      },
+      "signalContrastMechanismDescription": {
+        "@id": "bia:signalContrastMechanismDescription"
+      },
+      "spatialInformation": {
+        "@id": "bia:spatialInformation"
+      },
+      "subject": {
+        "@id": "bia:subject"
+      },
+      "tableSchema": {
+        "@id": "csvw:tableSchema"
+      },
+      "title": {
+        "@id": "schema:name"
+      },
+      "transformationDescription": {
+        "@id": "bia:transformationDescription"
+      },
+      "transformationMatrix": {
+        "@id": "bia:transformationMatrix"
+      },
+      "website": {
+        "@id": "bia:website"
+      }
+    }
+  ],
   "@graph": [
     {
       "@id": "ro-crate-metadata.json",
@@ -57,15 +267,24 @@
     {
       "@id": "#Imaging Dataset",
       "@type": [
-        "bia:Dataset", "Dataset"
+        "bia:Dataset",
+        "Dataset"
+      ],
+      "name": "Imaging Dataset",
+      "associatedImageAcquisitionProtocol": [
+        {
+          "@id": "#Annotation Method"
+        }
       ]
     },
     {
       "@id": "#Annotation Dataset",
       "@type": [
-        "bia:Dataset", "Dataset"
+        "bia:Dataset",
+        "Dataset"
       ],
-      "bia:associatedAnnotationMethod": [
+      "name": "Annotation Dataset",
+      "associatedAnnotationMethod": [
         {
           "@id": "#Annotation Method"
         }
@@ -76,17 +295,15 @@
       "@type": [
         "bia:AnnotationMethod"
       ],
-      "bia:associatedImageAcquisitionProtocol": [
-        {
-          "@id": "#Annotation Method"
-        }
-      ]
+      "protocolDescription": "Hand annotated"
     },
     {
       "@id": "#Imaging Method",
       "@type": [
-        "bia:ImageAquisitionProtocol"
-      ]
+        "bia:ImageAcquisitionProtocol"
+      ],
+      "protocolDescription": "Microscopy",
+      "imagingInstrumentDescription": "Microscope"
     },
     {
       "@id": "file_list.tsv",
