@@ -53,6 +53,17 @@ def get_expected_files(accession_id) -> list[Path]:
     return expected_files
 
 
+
+
+def test_basic_ROCrate(tmp_bia_data_dir):
+    ro_crate_path = get_test_ro_crate_path("NEW-FormatExample")
+
+    ingest_local_test("S-TEST123", tmp_bia_data_dir, ro_crate_path)
+
+
+
+
+
 @pytest.mark.parametrize(
     "ro_crate_path,url_prefix",
     [
