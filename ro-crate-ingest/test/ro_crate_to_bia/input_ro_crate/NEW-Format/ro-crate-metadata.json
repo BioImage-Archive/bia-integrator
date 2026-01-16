@@ -273,7 +273,7 @@
       "name": "Imaging Dataset",
       "associatedImageAcquisitionProtocol": [
         {
-          "@id": "#Annotation Method"
+          "@id": "#Imaging Method"
         }
       ]
     },
