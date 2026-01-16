@@ -249,7 +249,7 @@
           "@id": "#Annotation Dataset"
         }
       ],
-      "accessionId": "S-TEST_specimen"
+      "accessionId": "S-TEST123"
     },
     {
       "@id": "https://orcid.org/9999-0001-2222-3333",
@@ -295,6 +295,7 @@
       "@type": [
         "bia:AnnotationMethod"
       ],
+      "title": "Cell boundary annotation.",
       "protocolDescription": "Hand annotated"
     },
     {
@@ -302,7 +303,8 @@
       "@type": [
         "bia:ImageAcquisitionProtocol"
       ],
-      "protocolDescription": "Microscopy",
+      "title": "Microscopy",
+      "protocolDescription": "Microscopy with a 2x magnification setting",
       "imagingInstrumentDescription": "Microscope"
     },
     {
@@ -313,11 +315,11 @@
         "csvw:Table"
       ],
       "tableSchema": {
-        "@id": "_:ts1"
+        "@id": "#ts0"
       }
     },
     {
-      "@id": "_:col8",
+      "@id": "#col8",
       "@type": [
         "csvw:Column"
       ],
@@ -325,7 +327,7 @@
       "propertyUrl": "http://schema.org/isPartOf"
     },
     {
-      "@id": "_:col7",
+      "@id": "#col7",
       "@type": [
         "csvw:Column"
       ],
@@ -333,7 +335,7 @@
       "propertyUrl": "http://bia/associatedProtocol"
     },
     {
-      "@id": "_:col6",
+      "@id": "#col6",
       "@type": [
         "csvw:Column"
       ],
@@ -341,7 +343,7 @@
       "propertyUrl": "http://bia/associatedAnnotationMethod"
     },
     {
-      "@id": "_:col5",
+      "@id": "#col5",
       "@type": [
         "csvw:Column"
       ],
@@ -349,7 +351,7 @@
       "propertyUrl": "http://bia/associatedSubject"
     },
     {
-      "@id": "_:col4",
+      "@id": "#col4",
       "@type": [
         "csvw:Column"
       ],
@@ -357,7 +359,7 @@
       "propertyUrl": "http://bia/sourceImageLabel"
     },
     {
-      "@id": "_:col3",
+      "@id": "#col3",
       "@type": [
         "csvw:Column"
       ],
@@ -365,7 +367,7 @@
       "propertyUrl": "http://schema.org/name"
     },
     {
-      "@id": "_:col2",
+      "@id": "#col2",
       "@type": [
         "csvw:Column"
       ],
@@ -373,7 +375,7 @@
       "propertyUrl": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
     },
     {
-      "@id": "_:col1",
+      "@id": "#col1",
       "@type": [
         "csvw:Column"
       ],
@@ -381,7 +383,7 @@
       "propertyUrl": "http://bia/sizeInBytes"
     },
     {
-      "@id": "_:col0",
+      "@id": "#col0",
       "@type": [
         "csvw:Column"
       ],
@@ -389,37 +391,37 @@
       "propertyUrl": "http://bia/filePath"
     },
     {
-      "@id": "_:ts0",
+      "@id": "#ts0",
       "@type": [
         "csvw:Schema"
       ],
       "column": [
         {
-          "@id": "_:col0"
+          "@id": "#col0"
         },
         {
-          "@id": "_:col1"
+          "@id": "#col1"
         },
         {
-          "@id": "_:col8"
+          "@id": "#col8"
         },
         {
-          "@id": "_:col2"
+          "@id": "#col2"
         },
         {
-          "@id": "_:col3"
+          "@id": "#col3"
         },
         {
-          "@id": "_:col4"
+          "@id": "#col4"
         },
         {
-          "@id": "_:col5"
+          "@id": "#col5"
         },
         {
-          "@id": "_:col6"
+          "@id": "#col6"
         },
         {
-          "@id": "_:col7"
+          "@id": "#col7"
         }
       ]
     }
