@@ -10,6 +10,8 @@ from curation.writer.base_directive_writer import DirectiveWriter, ReplacementMo
 class YamlDirectiveWriter(DirectiveWriter):
 
     def write(self, path: Path, directives: Iterable[Directive]):
+        
+        path.parent.mkdir(exist_ok=True, parents=True)
 
         directive_list = self._directives_to_dict_list(directives)
         yaml = YAML()
@@ -22,6 +24,7 @@ class YamlDirectiveWriter(DirectiveWriter):
         directives: Iterable[Directive],
         replacement_mode=ReplacementMode.INPLACE,
     ):
+
         if path.exists():
             existing_directives = YamlDirectivePaser().parse(path)
         else:

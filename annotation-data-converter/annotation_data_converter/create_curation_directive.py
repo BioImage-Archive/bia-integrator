@@ -1,11 +1,13 @@
+from pathlib import Path
+from typing import Iterable
 from uuid import UUID
+
 from bia_integrator_api.models import Provenance, ImageRepresentation
 from curation.directive.attribute_directive import AttributeDirective, AttributeCommand
 from curation.directive.base_directive import Directive
 from curation.writer.yaml_directive_writer import YamlDirectiveWriter
-from typing import Iterable
-from pathlib import Path
 
+from annotation_data_converter.settings import get_settings
 
 def create_ng_link_directive(
     ng_view_link: str, 
@@ -24,13 +26,19 @@ def create_ng_link_directive(
     return AttributeDirective.model_validate(attribute_directive_dict)
 
 
-def write_directives(directives: Iterable[Directive]):
-    path = (
-        Path(__file__).parents[2]
-        / "curation"
-        / "directives"
-        / "point_annotation_ng_view_links.yaml"
-    )
+def write_directives(
+    directives: Iterable[Directive], 
+    dry_run: bool
+):
+    if dry_run:
+        output_path = get_settings().default_output_directory / "directives/point_annotation_ng_view_links.yaml"
+    else:
+        output_path = (
+            Path(__file__).parents[2]
+            / "curation"
+            / "directives"
+            / "point_annotation_ng_view_links.yaml"
+        )
 
     directive_writer = YamlDirectiveWriter()
-    directive_writer.update(path, directives)
+    directive_writer.update(output_path, directives)

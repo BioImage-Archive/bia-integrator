@@ -22,23 +22,6 @@ env["AWS_RESPONSE_CHECKSUM_VALIDATION"] = settings.aws_response_checksum_validat
 
 logger = logging.getLogger(__name__)
 
-# TODO: It would be helpful to have tests that check these functions (as opposed to mocking them)
-
-def sync_dirpath_to_s3(src_dirpath, dst_suffix):
-    bucket_name = settings.bucket_name
-    logger.info(f"Uploading to bucket {bucket_name} with suffix {dst_suffix}")
-
-    dst_key = f"{bucket_name}/{dst_suffix}"
-
-    cmd = f'aws --region us-east-1 --endpoint-url {settings.endpoint_url} s3 sync "{src_dirpath}/" s3://{dst_key} --acl public-read'
-    logger.info(f"Uploading using command {cmd}")
-
-    subprocess.run(cmd, shell=True, env=env)
-
-    uri = f"{settings.endpoint_url}/{dst_key}"
-
-    return uri
-
 
 def upload_dirpath_as_zarr_image_rep(src_dirpath, accession_id, image_id, image_rep_id):
     dst_prefix = (

@@ -44,6 +44,14 @@ class Settings(BaseSettings):
     bia_api_username: str | None = Field(None)
     bia_api_password: str | None = Field(None)
 
+    # s3 settings
+    aws_access_key_id: str = Field(default="", description="AWS access key (required for S3 uploads)")
+    aws_secret_access_key: str = Field(default="", description="AWS secret key (required for S3 uploads)")
+    aws_request_checksum_calculation: str = Field(default="WHEN_REQUIRED")
+    aws_response_checksum_validation: str = Field(default="WHEN_REQUIRED")
+    endpoint_url: str = Field(default="https://uk1s3.embassy.ebi.ac.uk", description="S3 endpoint URL")
+    bucket_name: str = Field(default="", description="S3 bucket name (required for S3 uploads)")
+
     @model_validator(mode="after")
     def copy_other_field(self) -> Self:
         self.set_to_local_api()
