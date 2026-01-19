@@ -317,9 +317,7 @@ class Taxon(ROCrateModel):
 
 
 class ProtocolMixin(BaseModel):
-    title: Annotated[Optional[str], FieldContext("http://schema.org/name")] = Field(
-        default=None
-    )
+    title: Annotated[Optional[str], FieldContext("http://schema.org/name")] = Field()
     protocolDescription: Annotated[
         str, FieldContext("http://schema.org/description")
     ] = Field()
@@ -366,7 +364,7 @@ class ImageAcquisitionProtocol(ProtocolMixin, ROCrateModel):
         list[str], FieldContext("http://bia/imagingMethodName")
     ] = Field(default_factory=list)
     fbbiId: Annotated[list[str], FieldContext("http://bia/fbbiId")] = Field(
-        default=list
+        default_factory=list
     )
 
     model_config = ConfigDict(model_type="http://bia/ImageAcquisitionProtocol")
