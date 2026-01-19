@@ -20,10 +20,10 @@ class UploadMode(str, Enum):
 
 
 def upload_to_s3(
+    mode: UploadMode, 
     source_path: Path | str, 
     destination_suffix: str, 
-    bucket_name: str, 
-    mode: UploadMode, 
+    bucket_name: str | None = None, 
     endpoint_url: str | None = None, 
     dry_run: bool = False
 ) -> str:
@@ -31,10 +31,10 @@ def upload_to_s3(
     Common function to handle s3 uploads.
     
     Args:
+        mode: UploadMode enum — "copy" for single file, "sync" for directory
         source_path: Path to the source, local file or directory
         destination_suffix: The s3 destination suffix (the part after the bucket)
-        bucket_name: Name of the S3 bucket
-        mode: UploadMode enum — "copy" for single file, "sync" for directory
+        bucket_name: Name of the S3 bucket; if None, uses settings value from .env
         endpoint_url: Optional S3 endpoint URL; if None, uses settings value from .env
         dry_run: If True, log actions but don't actually upload
         
@@ -42,9 +42,18 @@ def upload_to_s3(
         URI of the uploaded content
         
     Raises:
-        ValueError: If mode is not "sync" or "copy"
+        ValueError: If mode is not "sync" or "copy", or if bucket_name is not provided
         S3UploadError: If upload fails after all retry attempts
     """
+    settings = get_settings()
+    
+    if bucket_name is None:
+        bucket_name = settings.s3_bucket_name
+        if not bucket_name:
+            raise ValueError(
+                "No S3 bucket name provided. Either pass bucket_name as an argument "
+                "or set S3_BUCKET_NAME in your environment/settings."
+            )
 
     if mode == UploadMode.SYNC:
         s3_cmd = "sync"
@@ -59,7 +68,7 @@ def upload_to_s3(
     settings = get_settings()
     
     if endpoint_url is None:
-        endpoint_url = settings.endpoint_url
+        endpoint_url = settings.s3_endpoint_url
 
     dst_key = f"{bucket_name}/{destination_suffix}"
     s3_uri = f"{endpoint_url}/{dst_key}"
@@ -93,20 +102,26 @@ def upload_to_s3(
             cmd,
             shell=True,
             env=env,
+            stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             text=True
         )
         
         if result.returncode == 0:
             logger.info(f"Successfully uploaded to {s3_uri}")
+            if result.stdout:
+                print(result.stdout)
             return s3_uri
         
+        stdout = result.stdout
         stderr = result.stderr
         if attempt < max_attempts:
             logger.warning(
                 f"Upload attempt {attempt}/{max_attempts} failed. "
                 f"Error: {stderr[:200]}"
             )
+            if stdout:
+                print(stdout)
             continue
         
         error_msg = (
@@ -115,4 +130,6 @@ def upload_to_s3(
             f"Error: {stderr}"
         )
         logger.error(error_msg)
+        if stdout:
+            print(stdout)
         raise S3UploadError(error_msg)

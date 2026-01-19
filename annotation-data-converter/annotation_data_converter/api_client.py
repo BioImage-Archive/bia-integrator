@@ -1,6 +1,5 @@
 import logging
 from enum import Enum
-from pydantic import BaseModel
 
 from bia_integrator_api.api import PrivateApi
 from persistence.bia_api_client import BIAAPIClient

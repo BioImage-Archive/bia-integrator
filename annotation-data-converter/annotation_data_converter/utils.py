@@ -1,7 +1,4 @@
 import logging
-import os
-import subprocess
-from pathlib import Path
 
 import bia_integrator_api.models as APIModels
 from bia_integrator_api.api import PrivateApi

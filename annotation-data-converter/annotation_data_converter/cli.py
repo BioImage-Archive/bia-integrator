@@ -6,7 +6,6 @@ import traceback
 import typer
 
 from contextlib import nullcontext
-from enum import Enum
 from rich.logging import RichHandler
 from typing import Annotated
 
@@ -82,7 +81,6 @@ def point_annotation_conversion(
     proposal_list = point_annotations.collect_proposals(list_of_group_proposals)
     directives = []
 
-    settings = get_settings()
     if output_mode != OutputMode.LOCAL:
         s3_bucket_name = settings.s3_bucket_name
         s3_endpoint_url = settings.s3_endpoint_url
@@ -111,12 +109,10 @@ def point_annotation_conversion(
             api_client, 
         )
 
-        dry_run = False
+        dry_run = output_mode == OutputMode.DRY_RUN
         if output_mode != OutputMode.S3:
             precomp_path = output_directory / precomputed_annotation_path_suffix
             ctx = nullcontext()
-            if output_mode == OutputMode.DRY_RUN:
-                dry_run = True
         else:
             precomp_path = None
             ctx = tempfile.TemporaryDirectory()
@@ -130,11 +126,11 @@ def point_annotation_conversion(
             if output_mode !=  OutputMode.LOCAL:
 
                 precomputed_annotation_url = upload_to_s3(
+                    UploadMode.SYNC, 
                     precomp_path, 
                     precomputed_annotation_path_suffix, 
-                    s3_bucket_name, 
-                    UploadMode.SYNC, 
-                    s3_endpoint_url, 
+                    bucket_name=s3_bucket_name, 
+                    endpoint_url=s3_endpoint_url, 
                     dry_run=dry_run
                 )
 

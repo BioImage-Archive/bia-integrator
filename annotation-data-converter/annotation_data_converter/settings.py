@@ -37,7 +37,7 @@ class Settings(ApiSettings):
     s3_endpoint_url: str = Field("https://uk1s3.embassy.ebi.ac.uk")
     s3_bucket_name: str | None = Field(None)
 
-    output_mode: OutputMode = Field(OutputMode.DRY_RUN)
+    output_mode: OutputMode = Field(OutputMode.LOCAL)
 
     @classmethod
     def get_instance(cls) -> "Settings":

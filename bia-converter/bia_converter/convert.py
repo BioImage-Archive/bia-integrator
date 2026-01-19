@@ -86,11 +86,10 @@ def create_2d_image_and_upload_to_s3(
         s3_bucket_name = settings.s3_bucket_name
         s3_endpoint_url = settings.s3_endpoint_url
         file_uri = upload_to_s3(
+            UploadMode.COPY, 
             fh.name, 
             dst_suffix, 
             s3_bucket_name, 
-            UploadMode.COPY, 
-
             s3_endpoint_url, 
             dry_run=dry_run
         )
@@ -466,10 +465,10 @@ def convert_uploaded_by_submitter_to_interactive_display(
     s3_endpoint_url = settings.s3_endpoint_url
     dst_suffix = create_s3_uri_suffix_for_image_representation(api_client, base_image_rep)
     zarr_group_uri = upload_to_s3(
+        UploadMode.SYNC, 
         output_zarr_fpath, 
         dst_suffix, 
         s3_bucket_name, 
-        UploadMode.SYNC, 
         s3_endpoint_url, 
         dry_run=dry_run
     )
@@ -543,23 +542,25 @@ def convert_zipped_ome_zarr_archive(
     s3_endpoint_url = settings.s3_endpoint_url
     dst_suffix = create_s3_uri_suffix_for_image_representation(api_client, base_image_rep)
     zarr_group_uri = upload_to_s3(
+        UploadMode.SYNC, 
         output_zarr_fpath, 
         dst_suffix, 
         s3_bucket_name, 
-        UploadMode.SYNC, 
         s3_endpoint_url, 
         dry_run=dry_run
     )
-    ome_zarr_uri = create_vizarr_compatible_ome_zarr_uri(zarr_group_uri)
 
     # Set image_rep properties that we now know
     base_image_rep.total_size_in_bytes = get_dir_size(output_zarr_fpath)
-    base_image_rep.file_uri = [ome_zarr_uri]
-    update_dict = get_dimensions_dict_from_zarr(ome_zarr_uri)
-    base_image_rep.__dict__.update(update_dict)
 
-    # Write back to API
-    store_object_in_api_idempotent(api_client, base_image_rep)
+    if not dry_run:
+        ome_zarr_uri = create_vizarr_compatible_ome_zarr_uri(zarr_group_uri)
+        base_image_rep.file_uri = [ome_zarr_uri]
+        update_dict = get_dimensions_dict_from_zarr(ome_zarr_uri)
+        base_image_rep.__dict__.update(update_dict)
+
+        # Write back to API
+        store_object_in_api_idempotent(api_client, base_image_rep)
 
     return base_image_rep
 

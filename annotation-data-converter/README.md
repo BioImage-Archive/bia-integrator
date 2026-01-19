@@ -11,7 +11,7 @@ poetry install
 To actually push to the api, copy the .env_template to .env and fill in your details. For local testing, you need to have the local api set up first — see [api](https://github.com/BioImage-Archive/bia-integrator/tree/main/api).
 
 # Output data configuration
-The main conversion command, `convert`, can save data locally, upload it to s3, both of those, or as a "dry run" (the default), in which data is saved locally and the s3 uri specified and returned, but no data is actually uploaded to s3 — this has obvious utility for checking that everything will run as expected before doing it properly. The output mode, and where local data is saved, can be specified with inputs to the CLI, namely --output-mode and --output-directory — see *CLI commands*, below. 
+The main conversion command, `convert`, can save data locally (the default), upload it to s3, both of those, or as a "dry run" , in which data is saved locally and the s3 uri specified and returned, but no data is actually uploaded to s3 — this has obvious utility for checking that everything will run as expected before doing it properly. The output mode, and where local data is saved, can be specified with inputs to the CLI, namely --output-mode and --output-directory — see *CLI commands*, below. 
 
 If uploading to s3, the `s3_bucket_name` must be set in the .env file; the `s3_endpoint_url` can also be set there, if different from the default value — an example is in the .env_template. If further configuration for s3 is required, for example, setting credentials, this can be done in [Persistence](https://github.com/BioImage-Archive/bia-integrator/tree/main/persistence).
 
@@ -34,7 +34,7 @@ It is expected that different types of annotations will be handled here, but cur
 | Option | Short | Values | Description | Default |
 |--------|-------|-------------|-------------|---------|
 | `--proposal` | `-p` | — [PATH \| str] | Path to the json proposal for the study. [required] | — |
-| `--output-mode` | `-om` | dry_run \| local \| s3 \| both | Output data creation and saving setting. | dry_run |
+| `--output-mode` | `-om` | dry_run \| local \| s3 \| both | Output data creation and saving setting. | local |
 | `--output-directory` | `-od` | — [PATH \| str] | Output directory for the data. | ../output_data |
 | `--api-mode` | `-am` | local \| prod | Mode to persist the data. | local |
 | `--help` | — | — | Show help. | — |
@@ -92,7 +92,7 @@ Which will create a precomputed neuroglancer file of the point annotations — s
 Point annotations are assumed to be defined in voxel units. Validation checks that point values fall within the bounds of the corresponding image. As described above in *Validate*, under *CLI commands*, run validation separately using the `validate` command before conversion:
 
 ```
-poetry run annotation-data-converter validate -p proposals/point_annotations/test_proposal.json -am local -om local
+poetry run annotation-data-converter validate -p proposals/point_annotations/test_proposal.json -am local
 ```
  
 # *A useful testing setup*

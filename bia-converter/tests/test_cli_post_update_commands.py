@@ -24,21 +24,21 @@ def mock_upload_to_s3(monkeypatch):
     """Copy files to a temporary directory instead of the s3 bucket specified in settings."""
 
     def _mock_upload_to_s3(
+        mode: UploadMode | str, 
         source_path: Path | str,
         destination_suffix: str,
-        bucket_name: str,
-        mode: UploadMode | str,
+        bucket_name: str | None = None, 
         endpoint_url: str | None = None,
         dry_run: bool = False
     ) -> str:
 
         # Get the URI that would be returned (without actually uploading)
         file_uri = original_upload_to_s3(
+            mode, 
             source_path,
             destination_suffix,
-            bucket_name,
-            mode,
-            endpoint_url,
+            bucket_name=bucket_name,
+            endpoint_url=endpoint_url,
             dry_run=True
         )
 
@@ -65,7 +65,7 @@ def runner() -> CliRunner:
 
 @pytest.fixture
 def expected_thumbnail_uri_attribute(input_image_uuid) -> api_models.Attribute:
-    file_uri = f"https://uk1s3.embassy.ebi.ac.uk/testbucket/{accession_id}/{input_image_uuid}/thumbnail_256_256.png"
+    file_uri = f"{settings.s3_endpoint_url}/{settings.s3_bucket_name}/{accession_id}/{input_image_uuid}/thumbnail_256_256.png"
 
     return api_models.Attribute.model_validate(
         {
@@ -83,7 +83,7 @@ def expected_thumbnail_uri_attribute(input_image_uuid) -> api_models.Attribute:
 
 @pytest.fixture
 def expected_static_display_uri_attribute(input_image_uuid) -> api_models.Attribute:
-    file_uri = f"https://uk1s3.embassy.ebi.ac.uk/testbucket/{accession_id}/{input_image_uuid}/static_display_512_512.png"
+    file_uri = f"{settings.s3_endpoint_url}/{settings.s3_bucket_name}/{accession_id}/{input_image_uuid}/static_display_512_512.png"
 
     return api_models.Attribute.model_validate(
         {

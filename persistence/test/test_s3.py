@@ -12,8 +12,8 @@ def mock_settings():
     """Mock settings instead of .env file"""
     with patch("persistence.s3.get_settings") as mock_get_settings:
         mock_settings = MagicMock()
-        mock_settings.bucket_name = "test-bucket"
-        mock_settings.endpoint_url = "https://test.endpoint.com"
+        mock_settings.s3_bucket_name = "test-bucket"
+        mock_settings.s3_endpoint_url = "https://test.endpoint.com"
         mock_settings.aws_request_checksum_calculation = "WHEN_REQUIRED"
         mock_settings.aws_response_checksum_validation = "WHEN_REQUIRED"
         mock_get_settings.return_value = mock_settings
@@ -28,10 +28,9 @@ class TestRetryLogic:
             mock_run.return_value = MagicMock(returncode=0, stderr="")
 
             result = upload_to_s3(
+                UploadMode.COPY, 
                 "/tmp/test.txt",
-                "dst/test.txt",
-                mock_settings.bucket_name,
-                UploadMode.COPY
+                "dst/test.txt"
             )
 
             assert mock_run.call_count == 1
@@ -46,10 +45,9 @@ class TestRetryLogic:
             ]
 
             result = upload_to_s3(
+                UploadMode.COPY, 
                 "/tmp/test.txt",
-                "dst/test.txt",
-                mock_settings.bucket_name,
-                UploadMode.COPY
+                "dst/test.txt"
             )
 
             assert mock_run.call_count == 2
@@ -65,10 +63,9 @@ class TestRetryLogic:
             ]
 
             result = upload_to_s3(
+                UploadMode.COPY, 
                 "/tmp/test.txt",
-                "dst/test.txt",
-                mock_settings.bucket_name,
-                UploadMode.COPY
+                "dst/test.txt"
             )
 
             assert mock_run.call_count == 3
@@ -80,10 +77,9 @@ class TestRetryLogic:
 
             with pytest.raises(S3UploadError):
                 upload_to_s3(
+                    UploadMode.COPY, 
                     "/tmp/test.txt",
                     "dst/test.txt",
-                    mock_settings.bucket_name,
-                    UploadMode.COPY
                 )
 
             assert mock_run.call_count == 3
@@ -97,10 +93,9 @@ class TestURIConstruction:
             mock_run.return_value = MagicMock(returncode=0, stderr="")
 
             result = upload_to_s3(
+                UploadMode.COPY, 
                 "/tmp/test.txt",
-                "path/to/file.txt",
-                mock_settings.bucket_name,
-                UploadMode.COPY
+                "path/to/file.txt"
             )
 
             expected_uri = "https://test.endpoint.com/test-bucket/path/to/file.txt"
@@ -111,27 +106,25 @@ class TestURIConstruction:
             mock_run.return_value = MagicMock(returncode=0, stderr="")
 
             result = upload_to_s3(
+                UploadMode.SYNC, 
                 "/tmp/testdir/",
-                "path/to/dir",
-                mock_settings.bucket_name,
-                UploadMode.SYNC
+                "path/to/dir"
             )
 
             expected_uri = "https://test.endpoint.com/test-bucket/path/to/dir"
             assert result == expected_uri
 
     def test_uri_with_different_endpoint(self, mock_settings):
-        mock_settings.endpoint_url = "https://custom.s3.endpoint"
-        mock_settings.bucket_name = "custom-bucket"
 
         with patch("persistence.s3.subprocess.run") as mock_run:
             mock_run.return_value = MagicMock(returncode=0, stderr="")
 
             result = upload_to_s3(
+                UploadMode.COPY, 
                 "/tmp/test.txt",
-                "custom/path.txt",
-                "custom-bucket",
-                UploadMode.COPY
+                "custom/path.txt", 
+                endpoint_url="https://custom.s3.endpoint", 
+                bucket_name="custom-bucket"
             )
 
             expected_uri = "https://custom.s3.endpoint/custom-bucket/custom/path.txt"
@@ -141,10 +134,9 @@ class TestURIConstruction:
         """Dry run should return URI without calling subprocess"""
         with patch("persistence.s3.subprocess.run") as mock_run:
             result = upload_to_s3(
+                UploadMode.COPY, 
                 "/tmp/test.txt",
                 "path/file.txt",
-                mock_settings.bucket_name,
-                UploadMode.COPY,
                 dry_run=True
             )
 
@@ -164,10 +156,9 @@ class TestPathHandling:
             mock_run.return_value = MagicMock(returncode=0, stderr="")
 
             upload_to_s3(
+                UploadMode.SYNC, 
                 Path("/tmp/testdir"),
-                "dst/dir",
-                mock_settings.bucket_name,
-                UploadMode.SYNC
+                "dst/dir"
             )
 
             # Get the command that was executed
@@ -182,10 +173,9 @@ class TestPathHandling:
             mock_run.return_value = MagicMock(returncode=0, stderr="")
 
             upload_to_s3(
+                UploadMode.SYNC, 
                 "/tmp/testdir",
-                "dst/dir",
-                mock_settings.bucket_name,
-                UploadMode.SYNC
+                "dst/dir"
             )
 
             call_args = mock_run.call_args[0]
@@ -198,10 +188,9 @@ class TestPathHandling:
             mock_run.return_value = MagicMock(returncode=0, stderr="")
 
             upload_to_s3(
+                UploadMode.SYNC, 
                 "/tmp/testdir/",
-                "dst/dir",
-                mock_settings.bucket_name,
-                UploadMode.SYNC
+                "dst/dir"
             )
 
             call_args = mock_run.call_args[0]
@@ -217,10 +206,9 @@ class TestPathHandling:
             mock_run.return_value = MagicMock(returncode=0, stderr="")
 
             upload_to_s3(
+                UploadMode.COPY, 
                 "/tmp/test.txt",
-                "dst/test.txt",
-                mock_settings.bucket_name,
-                UploadMode.COPY
+                "dst/test.txt"
             )
 
             call_args = mock_run.call_args[0]
@@ -236,10 +224,9 @@ class TestPathHandling:
             mock_run.return_value = MagicMock(returncode=0, stderr="")
 
             upload_to_s3(
+                UploadMode.COPY, 
                 "/tmp/test.txt",
-                "subfolder/nested/file.txt",
-                mock_settings.bucket_name,
-                UploadMode.COPY
+                "subfolder/nested/file.txt"
             )
 
             call_args = mock_run.call_args[0]
@@ -257,10 +244,9 @@ class TestCommandConstruction:
             mock_run.return_value = MagicMock(returncode=0, stderr="")
 
             upload_to_s3(
+                UploadMode.COPY, 
                 "/tmp/test.txt",
-                "dst/test.txt",
-                mock_settings.bucket_name,
-                UploadMode.COPY
+                "dst/test.txt"
             )
 
             call_args = mock_run.call_args[0]
@@ -269,10 +255,10 @@ class TestCommandConstruction:
             # Check all required parts of the command
             assert "aws" in cmd
             assert "--region us-east-1" in cmd
-            assert f"--endpoint-url {mock_settings.endpoint_url}" in cmd
+            assert f"--endpoint-url {mock_settings.s3_endpoint_url}" in cmd
             assert "s3 cp" in cmd
             assert "/tmp/test.txt" in cmd
-            assert "s3://test-bucket/dst/test.txt" in cmd
+            assert f"s3://{mock_settings.s3_bucket_name}/dst/test.txt" in cmd
             assert "--acl public-read" in cmd
 
     def test_sync_command_has_required_parts(self, mock_settings):
@@ -280,10 +266,9 @@ class TestCommandConstruction:
             mock_run.return_value = MagicMock(returncode=0, stderr="")
 
             upload_to_s3(
+                UploadMode.SYNC, 
                 "/tmp/testdir/",
-                "dst/dir",
-                mock_settings.bucket_name,
-                UploadMode.SYNC
+                "dst/dir"
             )
 
             call_args = mock_run.call_args[0]
@@ -292,8 +277,8 @@ class TestCommandConstruction:
             # Check all required parts of the command
             assert "aws" in cmd
             assert "--region us-east-1" in cmd
-            assert f"--endpoint-url {mock_settings.endpoint_url}" in cmd
+            assert f"--endpoint-url {mock_settings.s3_endpoint_url}" in cmd
             assert "s3 sync" in cmd
             assert '"/tmp/testdir/"' in cmd
-            assert "s3://test-bucket/dst/dir" in cmd
+            assert f"s3://{mock_settings.s3_bucket_name}/dst/dir" in cmd
             assert "--acl public-read" in cmd

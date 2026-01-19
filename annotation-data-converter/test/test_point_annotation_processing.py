@@ -13,7 +13,7 @@ runner = CliRunner()
 
 def test_starfile_convert_to_neuroglancer(data_in_api, tmp_bia_data_dir):
     
-    # Mock functions for getting image info (because no real s3 image to find) and to avoid writing directives in curation package
+    # Mock functions for getting image info (because no real s3 image to find)
     def mock_get_image_info(image_uri):
         """Return fake but plausible OME image metadata"""
         contrast_bounds = (0.0, 1.0)
@@ -22,14 +22,15 @@ def test_starfile_convert_to_neuroglancer(data_in_api, tmp_bia_data_dir):
         channel_info = None
         return contrast_bounds, image_resolution, voxels, channel_info
     
-    def mock_write_to_tmp(directives, dry_run):
-        """Write directives to temp directory instead of curation"""
+    # tests are run with dry_run mode, so mock writing directives 
+    def mock_write_directives(directives, dry_run):
+        """Write directives to temp directory for testing"""
         output_path = tmp_bia_data_dir / "test_directive.yaml"
         directive_writer = YamlDirectiveWriter()
         directive_writer.update(output_path, directives)
     
     with patch('annotation_data_converter.point_annotations.converters.PointAnnotationConverter.get_image_info_from_ome', side_effect=mock_get_image_info), \
-        patch('annotation_data_converter.cli.write_directives', side_effect=mock_write_to_tmp):
+         patch('annotation_data_converter.cli.write_directives', side_effect=mock_write_directives):
         
         commands = [
             "convert", 

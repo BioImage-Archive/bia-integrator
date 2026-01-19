@@ -35,10 +35,10 @@ def mock_upload_to_s3(monkeypatch):
     """Mock upload_to_s3 to return local paths so zarr can be read back"""
 
     def _mock_upload_to_s3(
+        mode: UploadMode | str,
         source_path: Path | str,
         destination_suffix: str,
-        bucket_name: str,
-        mode: UploadMode | str,
+        bucket_name: str | None = None, 
         endpoint_url: str | None = None,
         dry_run: bool = False
     ) -> str:
