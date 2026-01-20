@@ -7,7 +7,7 @@ from pydantic import Field
 from pydantic_settings import SettingsConfigDict
 from persistence.settings import Settings as ApiSettings
 
-logger = logging.getLogger("__main__." + __name__)
+logger = logging.getLogger(__name__)
 
 
 class OutputMode(str, Enum):

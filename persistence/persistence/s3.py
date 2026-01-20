@@ -110,7 +110,7 @@ def upload_to_s3(
         if result.returncode == 0:
             logger.info(f"Successfully uploaded to {s3_uri}")
             if result.stdout:
-                print(result.stdout)
+                logger.info(result.stdout)
             return s3_uri
         
         stdout = result.stdout
@@ -121,7 +121,7 @@ def upload_to_s3(
                 f"Error: {stderr[:200]}"
             )
             if stdout:
-                print(stdout)
+                logger.info(stdout)
             continue
         
         error_msg = (
@@ -131,5 +131,5 @@ def upload_to_s3(
         )
         logger.error(error_msg)
         if stdout:
-            print(stdout)
+            logger.info(stdout)
         raise S3UploadError(error_msg)

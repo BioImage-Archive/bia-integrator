@@ -7,7 +7,7 @@ from persistence.utils import create_test_user
 
 from annotation_data_converter.settings import get_settings
 
-logger = logging.getLogger("__main__." + __name__)
+logger = logging.getLogger(__name__)
 
 
 _api_clients = {}

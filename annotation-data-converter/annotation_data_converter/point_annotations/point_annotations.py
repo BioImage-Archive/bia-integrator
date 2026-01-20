@@ -12,7 +12,7 @@ from annotation_data_converter.point_annotations.converters import (
 )
 from uuid import UUID
 
-logger = logging.getLogger("__main__." + __name__)
+logger = logging.getLogger(__name__)
 
 
 def fetch_api_object_dependencies(
