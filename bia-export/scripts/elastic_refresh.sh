@@ -173,6 +173,7 @@ curl -k -X PUT "${ELASTIC_URL}/${ELASTIC_INDEX_IMAGES}" \
             "uuid": {
                 "type": "keyword"
             },
+			"accession_id": { "type": "keyword", "normalizer": "file_format_norm"},
 			"total_physical_size_x": {"type": "float"},
 			"total_physical_size_y": {"type": "float"},
 			"total_physical_size_z": {"type": "float"},
