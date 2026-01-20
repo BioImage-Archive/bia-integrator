@@ -7,6 +7,7 @@ import bia_integrator_api.models as api_models
 from bia_integrator_api.exceptions import NotFoundException
 from bia_converter import io
 from bia_converter import convert
+from persistence.s3 import UploadMode
 from typer.testing import CliRunner
 from bia_converter import cli
 from bia_converter.settings import get_settings
@@ -30,13 +31,21 @@ def mock_copy_uri_to_local(monkeypatch):
 
 
 @pytest.fixture
-def mock_sync_dirpath_to_s3(monkeypatch):
-    """Return s3 uri instead of syncing contents of a directory to s3 bucket specified in settings.bucket"""
+def mock_upload_to_s3(monkeypatch):
+    """Mock upload_to_s3 to return local paths so zarr can be read back"""
 
-    def _sync_dirpath_to_s3(src_dirpath, dst_suffix):
-        return f"{src_dirpath}"
+    def _mock_upload_to_s3(
+        mode: UploadMode | str,
+        source_path: Path | str,
+        destination_suffix: str,
+        bucket_name: str | None = None, 
+        endpoint_url: str | None = None,
+        dry_run: bool = False
+    ) -> str:
+        # Return the local path so zarr can be read back
+        return str(source_path)
 
-    monkeypatch.setattr(convert, "sync_dirpath_to_s3", _sync_dirpath_to_s3)
+    monkeypatch.setattr(convert, "upload_to_s3", _mock_upload_to_s3)
 
 
 @pytest.fixture
@@ -137,6 +146,7 @@ def reset_expected_interactive_display_in_api(expected_interactive_display, expe
             im_rep.voxel_physical_size_x = 0.0
             im_rep.voxel_physical_size_y = 0.0
             im_rep.voxel_physical_size_z = 0.0
+            im_rep.image_viewer_setting = []
 
             im_rep.version += 1
             api_client.post_image_representation(im_rep)
@@ -148,7 +158,7 @@ def test_cli_convert_uploaded_by_submitter_to_interactive_display(
     runner,
     uploaded_by_submitter_rep_uuid,
     mock_copy_uri_to_local,
-    mock_sync_dirpath_to_s3,
+    mock_upload_to_s3,
     expected_interactive_display,
     reset_expected_interactive_display_in_api,
 ):
@@ -185,7 +195,7 @@ def test_cli_unzip_and_stage_zipped_ome_zarr(
     runner,
     zipped_ome_zarr_rep_uuid,
     mock_copy_uri_to_local,
-    mock_sync_dirpath_to_s3,
+    mock_upload_to_s3,
     expected_ome_zarr_interactive_display,
     reset_expected_interactive_display_in_api,
 ):

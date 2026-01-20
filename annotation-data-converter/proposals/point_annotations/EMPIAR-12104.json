@@ -13,5 +13,20 @@
         "local_file_path": "annotations/point/EMPIAR-12104/all_ribo_cleaned.star"
       }
     ]
+  }, 
+  {
+    "mode": "star",
+    "proposal": [
+      {
+        "annotation_data_uuid": "52430b02-4831-4938-ac8a-560703455b8c",
+        "image_representation_uuid": "101ef514-6724-4b4a-b9ab-65ff510f4f6c",
+        "filter_value": "TS_007.tomostar",
+        "filter_column": "rlnMicrographName",
+        "x_column": "rlnCoordinateX",
+        "y_column": "rlnCoordinateY",
+        "z_column": "rlnCoordinateZ",
+        "local_file_path": "annotations/point/EMPIAR-12104/all_ribo_cleaned.star"
+      }
+    ]
   }
 ]

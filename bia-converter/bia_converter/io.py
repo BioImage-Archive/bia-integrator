@@ -22,24 +22,8 @@ env["AWS_RESPONSE_CHECKSUM_VALIDATION"] = settings.aws_response_checksum_validat
 
 logger = logging.getLogger(__name__)
 
-# TODO: It would be helpful to have tests that check these functions (as opposed to mocking them)
 
-def sync_dirpath_to_s3(src_dirpath, dst_suffix):
-    bucket_name = settings.bucket_name
-    logger.info(f"Uploading to bucket {bucket_name} with suffix {dst_suffix}")
-
-    dst_key = f"{bucket_name}/{dst_suffix}"
-
-    cmd = f'aws --region us-east-1 --endpoint-url {settings.endpoint_url} s3 sync "{src_dirpath}/" s3://{dst_key} --acl public-read'
-    logger.info(f"Uploading using command {cmd}")
-
-    subprocess.run(cmd, shell=True, env=env)
-
-    uri = f"{settings.endpoint_url}/{dst_key}"
-
-    return uri
-
-
+# No current uses, keeping as template for possible future use in Persistence 
 def upload_dirpath_as_zarr_image_rep(src_dirpath, accession_id, image_id, image_rep_id):
     dst_prefix = (
         f"{settings.bucket_name}/{accession_id}/{image_id}/{image_rep_id}.ome.zarr"
@@ -95,30 +79,6 @@ def copy_uri_to_local(src_uri: str, dst_fpath: Path):
         session.close()
         if temp_file.exists():
             temp_file.unlink()
-
-
-def copy_local_to_s3(src_fpath: Path, dst_key: str, dry_run: bool = False) -> str:
-    """Copy the local file with the given path to the S3 location for which the endpoint
-    and bucket are described in the global Config object, and the destination key is
-    passed as an argument.
-
-    Returns: URI of uploaded object."""
-
-    endpoint_url = settings.endpoint_url
-    bucket_name = settings.bucket_name
-
-    cmd = f"aws --region us-east-1 --endpoint-url {settings.endpoint_url} s3 cp {src_fpath} s3://{bucket_name}/{dst_key} --acl public-read"
-    if dry_run:
-        logger.info(f"Dryrun: Would run command {cmd} to Upload {src_fpath} to {dst_key}")
-    else:
-        logger.info(f"Uploading {src_fpath} to {dst_key}")
-        retval = subprocess.run(
-            cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env
-        )
-        assert (
-            retval.returncode == 0
-        ), f"Error uploading to s3: {retval.stderr.decode('utf-8')}"
-    return f"{endpoint_url}/{bucket_name}/{dst_key}"
 
 
 def encode_url(url):

@@ -1,6 +1,6 @@
+from pathlib import Path
 from pydantic import BaseModel, Field, ConfigDict
 from uuid import UUID
-from pathlib import Path
 
 
 class PointAnnotationProposal(BaseModel):

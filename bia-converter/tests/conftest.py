@@ -1,9 +1,12 @@
-from pathlib import Path
-import pytest
-from bia_test_data.data_to_api import add_objects_to_api, get_object_creation_client
 import json
 import os
+import pytest
 from glob import glob
+from pathlib import Path
+
+from bia_test_data.data_to_api import add_objects_to_api, get_object_creation_client
+
+from bia_converter.settings import get_settings
 
 
 def data_in_api():
@@ -34,8 +37,10 @@ def pytest_sessionstart(session):
     cache_root_dirpath.mkdir(exist_ok=True)
     os.environ["cache_root_dirpath"] = f"{cache_root_dirpath}"
     os.environ["api_base_url"] = "http://localhost:8080"
-    os.environ["bia_api_username"] = "test@example.com"
-    os.environ["bia_api_password"] = "test"
+    os.environ["local_bia_api_username"] = "test@example.com"
+    os.environ["local_bia_api_password"] = "test"
+    os.environ["s3_endpoint_url"] = "https://uk1s3.embassy.ebi.ac.uk"
+    os.environ["s3_bucket_name"] = "testbucket"
 
 
 @pytest.hookimpl(tryfirst=True)

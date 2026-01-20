@@ -1,37 +1,61 @@
-from pathlib import Path
-import shutil
-import pytest
 import json
+import pytest
+import shutil
+from pathlib import Path
+from typer.testing import CliRunner
+
 import bia_integrator_api.models as api_models
 from bia_integrator_api.exceptions import NotFoundException
 from bia_converter import convert
-from typer.testing import CliRunner
+from persistence.s3 import upload_to_s3, UploadMode
+
 from bia_converter import cli
 from bia_converter.settings import get_settings
 from bia_converter.bia_api_client import get_api_client, ApiTarget
 
 api_client = get_api_client(target=ApiTarget.local)
 accession_id = "S-BIAD-BIACONVERTER-TEST"
-original_copy_local_to_s3 = convert.copy_local_to_s3
+original_upload_to_s3 = upload_to_s3
 settings = get_settings()
 
 
 @pytest.fixture
-def mock_copy_local_to_s3(monkeypatch):
-    """Copy files to a temporary directory instead the s3 bucket specified in settings.bucket"""
+def mock_upload_to_s3(monkeypatch):
+    """Copy files to a temporary directory instead of the s3 bucket specified in settings."""
 
-    def _mock_copy_local_to_s3(src_fpath: Path, dst_key: str) -> str:
-        # We call the original with dry_run=True to get the file_uri, but it will not copy
-        file_uri = original_copy_local_to_s3(src_fpath, dst_key, dry_run=True)
+    def _mock_upload_to_s3(
+        mode: UploadMode | str, 
+        source_path: Path | str,
+        destination_suffix: str,
+        bucket_name: str | None = None, 
+        endpoint_url: str | None = None,
+        dry_run: bool = False
+    ) -> str:
 
+        # Get the URI that would be returned (without actually uploading)
+        file_uri = original_upload_to_s3(
+            mode, 
+            source_path,
+            destination_suffix,
+            bucket_name=bucket_name,
+            endpoint_url=endpoint_url,
+            dry_run=True
+        )
+
+        # Create a mock S3 directory
         dst_dir = settings.cache_root_dirpath / "mock_s3"
         dst_dir.mkdir(exist_ok=True)
-        dst_fname = Path(dst_key).name
+
+        # Extract just the filename from the destination path
+        dst_fname = Path(destination_suffix).name
         dst_fpath = dst_dir / dst_fname
-        shutil.copy(src_fpath, dst_fpath)
+
+        # Copy the file to the mock S3 location
+        shutil.copy(source_path, dst_fpath)
+
         return file_uri
 
-    monkeypatch.setattr(convert, "copy_local_to_s3", _mock_copy_local_to_s3)
+    monkeypatch.setattr(convert, "upload_to_s3", _mock_upload_to_s3)
 
 
 @pytest.fixture
@@ -41,7 +65,7 @@ def runner() -> CliRunner:
 
 @pytest.fixture
 def expected_thumbnail_uri_attribute(input_image_uuid) -> api_models.Attribute:
-    file_uri = f"{settings.endpoint_url}/{settings.bucket_name}/{accession_id}/{input_image_uuid}/thumbnail_256_256.png"
+    file_uri = f"{settings.s3_endpoint_url}/{settings.s3_bucket_name}/{accession_id}/{input_image_uuid}/thumbnail_256_256.png"
 
     return api_models.Attribute.model_validate(
         {
@@ -59,7 +83,7 @@ def expected_thumbnail_uri_attribute(input_image_uuid) -> api_models.Attribute:
 
 @pytest.fixture
 def expected_static_display_uri_attribute(input_image_uuid) -> api_models.Attribute:
-    file_uri = f"{settings.endpoint_url}/{settings.bucket_name}/{accession_id}/{input_image_uuid}/static_display_512_512.png"
+    file_uri = f"{settings.s3_endpoint_url}/{settings.s3_bucket_name}/{accession_id}/{input_image_uuid}/static_display_512_512.png"
 
     return api_models.Attribute.model_validate(
         {
@@ -137,7 +161,7 @@ def interactive_image_rep_uuid(input_image_uuid) -> str:
 def test_cli_convert_interactive_display_to_static_display(
     runner,
     interactive_image_rep_uuid,
-    mock_copy_local_to_s3,
+    mock_upload_to_s3,
     expected_static_display_uri_attribute,
     input_image_uuid,
 ):
@@ -147,7 +171,7 @@ def test_cli_convert_interactive_display_to_static_display(
             "create-static-display",
             interactive_image_rep_uuid,
             "--api",
-            "local", 
+            "local",
         ],
         catch_exceptions=False,
     )
@@ -171,7 +195,7 @@ def test_cli_convert_interactive_display_to_static_display(
 def test_cli_convert_interactive_display_to_thumbnail(
     runner,
     interactive_image_rep_uuid,
-    mock_copy_local_to_s3,
+    mock_upload_to_s3,
     expected_thumbnail_uri_attribute,
     input_image_uuid,
 ):
@@ -181,7 +205,7 @@ def test_cli_convert_interactive_display_to_thumbnail(
             "create-thumbnail",
             interactive_image_rep_uuid,
             "--api",
-            "local", 
+            "local",
         ],
         catch_exceptions=False,
     )
