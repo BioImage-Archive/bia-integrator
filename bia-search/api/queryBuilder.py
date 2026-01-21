@@ -234,11 +234,4 @@ class QueryBuilder:
             body["aggs"] = aggs
 
         rsp = await client.search(index=index, **body)
-        if "aggregations" in rsp.body and aggs:
-            rsp.body["aggregations"] = reorder_dict_by_spec(
-                aggs, rsp.body["aggregations"]
-            )
-            rsp.body["aggregations"] = handle_numeric_fields_aggs_results(
-                rsp.body["aggregations"]
-            )
         return rsp

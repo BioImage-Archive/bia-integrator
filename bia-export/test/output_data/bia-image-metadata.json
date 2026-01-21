@@ -15,6 +15,7 @@
         "total_physical_size_x": null,
         "total_physical_size_y": null,
         "total_physical_size_z": null,
+        "accession_id": "S-BIADTEST",
         "creation_process": {
             "object_creator": "bia_image_assignment",
             "uuid": "8444ff28-e32b-4c6f-9677-d9ff597b0c29",
@@ -78,6 +79,7 @@
         "total_physical_size_x": null,
         "total_physical_size_y": null,
         "total_physical_size_z": null,
+        "accession_id": "S-BIADTEST",
         "creation_process": {
             "object_creator": "bia_image_assignment",
             "uuid": "2447db96-dd23-44eb-ad47-1086c9be1cba",

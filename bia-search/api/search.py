@@ -39,7 +39,7 @@ async def fts(
         aggs=aggregations["study"],
     )
 
-    return format_elastic_results(rsp, pagination)
+    return format_elastic_results(rsp, pagination, aggregations["study"])
 
 
 @router.get("/fts/image")
@@ -80,7 +80,7 @@ async def fts_image(
         aggs=aggregations["image"],
     )
 
-    return format_elastic_results(rsp, pagination)
+    return format_elastic_results(rsp, pagination, aggregations["image"])
 
 
 async def uuid_search(
@@ -127,7 +127,7 @@ async def uuid_search(
         size=pagination["page_size"],
         aggs=aggregations,
     )
-    return format_elastic_results(rsp, pagination)
+    return format_elastic_results(rsp, pagination, aggregations)
 
 
 @router.get("/advanced")
@@ -160,4 +160,4 @@ async def advanced_search(
         size=pagination["page_size"],
     )
 
-    return format_elastic_results(rsp, pagination)
+    return format_elastic_results(rsp, pagination, aggregations["image"])

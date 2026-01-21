@@ -10,7 +10,7 @@ from bia_export.website_export.generic_object_retrieval import (
 from pathlib import Path
 from pydantic import ValidationError
 from pydantic.alias_generators import to_snake
-from .models import StudyCLIContext, CacheUse
+from .models import StudyCLIContext, CacheUse, Image
 from bia_shared_datamodels import bia_data_model, attribute_models
 from bia_integrator_api import models as api_models
 import json
@@ -57,7 +57,6 @@ def retrieve_datasets(
 def retrieve_aggregation_fields(
     dataset: bia_data_model.DocumentMixin, context: StudyCLIContext
 ):
-
     if context.root_directory:
         try:
             dataset_aggregation_fields = context.dataset_file_aggregate_data[
@@ -95,7 +94,6 @@ def retrieve_aggregation_fields(
                 "file_type_counts": {},
             }
     return dataset_aggregation_fields
-
 
 
 def aggregate_file_list_data(context: StudyCLIContext) -> None:
@@ -158,9 +156,8 @@ def retrieve_dataset_images(
     dataset_uuid: UUID,
     image_type: Type[bia_data_model.Image],
     context: StudyCLIContext,
-) -> List[api_models.Image]:
+) -> List[Image]:
     if context.root_directory:
-
         all_api_images: List[bia_data_model.Image] = read_all_json(
             object_type=image_type, context=context
         )
@@ -169,13 +166,32 @@ def retrieve_dataset_images(
             for image in all_api_images
             if image.submission_dataset_uuid == dataset_uuid
         ]
-
     else:
         api_images = get_all_api_results(
             dataset_uuid, api_client.get_image_linking_dataset, page_size_setting=500
         )
 
-    return api_images
+    images_with_file_size = []
+    if len(api_images) > 0:
+        for image in api_images:
+            image_rep = api_client.get_image_representation_linking_image(
+                str(image.uuid), page_size=10
+            )
+            total_size_in_bytes = next(
+                (
+                    rep.total_size_in_bytes
+                    for rep in image_rep
+                    if rep.total_size_in_bytes is not None
+                    and rep.total_size_in_bytes != 0
+                ),
+                None,
+            )
+            image_dict = image.model_dump() | {
+                "total_size_in_bytes": total_size_in_bytes
+            }
+            images_with_file_size.append(Image(**image_dict))
+
+    return images_with_file_size
 
 
 def find_associated_objects(
@@ -225,7 +241,9 @@ def retrieve_detail_objects(
 
     for attribute in dataset.additional_metadata:
         try:
-            attribute_models.DatasetAssociatedUUIDAttribute.model_validate(attribute.model_dump())
+            attribute_models.DatasetAssociatedUUIDAttribute.model_validate(
+                attribute.model_dump()
+            )
         except ValidationError:
             continue
         for uuid in attribute.value[attribute.name]:
@@ -233,8 +251,6 @@ def retrieve_detail_objects(
             api_object = retrieve_object(
                 uuid, attribute_name_type_map[attribute.name], context
             )
-            detail_fields[attribute_name_type_map[attribute.name]].append(
-                api_object
-            )
+            detail_fields[attribute_name_type_map[attribute.name]].append(api_object)
 
     return detail_fields

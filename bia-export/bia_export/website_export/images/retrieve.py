@@ -66,8 +66,3 @@ def get_local_img_rep_map(context: ImageCLIContext) -> dict[UUID, UUID]:
         image_to_rep_map[image_rep.representation_of_uuid].append(image_rep.uuid)
 
     return image_to_rep_map
-
-
-def retrieve_study(study_uuid: UUID) -> api_models.Study:
-    study = api_client.get_study(str(study_uuid), 1)
-    return study

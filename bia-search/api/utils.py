@@ -85,6 +85,9 @@ numeric_aggs = {
     "total_physical_size_x": fields_map["numeric"]["total_physical_size_x"],
     "total_physical_size_y": fields_map["numeric"]["total_physical_size_y"],
     "total_physical_size_z": fields_map["numeric"]["total_physical_size_z"],
+    "voxel_physical_size_x": fields_map["numeric"]["voxel_physical_size_x"],
+    "voxel_physical_size_y": fields_map["numeric"]["voxel_physical_size_y"],
+    "voxel_physical_size_z": fields_map["numeric"]["voxel_physical_size_z"],
 }
 
 aggregations["image"]["selected"] = {
@@ -150,7 +153,15 @@ def calculate_total_pages(total: int, page_size: int) -> int:
     return (total + page_size - 1) // page_size if page_size > 0 else 0
 
 
-def format_elastic_results(rsp, pagination):
+def format_elastic_results(rsp, pagination, aggs):
+    if "aggregations" in rsp.body and aggs:
+        rsp.body["aggregations"] = reorder_dict_by_spec(
+            aggs, rsp.body["aggregations"]
+        )
+        rsp.body["aggregations"] = handle_numeric_fields_aggs_results(
+            rsp.body["aggregations"]
+        )
+        
     total = rsp.body["hits"]["total"]["value"]
     total_pages = calculate_total_pages(total, pagination["page_size"])
 

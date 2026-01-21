@@ -61,9 +61,6 @@ class Image(api_models.Image):
     accession_id: str | None = Field(
         description="""study accession ID""",
     )
-    total_size_in_bytes: float | None = Field(
-        description="""total_size_in_bytes""",
-    )
 
 
 class ImageCLIContext(CLIContext):

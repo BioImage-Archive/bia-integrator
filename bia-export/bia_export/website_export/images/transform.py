@@ -15,7 +15,6 @@ from bia_export.website_export.images.retrieve import (
     retrieve_images,
     get_local_img_rep_map,
     retrieve_representations,
-    retrieve_study,
 )
 from bia_export.website_export.website_models import (
     BioSample,
@@ -52,21 +51,13 @@ def transform_image(api_image: api_models.Image, context: ImageCLIContext) -> Im
 
     physical_sizes = transform_physical_size_xyz_from_image_rep(api_img_rep)
 
-    total_size_in_bytes = next(
-        (
-            rep.total_size_in_bytes
-            for rep in api_img_rep
-            if rep.total_size_in_bytes is not None
-        ),
-        None,
-    )
-    accession_id = retrieve_study(context.study_uuid).accession_id
+    accession_id = context.accession_id
+
     image_dict = api_image.model_dump() | {
         "representation": api_img_rep,
         "creation_process": creation_process,
         **physical_sizes,
         "accession_id": accession_id,
-        "total_size_in_bytes": total_size_in_bytes,
     }
 
     return Image(**image_dict)
