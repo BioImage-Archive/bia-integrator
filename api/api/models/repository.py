@@ -9,9 +9,11 @@ import bia_shared_datamodels.bia_data_model as shared_data_models
 import pymongo
 from typing import Type, List, Any, Dict
 
+from pymongo.collection import SearchIndexModel
 import pymongo.errors
 from api import exceptions
 from api.models.api import Pagination
+from api.models.persistence import Embedding
 from api.settings import Settings
 import datetime
 
@@ -60,6 +62,7 @@ class Repository:
     db: AsyncIOMotorDatabase
     users: AsyncIOMotorCollection
     biaint: AsyncIOMotorCollection
+    embedding: AsyncIOMotorCollection
     overwrite_mode: OverwriteMode = OverwriteMode.FAIL
 
     def __init__(
@@ -94,6 +97,7 @@ class Repository:
         )
         self.users = self.db[settings.mongo_collection_users]
         self.biaint = self.db[settings.mongo_collection_biaint]
+        self.embedding = self.db[settings.mongo_collection_embed]
 
     async def _add_indices_collection_biaint(self) -> None:
         await self.biaint.create_index([("uuid", 1)], unique=True, name="doc_uuid")
@@ -108,6 +112,32 @@ class Repository:
 
     async def _add_indices_collection_users(self) -> None:
         await self.users.create_index([("email", 1)], unique=True)
+
+    async def _add_indices_collection_embedding(self) -> None:
+        await self.embedding.create_index([("uuid", 1)], unique=True)
+        await self.embedding.create_index(["for_document_uuid", 1])
+        await self.embedding.create_index(["embedding_model"])
+        # ! @TODO: Uncomment when we get mongo 8+
+        # await self.embedding.create_search_index(SearchIndexModel(
+        #     definition = {
+        #         'fields': [
+        #                 {
+        #                     "type": "vector",
+        #                     "path": "embedding",
+        #                     "numDimensions": 1024,
+        #                     "similarity": "cosine"
+        #                 },
+        #                 # ! No partial indices so can't have multiple dimension values in different indices
+        #                 {
+        #                     "type": "filter",
+        #                     "path": "model_name"
+        #                 }
+        #             ]
+        #         },
+        #     name="vector_index",
+        #     type="vectorSearch"
+        # ))
+
 
     async def _add_indices_reverse_links(self) -> None:
         from api.public import models_public
@@ -232,6 +262,20 @@ class Repository:
             else:
                 # all objects in the query (by uuid) were found in either one of the expected type options
                 pass
+
+    async def persist_embedding(self, embedding_doc: Embedding):
+        """
+        Different collection + no 'model' (as in data type) attribute from docs saved with persist_doc
+        """
+        for_document = await self.get_doc(embedding_doc.for_document_uuid, shared_data_models.Study)
+
+        await self.embedding.insert_one(embedding_doc.model_dump())
+    
+    async def get_embedding_by_study_uuid(self, study_uuid: shared_data_models.UUID):
+        embedding_raw = await self.embedding.find_one({
+            'for_document_uuid': study_uuid
+        })
+        return Embedding(**embedding_raw)
 
     async def persist_doc(self, model_doc: shared_data_models.DocumentMixin):
         await self.assert_model_doc_dependencies_exist(model_doc)

@@ -3,6 +3,7 @@ from pydantic.alias_generators import to_snake
 
 import bia_shared_datamodels.bia_data_model as shared_data_models
 from api.app import get_db
+from api.models.persistence import Embedding
 from api.models.repository import Repository
 from api import constants
 from fastapi import APIRouter, Depends, status
@@ -35,6 +36,9 @@ def make_post_item(t: Type[shared_data_models.DocumentMixin]):
 
     return post_item
 
+@router.post("/embedding", status_code=status.HTTP_201_CREATED)
+async def post_embedding(embedding: Embedding, db: Annotated[Repository, Depends(get_db)]) -> None:
+    await db.persist_embedding(embedding)
 
 def make_router() -> APIRouter:
     for t in models_private:
