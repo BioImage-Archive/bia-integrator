@@ -176,6 +176,7 @@ def retrieve_dataset_images(
         for image in api_images:
             if len(image.original_file_reference_uuid) == 0:
                 total_size_in_bytes = None
+                file_path = None
             else:
                 file_reference = api_client.get_file_reference(
                     str(image.original_file_reference_uuid[0])
@@ -185,8 +186,10 @@ def retrieve_dataset_images(
                     if file_reference and file_reference.size_in_bytes != 0
                     else None
                 )
+                file_path = file_reference.file_path if file_reference else None
             image_dict = image.model_dump() | {
-                "total_size_in_bytes": total_size_in_bytes
+                "total_size_in_bytes": total_size_in_bytes,
+                "file_path": file_path
             }
             images_with_file_size.append(Image(**image_dict))
 

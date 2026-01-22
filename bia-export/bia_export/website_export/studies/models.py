@@ -81,3 +81,6 @@ class Image(models.Image):
     total_size_in_bytes: float | None = Field(
         description="""total file size in bytes""",
     )
+    file_path: str | None = Field(
+        description="""Original file path""",
+    )
