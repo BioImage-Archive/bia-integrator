@@ -37,6 +37,7 @@ Method | HTTP request | Description
 [**post_bio_sample**](PrivateApi.md#post_bio_sample) | **POST** /v2/private/bio_sample | Create BioSample
 [**post_creation_process**](PrivateApi.md#post_creation_process) | **POST** /v2/private/creation_process | Create CreationProcess
 [**post_dataset**](PrivateApi.md#post_dataset) | **POST** /v2/private/dataset | Create Dataset
+[**post_embedding**](PrivateApi.md#post_embedding) | **POST** /v2/private/embedding | Post Embedding
 [**post_file_reference**](PrivateApi.md#post_file_reference) | **POST** /v2/private/file_reference | Create FileReference
 [**post_image**](PrivateApi.md#post_image) | **POST** /v2/private/image | Create Image
 [**post_image_acquisition_protocol**](PrivateApi.md#post_image_acquisition_protocol) | **POST** /v2/private/image_acquisition_protocol | Create ImageAcquisitionProtocol
@@ -51,6 +52,7 @@ Method | HTTP request | Description
 [**search_bio_sample**](PrivateApi.md#search_bio_sample) | **GET** /v2/search/bio_sample | Search all objects of type BioSample
 [**search_creation_process**](PrivateApi.md#search_creation_process) | **GET** /v2/search/creation_process | Search all objects of type CreationProcess
 [**search_dataset**](PrivateApi.md#search_dataset) | **GET** /v2/search/dataset | Search all objects of type Dataset
+[**search_embedding_by_study_uuid**](PrivateApi.md#search_embedding_by_study_uuid) | **GET** /v2/search/embedding/study/{study_uuid} | Searchembeddingbystudyuuid
 [**search_file_reference**](PrivateApi.md#search_file_reference) | **GET** /v2/search/file_reference | Search all objects of type FileReference
 [**search_file_reference_by_path_name**](PrivateApi.md#search_file_reference_by_path_name) | **GET** /v2/search/file_reference/by_path_name | Searchfilereferencebypathname
 [**search_image**](PrivateApi.md#search_image) | **GET** /v2/search/image | Search all objects of type Image
@@ -2398,6 +2400,80 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+# **post_embedding**
+> object post_embedding(embedding)
+
+Post Embedding
+
+### Example
+
+* OAuth Authentication (OAuth2PasswordBearer):
+
+```python
+import bia_integrator_api
+from bia_integrator_api.models.embedding import Embedding
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PrivateApi(api_client)
+    embedding = bia_integrator_api.Embedding() # Embedding | 
+
+    try:
+        # Post Embedding
+        api_response = api_instance.post_embedding(embedding)
+        print("The response of PrivateApi->post_embedding:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PrivateApi->post_embedding: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **embedding** | [**Embedding**](Embedding.md)|  | 
+
+### Return type
+
+**object**
+
+### Authorization
+
+[OAuth2PasswordBearer](../README.md#OAuth2PasswordBearer)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**201** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 # **post_file_reference**
 > object post_file_reference(file_reference)
 
@@ -3403,6 +3479,73 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**List[Dataset]**](Dataset.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **search_embedding_by_study_uuid**
+> Embedding search_embedding_by_study_uuid(study_uuid)
+
+Searchembeddingbystudyuuid
+
+### Example
+
+
+```python
+import bia_integrator_api
+from bia_integrator_api.models.embedding import Embedding
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PrivateApi(api_client)
+    study_uuid = 'study_uuid_example' # str | 
+
+    try:
+        # Searchembeddingbystudyuuid
+        api_response = api_instance.search_embedding_by_study_uuid(study_uuid)
+        print("The response of PrivateApi->search_embedding_by_study_uuid:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PrivateApi->search_embedding_by_study_uuid: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **study_uuid** | **str**|  | 
+
+### Return type
+
+[**Embedding**](Embedding.md)
 
 ### Authorization
 

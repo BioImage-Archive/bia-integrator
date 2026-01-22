@@ -1676,6 +1676,50 @@
         }
       }
     },
+    "/v2/private/embedding": {
+      "post": {
+        "tags": [
+          "private"
+        ],
+        "summary": "Post Embedding",
+        "operationId": "post_embedding",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Embedding"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ]
+      }
+    },
     "/v2/private/study": {
       "post": {
         "tags": [
@@ -2416,6 +2460,50 @@
                     "$ref": "#/components/schemas/FileReference"
                   },
                   "title": "Response Searchfilereferencebypathname"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v2/search/embedding/study/{study_uuid}": {
+      "get": {
+        "tags": [
+          "public",
+          "private"
+        ],
+        "summary": "Searchembeddingbystudyuuid",
+        "operationId": "searchEmbeddingByStudyUuid",
+        "parameters": [
+          {
+            "name": "study_uuid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Study Uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Embedding"
                 }
               }
             }
@@ -4328,6 +4416,66 @@
           "file_type_counts"
         ],
         "title": "DatasetStats"
+      },
+      "Embedding": {
+        "properties": {
+          "uuid": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Uuid",
+            "description": "Unique ID (across the BIA database) used to refer to and identify a document."
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Version",
+            "description": "Document version. This can't be optional to make sure we never persist objects without it"
+          },
+          "model": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ModelMetadata"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Model type and version. Used to map arbitrary objects to a known (possibly previously-used) type.\n        Optional because for some usecases (e.g. api) we want to accept objects without it because we have the info we need to set it."
+          },
+          "vector": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array",
+            "title": "Vector"
+          },
+          "for_document_uuid": {
+            "type": "string",
+            "format": "uuid",
+            "title": "For Document Uuid"
+          },
+          "additional_metadata": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Additional Metadata"
+          },
+          "embedding_model": {
+            "type": "string",
+            "title": "Embedding Model"
+          }
+        },
+        "type": "object",
+        "required": [
+          "uuid",
+          "version",
+          "vector",
+          "for_document_uuid",
+          "additional_metadata",
+          "embedding_model"
+        ],
+        "title": "Embedding"
       },
       "ExternalReference": {
         "properties": {
