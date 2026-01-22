@@ -40,7 +40,7 @@ class Dataset(models.Dataset, models.DatasetStats):
         description="""Other protocols followed in order to create the images in this dataset.""",
         default_factory=list,
     )
-    image: List[models.Image] = Field(
+    image: List[Image] = Field(
         default_factory=list,
         description="List of image associated with the dataset.",
     )
@@ -75,3 +75,9 @@ class StudyCLIContext(CLIContext):
         determine whether details should default to open or closed.""",
     )
     cache_use: Optional[CacheUse] = None
+
+
+class Image(models.Image):
+    total_size_in_bytes: float | None = Field(
+        description="""total file size in bytes""",
+    )

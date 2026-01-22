@@ -155,7 +155,8 @@
                         "label": null,
                         "submission_dataset_uuid": "21999a9f-6f16-45d4-91c9-ed46cbfe015c",
                         "creation_process_uuid": "8444ff28-e32b-4c6f-9677-d9ff597b0c29",
-                        "original_file_reference_uuid": []
+                        "original_file_reference_uuid": [],
+                        "total_size_in_bytes": null
                     }
                 ]
             },
@@ -377,7 +378,8 @@
                         "label": null,
                         "submission_dataset_uuid": "47a4ab60-c76d-4424-bfaa-c2a024de720c",
                         "creation_process_uuid": "2447db96-dd23-44eb-ad47-1086c9be1cba",
-                        "original_file_reference_uuid": []
+                        "original_file_reference_uuid": [],
+                        "total_size_in_bytes": null
                     }
                 ]
             },

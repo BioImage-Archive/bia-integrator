@@ -51,10 +51,13 @@ def transform_image(api_image: api_models.Image, context: ImageCLIContext) -> Im
 
     physical_sizes = transform_physical_size_xyz_from_image_rep(api_img_rep)
 
+    accession_id = context.accession_id
+
     image_dict = api_image.model_dump() | {
         "representation": api_img_rep,
         "creation_process": creation_process,
         **physical_sizes,
+        "accession_id": accession_id,
     }
 
     return Image(**image_dict)
@@ -198,6 +201,10 @@ def transform_physical_size_xyz_from_image_rep(
 
 def calculate_total_physical_size(pixels, voxel_physical_size) -> float | None:
     try:
-        return float(pixels) * float(voxel_physical_size)
+        return (
+            None
+            if voxel_physical_size == 1
+            else float(pixels) * float(voxel_physical_size)
+        )
     except:
         return None

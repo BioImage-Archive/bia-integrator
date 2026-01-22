@@ -61,7 +61,6 @@ def transform_dataset(
     api_dataset: api_models.Dataset,
     context: StudyCLIContext,
 ) -> Dataset:
-
     dataset_dict = api_dataset.model_dump()
 
     # Details include Biosample, and various Protocols
@@ -81,7 +80,6 @@ def transform_dataset(
 def transform_dataset_detail_objects(
     dataset: api_models.Dataset, context: StudyCLIContext
 ):
-
     dataset_detail_class_map = {
         api_models.ImageAcquisitionProtocol: ImageAcquisitionProtocol,
         api_models.SpecimenImagingPreparationProtocol: SpecimenImagingPreparationProtocol,

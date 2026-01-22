@@ -58,6 +58,9 @@ class Image(api_models.Image):
     total_physical_size_z: float | None = Field(
         description="""total_physical_size_z""",
     )
+    accession_id: str | None = Field(
+        description="""study accession ID""",
+    )
 
 
 class ImageCLIContext(CLIContext):

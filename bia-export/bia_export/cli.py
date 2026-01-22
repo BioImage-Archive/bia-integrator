@@ -79,10 +79,8 @@ def generate_all(
             else Path(DEFAULT_WEBSITE_STUDY_FILE_NAME)
         ),
         update_file=(
-            update_path / DEFAULT_WEBSITE_STUDY_FILE_NAME
-            if update_path
-            else None
-        )
+            update_path / DEFAULT_WEBSITE_STUDY_FILE_NAME if update_path else None
+        ),
     )
     logger.info("Exporting image pages")
     website_image(
@@ -94,10 +92,8 @@ def generate_all(
             else Path(DEFAULT_WEBSITE_IMAGE_FILE_NAME)
         ),
         update_file=(
-            update_path / DEFAULT_WEBSITE_IMAGE_FILE_NAME
-            if update_path
-            else None
-        )
+            update_path / DEFAULT_WEBSITE_IMAGE_FILE_NAME if update_path else None
+        ),
     )
     logger.info("Exporting datasets for study pages")
     datasets_for_website_image(
@@ -112,7 +108,7 @@ def generate_all(
             update_path / DEFAULT_WEBSITE_DATASET_FOR_IMAGE_FILE_NAME
             if update_path
             else None
-        )
+        ),
     )
 
 
@@ -145,7 +141,6 @@ def website_study(
         ),
     ] = None,
 ):
-
     validate_cli_inputs(id_list=id_list, update_file=update_file)
 
     settings = Settings()
@@ -156,7 +151,7 @@ def website_study(
     studies_map = {}
 
     if update_file:
-        studies_map |= file_data_to_update(update_file)    
+        studies_map |= file_data_to_update(update_file)
 
     for id in id_list:
         context = create_cli_context(StudyCLIContext, id, root_directory)
@@ -164,7 +159,13 @@ def website_study(
         studies_map[study.accession_id] = study.model_dump(mode="json")
 
     if id_list:
-        sorted_map = dict(sorted(studies_map.items(), key=lambda item_tuple: study_sort_key(item_tuple[1]), reverse=True))
+        sorted_map = dict(
+            sorted(
+                studies_map.items(),
+                key=lambda item_tuple: study_sort_key(item_tuple[1]),
+                reverse=True,
+            )
+        )
     else:
         sorted_map = studies_map
 
@@ -251,7 +252,6 @@ def datasets_for_website_image(
         ),
     ] = None,
 ):
-
     validate_cli_inputs(id_list=id_list, update_file=update_file)
 
     settings = Settings()
@@ -289,6 +289,8 @@ def create_cli_context(
         if not is_uuid(id):
             accession_id = id
             id = get_uuid_from_accession_id(accession_id)
+        else:
+            accession_id = get_accession_id_from_uuid(id)
         context = cli_type.model_validate(
             {"study_uuid": id, "accession_id": accession_id, "cache_use": cache_use}
         )
@@ -314,6 +316,15 @@ def get_uuid_from_accession_id(accession_id: str) -> str:
         )
 
 
+def get_accession_id_from_uuid(uuid: str) -> str:
+    study = api_client.get_study(uuid)
+    if study:
+        return study.accession_id
+    else:
+        logger.error(f"Could not find Study: {uuid} in API")
+        raise RuntimeError(f"Could not find Study with uuid: {uuid} in API")
+
+
 def validate_cli_inputs(
     id_list: Optional[List[str]] = None,
     update_file: Optional[Path] = None,
@@ -321,7 +332,6 @@ def validate_cli_inputs(
     output_file: Optional[Path] = None,
     output_path: Optional[Path] = None,
 ):
-
     if (update_path or update_file) and not id_list:
         raise ValueError(
             "Study IDs must be specified if export website commands are being used in update mode"
@@ -347,9 +357,10 @@ def validate_cli_inputs(
 
 def file_data_to_update(file_path: Path) -> Optional[dict]:
     data = None
-    with open(file_path, 'r') as f:
+    with open(file_path, "r") as f:
         data: dict = json.load(f)
     return data
+
 
 if __name__ == "__main__":
     app()
