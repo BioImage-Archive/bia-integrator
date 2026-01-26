@@ -5,6 +5,8 @@ from pathlib import Path
 
 class Settings(BaseSettings):
     api_base_url: str = Field(default="http://localhost:8080")
+    api_username: str = Field(default="test@example.com")
+    api_password: str = Field(default="test")
 
     # Note that Pydantic will prefer current ENV values over those in the file.
     # This is useful & used to override values for testing.

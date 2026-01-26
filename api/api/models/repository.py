@@ -115,8 +115,8 @@ class Repository:
 
     async def _add_indices_collection_embedding(self) -> None:
         await self.embedding.create_index([("uuid", 1)], unique=True)
-        await self.embedding.create_index(["for_document_uuid", 1])
-        await self.embedding.create_index(["embedding_model"])
+        await self.embedding.create_index([("for_document_uuid", 1)])
+        await self.embedding.create_index([("embedding_model", 1)])
         # ! @TODO: Uncomment when we get mongo 8+
         # await self.embedding.create_search_index(SearchIndexModel(
         #     definition = {
@@ -275,7 +275,17 @@ class Repository:
         embedding_raw = await self.embedding.find_one({
             'for_document_uuid': study_uuid
         })
-        return Embedding(**embedding_raw)
+
+        if not embedding_raw:
+            raise exceptions.DocumentNotFound(f"Could not find embedding for study {study_uuid}")
+
+        return Embedding(**embedding_raw) 
+
+    async def delete_embedding_by_model(self, model: str):
+        result = await self.embedding.delete_many({
+            'embedding_model': model
+        })
+        return result.deleted_count
 
     async def persist_doc(self, model_doc: shared_data_models.DocumentMixin):
         await self.assert_model_doc_dependencies_exist(model_doc)
@@ -415,5 +425,6 @@ async def repository_create(settings: Settings) -> Repository:
     if settings.mongo_index_push:
         await repository._add_indices_collection_biaint()
         await repository._add_indices_collection_users()
+        await repository._add_indices_collection_embedding()
 
     return repository

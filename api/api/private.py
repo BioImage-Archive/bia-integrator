@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Query
 from pydantic.alias_generators import to_snake
 
 import bia_shared_datamodels.bia_data_model as shared_data_models
@@ -39,6 +39,13 @@ def make_post_item(t: Type[shared_data_models.DocumentMixin]):
 @router.post("/embedding", status_code=status.HTTP_201_CREATED)
 async def post_embedding(embedding: Embedding, db: Annotated[Repository, Depends(get_db)]) -> None:
     await db.persist_embedding(embedding)
+
+@router.delete("/embedding", status_code=status.HTTP_200_OK)
+async def delete_embedding_by_model(model: Annotated[str, Query(alias="model")], db: Annotated[Repository, Depends(get_db)]) -> None:
+    deleted_count = await db.delete_embedding_by_model(model)
+    return {
+        "deleted_count": deleted_count
+    }
 
 def make_router() -> APIRouter:
     for t in models_private:
