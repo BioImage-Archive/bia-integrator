@@ -240,7 +240,10 @@
             "acknowledgement": null,
             "hasPart": [
                 {
-                    "@id": "Cryo%20Serial%20FIB/SEM%20of%20HeLa%20cells%20data/HeLa/"
+                    "@id": "file_list.tsv"
+                },
+                {
+                    "@id": "#Cryo Serial FIB/SEM of HeLa cells data/HeLa/"
                 }
             ],
             "accessionId": "EMPIAR-IMAGEPATTERNTEST"
@@ -259,7 +262,7 @@
             "contactEmail": null
         },
         {
-            "@id": "Cryo%20Serial%20FIB/SEM%20of%20HeLa%20cells%20data/HeLa/file_list.tsv",
+            "@id": "file_list.tsv",
             "@type": [
                 "File",
                 "bia:FileList",
@@ -270,7 +273,7 @@
             }
         },
         {
-            "@id": "_:col7",
+            "@id": "_:col8",
             "@type": [
                 "csvw:Column"
             ],
@@ -278,7 +281,7 @@
             "propertyUrl": "http://bia/associatedProtocol"
         },
         {
-            "@id": "_:col6",
+            "@id": "_:col7",
             "@type": [
                 "csvw:Column"
             ],
@@ -286,7 +289,7 @@
             "propertyUrl": "http://bia/associatedAnnotationMethod"
         },
         {
-            "@id": "_:col5",
+            "@id": "_:col6",
             "@type": [
                 "csvw:Column"
             ],
@@ -294,7 +297,7 @@
             "propertyUrl": "http://bia/associatedSubject"
         },
         {
-            "@id": "_:col4",
+            "@id": "_:col5",
             "@type": [
                 "csvw:Column"
             ],
@@ -302,7 +305,7 @@
             "propertyUrl": "http://bia/sourceImageLabel"
         },
         {
-            "@id": "_:col3",
+            "@id": "_:col4",
             "@type": [
                 "csvw:Column"
             ],
@@ -310,12 +313,20 @@
             "propertyUrl": "http://schema.org/name"
         },
         {
-            "@id": "_:col2",
+            "@id": "_:col3",
             "@type": [
                 "csvw:Column"
             ],
             "columnName": "type",
             "propertyUrl": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+        },
+        {
+            "@id": "_:col2",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "dataset",
+            "propertyUrl": "http://schema.org/isPartOf"
         },
         {
             "@id": "_:col1",
@@ -362,11 +373,14 @@
                 },
                 {
                     "@id": "_:col7"
+                },
+                {
+                    "@id": "_:col8"
                 }
             ]
         },
         {
-            "@id": "Cryo%20Serial%20FIB/SEM%20of%20HeLa%20cells%20data/HeLa/",
+            "@id": "#Cryo Serial FIB/SEM of HeLa cells data/HeLa/",
             "@type": [
                 "Dataset",
                 "bia:Dataset"
@@ -393,14 +407,8 @@
             "associatedImageAnalysisMethod": [],
             "associatedImageCorrelationMethod": [],
             "associatedProtocol": [],
-            "hasPart": [
-                {
-                    "@id": "Cryo%20Serial%20FIB/SEM%20of%20HeLa%20cells%20data/HeLa/file_list.tsv"
-                }
-            ],
-            "associationFileMetadata": {
-                "@id": "Cryo%20Serial%20FIB/SEM%20of%20HeLa%20cells%20data/HeLa/file_list.tsv"
-            }
+            "hasPart": [],
+            "associationFileMetadata": null
         },
         {
             "@id": "_:Cryo-FIB/SEM sample preparation",

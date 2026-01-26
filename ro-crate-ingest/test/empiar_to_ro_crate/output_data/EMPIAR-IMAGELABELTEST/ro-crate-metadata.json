@@ -240,13 +240,16 @@
             "acknowledgement": null,
             "hasPart": [
                 {
-                    "@id": "Movie%20stacks%20data/frames/"
+                    "@id": "file_list.tsv"
                 },
                 {
-                    "@id": "Tilt%20series%20data/metadata/"
+                    "@id": "#Movie stacks data/frames/"
                 },
                 {
-                    "@id": "Tomograms%20data/tomograms/"
+                    "@id": "#Tilt series data/metadata/"
+                },
+                {
+                    "@id": "#Tomograms data/tomograms/"
                 }
             ],
             "accessionId": "EMPIAR-IMAGELABELTEST"
@@ -265,7 +268,7 @@
             "contactEmail": null
         },
         {
-            "@id": "Tilt%20series%20data/metadata/file_list.tsv",
+            "@id": "file_list.tsv",
             "@type": [
                 "File",
                 "bia:FileList",
@@ -276,29 +279,7 @@
             }
         },
         {
-            "@id": "Tomograms%20data/tomograms/file_list.tsv",
-            "@type": [
-                "File",
-                "bia:FileList",
-                "csvw:Table"
-            ],
-            "tableSchema": {
-                "@id": "_:ts0"
-            }
-        },
-        {
-            "@id": "Movie%20stacks%20data/frames/file_list.tsv",
-            "@type": [
-                "File",
-                "bia:FileList",
-                "csvw:Table"
-            ],
-            "tableSchema": {
-                "@id": "_:ts0"
-            }
-        },
-        {
-            "@id": "_:col7",
+            "@id": "_:col8",
             "@type": [
                 "csvw:Column"
             ],
@@ -306,7 +287,7 @@
             "propertyUrl": "http://bia/associatedProtocol"
         },
         {
-            "@id": "_:col6",
+            "@id": "_:col7",
             "@type": [
                 "csvw:Column"
             ],
@@ -314,7 +295,7 @@
             "propertyUrl": "http://bia/associatedAnnotationMethod"
         },
         {
-            "@id": "_:col5",
+            "@id": "_:col6",
             "@type": [
                 "csvw:Column"
             ],
@@ -322,7 +303,7 @@
             "propertyUrl": "http://bia/associatedSubject"
         },
         {
-            "@id": "_:col4",
+            "@id": "_:col5",
             "@type": [
                 "csvw:Column"
             ],
@@ -330,7 +311,7 @@
             "propertyUrl": "http://bia/sourceImageLabel"
         },
         {
-            "@id": "_:col3",
+            "@id": "_:col4",
             "@type": [
                 "csvw:Column"
             ],
@@ -338,12 +319,20 @@
             "propertyUrl": "http://schema.org/name"
         },
         {
-            "@id": "_:col2",
+            "@id": "_:col3",
             "@type": [
                 "csvw:Column"
             ],
             "columnName": "type",
             "propertyUrl": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+        },
+        {
+            "@id": "_:col2",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "dataset",
+            "propertyUrl": "http://schema.org/isPartOf"
         },
         {
             "@id": "_:col1",
@@ -390,11 +379,14 @@
                 },
                 {
                     "@id": "_:col7"
+                },
+                {
+                    "@id": "_:col8"
                 }
             ]
         },
         {
-            "@id": "Tomograms%20data/tomograms/",
+            "@id": "#Tomograms data/tomograms/",
             "@type": [
                 "Dataset",
                 "bia:Dataset"
@@ -417,17 +409,11 @@
                     "@id": "_:Tomogram reconstruction"
                 }
             ],
-            "hasPart": [
-                {
-                    "@id": "Tomograms%20data/tomograms/file_list.tsv"
-                }
-            ],
-            "associationFileMetadata": {
-                "@id": "Tomograms%20data/tomograms/file_list.tsv"
-            }
+            "hasPart": [],
+            "associationFileMetadata": null
         },
         {
-            "@id": "Tilt%20series%20data/metadata/",
+            "@id": "#Tilt series data/metadata/",
             "@type": [
                 "Dataset",
                 "bia:Dataset"
@@ -446,17 +432,11 @@
                     "@id": "_:Tilt series preprocessing"
                 }
             ],
-            "hasPart": [
-                {
-                    "@id": "Tilt%20series%20data/metadata/file_list.tsv"
-                }
-            ],
-            "associationFileMetadata": {
-                "@id": "Tilt%20series%20data/metadata/file_list.tsv"
-            }
+            "hasPart": [],
+            "associationFileMetadata": null
         },
         {
-            "@id": "Movie%20stacks%20data/frames/",
+            "@id": "#Movie stacks data/frames/",
             "@type": [
                 "Dataset",
                 "bia:Dataset"
@@ -483,14 +463,8 @@
             "associatedImageAnalysisMethod": [],
             "associatedImageCorrelationMethod": [],
             "associatedProtocol": [],
-            "hasPart": [
-                {
-                    "@id": "Movie%20stacks%20data/frames/file_list.tsv"
-                }
-            ],
-            "associationFileMetadata": {
-                "@id": "Movie%20stacks%20data/frames/file_list.tsv"
-            }
+            "hasPart": [],
+            "associationFileMetadata": null
         },
         {
             "@id": "_:Tomogram reconstruction",

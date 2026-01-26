@@ -10,6 +10,9 @@ def get_study(
     datasets: Iterable[ro_crate_models.Dataset],
 ) -> ro_crate_models.Study:
 
+    has_part_items = [{"@id": "file_list.tsv"}] 
+    has_part_items.extend([{"@id": d.id} for d in datasets]) 
+
     study_dict = {
         "@id": "./",
         "@type": ["Dataset", "bia:Study"],
@@ -21,7 +24,7 @@ def get_study(
         "acknowledgement": None,
         "keyword": [],
         "contributor": [{"@id": c.id} for c in contributors],
-        "hasPart": [{"@id": d.id} for d in datasets],
+        "hasPart": has_part_items, 
     }
 
     return ro_crate_models.Study(**study_dict)

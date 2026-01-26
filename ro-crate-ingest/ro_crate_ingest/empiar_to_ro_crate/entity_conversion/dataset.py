@@ -1,11 +1,7 @@
 from bia_shared_datamodels import ro_crate_models
 from ro_crate_ingest.empiar_to_ro_crate.empiar.entry_api_models import Imageset, Entry
-from ro_crate_ingest.empiar_to_ro_crate.entity_conversion.file_list import (
-    generate_relative_filelist_path,
-)
 import logging
 from itertools import chain
-from urllib.parse import quote
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -61,16 +57,14 @@ def get_dataset(
         specimens_yaml, 
     )
 
-    id = quote(dataset_dict.get("id", f"{imageset.name} {imageset.directory}/"))
-
-    filelist_id = generate_relative_filelist_path(id)
+    # TODO: do fragment identifiers have any problematic characters?
+    id = f"#{dataset_dict.get('id', f'{imageset.name} {imageset.directory}')}"
 
     model_dict = {
         "@id": id,
         "@type": ["Dataset", "bia:Dataset"],
         "name": imageset.name,
         "description": imageset.details,
-        "hasPart": [{"@id": filelist_id}],
         "associatedImageAcquisitionProtocol": association_yaml_fields[
             "image_acquisition_protocol_title"
         ],
@@ -82,7 +76,6 @@ def get_dataset(
         "associatedImageAnalysisMethod": association_yaml_fields["image_analysis_method_title"],
         "associatedImageCorrelationMethod": association_yaml_fields["image_correlation_method_title"],
         "associatedProtocol": association_yaml_fields["protocol_title"],
-        "associationFileMetadata": {"@id": filelist_id},
     }
     return ro_crate_models.Dataset(**model_dict)
 

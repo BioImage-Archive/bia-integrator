@@ -1,5 +1,0 @@
-file_path	size_in_bytes	type	label	source_image_label	associated_specimen	associated_annotation_method	associated_protocol
-data/frames/image_sharing_specimen_01.tif	12	http://bia/Image	Control condition frames 06_01		_:Shared specimen		_:Glucose control condition
-data/frames/image_sharing_specimen_02.tif	12	http://bia/Image	Control condition frames 06_02		_:Shared specimen		_:Glucose control condition
-data/frames/image_sharing_specimen_03.tif	12	http://bia/Image	Control condition frames 06_03		_:Shared specimen		_:Glucose control condition
-data/frames/image_without_specimen_specified.tif	12	http://bia/Image	Control condition frames 07				_:Glucose control condition
