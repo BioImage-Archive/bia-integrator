@@ -240,22 +240,25 @@
             "acknowledgement": null,
             "hasPart": [
                 {
-                    "@id": "Unaligned%20multi-frame%20micrographs%20for%20dataset%201%20%28211206%29%20data/211206/data/"
+                    "@id": "file_list.tsv"
                 },
                 {
-                    "@id": "Tilt%20series%20and%20alignment%20information%20for%20dataset%201%20%28211206%29%20data/211206/alignment/"
+                    "@id": "#Unaligned multi-frame micrographs for dataset 1 (211206) data/211206/data/"
                 },
                 {
-                    "@id": "Reconstructed%20tomograms%20for%20dataset%201%20%28211206%29%20data/211206/tomograms/"
+                    "@id": "#Tilt series and alignment information for dataset 1 (211206) data/211206/alignment/"
                 },
                 {
-                    "@id": "Unaligned%20multi-frame%20micrographs%20for%20dataset%202%20%28220330%29%20data/220330/data/"
+                    "@id": "#Reconstructed tomograms for dataset 1 (211206) data/211206/tomograms/"
                 },
                 {
-                    "@id": "Tilt%20series%20and%20alignment%20information%20for%20dataset%202%20%28220330%29%20data/220330/alignment/"
+                    "@id": "#Unaligned multi-frame micrographs for dataset 2 (220330) data/220330/data/"
                 },
                 {
-                    "@id": "Reconstructed%20tomograms%20for%20dataset%202%20%28220330%29%20data/220330/tomograms/"
+                    "@id": "#Tilt series and alignment information for dataset 2 (220330) data/220330/alignment/"
+                },
+                {
+                    "@id": "#Reconstructed tomograms for dataset 2 (220330) data/220330/tomograms/"
                 }
             ],
             "accessionId": "EMPIAR-STARFILETEST"
@@ -274,7 +277,7 @@
             "contactEmail": null
         },
         {
-            "@id": "Tilt%20series%20and%20alignment%20information%20for%20dataset%202%20%28220330%29%20data/220330/alignment/file_list.tsv",
+            "@id": "file_list.tsv",
             "@type": [
                 "File",
                 "bia:FileList",
@@ -285,62 +288,7 @@
             }
         },
         {
-            "@id": "Unaligned%20multi-frame%20micrographs%20for%20dataset%202%20%28220330%29%20data/220330/data/file_list.tsv",
-            "@type": [
-                "File",
-                "bia:FileList",
-                "csvw:Table"
-            ],
-            "tableSchema": {
-                "@id": "_:ts0"
-            }
-        },
-        {
-            "@id": "Reconstructed%20tomograms%20for%20dataset%202%20%28220330%29%20data/220330/tomograms/file_list.tsv",
-            "@type": [
-                "File",
-                "bia:FileList",
-                "csvw:Table"
-            ],
-            "tableSchema": {
-                "@id": "_:ts0"
-            }
-        },
-        {
-            "@id": "Tilt%20series%20and%20alignment%20information%20for%20dataset%201%20%28211206%29%20data/211206/alignment/file_list.tsv",
-            "@type": [
-                "File",
-                "bia:FileList",
-                "csvw:Table"
-            ],
-            "tableSchema": {
-                "@id": "_:ts0"
-            }
-        },
-        {
-            "@id": "Unaligned%20multi-frame%20micrographs%20for%20dataset%201%20%28211206%29%20data/211206/data/file_list.tsv",
-            "@type": [
-                "File",
-                "bia:FileList",
-                "csvw:Table"
-            ],
-            "tableSchema": {
-                "@id": "_:ts0"
-            }
-        },
-        {
-            "@id": "Reconstructed%20tomograms%20for%20dataset%201%20%28211206%29%20data/211206/tomograms/file_list.tsv",
-            "@type": [
-                "File",
-                "bia:FileList",
-                "csvw:Table"
-            ],
-            "tableSchema": {
-                "@id": "_:ts0"
-            }
-        },
-        {
-            "@id": "_:col7",
+            "@id": "_:col8",
             "@type": [
                 "csvw:Column"
             ],
@@ -348,7 +296,7 @@
             "propertyUrl": "http://bia/associatedProtocol"
         },
         {
-            "@id": "_:col6",
+            "@id": "_:col7",
             "@type": [
                 "csvw:Column"
             ],
@@ -356,7 +304,7 @@
             "propertyUrl": "http://bia/associatedAnnotationMethod"
         },
         {
-            "@id": "_:col5",
+            "@id": "_:col6",
             "@type": [
                 "csvw:Column"
             ],
@@ -364,7 +312,7 @@
             "propertyUrl": "http://bia/associatedSubject"
         },
         {
-            "@id": "_:col4",
+            "@id": "_:col5",
             "@type": [
                 "csvw:Column"
             ],
@@ -372,7 +320,7 @@
             "propertyUrl": "http://bia/sourceImageLabel"
         },
         {
-            "@id": "_:col3",
+            "@id": "_:col4",
             "@type": [
                 "csvw:Column"
             ],
@@ -380,12 +328,20 @@
             "propertyUrl": "http://schema.org/name"
         },
         {
-            "@id": "_:col2",
+            "@id": "_:col3",
             "@type": [
                 "csvw:Column"
             ],
             "columnName": "type",
             "propertyUrl": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+        },
+        {
+            "@id": "_:col2",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "dataset",
+            "propertyUrl": "http://schema.org/isPartOf"
         },
         {
             "@id": "_:col1",
@@ -432,11 +388,14 @@
                 },
                 {
                     "@id": "_:col7"
+                },
+                {
+                    "@id": "_:col8"
                 }
             ]
         },
         {
-            "@id": "Reconstructed%20tomograms%20for%20dataset%202%20%28220330%29%20data/220330/tomograms/",
+            "@id": "#Reconstructed tomograms for dataset 2 (220330) data/220330/tomograms/",
             "@type": [
                 "Dataset",
                 "bia:Dataset"
@@ -459,17 +418,11 @@
                     "@id": "_:Tomogram reconstruction and sub-tomogram averaging"
                 }
             ],
-            "hasPart": [
-                {
-                    "@id": "Reconstructed%20tomograms%20for%20dataset%202%20%28220330%29%20data/220330/tomograms/file_list.tsv"
-                }
-            ],
-            "associationFileMetadata": {
-                "@id": "Reconstructed%20tomograms%20for%20dataset%202%20%28220330%29%20data/220330/tomograms/file_list.tsv"
-            }
+            "hasPart": [],
+            "associationFileMetadata": null
         },
         {
-            "@id": "Tilt%20series%20and%20alignment%20information%20for%20dataset%202%20%28220330%29%20data/220330/alignment/",
+            "@id": "#Tilt series and alignment information for dataset 2 (220330) data/220330/alignment/",
             "@type": [
                 "Dataset",
                 "bia:Dataset"
@@ -488,17 +441,11 @@
             ],
             "associatedImageCorrelationMethod": [],
             "associatedProtocol": [],
-            "hasPart": [
-                {
-                    "@id": "Tilt%20series%20and%20alignment%20information%20for%20dataset%202%20%28220330%29%20data/220330/alignment/file_list.tsv"
-                }
-            ],
-            "associationFileMetadata": {
-                "@id": "Tilt%20series%20and%20alignment%20information%20for%20dataset%202%20%28220330%29%20data/220330/alignment/file_list.tsv"
-            }
+            "hasPart": [],
+            "associationFileMetadata": null
         },
         {
-            "@id": "Unaligned%20multi-frame%20micrographs%20for%20dataset%202%20%28220330%29%20data/220330/data/",
+            "@id": "#Unaligned multi-frame micrographs for dataset 2 (220330) data/220330/data/",
             "@type": [
                 "Dataset",
                 "bia:Dataset"
@@ -525,17 +472,11 @@
             "associatedImageAnalysisMethod": [],
             "associatedImageCorrelationMethod": [],
             "associatedProtocol": [],
-            "hasPart": [
-                {
-                    "@id": "Unaligned%20multi-frame%20micrographs%20for%20dataset%202%20%28220330%29%20data/220330/data/file_list.tsv"
-                }
-            ],
-            "associationFileMetadata": {
-                "@id": "Unaligned%20multi-frame%20micrographs%20for%20dataset%202%20%28220330%29%20data/220330/data/file_list.tsv"
-            }
+            "hasPart": [],
+            "associationFileMetadata": null
         },
         {
-            "@id": "Reconstructed%20tomograms%20for%20dataset%201%20%28211206%29%20data/211206/tomograms/",
+            "@id": "#Reconstructed tomograms for dataset 1 (211206) data/211206/tomograms/",
             "@type": [
                 "Dataset",
                 "bia:Dataset"
@@ -562,17 +503,11 @@
                     "@id": "_:Tomogram reconstruction and sub-tomogram averaging"
                 }
             ],
-            "hasPart": [
-                {
-                    "@id": "Reconstructed%20tomograms%20for%20dataset%201%20%28211206%29%20data/211206/tomograms/file_list.tsv"
-                }
-            ],
-            "associationFileMetadata": {
-                "@id": "Reconstructed%20tomograms%20for%20dataset%201%20%28211206%29%20data/211206/tomograms/file_list.tsv"
-            }
+            "hasPart": [],
+            "associationFileMetadata": null
         },
         {
-            "@id": "Tilt%20series%20and%20alignment%20information%20for%20dataset%201%20%28211206%29%20data/211206/alignment/",
+            "@id": "#Tilt series and alignment information for dataset 1 (211206) data/211206/alignment/",
             "@type": [
                 "Dataset",
                 "bia:Dataset"
@@ -591,17 +526,11 @@
             ],
             "associatedImageCorrelationMethod": [],
             "associatedProtocol": [],
-            "hasPart": [
-                {
-                    "@id": "Tilt%20series%20and%20alignment%20information%20for%20dataset%201%20%28211206%29%20data/211206/alignment/file_list.tsv"
-                }
-            ],
-            "associationFileMetadata": {
-                "@id": "Tilt%20series%20and%20alignment%20information%20for%20dataset%201%20%28211206%29%20data/211206/alignment/file_list.tsv"
-            }
+            "hasPart": [],
+            "associationFileMetadata": null
         },
         {
-            "@id": "Unaligned%20multi-frame%20micrographs%20for%20dataset%201%20%28211206%29%20data/211206/data/",
+            "@id": "#Unaligned multi-frame micrographs for dataset 1 (211206) data/211206/data/",
             "@type": [
                 "Dataset",
                 "bia:Dataset"
@@ -628,14 +557,8 @@
             "associatedImageAnalysisMethod": [],
             "associatedImageCorrelationMethod": [],
             "associatedProtocol": [],
-            "hasPart": [
-                {
-                    "@id": "Unaligned%20multi-frame%20micrographs%20for%20dataset%201%20%28211206%29%20data/211206/data/file_list.tsv"
-                }
-            ],
-            "associationFileMetadata": {
-                "@id": "Unaligned%20multi-frame%20micrographs%20for%20dataset%201%20%28211206%29%20data/211206/data/file_list.tsv"
-            }
+            "hasPart": [],
+            "associationFileMetadata": null
         },
         {
             "@id": "_:Tomogram reconstruction and sub-tomogram averaging",

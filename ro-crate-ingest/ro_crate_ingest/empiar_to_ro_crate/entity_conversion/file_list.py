@@ -1,16 +1,15 @@
 import pandas as pd
 import logging
 import parse
+import json
 
 from dataclasses import dataclass
 from ro_crate_ingest.empiar_to_ro_crate.empiar.entry_api_models import Entry
 from ro_crate_ingest.empiar_to_ro_crate.empiar.file_api import get_files, EMPIARFile
 from pathlib import Path
 from bia_shared_datamodels import ro_crate_models
-from bia_shared_datamodels.linked_data.pydantic_ld.LDModel import ObjectReference
 from ro_crate_ingest.save_utils import write_filelist
 from typing import Optional
-from itertools import chain
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -28,10 +27,6 @@ class PatternMatch:
     match_count: int = 0
 
 
-def generate_relative_filelist_path(dataset_path: str) -> str:
-    return str(Path(dataset_path) / f"file_list.tsv")
-
-
 def create_file_list(
     output_ro_crate_path: Path,
     yaml_file: dict,
@@ -43,7 +38,8 @@ def create_file_list(
     """
     Unlike biostudies, all EMPIAR file lists have the same schema.
 
-    Note will created a filelist for 'unnasigned' files that do not match any dataset if there are any. This is not expected to be ingested to the api.
+    Note will created a separate list for 'unnasigned' files that do not match any dataset if there are any. 
+    This is saved as unassigned_files.json in the RO-Crate directory (but not referenced as part of the RO-Crate).
     """
 
     columns = get_column_list()
@@ -57,15 +53,17 @@ def create_file_list(
 
     file_list_df = expand_dataframe_metadata(path_pattern_objects, file_df)
 
-    dataframes_by_dataset_map = split_dataframe_by_dataset(file_list_df)
-
+    file_list_df = separate_and_report_unassigned_files(
+        file_list_df, output_ro_crate_path
+    )
+    
     ro_crate_objects: list = [schema]
     ro_crate_objects.extend(columns)
 
-    for dataset_id, dataframe in dataframes_by_dataset_map.items():
-        file_list_id = generate_relative_filelist_path(dataset_id)
-        ro_crate_objects.append(get_ro_crate_filelist(file_list_id, schema))
-        write_filelist(output_ro_crate_path, file_list_id, dataframe)
+    file_list_id = "file_list.tsv"
+    ro_crate_objects.append(get_ro_crate_filelist(file_list_id, schema))
+    
+    write_filelist(output_ro_crate_path, file_list_id, file_list_df)
 
     return ro_crate_objects
 
@@ -197,7 +195,7 @@ def expand_row_metadata(
     output_row = {
         "file_path": str(file_path),
         "size_in_bytes": int(row["size_in_bytes"]),
-        "dataset_ref": None,
+        "dataset": None, 
         "type": None,
         "label": None,
         "source_image_label": None,
@@ -218,6 +216,9 @@ def expand_row_metadata(
             pattern_match.match_count += 1 
             break
 
+    if output_row["dataset"] is None:
+        logger.warning(f"Unassigned file detected: {file_path}")
+
     return pd.Series(output_row)
 
 
@@ -229,7 +230,7 @@ def update_row(
     all_file_paths: list[Path]
 ):
     output_row["type"] = row_type
-    output_row["dataset_ref"] = dataset_id
+    output_row["dataset"] = dataset_id 
 
     if yaml_object:
         if label := yaml_object.get("label", None):
@@ -303,19 +304,34 @@ def create_input_labels(
     return labels
 
 
-def split_dataframe_by_dataset(file_df: pd.DataFrame) -> dict[str, pd.DataFrame]:
-    split_dfs = {}
-    for name in file_df["dataset_ref"].dropna().unique():
-        x = file_df[file_df["dataset_ref"] == name]
-        y = x.drop("dataset_ref", axis=1)
-        split_dfs[name] = y
-
-    unassigned_files = file_df[file_df["dataset_ref"].isna()]
-    if len(unassigned_files) > 0:
-        x = unassigned_files
-        y = x.drop("dataset_ref", axis=1)
-        split_dfs["unassigned"] = y
-    return split_dfs
+def separate_and_report_unassigned_files(
+    file_list_df: pd.DataFrame,
+    output_ro_crate_path: Path,
+) -> pd.DataFrame:
+    
+    unassigned_entries = file_list_df["dataset"].isna()
+    unassigned_files_df = file_list_df[unassigned_entries]
+    assigned_files_df = file_list_df[~unassigned_entries]
+    
+    if len(unassigned_files_df) == 0:
+        logger.info("All files successfully assigned to datasets.")
+        return assigned_files_df
+    
+    
+    unassigned_file_paths = unassigned_files_df["file_path"].tolist()
+    logger.warning(f"Total unassigned files: {len(unassigned_file_paths)}")
+    
+    unassigned_json_path = output_ro_crate_path / "unassigned_files.json"
+    unassigned_data = {
+        "files": unassigned_file_paths
+    }
+    
+    with open(unassigned_json_path, "w") as f:
+        json.dump(unassigned_data, f, indent=2)
+    
+    logger.info(f"Wrote {len(unassigned_file_paths)} unassigned file(s) to {unassigned_json_path}")
+    
+    return assigned_files_df
 
 
 def get_ro_crate_filelist(
@@ -345,9 +361,11 @@ def get_schema(
 
 
 def get_column_list() -> list[ro_crate_models.Column]:
+
     columns_properties = {
         "file_path": "http://bia/filePath",
         "size_in_bytes": "http://bia/sizeInBytes",
+        "dataset": "http://schema.org/isPartOf", 
         "type": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
         "label": "http://schema.org/name",
         "source_image_label": "http://bia/sourceImageLabel",

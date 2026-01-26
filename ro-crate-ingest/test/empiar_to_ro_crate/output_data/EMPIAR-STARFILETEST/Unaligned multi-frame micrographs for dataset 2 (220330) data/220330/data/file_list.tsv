@@ -1,7 +1,0 @@
-file_path	size_in_bytes	type	label	source_image_label	associated_specimen	associated_annotation_method	associated_protocol
-data/220330/data/frames/TS_008_42_001_12.tif	17	http://bia/Image	Unaligned, unbinned, multi-frame micrograph TS_008				
-data/220330/data/frames/TS_008_42_002_17.tif	17	http://bia/Image	Unaligned, unbinned, multi-frame micrograph TS_008				
-data/220330/data/frames/TS_010_48_001_12.tif	17	http://bia/Image	Unaligned, unbinned, multi-frame micrograph TS_010				
-data/220330/data/frames/TS_010_48_002_17.tif	17	http://bia/Image	Unaligned, unbinned, multi-frame micrograph TS_010				
-data/220330/data/frames/TS_017_23_001_12.tif	17	http://bia/Image	Unaligned, unbinned, multi-frame micrograph TS_017				
-data/220330/data/frames/TS_017_23_002_17.tif	17	http://bia/Image	Unaligned, unbinned, multi-frame micrograph TS_017				
