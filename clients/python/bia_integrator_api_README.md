@@ -39,21 +39,27 @@ configuration = bia_integrator_api.Configuration(
     host = "http://localhost"
 )
 
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+configuration.access_token = os.environ["ACCESS_TOKEN"]
 
 
 # Enter a context with an instance of the API client
 with bia_integrator_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = bia_integrator_api.PrivateApi(api_client)
-    uuid = 'uuid_example' # str | 
+    model = 'model_example' # str | 
 
     try:
-        # Get AnnotationData
-        api_response = api_instance.get_annotation_data(uuid)
-        print("The response of PrivateApi->get_annotation_data:\n")
+        # Delete Embedding By Model
+        api_response = api_instance.delete_embedding_by_model(model)
+        print("The response of PrivateApi->delete_embedding_by_model:\n")
         pprint(api_response)
     except ApiException as e:
-        print("Exception when calling PrivateApi->get_annotation_data: %s\n" % e)
+        print("Exception when calling PrivateApi->delete_embedding_by_model: %s\n" % e)
 
 ```
 
@@ -63,6 +69,7 @@ All URIs are relative to *http://localhost*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
+*PrivateApi* | [**delete_embedding_by_model**](bia_integrator_api/docs/PrivateApi.md#delete_embedding_by_model) | **DELETE** /v2/private/embedding | Delete Embedding By Model
 *PrivateApi* | [**get_annotation_data**](bia_integrator_api/docs/PrivateApi.md#get_annotation_data) | **GET** /v2/annotation_data/{uuid} | Get AnnotationData
 *PrivateApi* | [**get_annotation_data_linking_dataset**](bia_integrator_api/docs/PrivateApi.md#get_annotation_data_linking_dataset) | **GET** /v2/dataset/{uuid}/annotation_data | Get AnnotationData Linking Dataset
 *PrivateApi* | [**get_annotation_data_linking_file_reference**](bia_integrator_api/docs/PrivateApi.md#get_annotation_data_linking_file_reference) | **GET** /v2/file_reference/{uuid}/annotation_data | Get AnnotationData Linking FileReference
@@ -96,6 +103,7 @@ Class | Method | HTTP request | Description
 *PrivateApi* | [**post_bio_sample**](bia_integrator_api/docs/PrivateApi.md#post_bio_sample) | **POST** /v2/private/bio_sample | Create BioSample
 *PrivateApi* | [**post_creation_process**](bia_integrator_api/docs/PrivateApi.md#post_creation_process) | **POST** /v2/private/creation_process | Create CreationProcess
 *PrivateApi* | [**post_dataset**](bia_integrator_api/docs/PrivateApi.md#post_dataset) | **POST** /v2/private/dataset | Create Dataset
+*PrivateApi* | [**post_embedding**](bia_integrator_api/docs/PrivateApi.md#post_embedding) | **POST** /v2/private/embedding | Post Embedding
 *PrivateApi* | [**post_file_reference**](bia_integrator_api/docs/PrivateApi.md#post_file_reference) | **POST** /v2/private/file_reference | Create FileReference
 *PrivateApi* | [**post_image**](bia_integrator_api/docs/PrivateApi.md#post_image) | **POST** /v2/private/image | Create Image
 *PrivateApi* | [**post_image_acquisition_protocol**](bia_integrator_api/docs/PrivateApi.md#post_image_acquisition_protocol) | **POST** /v2/private/image_acquisition_protocol | Create ImageAcquisitionProtocol
@@ -110,6 +118,7 @@ Class | Method | HTTP request | Description
 *PrivateApi* | [**search_bio_sample**](bia_integrator_api/docs/PrivateApi.md#search_bio_sample) | **GET** /v2/search/bio_sample | Search all objects of type BioSample
 *PrivateApi* | [**search_creation_process**](bia_integrator_api/docs/PrivateApi.md#search_creation_process) | **GET** /v2/search/creation_process | Search all objects of type CreationProcess
 *PrivateApi* | [**search_dataset**](bia_integrator_api/docs/PrivateApi.md#search_dataset) | **GET** /v2/search/dataset | Search all objects of type Dataset
+*PrivateApi* | [**search_embedding_by_study_uuid**](bia_integrator_api/docs/PrivateApi.md#search_embedding_by_study_uuid) | **GET** /v2/search/embedding/study/{study_uuid} | Searchembeddingbystudyuuid
 *PrivateApi* | [**search_file_reference**](bia_integrator_api/docs/PrivateApi.md#search_file_reference) | **GET** /v2/search/file_reference | Search all objects of type FileReference
 *PrivateApi* | [**search_file_reference_by_path_name**](bia_integrator_api/docs/PrivateApi.md#search_file_reference_by_path_name) | **GET** /v2/search/file_reference/by_path_name | Searchfilereferencebypathname
 *PrivateApi* | [**search_image**](bia_integrator_api/docs/PrivateApi.md#search_image) | **GET** /v2/search/image | Search all objects of type Image
@@ -153,6 +162,7 @@ Class | Method | HTTP request | Description
 *PublicApi* | [**search_bio_sample**](bia_integrator_api/docs/PublicApi.md#search_bio_sample) | **GET** /v2/search/bio_sample | Search all objects of type BioSample
 *PublicApi* | [**search_creation_process**](bia_integrator_api/docs/PublicApi.md#search_creation_process) | **GET** /v2/search/creation_process | Search all objects of type CreationProcess
 *PublicApi* | [**search_dataset**](bia_integrator_api/docs/PublicApi.md#search_dataset) | **GET** /v2/search/dataset | Search all objects of type Dataset
+*PublicApi* | [**search_embedding_by_study_uuid**](bia_integrator_api/docs/PublicApi.md#search_embedding_by_study_uuid) | **GET** /v2/search/embedding/study/{study_uuid} | Searchembeddingbystudyuuid
 *PublicApi* | [**search_file_reference**](bia_integrator_api/docs/PublicApi.md#search_file_reference) | **GET** /v2/search/file_reference | Search all objects of type FileReference
 *PublicApi* | [**search_file_reference_by_path_name**](bia_integrator_api/docs/PublicApi.md#search_file_reference_by_path_name) | **GET** /v2/search/file_reference/by_path_name | Searchfilereferencebypathname
 *PublicApi* | [**search_image**](bia_integrator_api/docs/PublicApi.md#search_image) | **GET** /v2/search/image | Search all objects of type Image
@@ -182,6 +192,7 @@ Class | Method | HTTP request | Description
  - [CreationProcess](bia_integrator_api/docs/CreationProcess.md)
  - [Dataset](bia_integrator_api/docs/Dataset.md)
  - [DatasetStats](bia_integrator_api/docs/DatasetStats.md)
+ - [Embedding](bia_integrator_api/docs/Embedding.md)
  - [ExternalReference](bia_integrator_api/docs/ExternalReference.md)
  - [FileReference](bia_integrator_api/docs/FileReference.md)
  - [FundingBody](bia_integrator_api/docs/FundingBody.md)

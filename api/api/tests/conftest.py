@@ -139,6 +139,22 @@ async def existing_study(api_client: TestClient) -> dict:
 
     return study
 
+@pytest_asyncio.fixture(scope="function")
+async def existing_embedding(existing_study, api_client: TestClient) -> dict:
+    embedding = {
+        'uuid': get_uuid(),
+        'vector': [0.1, 0.2],
+        'for_document_uuid': existing_study['uuid'],
+        'additional_metadata': {},
+        'embedding_model': 'test/test',
+        'model': {'type_name': 'Embedding', "version": 1},
+        'version': 0
+    }
+
+    rsp = api_client.post("private/embedding", json=embedding)
+    assert rsp.status_code == 201, rsp.json()
+
+    return embedding
 
 @pytest_asyncio.fixture(scope="function")
 async def updated_study(api_client: TestClient, existing_study: dict) -> dict:
