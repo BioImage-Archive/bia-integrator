@@ -4,6 +4,7 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+[**delete_embedding_by_model**](PrivateApi.md#delete_embedding_by_model) | **DELETE** /v2/private/embedding | Delete Embedding By Model
 [**get_annotation_data**](PrivateApi.md#get_annotation_data) | **GET** /v2/annotation_data/{uuid} | Get AnnotationData
 [**get_annotation_data_linking_dataset**](PrivateApi.md#get_annotation_data_linking_dataset) | **GET** /v2/dataset/{uuid}/annotation_data | Get AnnotationData Linking Dataset
 [**get_annotation_data_linking_file_reference**](PrivateApi.md#get_annotation_data_linking_file_reference) | **GET** /v2/file_reference/{uuid}/annotation_data | Get AnnotationData Linking FileReference
@@ -65,6 +66,79 @@ Method | HTTP request | Description
 [**search_study**](PrivateApi.md#search_study) | **GET** /v2/search/study | Search all objects of type Study
 [**search_study_by_accession**](PrivateApi.md#search_study_by_accession) | **GET** /v2/search/study/accession | Searchstudybyaccession
 
+
+# **delete_embedding_by_model**
+> object delete_embedding_by_model(model)
+
+Delete Embedding By Model
+
+### Example
+
+* OAuth Authentication (OAuth2PasswordBearer):
+
+```python
+import bia_integrator_api
+from bia_integrator_api.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost
+# See configuration.py for a list of all supported configuration parameters.
+configuration = bia_integrator_api.Configuration(
+    host = "http://localhost"
+)
+
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+configuration.access_token = os.environ["ACCESS_TOKEN"]
+
+# Enter a context with an instance of the API client
+with bia_integrator_api.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = bia_integrator_api.PrivateApi(api_client)
+    model = 'model_example' # str | 
+
+    try:
+        # Delete Embedding By Model
+        api_response = api_instance.delete_embedding_by_model(model)
+        print("The response of PrivateApi->delete_embedding_by_model:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling PrivateApi->delete_embedding_by_model: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **model** | **str**|  | 
+
+### Return type
+
+**object**
+
+### Authorization
+
+[OAuth2PasswordBearer](../README.md#OAuth2PasswordBearer)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_annotation_data**
 > AnnotationData get_annotation_data(uuid)

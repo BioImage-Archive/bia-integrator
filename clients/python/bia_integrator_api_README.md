@@ -39,21 +39,27 @@ configuration = bia_integrator_api.Configuration(
     host = "http://localhost"
 )
 
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+configuration.access_token = os.environ["ACCESS_TOKEN"]
 
 
 # Enter a context with an instance of the API client
 with bia_integrator_api.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = bia_integrator_api.PrivateApi(api_client)
-    uuid = 'uuid_example' # str | 
+    model = 'model_example' # str | 
 
     try:
-        # Get AnnotationData
-        api_response = api_instance.get_annotation_data(uuid)
-        print("The response of PrivateApi->get_annotation_data:\n")
+        # Delete Embedding By Model
+        api_response = api_instance.delete_embedding_by_model(model)
+        print("The response of PrivateApi->delete_embedding_by_model:\n")
         pprint(api_response)
     except ApiException as e:
-        print("Exception when calling PrivateApi->get_annotation_data: %s\n" % e)
+        print("Exception when calling PrivateApi->delete_embedding_by_model: %s\n" % e)
 
 ```
 
@@ -63,6 +69,7 @@ All URIs are relative to *http://localhost*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
+*PrivateApi* | [**delete_embedding_by_model**](bia_integrator_api/docs/PrivateApi.md#delete_embedding_by_model) | **DELETE** /v2/private/embedding | Delete Embedding By Model
 *PrivateApi* | [**get_annotation_data**](bia_integrator_api/docs/PrivateApi.md#get_annotation_data) | **GET** /v2/annotation_data/{uuid} | Get AnnotationData
 *PrivateApi* | [**get_annotation_data_linking_dataset**](bia_integrator_api/docs/PrivateApi.md#get_annotation_data_linking_dataset) | **GET** /v2/dataset/{uuid}/annotation_data | Get AnnotationData Linking Dataset
 *PrivateApi* | [**get_annotation_data_linking_file_reference**](bia_integrator_api/docs/PrivateApi.md#get_annotation_data_linking_file_reference) | **GET** /v2/file_reference/{uuid}/annotation_data | Get AnnotationData Linking FileReference

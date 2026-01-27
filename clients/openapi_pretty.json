@@ -1683,15 +1683,20 @@
         ],
         "summary": "Post Embedding",
         "operationId": "post_embedding",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          }
+        ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/Embedding"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "201": {
@@ -1712,12 +1717,50 @@
               }
             }
           }
-        },
+        }
+      },
+      "delete": {
+        "tags": [
+          "private"
+        ],
+        "summary": "Delete Embedding By Model",
+        "operationId": "delete_embedding_by_model",
         "security": [
           {
             "OAuth2PasswordBearer": []
           }
-        ]
+        ],
+        "parameters": [
+          {
+            "name": "model",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Model"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/v2/private/study": {
