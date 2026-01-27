@@ -81,8 +81,8 @@ def study(
         api_client.post_embedding(api_embedding)
 
 @app.command()
-def embed_placeholder():
-    pass
+def delete_for_model(model: str = "sentence-transformers/all-roberta-large-v1"):
+    api_client.delete_embedding_by_model(model)
 
 if __name__ == "__main__":
     app()
