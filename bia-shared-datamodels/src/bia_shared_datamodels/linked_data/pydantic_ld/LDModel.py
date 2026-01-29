@@ -22,7 +22,7 @@ class LDModel(BaseModel):
             )
 
             if field_context:
-                if compacted_ids and field_context.isIdField:
+                if compacted_ids and field_context.is_id_field:
                     term = ContextTerm(
                         full_uri=field_context.uri,
                         field_name=field_name,

@@ -6,6 +6,7 @@ from bia_shared_datamodels.package_specific_uuid_creation import (
     shared,
     ro_crate_uuid_creation,
 )
+from bia_shared_datamodels.linked_data.ontology_terms import BIA, SCHEMA, DUBLINCORE
 from bia_shared_datamodels.linked_data.pydantic_ld.ROCrateModel import ROCrateModel
 from bia_shared_datamodels import ro_crate_models, attribute_models
 import bia_integrator_api.models as APIModels
@@ -25,7 +26,7 @@ def prepare_all_ids_for_result_data(
     max_workers: int,
 ) -> tuple[pd.DataFrame, dict[str, str]]:
     result_data_by_id: pdtypes.DataFrameGroupBy = typed_object_dataframe.groupby(
-        "http://schema.org/name", dropna=True
+        str(SCHEMA.name), dropna=True
     )
 
     with ProcessPoolExecutor(max_workers=max_workers) as executor:
@@ -65,8 +66,8 @@ def prep_result_data_row(
     df = group_df[1]
 
     result_type = flatten_set_of_same_values(df[str(RDF.type)])
-    dataset_uuid = flatten_set_of_same_values(df["http://schema.org/isPartOf"])
-    file_reference_uuids = list(df["http://purl.org/dc/terms/identifier"])
+    dataset_uuid = flatten_set_of_same_values(df[str(SCHEMA.isPartOf)])
+    file_reference_uuids = list(df[str(DUBLINCORE.identifier)])
     result_data_uuid, result_data_uuid_attr = create_result_data_uuid(
         result_type, file_reference_uuids, study_uuid
     )
@@ -80,11 +81,11 @@ def prep_result_data_row(
         "result_data_uuid_attr": result_data_uuid_attr.model_dump(),
         "creation_process_uuid": None,
         "creation_process_uuid_attr": None,
-        "original_file_ref_total_size": int(df["http://bia/sizeInBytes"].sum()),
+        "original_file_ref_total_size": int(df[str(BIA.sizeInBytes)].sum()),
         "original_file_ref_format": flatten_set_of_same_values(
-            df["http://purl.org/dc/terms/hasFormat"]
+            df[str(DUBLINCORE.hasFormat)]
         ),
-        "original_file_ref_uri": list(df["http://bia/uri"]),
+        "original_file_ref_uri": list(df[str(BIA.uri)]),
         "specimen_id": None,
         "specimen_uuid": None,
         "specimen_uuid_attr": None,
@@ -98,9 +99,9 @@ def prep_result_data_row(
         "image_rep_uuid_attr": None,
     }
 
-    if len(df["http://bia/associatedCreationProcess"].dropna()) != 0:
+    if len(df[str(BIA.associatedCreationProcess)].dropna()) != 0:
         creation_process_roc_id = flatten_set_of_same_values(
-            df["http://bia/associatedCreationProcess"]
+            df[str(BIA.associatedCreationProcess)]
         )
 
         populate_from_creation_process(
@@ -115,9 +116,9 @@ def prep_result_data_row(
             study_uuid, df, result_data_uuid, pre_requisite_ids_row
         )
 
-        if len(df["http://bia/associatedSubject"].dropna()) != 0:
+        if len(df[str(BIA.associatedSubject)].dropna()) != 0:
             specimen_roc_id = flatten_set_of_same_values(
-                df["http://bia/associatedCreationProcess"]
+                df[str(BIA.associatedCreationProcess)]
             )
             populate_from_specimen(
                 pre_requisite_ids_row,
@@ -130,7 +131,7 @@ def prep_result_data_row(
                 study_uuid, df, result_data_uuid, pre_requisite_ids_row
             )
 
-    if result_type == "http://bia/Image":
+    if result_type == str(BIA.Image):
         image_rep_uuid, image_rep_uuid_attr = shared.create_image_representation_uuid(
             study_uuid, str(result_data_uuid), APIModels.Provenance.BIA_INGEST
         )
@@ -150,12 +151,12 @@ def populate_specimen_info_from_columns(
     pre_requisite_ids_row["specimen_uuid_attr"] = specimen_uuid_attr.model_dump()
 
     pre_requisite_ids_row["bio_sample_id"] = collect_association_list_values(
-        df["http://bia/associatedBiologicalEntity"]
+        df[str(BIA.associatedBiologicalEntity)]
     )
 
     pre_requisite_ids_row["specimen_imaging_preparation_protocol_id"] = (
         collect_association_list_values(
-            df["http://bia/associatedImagingPreparationProtocol"]
+            df[str(BIA.associatedImagingPreparationProtocol)]
         )
     )
 
@@ -174,28 +175,26 @@ def populate_creation_process_info_from_columns(
     )
 
     pre_requisite_ids_row["annotation_method_id"] = collect_association_list_values(
-        df["http://bia/associatedAnnotationMethod"]
+        df[str(BIA.associatedAnnotationMethod)]
     )
     pre_requisite_ids_row["image_acquisition_protocol_id"] = (
-        collect_association_list_values(
-            df["http://bia/associatedImageAcquisitionProtocol"]
-        )
+        collect_association_list_values(df[str(BIA.associatedImageAcquisitionProtocol)])
     )
     pre_requisite_ids_row["protocol_id"] = collect_association_list_values(
-        df["http://bia/associatedProtocol"]
+        df[str(BIA.associatedProtocol)]
     )
     pre_requisite_ids_row["source_image_name"] = collect_association_list_values(
-        df["http://bia/associatedInputImage"]
+        df[str(BIA.associatedInputImage)]
     )
 
 
 def has_biosample_or_imaging_preparation_protocol(df):
     bio_entity_count = len(
-        collect_association_list_values(df["http://bia/associatedBiologicalEntity"])
+        collect_association_list_values(df[str(BIA.associatedBiologicalEntity)])
     )
     sipp_count = len(
         collect_association_list_values(
-            df["http://bia/associatedImagingPreparationProtocol"]
+            df[str(BIA.associatedImagingPreparationProtocol)]
         )
     )
     return bio_entity_count > 0 or sipp_count > 0
@@ -267,11 +266,11 @@ def create_result_data_uuid(
     result_data_type: str, file_refernce_uuids: list[str], study_uuid: str
 ) -> tuple[UUID, attribute_models.DocumentUUIDUinqueInputAttribute]:
     match result_data_type:
-        case "http://bia/Image":
+        case str(BIA.Image):
             return shared.create_image_uuid(
                 study_uuid, file_refernce_uuids, APIModels.Provenance.BIA_INGEST
             )
-        case "http://bia/AnnotationData":
+        case str(BIA.AnnotationData):
             return shared.create_annotation_data_uuid(
                 study_uuid, file_refernce_uuids, APIModels.Provenance.BIA_INGEST
             )

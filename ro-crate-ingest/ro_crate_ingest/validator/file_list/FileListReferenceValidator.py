@@ -5,6 +5,7 @@ from urllib.parse import unquote
 
 import rdflib
 from bia_shared_datamodels import ro_crate_models
+from bia_shared_datamodels.linked_data.ontology_terms import BIA
 from bia_shared_datamodels.linked_data.bia_ontology_utils import load_bia_ontology
 from bia_shared_datamodels.linked_data.pydantic_ld.ROCrateModel import ROCrateModel
 
@@ -37,12 +38,16 @@ class FileListReferenceValidator(Validator):
     ro_crate_root: Path
     ERROR_MESSAGE_LOCATION = "In filelist: {filelist_id}, at row: {row_index}."
     ROC_LOOKUP_TYPES = {
-        "http://bia/associatedBiologicalEntity": ro_crate_models.BioSample,
-        "http://bia/associatedImagingPreparationProtocol": ro_crate_models.SpecimenImagingPreparationProtocol,
-        "http://bia/associatedImageAcquisitionProtocol": ro_crate_models.ImageAcquisitionProtocol,
-        "http://bia/associatedAnnotationMethod": ro_crate_models.AnnotationMethod,
-        "http://bia/associatedProtocol": ro_crate_models.Protocol,
-        "http://bia/associatedSubject": ro_crate_models.Specimen,
+        str(BIA.associatedBiologicalEntity): ro_crate_models.BioSample,
+        str(
+            BIA.associatedImagingPreparationProtocol
+        ): ro_crate_models.SpecimenImagingPreparationProtocol,
+        str(
+            BIA.associatedImageAcquisitionProtocol
+        ): ro_crate_models.ImageAcquisitionProtocol,
+        str(BIA.associatedAnnotationMethod): ro_crate_models.AnnotationMethod,
+        str(BIA.associatedProtocol): ro_crate_models.Protocol,
+        str(BIA.associatedSubject): ro_crate_models.Specimen,
     }
 
     def __init__(
@@ -152,7 +157,7 @@ class FileListReferenceValidator(Validator):
                             message=message,
                             location_description=file_list_validator.ERROR_MESSAGE_LOCATION.format(
                                 filelist_id=file_list_id,
-                                row_index=row["http://bia/filePath"],
+                                row_index=row[str(BIA.filePath)],
                             ),
                         )
                     )

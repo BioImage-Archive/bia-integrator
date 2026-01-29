@@ -3,6 +3,7 @@ from pathlib import Path
 from typing import Iterable
 
 import rdflib
+from bia_shared_datamodels.linked_data.ontology_terms import BIA
 
 from ro_crate_ingest.bia_ro_crate.parser.jsonld_metadata_parser import (
     JSONLDMetadataParser,
@@ -27,7 +28,7 @@ class FileListDefinitionValidator(Validator):
 
     ro_crate_metadata_graph: rdflib.Graph
     required_properties: set[str]
-    file_path_property: rdflib.URIRef = rdflib.URIRef("http://bia/filePath")
+    file_path_property: rdflib.URIRef = rdflib.URIRef(str(BIA.filePath))
 
     # return schemas in use by filelists, and all propertyUrls of their columns (if any)
     SCHEMA_COLUMN_PROPERTY_QUERY: str = """

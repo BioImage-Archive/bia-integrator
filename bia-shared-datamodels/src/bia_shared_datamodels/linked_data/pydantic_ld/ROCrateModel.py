@@ -26,7 +26,7 @@ class ROCrateModel(LDModel):
         """
         Note, this assume the object has either been expanded to have full urls for the types, or the standard bia context is being used. The actual document context is not checked.
         """
-        expected_class: str = cls.model_config.get("model_type")
+        expected_class: str = str(cls.model_config.get("model_type"))
         short_string = (
             expected_class.replace("http://www.w3.org/ns/csvw#", "csvw:")
             .replace("http://bia/", "bia:")

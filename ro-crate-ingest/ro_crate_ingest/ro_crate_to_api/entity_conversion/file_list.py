@@ -7,6 +7,7 @@ from urllib.parse import unquote
 import bia_integrator_api.models as APIModels
 import pandas as pd
 from bia_shared_datamodels import ro_crate_models
+from bia_shared_datamodels.linked_data.ontology_terms import BIA, SCHEMA, DUBLINCORE
 from bia_shared_datamodels.linked_data.pydantic_ld.ROCrateModel import ROCrateModel
 from bia_shared_datamodels.package_specific_uuid_creation.ro_crate_uuid_creation import (
     create_dataset_uuid,
@@ -45,21 +46,21 @@ def parse_file_list(
 
     file_list = parser.result
 
-    size_in_bytes = file_list.get_column_id_by_property("http://bia/size_in_bytes")
+    size_in_bytes = file_list.get_column_id_by_property(str(BIA.sizeInBytes))
     if not size_in_bytes:
         # TODO: add logic to fetch sizes from files
         pass
 
     # TODO: move this into the per-row logic to not add non-user data to the file reference attributes
-    name_column = file_list.get_column_id_by_property("http://schema.org/name")
+    name_column = file_list.get_column_id_by_property(str(SCHEMA.name))
     if not name_column:
-        file_path_col_id = file_list.get_column_id_by_property("http://bia/filePath")
+        file_path_col_id = file_list.get_column_id_by_property(str(BIA.filePath))
         file_list.add_column(
             ro_crate_models.Column.model_validate(
                 {
-                    "columnName": "http://schema.org/name",
-                    "propertyUrl": "http://schema.org/name",
-                    "@id": "http://schema.org/name",
+                    "columnName": str(SCHEMA.name),
+                    "propertyUrl": str(SCHEMA.name),
+                    "@id": str(SCHEMA.name),
                     "@type": "csvw:Column",
                 }
             ),
@@ -120,8 +121,8 @@ def create_file_reference_and_result_data_row(
         propertyURL: row[columnID] for propertyURL, columnID in property_lookup.items()
     }
 
-    size_in_bytes = semantic_row["http://bia/sizeInBytes"]
-    file_path = semantic_row["http://bia/filePath"]
+    size_in_bytes = semantic_row[str(BIA.sizeInBytes)]
+    file_path = semantic_row[str(BIA.filePath)]
 
     uuid, uuid_attr = create_file_reference_uuid(study_uuid, file_path, size_in_bytes)
 
@@ -137,7 +138,7 @@ def create_file_reference_and_result_data_row(
         }
     )
 
-    dataset_roc_id = semantic_row["http://schema.org/isPartOf"]
+    dataset_roc_id = semantic_row[str(SCHEMA.isPartOf)]
     dataset_uuid = str(create_dataset_uuid(study_uuid, dataset_roc_id)[0])
     file_format = get_suffix(file_path)
     uri = get_file_ref_uri(file_ref_url_prefix, accession_id, file_path)
@@ -162,18 +163,18 @@ def create_file_reference_and_result_data_row(
     )
 
     if (
-        pd.isna(semantic_row["http://schema.org/name"])
-        or not semantic_row["http://schema.org/name"]
+        pd.isna(semantic_row[str(SCHEMA.name)])
+        or not semantic_row[str(SCHEMA.name)]
     ):
-        semantic_row["http://schema.org/name"] = file_path
+        semantic_row[str(SCHEMA.name)] = file_path
 
-    semantic_row["http://schema.org/isPartOf"] = dataset_uuid
+    semantic_row[str(SCHEMA.isPartOf)] = dataset_uuid
 
-    semantic_row["http://purl.org/dc/terms/identifier"] = str(uuid)
+    semantic_row[str(DUBLINCORE.identifier)] = str(uuid)
 
-    semantic_row["http://purl.org/dc/terms/hasFormat"] = file_format
+    semantic_row[str(DUBLINCORE.hasFormat)] = file_format
 
-    semantic_row["http://bia/uri"] = uri
+    semantic_row[str(BIA.uri)] = uri
 
     return semantic_row
 
@@ -198,12 +199,12 @@ def get_file_ref_uri(
 
 def fill_missing_association_columns(dataframe: pd.DataFrame) -> None:
     list_fields = [
-        "http://bia/associatedBiologicalEntity",
-        "http://bia/associatedImagingPreparationProtocol",
-        "http://bia/associatedImageAcquisitionProtocol",
-        "http://bia/associatedAnnotationMethod",
-        "http://bia/associatedProtocol",
-        "http://bia/associatedInputImage",
+        str(BIA.associatedBiologicalEntity),
+        str(BIA.associatedImagingPreparationProtocol),
+        str(BIA.associatedImageAcquisitionProtocol),
+        str(BIA.associatedAnnotationMethod),
+        str(BIA.associatedProtocol),
+        str(BIA.associatedInputImage),
     ]
 
     for field in list_fields:
@@ -211,8 +212,8 @@ def fill_missing_association_columns(dataframe: pd.DataFrame) -> None:
             dataframe[field] = [[] for _ in range(dataframe.shape[0])]
 
     unique_fields = [
-        "http://bia/associatedCreationProcess",
-        "http://bia/associatedSubject",
+        str(BIA.associatedCreationProcess),
+        str(BIA.associatedSubject),
     ]
 
     for field in unique_fields:

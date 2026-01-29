@@ -10,6 +10,7 @@ from bia_shared_datamodels.ro_crate_models import FileList as FileListMetadata
 from bia_shared_datamodels.ro_crate_models import (
     TableSchema,
 )
+from bia_shared_datamodels.linked_data.ontology_terms import BIA
 
 from ro_crate_ingest.bia_ro_crate.bia_ro_crate_metadata import BIAROCrateMetadata
 from ro_crate_ingest.bia_ro_crate.file_list import FileList
@@ -23,14 +24,14 @@ class OSVMetadataParser(MetadataParser[FileList]):
     """
 
     DEFAULT_LIST_PROPERTIES = [
-        "http://bia/associatedBiologicalEntity",
-        "http://bia/associatedImagingPreparationProtocol",
-        "http://bia/associatedImageAcquisitionProtocol",
-        "http://bia/associatedAnnotationMethod",
-        "http://bia/associatedProtocol",
-        "http://bia/associatedSourceImage",
-        "http://bia/sourceImagePath",
-        "http://bia/sourceImageName",
+        str(BIA.associatedBiologicalEntity),
+        str(BIA.associatedImagingPreparationProtocol),
+        str(BIA.associatedImageAcquisitionProtocol),
+        str(BIA.associatedAnnotationMethod),
+        str(BIA.associatedProtocol),
+        str(BIA.associatedSourceImage),
+        # str(BIA.sourceImagePath),
+        # str(BIA.sourceImageName),
     ]
 
     bia_rocrate_metadata: BIAROCrateMetadata

@@ -2,6 +2,7 @@ from collections import defaultdict
 from pathlib import Path
 
 import rdflib
+from bia_shared_datamodels.linked_data.ontology_terms import BIA
 from bia_shared_datamodels.linked_data.bia_ontology_utils import load_bia_ontology
 
 from ro_crate_ingest.bia_ro_crate.parser.jsonld_metadata_parser import (
@@ -27,7 +28,7 @@ class ReferenceValidation(Validator):
         self,
         ro_crate_metadata_path: Path,
     ):
-        
+
         ro_crate_metadata_parser = JSONLDMetadataParser()
         ro_crate_metadata_parser.parse(ro_crate_metadata_path)
         ro_crate_metadata = ro_crate_metadata_parser.result
@@ -61,10 +62,10 @@ class ReferenceValidation(Validator):
 
         properties_to_validate = self._get_properties_to_validate()
 
-        # NOTE: do not attempt to validate inputImage as this might reference a file path that would 
+        # NOTE: do not attempt to validate inputImage as this might reference a file path that would
         # not necessarily need to be in the ro-crate-metadata.json, just in the ro-crate in general.
         # This is/will be covered by the specific input image validators.
-        properties_to_validate.pop(rdflib.URIRef("http://bia/inputImage"), None)
+        properties_to_validate.pop(rdflib.URIRef(str(BIA.inputImage)), None)
 
         for subject, predicate, obj in self.ro_crate_metadata_graph:
             if predicate in properties_to_validate:
