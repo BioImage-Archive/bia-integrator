@@ -1,0 +1,650 @@
+{
+    "@context": [
+        "https://w3id.org/ro/crate/1.1/context",
+        {
+            "accessionId": {
+                "@id": "schema:identifier"
+            },
+            "acknowledgement": {
+                "@id": "bia:acknowledgement"
+            },
+            "address": {
+                "@id": "schema:address"
+            },
+            "affiliation": {
+                "@id": "schema:memberOf"
+            },
+            "annotationCoverage": {
+                "@id": "bia:annotationCoverage"
+            },
+            "annotationCriteria": {
+                "@id": "bia:annotationCriteria"
+            },
+            "annotationMethod": {
+                "@id": "bia:annotationMethod"
+            },
+            "annotationSourceIndicator": {
+                "@id": "bia:annotationSourceIndicator"
+            },
+            "associatedAnnotationMethod": {
+                "@id": "bia:associatedAnnotationMethod"
+            },
+            "associatedBiologicalEntity": {
+                "@id": "bia:associatedBiologicalEntity"
+            },
+            "associatedImageAcquisitionProtocol": {
+                "@id": "bia:associatedImageAcquisitionProtocol"
+            },
+            "associatedImageAnalysisMethod": {
+                "@id": "bia:associatedAnalysisMethod"
+            },
+            "associatedImageCorrelationMethod": {
+                "@id": "bia:associatedCorrelationMethod"
+            },
+            "associatedProtocol": {
+                "@id": "bia:associatedProtocol"
+            },
+            "associatedSpecimen": {
+                "@id": "bia:associatedSubject"
+            },
+            "associatedSpecimenImagingPreparationProtocol": {
+                "@id": "bia:associatedImagingPreparationProtocol"
+            },
+            "associationFileMetadata": {
+                "@id": "bia:associationFileMetadata"
+            },
+            "authorNames": {
+                "@id": "bia:authorNames"
+            },
+            "bia": "http://bia/",
+            "biologicalEntity": {
+                "@id": "bia:sampleOf"
+            },
+            "biologicalEntityDescription": {
+                "@id": "bia:biologicalEntityDescription"
+            },
+            "channelBiologicalEntity": {
+                "@id": "bia:channelBiologicalEntity"
+            },
+            "channelContentDescription": {
+                "@id": "bia:channelContentDescription"
+            },
+            "channelLabel": {
+                "@id": "dc:identifier"
+            },
+            "column": {
+                "@id": "csvw:column"
+            },
+            "columnName": {
+                "@id": "csvw:name"
+            },
+            "commonName": {
+                "@id": "bia:commonName"
+            },
+            "contactEmail": {
+                "@id": "schema:email"
+            },
+            "contributor": {
+                "@id": "schema:author"
+            },
+            "csvw": "http://www.w3.org/ns/csvw#",
+            "datePublished": {
+                "@id": "schema:datePublished"
+            },
+            "dc": "http://purl.org/dc/terms/",
+            "description": {
+                "@id": "schema:description"
+            },
+            "displayName": {
+                "@id": "schema:name"
+            },
+            "experimentalVariableDescription": {
+                "@id": "bia:experimentalVariableDescription"
+            },
+            "extrinsicVariableDescription": {
+                "@id": "bia:extrinsicVariableDescription"
+            },
+            "fbbiId": {
+                "@id": "bia:fbbiId"
+            },
+            "featuresAnalysed": {
+                "@id": "bia:featuresAnalysed"
+            },
+            "fiducialsUsed": {
+                "@id": "bia:fiducialsUsed"
+            },
+            "growthProtocol": {
+                "@id": "bia:growthProtocol"
+            },
+            "hasPart": {
+                "@id": "schema:hasPart"
+            },
+            "imageAcquisitionProtocol": {
+                "@id": "bia:imageAcquisitionProtocol"
+            },
+            "imagingInstrumentDescription": {
+                "@id": "bia:imagingInstrumentDescription"
+            },
+            "imagingMethodName": {
+                "@id": "bia:imagingMethodName"
+            },
+            "imagingPreparationProtocol": {
+                "@id": "bia:imagingPreparationProtocol"
+            },
+            "inputImage": {
+                "@id": "bia:inputImage"
+            },
+            "intrinsicVariableDescription": {
+                "@id": "bia:intrinsicVariableDescription"
+            },
+            "keyword": {
+                "@id": "schema:keywords"
+            },
+            "label": {
+                "@id": "schema:name"
+            },
+            "license": {
+                "@id": "schema:license"
+            },
+            "link": {
+                "@id": "schema:url"
+            },
+            "linkDescription": {
+                "@id": "schema:description"
+            },
+            "methodType": {
+                "@id": "bia:annotationMethodType"
+            },
+            "name": {
+                "@id": "schema:name"
+            },
+            "organismClassification": {
+                "@id": "bia:organismClassification"
+            },
+            "propertyUrl": {
+                "@id": "csvw:propertyUrl"
+            },
+            "protocol": {
+                "@id": "bia:protocol"
+            },
+            "protocolDescription": {
+                "@id": "schema:description"
+            },
+            "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+            "resultOf": {
+                "@id": "bia:resultOf"
+            },
+            "role": {
+                "@id": "bia:role"
+            },
+            "schema": "http://schema.org/",
+            "scientificName": {
+                "@id": "bia:scientificName"
+            },
+            "signalChannelInformation": {
+                "@id": "bia:signalChannelInformation"
+            },
+            "signalContrastMechanismDescription": {
+                "@id": "bia:signalContrastMechanismDescription"
+            },
+            "spatialInformation": {
+                "@id": "bia:spatialInformation"
+            },
+            "subject": {
+                "@id": "bia:subject"
+            },
+            "tableSchema": {
+                "@id": "csvw:tableSchema"
+            },
+            "title": {
+                "@id": "schema:name"
+            },
+            "transformationDescription": {
+                "@id": "bia:transformationDescription"
+            },
+            "transformationMatrix": {
+                "@id": "bia:transformationMatrix"
+            },
+            "website": {
+                "@id": "bia:website"
+            }
+        }
+    ],
+    "@graph": [
+        {
+            "@id": "ro-crate-metadata.json",
+            "@type": "CreativeWork",
+            "conformsTo": {
+                "@id": "https://w3id.org/ro/crate/1.1"
+            },
+            "about": {
+                "@id": "./"
+            }
+        },
+        {
+            "@id": "./",
+            "@type": [
+                "Dataset",
+                "bia:Study"
+            ],
+            "name": "BIADTEST AUTHOR AFFILIATION TEST",
+            "contributor": [
+                {
+                    "@id": "https://orcid.org/0009-0007-4223-1439"
+                }
+            ],
+            "description": "Description 1",
+            "license": "https://creativecommons.org/publicdomain/zero/1.0/",
+            "datePublished": "2023-08-14",
+            "keyword": [],
+            "acknowledgement": null,
+            "hasPart": [
+                {
+                    "@id": "Study%20Component-1/"
+                },
+                {
+                    "@id": "Study%20Component-2/"
+                },
+                {
+                    "@id": "Study%20Component-3/"
+                }
+            ],
+            "accessionId": "S-BIADTEST_COMPLEX_BIOSAMPLE"
+        },
+        {
+            "@id": "https://orcid.org/0009-0007-4223-1439",
+            "@type": [
+                "Person",
+                "bia:Contributor"
+            ],
+            "displayName": "User with affiliaition and orcid",
+            "address": null,
+            "website": null,
+            "affiliation": [
+                {
+                    "@id": "_:o1"
+                }
+            ],
+            "role": [
+                "data acquisition",
+                "data curator"
+            ],
+            "contactEmail": "user1@ebi.ac.uk"
+        },
+        {
+            "@id": "_:o1",
+            "@type": [
+                "Organisation",
+                "bia:Affiliation"
+            ],
+            "displayName": "Organization with no rorid",
+            "address": "Hinxton, UK",
+            "website": null
+        },
+        {
+            "@id": "Study%20Component-3/file_list_test_3.tsv",
+            "@type": [
+                "File",
+                "bia:FileList",
+                "csvw:Table"
+            ],
+            "tableSchema": {
+                "@id": "_:ts0"
+            }
+        },
+        {
+            "@id": "Study%20Component-2/file_list_test_2.tsv",
+            "@type": [
+                "File",
+                "bia:FileList",
+                "csvw:Table"
+            ],
+            "tableSchema": {
+                "@id": "_:ts0"
+            }
+        },
+        {
+            "@id": "Study%20Component-1/file_list_test_1.tsv",
+            "@type": [
+                "File",
+                "bia:FileList",
+                "csvw:Table"
+            ],
+            "tableSchema": {
+                "@id": "_:ts0"
+            }
+        },
+        {
+            "@id": "_:ts0",
+            "@type": [
+                "csvw:Schema"
+            ],
+            "column": [
+                {
+                    "@id": "_:col0"
+                },
+                {
+                    "@id": "_:col1"
+                },
+                {
+                    "@id": "_:col2"
+                },
+                {
+                    "@id": "_:col3"
+                },
+                {
+                    "@id": "_:col4"
+                }
+            ]
+        },
+        {
+            "@id": "_:col4",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "Channel 1",
+            "propertyUrl": null
+        },
+        {
+            "@id": "_:col3",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "Genotype/Line",
+            "propertyUrl": null
+        },
+        {
+            "@id": "_:col2",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "type",
+            "propertyUrl": null
+        },
+        {
+            "@id": "_:col1",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "size",
+            "propertyUrl": "http://bia/sizeInBytes"
+        },
+        {
+            "@id": "_:col0",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "path",
+            "propertyUrl": "http://bia/filePath"
+        },
+        {
+            "@id": "Study%20Component-3/",
+            "@type": [
+                "Dataset",
+                "bia:Dataset"
+            ],
+            "name": "Component 3",
+            "description": "Has 2 associations with the two biosamples that should have the same taxon.",
+            "associatedBiologicalEntity": [
+                {
+                    "@id": "_:Biosample-2"
+                },
+                {
+                    "@id": "_:Biosample-3"
+                }
+            ],
+            "associatedSpecimenImagingPreparationProtocol": [
+                {
+                    "@id": "_:Specimen-1"
+                }
+            ],
+            "associatedSpecimen": null,
+            "associatedImageAcquisitionProtocol": [
+                {
+                    "@id": "_:Image Acquisition-1"
+                }
+            ],
+            "associatedAnnotationMethod": [],
+            "associatedImageAnalysisMethod": [],
+            "associatedImageCorrelationMethod": [],
+            "associatedProtocol": [],
+            "hasPart": [
+                {
+                    "@id": "Study%20Component-3/file_list_test_3.tsv"
+                }
+            ],
+            "associationFileMetadata": {
+                "@id": "Study%20Component-3/file_list_test_3.tsv"
+            }
+        },
+        {
+            "@id": "Study%20Component-2/",
+            "@type": [
+                "Dataset",
+                "bia:Dataset"
+            ],
+            "name": "Component 2",
+            "description": "Has 1 association, re-using biosample 1, but with different specimen to Component 1 (which has a growth protocol) so should have a different ro-crate biosample.",
+            "associatedBiologicalEntity": [
+                {
+                    "@id": "_:Biosample-1 9094eed1-c332-4f45-add1-dc6e153ceb56"
+                }
+            ],
+            "associatedSpecimenImagingPreparationProtocol": [
+                {
+                    "@id": "_:Specimen-2"
+                }
+            ],
+            "associatedSpecimen": null,
+            "associatedImageAcquisitionProtocol": [
+                {
+                    "@id": "_:Image Acquisition-1"
+                }
+            ],
+            "associatedAnnotationMethod": [],
+            "associatedImageAnalysisMethod": [],
+            "associatedImageCorrelationMethod": [],
+            "associatedProtocol": [],
+            "hasPart": [
+                {
+                    "@id": "Study%20Component-2/file_list_test_2.tsv"
+                }
+            ],
+            "associationFileMetadata": {
+                "@id": "Study%20Component-2/file_list_test_2.tsv"
+            }
+        },
+        {
+            "@id": "Study%20Component-1/",
+            "@type": [
+                "Dataset",
+                "bia:Dataset"
+            ],
+            "name": "Component 1",
+            "description": "Has 2 associations, with the same specimen, image aquisition, but differnt biosamples",
+            "associatedBiologicalEntity": [
+                {
+                    "@id": "_:Biosample-1"
+                },
+                {
+                    "@id": "_:Biosample-4"
+                }
+            ],
+            "associatedSpecimenImagingPreparationProtocol": [
+                {
+                    "@id": "_:Specimen-1"
+                }
+            ],
+            "associatedSpecimen": null,
+            "associatedImageAcquisitionProtocol": [
+                {
+                    "@id": "_:Image Acquisition-1"
+                }
+            ],
+            "associatedAnnotationMethod": [],
+            "associatedImageAnalysisMethod": [],
+            "associatedImageCorrelationMethod": [],
+            "associatedProtocol": [],
+            "hasPart": [
+                {
+                    "@id": "Study%20Component-1/file_list_test_1.tsv"
+                }
+            ],
+            "associationFileMetadata": {
+                "@id": "Study%20Component-1/file_list_test_1.tsv"
+            }
+        },
+        {
+            "@id": "_:Image Acquisition-1",
+            "@type": [
+                "bia:ImageAcquisitionProtocol"
+            ],
+            "title": "Image Acquisition 1 Title",
+            "protocolDescription": "Voxel size 0.0430x0.0430x0.5002 micron^3",
+            "imagingInstrumentDescription": "Microscope and/or telescope (but looking the other way).",
+            "imagingMethodName": [
+                "Confocal microscopy"
+            ],
+            "fbbiId": [
+                "http://purl.obolibrary.org/obo/FBbi_00000251"
+            ]
+        },
+        {
+            "@id": "_:Specimen-2",
+            "@type": [
+                "bia:SpecimenImagingPreparationProtocol"
+            ],
+            "title": "Specimen with growth protocol",
+            "protocolDescription": "Followed step 1, 2 and 3",
+            "signalChannelInformation": []
+        },
+        {
+            "@id": "_:Specimen-1",
+            "@type": [
+                "bia:SpecimenImagingPreparationProtocol"
+            ],
+            "title": "Specimen without growth protocol",
+            "protocolDescription": "Followed step 1, 2 and 3",
+            "signalChannelInformation": []
+        },
+        {
+            "@id": "_:tx1",
+            "@type": [
+                "bia:Taxon"
+            ],
+            "commonName": "zebra fish",
+            "scientificName": "Danio  rerio"
+        },
+        {
+            "@id": "_:tx0",
+            "@type": [
+                "bia:Taxon"
+            ],
+            "commonName": "Homo sapiens",
+            "scientificName": "Human"
+        },
+        {
+            "@id": "NCBI:txid7227",
+            "@type": [
+                "bia:Taxon"
+            ],
+            "commonName": "fruit fly",
+            "scientificName": "Drosophila melanogaster"
+        },
+        {
+            "@id": "_:Biosample-4",
+            "@type": [
+                "bia:BioSample"
+            ],
+            "title": "Second Biosample with organism subsection without ncbi id",
+            "biologicalEntityDescription": "Specific part of fish.",
+            "experimentalVariableDescription": [],
+            "extrinsicVariableDescription": [],
+            "intrinsicVariableDescription": [],
+            "organismClassification": [
+                {
+                    "@id": "_:tx1"
+                }
+            ],
+            "growthProtocol": null
+        },
+        {
+            "@id": "_:Biosample-3",
+            "@type": [
+                "bia:BioSample"
+            ],
+            "title": "Second Biosample with organism attribute",
+            "biologicalEntityDescription": "Specific part of human.",
+            "experimentalVariableDescription": [],
+            "extrinsicVariableDescription": [],
+            "intrinsicVariableDescription": [],
+            "organismClassification": [
+                {
+                    "@id": "_:tx0"
+                }
+            ],
+            "growthProtocol": null
+        },
+        {
+            "@id": "_:Biosample-2",
+            "@type": [
+                "bia:BioSample"
+            ],
+            "title": "Biosample with organism attribute",
+            "biologicalEntityDescription": "Specific part of human.",
+            "experimentalVariableDescription": [],
+            "extrinsicVariableDescription": [],
+            "intrinsicVariableDescription": [],
+            "organismClassification": [
+                {
+                    "@id": "_:tx0"
+                }
+            ],
+            "growthProtocol": null
+        },
+        {
+            "@id": "_:Biosample-1 9094eed1-c332-4f45-add1-dc6e153ceb56",
+            "@type": [
+                "bia:BioSample"
+            ],
+            "title": "Biosample with organism subsection",
+            "biologicalEntityDescription": "Specific part of fly.",
+            "experimentalVariableDescription": [],
+            "extrinsicVariableDescription": [],
+            "intrinsicVariableDescription": [],
+            "organismClassification": [
+                {
+                    "@id": "NCBI:txid7227"
+                }
+            ],
+            "growthProtocol": {
+                "@id": "_:_Specimen-2"
+            }
+        },
+        {
+            "@id": "_:Biosample-1",
+            "@type": [
+                "bia:BioSample"
+            ],
+            "title": "Biosample with organism subsection",
+            "biologicalEntityDescription": "Specific part of fly.",
+            "experimentalVariableDescription": [],
+            "extrinsicVariableDescription": [],
+            "intrinsicVariableDescription": [],
+            "organismClassification": [
+                {
+                    "@id": "NCBI:txid7227"
+                }
+            ],
+            "growthProtocol": null
+        },
+        {
+            "@id": "_:_Specimen-2",
+            "@type": [
+                "bia:Protocol"
+            ],
+            "title": "Specimen with growth protocol",
+            "protocolDescription": "Followed step 1, 2, 3 and 4 to grow samples."
+        }
+    ]
+}
