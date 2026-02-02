@@ -38,7 +38,7 @@ def create_file_list(
     """
     Unlike biostudies, all EMPIAR file lists have the same schema.
 
-    Note will created a separate list for 'unnasigned' files that do not match any dataset if there are any. 
+    Note will create a separate list for 'unassigned' files that do not match any dataset if there are any. 
     This is saved as unassigned_files.json in the RO-Crate directory (but not referenced as part of the RO-Crate).
     """
 
