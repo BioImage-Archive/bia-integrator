@@ -105,7 +105,6 @@ def create_ro_crate_filelist_and_schema_objects(
     column_by_name_url: dict[str, dict[str, ro_crate_models.Column]],
     schema_list: list[ro_crate_models.TableSchema],
 ) -> ro_crate_models.FileList:
-
     columns_for_schema = []
 
     for header in column_headers:
@@ -177,3 +176,31 @@ def get_column(
         column_by_name_url[column.columnName][column.propertyUrl] = column
 
     return column
+
+
+def combine_file_lists(
+    output_ro_crate_path: Path,
+    file_list_by_dataset_artefacts: list[
+        ro_crate_models.FileList | ro_crate_models.TableSchema | ro_crate_models.Column
+    ],
+) -> list[
+    ro_crate_models.FileList | ro_crate_models.TableSchema | ro_crate_models.Column
+]:
+    return create_ro_crate_filelist_and_schema_objects(
+        filelist_id=output_ro_crate_path.name,
+        column_headers=[],
+        column_by_name_url={},
+        schema_list=[],
+    )
+
+
+def create_combined_file_list_for_study(
+    output_ro_crate_path: Path,
+    submission: Submission,
+    dataset_by_accno: dict[str, ro_crate_models.Dataset],
+):
+    temporary_output_directory = ()
+    file_list_by_dataset_artefacts = create_file_list(
+        temporary_output_directory, submission, dataset_by_accno
+    )
+    return combine_file_lists(output_ro_crate_path, file_list_by_dataset_artefacts)

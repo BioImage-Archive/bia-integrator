@@ -134,28 +134,6 @@
         ]
       },
       {
-        "accno": "Biosample-2",
-        "type": "Biosample",
-        "attributes": [
-          {
-            "name": "Title",
-            "value": "Biosample with organism attribute"
-          },
-          {
-            "name": "Biological entity",
-            "value": "Specific part of human."
-          },
-          {
-            "name": "Description",
-            "value": "Description of how it was obtained etc."
-          },
-          {
-            "name": "Organism",
-            "value": "Human (Homo sapiens)"
-          }
-        ]
-      },
-      {
         "accno": "Specimen-1",
         "type": "Specimen",
         "attributes": [
@@ -285,7 +263,7 @@
             "attributes": [
               {
                 "name": "Biosample",
-                "value": "Biosample with organism attribute"
+                "value": "Biosample with organism subsection"
               },
               {
                 "name": "Specimen",
