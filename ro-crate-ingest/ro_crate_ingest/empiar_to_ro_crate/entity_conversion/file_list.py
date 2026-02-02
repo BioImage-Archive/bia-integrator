@@ -217,7 +217,7 @@ def expand_row_metadata(
             break
 
     if output_row["dataset"] is None:
-        logger.warning(f"Unassigned file detected: {file_path}")
+        logger.debug(f"Unassigned file detected: {file_path}")
 
     return pd.Series(output_row)
 
