@@ -65,7 +65,18 @@ curl -k -X PUT "${ELASTIC_URL}/${ELASTIC_INDEX}" \
 					"type": "keyword"
 				},
 				"author": {
-					"type": "flattened"
+					"type": "nested",
+					"dynamic": false,
+					"properties": {
+						"display_name": { "type": "text", "analyzer": "analyzerCaseInsensitive" },
+						"affiliation": {
+							"type": "nested",
+							"dynamic": false,
+							"properties": {
+								"display_name": { "type": "text", "analyzer": "analyzerCaseInsensitive" }
+							}
+						}
+					}
 				},
 				"grant": {
 					"type": "flattened"
@@ -173,7 +184,7 @@ curl -k -X PUT "${ELASTIC_URL}/${ELASTIC_INDEX_IMAGES}" \
             "uuid": {
                 "type": "keyword"
             },
-			"accession_id": { "type": "keyword", "normalizer": "file_format_norm"},
+			"accession_id": { "type": "keyword", "normalizer": "lowercase_norm"},
 			"total_physical_size_x": {"type": "float"},
 			"total_physical_size_y": {"type": "float"},
 			"total_physical_size_z": {"type": "float"},

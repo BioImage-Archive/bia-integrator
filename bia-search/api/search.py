@@ -28,7 +28,7 @@ async def fts(
 ) -> dict:
     params = build_params_as_list(request)
     qb = QueryBuilder(text_query=query)
-    qb.parse_text_query(query)
+    qb.parse_text_query(query, True)
     qb.parse_boolean_filters(params, "study")
     pagination = build_pagination(page, page_size)
     rsp = await qb.search(

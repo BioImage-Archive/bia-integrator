@@ -59,7 +59,20 @@ class Elastic:
                                 "analyzer": "analyzerCaseInsensitive",
                             },
                             "keyword": {"type": "keyword"},
-                            "author": {"type": "flattened"},
+                            "author": {
+                                "type": "nested",
+                                "dynamic": False,
+                                "properties": {
+                                    "display_name": { "type": "text", "analyzer": "analyzerCaseInsensitive" },
+                                    "affiliation": {
+                                        "type": "nested",
+                                        "dynamic": False,
+                                        "properties": {
+                                            "display_name": { "type": "text", "analyzer": "analyzerCaseInsensitive" }
+                                        }
+                                    }
+                                }
+                            },
                             "grant": {"type": "flattened"},
                             "licence": {"type": "keyword"},
                             "dataset": {
@@ -148,6 +161,7 @@ class Elastic:
                         "dynamic": False,
                         "properties": {
                             "uuid": {"type": "keyword"},
+                            "accession_id": { "type": "keyword", "normalizer": "lowercase_norm"},
                             "total_physical_size_x": {"type": "float"},
                             "total_physical_size_y": {"type": "float"},
                             "total_physical_size_z": {"type": "float"},

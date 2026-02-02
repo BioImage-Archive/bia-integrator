@@ -106,6 +106,24 @@ def test_fts_use_facet_imaging_method(api_client: TestClient):
     assert len(body["hits"]["hits"]) == 4
 
 
+def test_fts_author_search(api_client: TestClient):
+    rsp = api_client.get(
+        f"/search/fts",
+        params={"query": "amir"},
+    )
+    assert rsp.status_code == 200
+    body = rsp.json()
+    assert len(body["hits"]["hits"]) == 1
+
+    rsp = api_client.get(
+        f"/search/fts",
+        params={"query": "Max Planck"},
+    )
+    assert rsp.status_code == 200
+    body = rsp.json()
+    assert len(body["hits"]["hits"]) == 2
+
+
 def test_get(api_client: TestClient):
     doc_uuid = "87089e93-1775-45b9-8695-190630681c3b"
     rsp = api_client.get(f"/website/doc", params={"uuid": doc_uuid})
