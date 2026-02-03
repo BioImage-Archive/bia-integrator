@@ -1,3 +1,4 @@
+import tempfile
 import pandas as pd
 from ro_crate_ingest.biostudies_to_ro_crate.biostudies.filelist_api import (
     File,
@@ -179,19 +180,44 @@ def get_column(
 
 
 def combine_file_lists(
+    file_list_paths: list[Path],
     output_ro_crate_path: Path,
-    file_list_by_dataset_artefacts: list[
-        ro_crate_models.FileList | ro_crate_models.TableSchema | ro_crate_models.Column
-    ],
-) -> list[
-    ro_crate_models.FileList | ro_crate_models.TableSchema | ro_crate_models.Column
-]:
-    return create_ro_crate_filelist_and_schema_objects(
-        filelist_id=output_ro_crate_path.name,
-        column_headers=[],
-        column_by_name_url={},
-        schema_list=[],
-    )
+):
+
+    # TODO: Add log messages
+
+    # Run in two passes: first to gather all columns, then to write combined filelist
+    # Some file lists may be quite large, so avoid loading them all into memory at once
+    # Also preserve order of columns as they first appear therefore, not using set
+    all_columns = []
+    for file_list_path in file_list_paths:
+        df = pd.read_csv(file_list_path, sep="\t", dtype=str, nrows=0)
+        for column in df.columns.tolist():
+            if column not in all_columns:
+                all_columns.append(column)
+
+    for file_list_path in file_list_paths:
+        df = pd.read_csv(file_list_path, sep="\t", dtype=str)
+        df = df.reindex(columns=all_columns, fill_value="")
+        if df.empty:
+            continue
+        if all_columns[0] not in df.columns:
+            # If the first column is missing, it's an error in the file list
+            raise ValueError(
+                f"Missing expected column '{all_columns[0]}' in file list {file_list_path}"
+            )
+        df = df.fillna("")
+        if all_columns[0] not in df.columns:
+            raise ValueError(
+                f"Missing expected column '{all_columns[0]}' in file list {file_list_path}"
+            )
+        df.to_csv(
+            output_ro_crate_path,
+            sep="\t",
+            index=False,
+            mode="a",
+            header=not output_ro_crate_path.exists(),
+        )
 
 
 def create_combined_file_list_for_study(
@@ -199,8 +225,21 @@ def create_combined_file_list_for_study(
     submission: Submission,
     dataset_by_accno: dict[str, ro_crate_models.Dataset],
 ):
-    temporary_output_directory = ()
-    file_list_by_dataset_artefacts = create_file_list(
-        temporary_output_directory, submission, dataset_by_accno
-    )
-    return combine_file_lists(output_ro_crate_path, file_list_by_dataset_artefacts)
+
+    with tempfile.TemporaryDirectory() as temporary_dir:
+        temporary_output_directory = Path(temporary_dir)
+        file_list_by_dataset_artefacts = create_file_list(
+            temporary_output_directory, submission, dataset_by_accno
+        )
+        file_list_paths = [f for f in temporary_output_directory.rglob("*.tsv")]
+        combine_file_lists(
+            file_list_paths,
+            output_ro_crate_path,
+        )
+
+    global COLUMN_BNODE_INT
+    COLUMN_BNODE_INT = 0
+    global SCHEMA_BNODE_INT
+    SCHEMA_BNODE_INT = 0
+
+    file_list_name = "combined_file_list.tsv"
