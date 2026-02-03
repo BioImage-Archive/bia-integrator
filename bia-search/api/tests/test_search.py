@@ -194,3 +194,17 @@ def test_fts_paging(api_client: TestClient):
     uuid_1 = page_1["hits"]["hits"][0]["_source"]["uuid"]
     uuid_2 = page_2["hits"]["hits"][0]["_source"]["uuid"]
     assert [uuid_1, uuid_2] == uuids_in_both
+
+
+def test_fts_highlight(api_client: TestClient):
+    rsp = api_client.get(
+        f"/search/fts",
+        params={"query": "amir"},
+    )
+    assert rsp.status_code == 200
+    body = rsp.json()
+    assert len(body["hits"]["hits"][0]["highlight"]) == 1
+    assert len(body["hits"]["hits"][0]["highlight"]["author.display_name"]) == 1
+    assert {"author.display_name": ["__HIT__Amir__/HIT__ Arabzade"]} == body["hits"][
+        "hits"
+    ][0]["highlight"]

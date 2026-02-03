@@ -30,11 +30,23 @@ class Elastic:
                                     "filter": ["lowercase"],
                                 },
                             },
+                            "char_filter": {
+                                "replace_annotation_type": {
+                                    "type": "pattern_replace",
+                                    "pattern": "_",
+                                    "replacement": " ",
+                                }
+                            },
                             "normalizer": {
                                 "lowercase_norm": {
                                     "type": "custom",
                                     "filter": ["lowercase"],
-                                }
+                                },
+                                "annotation_type_norm": {
+                                    "type": "custom",
+                                    "char_filter": ["replace_annotation_type"],
+                                    "filter": ["lowercase"],
+                                },
                             },
                         }
                     },
@@ -63,15 +75,21 @@ class Elastic:
                                 "type": "nested",
                                 "dynamic": False,
                                 "properties": {
-                                    "display_name": { "type": "text", "analyzer": "analyzerCaseInsensitive" },
+                                    "display_name": {
+                                        "type": "text",
+                                        "analyzer": "analyzerCaseInsensitive",
+                                    },
                                     "affiliation": {
                                         "type": "nested",
                                         "dynamic": False,
                                         "properties": {
-                                            "display_name": { "type": "text", "analyzer": "analyzerCaseInsensitive" }
-                                        }
-                                    }
-                                }
+                                            "display_name": {
+                                                "type": "text",
+                                                "analyzer": "analyzerCaseInsensitive",
+                                            }
+                                        },
+                                    },
+                                },
                             },
                             "grant": {"type": "flattened"},
                             "licence": {"type": "keyword"},
@@ -112,7 +130,7 @@ class Elastic:
                                         "properties": {
                                             "method_type": {
                                                 "type": "keyword",
-                                                "normalizer": "lowercase_norm",
+                                                "normalizer": "annotation_type_norm",
                                             }
                                         },
                                     },
@@ -161,7 +179,10 @@ class Elastic:
                         "dynamic": False,
                         "properties": {
                             "uuid": {"type": "keyword"},
-                            "accession_id": { "type": "keyword", "normalizer": "lowercase_norm"},
+                            "accession_id": {
+                                "type": "keyword",
+                                "normalizer": "lowercase_norm",
+                            },
                             "total_physical_size_x": {"type": "float"},
                             "total_physical_size_y": {"type": "float"},
                             "total_physical_size_z": {"type": "float"},

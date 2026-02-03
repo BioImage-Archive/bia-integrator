@@ -29,7 +29,7 @@ class QueryBuilder:
     filter: list[dict[str, Any]] = field(default_factory=list)
     must_not: list[dict[str, Any]] = field(default_factory=list)
 
-    def parse_text_query(self, query: str | None, include_nested_author: bool=False):
+    def parse_text_query(self, query: str | None, include_nested_author: bool = False):
         if not query:
             return
         shoulds = [
@@ -51,7 +51,7 @@ class QueryBuilder:
                                 "should": [
                                     {
                                         "match": {
-                                            "author.display_name": { "query": query }
+                                            "author.display_name": {"query": query}
                                         }
                                     },
                                     {
@@ -59,13 +59,15 @@ class QueryBuilder:
                                             "path": "author.affiliation",
                                             "query": {
                                                 "match": {
-                                                    "author.affiliation.display_name": { "query": query }
+                                                    "author.affiliation.display_name": {
+                                                        "query": query
+                                                    }
                                                 }
-                                            }
+                                            },
                                         }
-                                    }
+                                    },
                                 ],
-                                "minimum_should_match": 1
+                                "minimum_should_match": 1,
                             }
                         },
                     }
@@ -255,7 +257,12 @@ class QueryBuilder:
         }
 
     async def search(
-        self, client, index: str | list[str], offset: int, size: int, aggs: dict | None = None
+        self,
+        client,
+        index: str | list[str],
+        offset: int,
+        size: int,
+        aggs: dict | None = None,
     ):
         body = {
             "query": self.build(),
@@ -264,10 +271,8 @@ class QueryBuilder:
             "highlight": {
                 "pre_tags": ["__HIT__"],
                 "post_tags": ["__/HIT__"],
-                "fields": {
-                "*": {}
-                }
-            }
+                "fields": {"*": {}},
+            },
         }
         if aggs:
             body["aggs"] = aggs
