@@ -3,6 +3,7 @@ import os
 from pathlib import Path
 from sentence_transformers import SentenceTransformer
 from huggingface_hub import snapshot_download
+from cli import settings
 
 MODEL_NAMES = [
     # smaller models - not used except for testing
@@ -10,7 +11,7 @@ MODEL_NAMES = [
     # 'sentence-transformers/msmarco-distilbert-base-tas-b',
     'sentence-transformers/all-roberta-large-v1'
 ]
-LOCAL_MODELS_DIR = Path.home() / ".cache" / "sentence_transformers_local"
+LOCAL_MODELS_DIR = settings.cache_dir / "sentence_transformers_local"
 
 os.environ["HF_HUB_OFFLINE"] = "1"
 os.environ["TRANSFORMERS_OFFLINE"] = "1"

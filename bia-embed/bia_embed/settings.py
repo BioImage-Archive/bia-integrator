@@ -4,6 +4,7 @@ from pathlib import Path
 
 
 class Settings(BaseSettings):
+    cache_dir: Path = Field(default=Path.home() / ".cache")
     api_base_url: str = Field(default="http://localhost:8080")
     api_username: str = Field(default="test@example.com")
     api_password: str = Field(default="test")
