@@ -243,7 +243,7 @@
                     "@id": "file_list.tsv"
                 },
                 {
-                    "@id": "#Movie stacks data/frames/"
+                    "@id": "#Movie%20stacks%20data/frames/"
                 }
             ],
             "accessionId": "EMPIAR-SPECIMENTEST"
@@ -380,7 +380,7 @@
             ]
         },
         {
-            "@id": "#Movie stacks data/frames/",
+            "@id": "#Movie%20stacks%20data/frames/",
             "@type": [
                 "Dataset",
                 "bia:Dataset"

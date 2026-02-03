@@ -243,13 +243,13 @@
                     "@id": "file_list.tsv"
                 },
                 {
-                    "@id": "#Movie stacks data/frames/"
+                    "@id": "#Movie%20stacks%20data/frames/"
                 },
                 {
-                    "@id": "#Tilt series data/metadata/"
+                    "@id": "#Tilt%20series%20data/metadata/"
                 },
                 {
-                    "@id": "#Tomograms data/tomograms/"
+                    "@id": "#Tomograms%20data/tomograms/"
                 }
             ],
             "accessionId": "EMPIAR-IMAGELABELTEST"
@@ -386,7 +386,7 @@
             ]
         },
         {
-            "@id": "#Tomograms data/tomograms/",
+            "@id": "#Tomograms%20data/tomograms/",
             "@type": [
                 "Dataset",
                 "bia:Dataset"
@@ -413,7 +413,7 @@
             "associationFileMetadata": null
         },
         {
-            "@id": "#Tilt series data/metadata/",
+            "@id": "#Tilt%20series%20data/metadata/",
             "@type": [
                 "Dataset",
                 "bia:Dataset"
@@ -436,7 +436,7 @@
             "associationFileMetadata": null
         },
         {
-            "@id": "#Movie stacks data/frames/",
+            "@id": "#Movie%20stacks%20data/frames/",
             "@type": [
                 "Dataset",
                 "bia:Dataset"

@@ -243,22 +243,22 @@
                     "@id": "file_list.tsv"
                 },
                 {
-                    "@id": "#Unaligned multi-frame micrographs for dataset 1 (211206) data/211206/data/"
+                    "@id": "#Unaligned%20multi-frame%20micrographs%20for%20dataset%201%20%28211206%29%20data/211206/data/"
                 },
                 {
-                    "@id": "#Tilt series and alignment information for dataset 1 (211206) data/211206/alignment/"
+                    "@id": "#Tilt%20series%20and%20alignment%20information%20for%20dataset%201%20%28211206%29%20data/211206/alignment/"
                 },
                 {
-                    "@id": "#Reconstructed tomograms for dataset 1 (211206) data/211206/tomograms/"
+                    "@id": "#Reconstructed%20tomograms%20for%20dataset%201%20%28211206%29%20data/211206/tomograms/"
                 },
                 {
-                    "@id": "#Unaligned multi-frame micrographs for dataset 2 (220330) data/220330/data/"
+                    "@id": "#Unaligned%20multi-frame%20micrographs%20for%20dataset%202%20%28220330%29%20data/220330/data/"
                 },
                 {
-                    "@id": "#Tilt series and alignment information for dataset 2 (220330) data/220330/alignment/"
+                    "@id": "#Tilt%20series%20and%20alignment%20information%20for%20dataset%202%20%28220330%29%20data/220330/alignment/"
                 },
                 {
-                    "@id": "#Reconstructed tomograms for dataset 2 (220330) data/220330/tomograms/"
+                    "@id": "#Reconstructed%20tomograms%20for%20dataset%202%20%28220330%29%20data/220330/tomograms/"
                 }
             ],
             "accessionId": "EMPIAR-STARFILETEST"
@@ -395,7 +395,7 @@
             ]
         },
         {
-            "@id": "#Reconstructed tomograms for dataset 2 (220330) data/220330/tomograms/",
+            "@id": "#Reconstructed%20tomograms%20for%20dataset%202%20%28220330%29%20data/220330/tomograms/",
             "@type": [
                 "Dataset",
                 "bia:Dataset"
@@ -422,7 +422,7 @@
             "associationFileMetadata": null
         },
         {
-            "@id": "#Tilt series and alignment information for dataset 2 (220330) data/220330/alignment/",
+            "@id": "#Tilt%20series%20and%20alignment%20information%20for%20dataset%202%20%28220330%29%20data/220330/alignment/",
             "@type": [
                 "Dataset",
                 "bia:Dataset"
@@ -445,7 +445,7 @@
             "associationFileMetadata": null
         },
         {
-            "@id": "#Unaligned multi-frame micrographs for dataset 2 (220330) data/220330/data/",
+            "@id": "#Unaligned%20multi-frame%20micrographs%20for%20dataset%202%20%28220330%29%20data/220330/data/",
             "@type": [
                 "Dataset",
                 "bia:Dataset"
@@ -476,7 +476,7 @@
             "associationFileMetadata": null
         },
         {
-            "@id": "#Reconstructed tomograms for dataset 1 (211206) data/211206/tomograms/",
+            "@id": "#Reconstructed%20tomograms%20for%20dataset%201%20%28211206%29%20data/211206/tomograms/",
             "@type": [
                 "Dataset",
                 "bia:Dataset"
@@ -507,7 +507,7 @@
             "associationFileMetadata": null
         },
         {
-            "@id": "#Tilt series and alignment information for dataset 1 (211206) data/211206/alignment/",
+            "@id": "#Tilt%20series%20and%20alignment%20information%20for%20dataset%201%20%28211206%29%20data/211206/alignment/",
             "@type": [
                 "Dataset",
                 "bia:Dataset"
@@ -530,7 +530,7 @@
             "associationFileMetadata": null
         },
         {
-            "@id": "#Unaligned multi-frame micrographs for dataset 1 (211206) data/211206/data/",
+            "@id": "#Unaligned%20multi-frame%20micrographs%20for%20dataset%201%20%28211206%29%20data/211206/data/",
             "@type": [
                 "Dataset",
                 "bia:Dataset"

@@ -1,7 +1,9 @@
-from bia_shared_datamodels import ro_crate_models
-from ro_crate_ingest.empiar_to_ro_crate.empiar.entry_api_models import Imageset, Entry
 import logging
+from bia_shared_datamodels import ro_crate_models
 from itertools import chain
+from ro_crate_ingest.empiar_to_ro_crate.empiar.entry_api_models import Imageset, Entry
+from urllib.parse import quote
+
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -56,9 +58,8 @@ def get_dataset(
         dataset_dict, 
         specimens_yaml, 
     )
-
-    # TODO: do fragment identifiers have any problematic characters?
-    id = f"#{dataset_dict.get('id', f'{imageset.name} {imageset.directory}')}"
+    
+    id = f"#{quote(dataset_dict.get('id', f'{imageset.name} {imageset.directory}/'))}"
 
     model_dict = {
         "@id": id,

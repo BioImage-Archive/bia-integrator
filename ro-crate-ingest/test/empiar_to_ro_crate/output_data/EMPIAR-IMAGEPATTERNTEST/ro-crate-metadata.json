@@ -243,7 +243,7 @@
                     "@id": "file_list.tsv"
                 },
                 {
-                    "@id": "#Cryo Serial FIB/SEM of HeLa cells data/HeLa/"
+                    "@id": "#Cryo%20Serial%20FIB/SEM%20of%20HeLa%20cells%20data/HeLa/"
                 }
             ],
             "accessionId": "EMPIAR-IMAGEPATTERNTEST"
@@ -380,7 +380,7 @@
             ]
         },
         {
-            "@id": "#Cryo Serial FIB/SEM of HeLa cells data/HeLa/",
+            "@id": "#Cryo%20Serial%20FIB/SEM%20of%20HeLa%20cells%20data/HeLa/",
             "@type": [
                 "Dataset",
                 "bia:Dataset"
