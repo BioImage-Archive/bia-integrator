@@ -230,7 +230,7 @@
             "name": "Defocus and Volta potential phase plate cryo-electron tomography of S. pombe cryo-FIB lamellae with comprehensive annotations of structures and macromolecules",
             "contributor": [
                 {
-                    "@id": "_:c0"
+                    "@id": "#c0"
                 }
             ],
             "description": "",
@@ -255,7 +255,7 @@
             "accessionId": "EMPIAR-IMAGELABELTEST"
         },
         {
-            "@id": "_:c0",
+            "@id": "#c0",
             "@type": [
                 "Person",
                 "bia:Contributor"
@@ -399,14 +399,14 @@
             "associatedImageAcquisitionProtocol": [],
             "associatedAnnotationMethod": [
                 {
-                    "@id": "_:Annotation of ribosomes and fatty acid synthase (FAS) in defocus data"
+                    "@id": "#Annotation%20of%20ribosomes%20and%20fatty%20acid%20synthase%20%28FAS%29%20in%20defocus%20data"
                 }
             ],
             "associatedImageAnalysisMethod": [],
             "associatedImageCorrelationMethod": [],
             "associatedProtocol": [
                 {
-                    "@id": "_:Tomogram reconstruction"
+                    "@id": "#Tomogram%20reconstruction"
                 }
             ],
             "hasPart": [],
@@ -429,7 +429,7 @@
             "associatedImageCorrelationMethod": [],
             "associatedProtocol": [
                 {
-                    "@id": "_:Tilt series preprocessing"
+                    "@id": "#Tilt%20series%20preprocessing"
                 }
             ],
             "hasPart": [],
@@ -445,18 +445,18 @@
             "description": "Raw unaligned multi-frame micrographs were aligned, sorted and combined into tilt series stacks using Warp (st files in metadata folder) and tomograms reconstructed using etomo (IMOD) (rec files in tomgrams folder). Naming from TS_026 to TS_045 corresponds to TS_0011 to TS_0020 in the original publication.\nOriginal metadata files (mdocs_ori) and the count ref file (dm4 file) are provided in the frames folder.",
             "associatedBiologicalEntity": [
                 {
-                    "@id": "_:S. pombe wild-type cells"
+                    "@id": "#S.%20pombe%20wild-type%20cells"
                 }
             ],
             "associatedSpecimenImagingPreparationProtocol": [
                 {
-                    "@id": "_:Cryo-ET sample preparation and focused ion beam (FIB) milling"
+                    "@id": "#Cryo-ET%20sample%20preparation%20and%20focused%20ion%20beam%20%28FIB%29%20milling"
                 }
             ],
             "associatedSpecimen": null,
             "associatedImageAcquisitionProtocol": [
                 {
-                    "@id": "_:Cryo-electron tomography"
+                    "@id": "#Cryo-electron%20tomography"
                 }
             ],
             "associatedAnnotationMethod": [],
@@ -467,7 +467,7 @@
             "associationFileMetadata": null
         },
         {
-            "@id": "_:Tomogram reconstruction",
+            "@id": "#Tomogram%20reconstruction",
             "@type": [
                 "bia:Protocol"
             ],
@@ -475,7 +475,7 @@
             "protocolDescription": "Tomograms were reconstructed via weighted back projection. Tomogram thicknesses ranged between 80\u2013310\u2009nm."
         },
         {
-            "@id": "_:Tilt series preprocessing",
+            "@id": "#Tilt%20series%20preprocessing",
             "@type": [
                 "bia:Protocol"
             ],
@@ -483,7 +483,7 @@
             "protocolDescription": "Tilt movie frames were aligned using a SerialEM plugin. Tilt series were filtered according to the accumulated electron dose by Fourier cropping using the mtffilter function in etomo (IMOD/BETA4.10.1258), and sorted by tilt angle using a python script. Four-times-binned tilt images were aligned in etomo (IMOD/4.9.4) using patch tracking (typical residual error 0.291\u20130.569\u2009pixels)."
         },
         {
-            "@id": "_:Annotation of ribosomes and fatty acid synthase (FAS) in defocus data",
+            "@id": "#Annotation%20of%20ribosomes%20and%20fatty%20acid%20synthase%20%28FAS%29%20in%20defocus%20data",
             "@type": [
                 "bia:AnnotationMethod"
             ],
@@ -499,7 +499,7 @@
             "annotationSourceIndicator": null
         },
         {
-            "@id": "_:Annotation of ribosomes and fatty acid synthase (FAS) in VPP data",
+            "@id": "#Annotation%20of%20ribosomes%20and%20fatty%20acid%20synthase%20%28FAS%29%20in%20VPP%20data",
             "@type": [
                 "bia:AnnotationMethod"
             ],
@@ -515,7 +515,7 @@
             "annotationSourceIndicator": null
         },
         {
-            "@id": "_:Cryo-ET sample preparation and focused ion beam (FIB) milling",
+            "@id": "#Cryo-ET%20sample%20preparation%20and%20focused%20ion%20beam%20%28FIB%29%20milling",
             "@type": [
                 "bia:SpecimenImagingPreparationProtocol"
             ],
@@ -524,7 +524,7 @@
             "signalChannelInformation": []
         },
         {
-            "@id": "_:Cryo-electron tomography",
+            "@id": "#Cryo-electron%20tomography",
             "@type": [
                 "bia:ImageAcquisitionProtocol"
             ],
@@ -547,7 +547,7 @@
             "scientificName": "Schizosaccharomyces pombe"
         },
         {
-            "@id": "_:S. pombe wild-type cells",
+            "@id": "#S.%20pombe%20wild-type%20cells",
             "@type": [
                 "bia:BioSample"
             ],

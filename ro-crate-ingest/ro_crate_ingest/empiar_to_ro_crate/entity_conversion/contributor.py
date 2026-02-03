@@ -1,4 +1,6 @@
 from bia_shared_datamodels.ro_crate_models import Contributor
+from urllib.parse import quote
+
 from ro_crate_ingest.empiar_to_ro_crate.empiar.entry_api_models import (
     Entry,
     AuthorEditor,
@@ -44,7 +46,7 @@ def get_contributor_id(
         if not id.startswith("https://orcid.org/"):
             id = f"https://orcid.org/{id}"
     else:
-        id = f"_:c{contributor_bnode_int}"
+        id = f"#{quote(f'c{contributor_bnode_int}')}"
         contributor_bnode_int += 1
 
     return id, contributor_bnode_int

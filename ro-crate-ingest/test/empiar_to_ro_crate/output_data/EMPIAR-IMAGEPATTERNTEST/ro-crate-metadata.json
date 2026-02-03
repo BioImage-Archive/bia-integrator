@@ -230,7 +230,7 @@
             "name": "Cryo serial FIB/SEM of HeLa cells",
             "contributor": [
                 {
-                    "@id": "_:c0"
+                    "@id": "#c0"
                 }
             ],
             "description": "",
@@ -249,7 +249,7 @@
             "accessionId": "EMPIAR-IMAGEPATTERNTEST"
         },
         {
-            "@id": "_:c0",
+            "@id": "#c0",
             "@type": [
                 "Person",
                 "bia:Contributor"
@@ -389,18 +389,18 @@
             "description": "",
             "associatedBiologicalEntity": [
                 {
-                    "@id": "_:HeLa cells"
+                    "@id": "#HeLa%20cells"
                 }
             ],
             "associatedSpecimenImagingPreparationProtocol": [
                 {
-                    "@id": "_:Cryo-FIB/SEM sample preparation"
+                    "@id": "#Cryo-FIB/SEM%20sample%20preparation"
                 }
             ],
             "associatedSpecimen": null,
             "associatedImageAcquisitionProtocol": [
                 {
-                    "@id": "_:Cryo-serial pFIB/SEM"
+                    "@id": "#Cryo-serial%20pFIB/SEM"
                 }
             ],
             "associatedAnnotationMethod": [],
@@ -411,7 +411,7 @@
             "associationFileMetadata": null
         },
         {
-            "@id": "_:Cryo-FIB/SEM sample preparation",
+            "@id": "#Cryo-FIB/SEM%20sample%20preparation",
             "@type": [
                 "bia:SpecimenImagingPreparationProtocol"
             ],
@@ -420,7 +420,7 @@
             "signalChannelInformation": []
         },
         {
-            "@id": "_:Cryo-serial pFIB/SEM",
+            "@id": "#Cryo-serial%20pFIB/SEM",
             "@type": [
                 "bia:ImageAcquisitionProtocol"
             ],
@@ -443,7 +443,7 @@
             "scientificName": "Homo sapiens"
         },
         {
-            "@id": "_:HeLa cells",
+            "@id": "#HeLa%20cells",
             "@type": [
                 "bia:BioSample"
             ],

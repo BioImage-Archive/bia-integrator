@@ -10,6 +10,7 @@ from pathlib import Path
 from bia_shared_datamodels import ro_crate_models
 from ro_crate_ingest.save_utils import write_filelist
 from typing import Optional
+from urllib.parse import quote
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -241,20 +242,20 @@ def update_row(
                 output_row["label"] = f"{label_prefix}_{label_parts}"
 
         specimen_title = yaml_object.get("specimen_title", None)
-        output_row["associated_specimen"] = f"_:{specimen_title}" if specimen_title else None
+        output_row["associated_specimen"] = f"#{quote(specimen_title)}" if specimen_title else None
 
         annotation_method_title = yaml_object.get("annotation_method_title", None)
         output_row["associated_annotation_method"] = (
-            [f"_:{title}" for title in annotation_method_title]
+            [f"#{quote(title)}" for title in annotation_method_title]
             if isinstance(annotation_method_title, list)
-            else f"_:{annotation_method_title}" if annotation_method_title else None
+            else f"#{quote(annotation_method_title)}" if annotation_method_title else None
         )
 
         protocol_title = yaml_object.get("protocol_title", None)
         output_row["associated_protocol"] = (
-            [f"_:{title}" for title in protocol_title]
+            [f"#{quote(title)}" for title in protocol_title]
             if isinstance(protocol_title, list)
-            else f"_:{protocol_title}" if protocol_title else None
+            else f"#{quote(protocol_title)}" if protocol_title else None
         )
 
         if input_label := yaml_object.get("input_label", None):

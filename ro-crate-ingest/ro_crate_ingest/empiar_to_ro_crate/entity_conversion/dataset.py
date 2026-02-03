@@ -95,7 +95,7 @@ def get_assigned_dataset_rembis_and_associations_from_assigned_objects(
             if field in yaml_object:
                 titles = [yaml_object[field]] if isinstance(yaml_object[field], str) else yaml_object[field]
                 for title in titles:
-                    id = {"@id": f"_:{title}"}
+                    id = {"@id": f"#{quote(title)}"}
                     if id not in association_yaml_fields[field]:
                         association_yaml_fields[field].append(id)
 
@@ -120,7 +120,7 @@ def get_associations_via_assigned_specimens(
                 if field in specimen_yaml:
                     titles = [specimen_yaml[field]] if isinstance(specimen_yaml[field], str) else specimen_yaml[field]
                     for title in titles:
-                        id = {"@id": f"_:{title}"}
+                        id = {"@id": f"#{quote(title)}"}
                         if id not in association_yaml_fields[field]:
                             association_yaml_fields[field].append(id)
 

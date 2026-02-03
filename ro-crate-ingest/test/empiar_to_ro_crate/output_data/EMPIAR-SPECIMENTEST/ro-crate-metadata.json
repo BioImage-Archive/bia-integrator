@@ -230,7 +230,7 @@
             "name": "Cryo-electron tomography data acquired on S. cerevisiae (BY4741) cryo-FIB lamellae",
             "contributor": [
                 {
-                    "@id": "_:c0"
+                    "@id": "#c0"
                 }
             ],
             "description": "",
@@ -249,7 +249,7 @@
             "accessionId": "EMPIAR-SPECIMENTEST"
         },
         {
-            "@id": "_:c0",
+            "@id": "#c0",
             "@type": [
                 "Person",
                 "bia:Contributor"
@@ -389,18 +389,18 @@
             "description": "Raw unaligned multi-frame micrographs were aligned, sorted and combined into tilt series stacks using Warp (st files in metadata folder) and tomograms reconstructed using AreTomo. Naming for tomograms of control cells: TS_006, TS_007, TS_008, TS_017. Original metadata files (mdocs_ori) and the count ref file (dm4 file) are provided in the frames folder.",
             "associatedBiologicalEntity": [
                 {
-                    "@id": "_:S. cerevisiae"
+                    "@id": "#S.%20cerevisiae"
                 }
             ],
             "associatedSpecimenImagingPreparationProtocol": [
                 {
-                    "@id": "_:Cryo-FIB milling preparation"
+                    "@id": "#Cryo-FIB%20milling%20preparation"
                 }
             ],
             "associatedSpecimen": null,
             "associatedImageAcquisitionProtocol": [
                 {
-                    "@id": "_:Cryo-electron tomography"
+                    "@id": "#Cryo-electron%20tomography"
                 }
             ],
             "associatedAnnotationMethod": [],
@@ -408,14 +408,14 @@
             "associatedImageCorrelationMethod": [],
             "associatedProtocol": [
                 {
-                    "@id": "_:Glucose control condition"
+                    "@id": "#Glucose%20control%20condition"
                 }
             ],
             "hasPart": [],
             "associationFileMetadata": null
         },
         {
-            "@id": "_:Glucose control condition",
+            "@id": "#Glucose%20control%20condition",
             "@type": [
                 "bia:Protocol"
             ],
@@ -423,23 +423,23 @@
             "protocolDescription": "S. cerevisiae (BY4741) cells were grown in synthetic media supplemented with 20 mM dextrose (glucose control medium)."
         },
         {
-            "@id": "_:Shared specimen",
+            "@id": "#Shared%20specimen",
             "@type": [
                 "bia:Specimen"
             ],
             "biologicalEntity": [
                 {
-                    "@id": "_:S. cerevisiae"
+                    "@id": "#S.%20cerevisiae"
                 }
             ],
             "imagingPreparationProtocol": [
                 {
-                    "@id": "_:Cryo-FIB milling preparation"
+                    "@id": "#Cryo-FIB%20milling%20preparation"
                 }
             ]
         },
         {
-            "@id": "_:Cryo-FIB milling preparation",
+            "@id": "#Cryo-FIB%20milling%20preparation",
             "@type": [
                 "bia:SpecimenImagingPreparationProtocol"
             ],
@@ -448,7 +448,7 @@
             "signalChannelInformation": []
         },
         {
-            "@id": "_:Cryo-electron tomography",
+            "@id": "#Cryo-electron%20tomography",
             "@type": [
                 "bia:ImageAcquisitionProtocol"
             ],
@@ -471,7 +471,7 @@
             "scientificName": "Saccharomyces cerevisiae"
         },
         {
-            "@id": "_:S. cerevisiae",
+            "@id": "#S.%20cerevisiae",
             "@type": [
                 "bia:BioSample"
             ],

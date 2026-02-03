@@ -1,5 +1,6 @@
-from bia_shared_datamodels.ro_crate_models import SpecimenImagingPreparationProtocol
 import logging
+from bia_shared_datamodels.ro_crate_models import SpecimenImagingPreparationProtocol
+from urllib.parse import quote
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -21,7 +22,7 @@ def get_specimen_imaging_preparation_protocol(
 ) -> SpecimenImagingPreparationProtocol:
 
     model_dict = {
-        "@id": f"_:{yaml_object["title"]}",
+        "@id": f"#{quote(yaml_object["title"])}",
         "@type": ["bia:SpecimenImagingPreparationProtocol"],
         "title": yaml_object["title"],
         "protocolDescription": yaml_object["protocol_description"],
