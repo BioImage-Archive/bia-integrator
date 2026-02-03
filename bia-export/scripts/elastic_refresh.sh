@@ -35,9 +35,21 @@ curl -k -X PUT "${ELASTIC_URL}/${ELASTIC_INDEX}" \
 						"filter": ["lowercase"]
 					}
 				},
+				"char_filter": {
+					"replace_annotation_type": {
+						"type": "pattern_replace",
+						"pattern": "_",
+						"replacement": " "
+					}
+				},
 				"normalizer": {
 					"lowercase_norm": {
 						"type": "custom",
+						"filter": ["lowercase"]
+					},
+					"annotation_type_norm": {
+						"type": "custom",
+						"char_filter": ["replace_annotation_type"],
 						"filter": ["lowercase"]
 					}
 				}
@@ -65,7 +77,18 @@ curl -k -X PUT "${ELASTIC_URL}/${ELASTIC_INDEX}" \
 					"type": "keyword"
 				},
 				"author": {
-					"type": "flattened"
+					"type": "nested",
+					"dynamic": false,
+					"properties": {
+						"display_name": { "type": "text", "analyzer": "analyzerCaseInsensitive" },
+						"affiliation": {
+							"type": "nested",
+							"dynamic": false,
+							"properties": {
+								"display_name": { "type": "text", "analyzer": "analyzerCaseInsensitive" }
+							}
+						}
+					}
 				},
 				"grant": {
 					"type": "flattened"
@@ -106,7 +129,7 @@ curl -k -X PUT "${ELASTIC_URL}/${ELASTIC_INDEX}" \
 							"type": "object",
 							"properties": {
 								"method_type": {
-									"type": "keyword", "normalizer": "lowercase_norm" 
+									"type": "keyword", "normalizer": "annotation_type_norm" 
 								}
 							}
 						}
@@ -173,7 +196,7 @@ curl -k -X PUT "${ELASTIC_URL}/${ELASTIC_INDEX_IMAGES}" \
             "uuid": {
                 "type": "keyword"
             },
-			"accession_id": { "type": "keyword", "normalizer": "file_format_norm"},
+			"accession_id": { "type": "keyword", "normalizer": "lowercase_norm"},
 			"total_physical_size_x": {"type": "float"},
 			"total_physical_size_y": {"type": "float"},
 			"total_physical_size_z": {"type": "float"},

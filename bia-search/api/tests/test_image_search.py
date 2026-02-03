@@ -156,3 +156,26 @@ def test_fts_image_imagerep_dimensions(api_client: TestClient):
     assert rsp.status_code == 200
     body = rsp.json()
     assert body["hits"]["total"]["value"] == 1
+
+
+def test_fts_image_highlight(api_client: TestClient):
+    rsp = api_client.get(
+        f"/search/fts/image",
+        params={"query": "cell line"},
+    )
+    assert rsp.status_code == 200
+    body = rsp.json()
+    assert len(body["hits"]["hits"][0]["highlight"]) == 1
+    assert (
+        len(
+            body["hits"]["hits"][0]["highlight"][
+                "creation_process.subject.sample_of.biological_entity_description"
+            ]
+        )
+        == 1
+    )
+    assert {
+        "creation_process.subject.sample_of.biological_entity_description": [
+            "HaCaT cell line, a spontaneously transformed human epithelial __HIT__cell line__/HIT__ from adult skin"
+        ]
+    } == body["hits"]["hits"][0]["highlight"]

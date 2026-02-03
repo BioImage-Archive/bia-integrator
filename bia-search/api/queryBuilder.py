@@ -29,17 +29,51 @@ class QueryBuilder:
     filter: list[dict[str, Any]] = field(default_factory=list)
     must_not: list[dict[str, Any]] = field(default_factory=list)
 
-    def parse_text_query(self, query: str | None):
-        if query:
-            self.must.append(
+    def parse_text_query(self, query: str | None, include_nested_author: bool = False):
+        if not query:
+            return
+        shoulds = [
+            {
+                "multi_match": {
+                    "query": query,
+                    "fields": ["*"],
+                    "type": "phrase",
+                }
+            }
+        ]
+        if include_nested_author:
+            shoulds.append(
                 {
-                    "multi_match": {
-                        "query": query,
-                        "fields": ["*"],
-                        "type": "phrase",
+                    "nested": {
+                        "path": "author",
+                        "query": {
+                            "bool": {
+                                "should": [
+                                    {
+                                        "match": {
+                                            "author.display_name": {"query": query}
+                                        }
+                                    },
+                                    {
+                                        "nested": {
+                                            "path": "author.affiliation",
+                                            "query": {
+                                                "match": {
+                                                    "author.affiliation.display_name": {
+                                                        "query": query
+                                                    }
+                                                }
+                                            },
+                                        }
+                                    },
+                                ],
+                                "minimum_should_match": 1,
+                            }
+                        },
                     }
                 }
             )
+        self.must.append({"bool": {"should": shoulds, "minimum_should_match": 1}})
 
     def parse_numeric_filters(self, params: dict[str, Any]):
         ops = operators_map["numeric"]
@@ -223,12 +257,22 @@ class QueryBuilder:
         }
 
     async def search(
-        self, client, index: str | list[str], offset: int, size: int, aggs: dict = None
+        self,
+        client,
+        index: str | list[str],
+        offset: int,
+        size: int,
+        aggs: dict | None = None,
     ):
         body = {
             "query": self.build(),
             "from_": offset,
             "size": size,
+            "highlight": {
+                "pre_tags": ["__HIT__"],
+                "post_tags": ["__/HIT__"],
+                "fields": {"*": {}},
+            },
         }
         if aggs:
             body["aggs"] = aggs
