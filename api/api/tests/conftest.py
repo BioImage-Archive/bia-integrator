@@ -139,6 +139,22 @@ async def existing_study(api_client: TestClient) -> dict:
 
     return study
 
+@pytest_asyncio.fixture(scope="function")
+async def existing_embedding(api_client: TestClient, existing_study: dict) -> dict:
+    embedding = {
+        'uuid': get_uuid(),
+        'vector': [0.1, 0.2],
+        'for_document_uuid': existing_study['uuid'],
+        'additional_metadata': {},
+        'embedding_model': 'test/test',
+        'model': {'type_name': 'Embedding', "version": 1},
+        'version': 0
+    }
+
+    rsp = api_client.post("private/embedding", json=embedding)
+    assert rsp.status_code == 201, rsp.json()
+
+    return embedding
 
 @pytest_asyncio.fixture(scope="function")
 async def updated_study(api_client: TestClient, existing_study: dict) -> dict:
@@ -151,7 +167,7 @@ async def updated_study(api_client: TestClient, existing_study: dict) -> dict:
 
 
 @pytest_asyncio.fixture(scope="function")
-async def existing_dataset(existing_study, api_client: TestClient) -> dict:
+async def existing_dataset(api_client: TestClient, existing_study: dict) -> dict:
     dataset = mock_object_jsonsafe(
         mock_objects.get_dataset_dict,
         passthrough={"completeness": mock_objects.Completeness.COMPLETE},
@@ -181,7 +197,7 @@ async def existing_specimen_imaging_preparation_protocol(api_client: TestClient)
 
 
 @pytest_asyncio.fixture(scope="function")
-async def existing_biosample(existing_protocol, api_client: TestClient):
+async def existing_biosample(api_client: TestClient, existing_protocol: dict) -> dict:
     biosample = mock_object_jsonsafe(
         mock_objects.get_biosample_dict,
         passthrough={"completeness": mock_objects.Completeness.COMPLETE},
@@ -218,8 +234,8 @@ async def existing_protocol(
 @pytest_asyncio.fixture(scope="function")
 async def existing_specimen(
     api_client: TestClient,
-    existing_specimen_imaging_preparation_protocol,
-    existing_biosample,
+    existing_specimen_imaging_preparation_protocol: dict,
+    existing_biosample: dict,
 ):
     specimen = mock_object_jsonsafe(
         mock_objects.get_specimen_dict,

@@ -1,0 +1,1 @@
+Sub-project for embedding-related functionality, part of the post-ingest processing workflows

@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, Query
 from api import constants
+from api.models.persistence import Embedding
 from api.public import models_public
 from pydantic.alias_generators import to_snake
 from typing import List, Annotated, Optional, Type
@@ -90,6 +91,14 @@ async def searchFileReferenceByPathName(
         results = [x for res in results for x in res["files"]]
     return results
 
+@router.get("/embedding/study/{study_uuid}")
+async def searchEmbeddingByStudyUuid(
+    db: Annotated[Repository, Depends(get_db)],
+    study_uuid: shared_data_models.UUID,
+) -> Embedding:
+    await db.get_doc(study_uuid, shared_data_models.Study)
+
+    return await db.get_embedding_by_study_uuid(study_uuid)
 
 def make_search_items(t: Type[shared_data_models.DocumentMixin]):
     async def get_items(

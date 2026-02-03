@@ -12,6 +12,7 @@ class Settings(BaseSettings):
     )
     mongo_collection_users: str = "users"
     mongo_collection_biaint: str = "bia_integrator"
+    mongo_collection_embed: str = "embeddings"
     db_name: str
     jwt_secret_key: str
     jwt_ttl_minutes: int = 1440

@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "bia-embed"
+version = "0.1.0"
+description = "BioImage Archive internal embedding processing and related functionality package"
+authors = ["Liviu Anita <liviu@ebi.ac.uk>"]
+license = "Apache 2.0"
+readme = "Readme.md"
+packages = [{include = "bia_embed"}]
+
+[tool.poetry.dependencies]
+python = "^3.13"
+bia-shared-datamodels = { path = "../bia-shared-datamodels", develop = true }
+bia-integrator-api = { path = "../clients/python", develop = true }
+bia-test-data = { path = "../bia-test-data", develop = true }
+typer = "^0.20"
+pytest = "^7.0"
+sentence-transformers = "^5.2.0"
+protobuf = "^6.33.2"
+
+[tool.poetry.scripts]
+bia-embed = "bia_embed.cli:app"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
