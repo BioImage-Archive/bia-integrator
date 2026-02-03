@@ -261,6 +261,13 @@ class QueryBuilder:
             "query": self.build(),
             "from_": offset,
             "size": size,
+            "highlight": {
+                "pre_tags": ["__HIT__"],
+                "post_tags": ["__/HIT__"],
+                "fields": {
+                "*": {}
+                }
+            }
         }
         if aggs:
             body["aggs"] = aggs

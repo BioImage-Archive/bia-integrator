@@ -23,7 +23,7 @@ async def fts(
     request: Request,
     filters: StudySearchFilters = Depends(),
     query: Annotated[str | None, Query()] = None,
-    page: Annotated[int, Query(ge=1, alias="pagination.page", le=100)] = 1,
+    page: Annotated[int, Query(ge=1, alias="pagination.page", le=844)] = 1,
     page_size: Annotated[int, Query(ge=1, le=100, alias="pagination.page_size")] = 50,
 ) -> dict:
     params = build_params_as_list(request)
@@ -49,7 +49,7 @@ async def fts_image(
     filters: ImageSearchFilters = Depends(),
     query: Annotated[str | None, Query()] = None,
     includeDerivedImages: Annotated[bool, Query()] = False,
-    page: Annotated[int, Query(ge=1, alias="pagination.page", le=100)] = 1,
+    page: Annotated[int, Query(ge=1, alias="pagination.page", le=844)] = 1,
     page_size: Annotated[int, Query(ge=1, le=100, alias="pagination.page_size")] = 50,
 ) -> dict:
     pagination = build_pagination(page, page_size)
