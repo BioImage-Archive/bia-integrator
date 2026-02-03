@@ -35,9 +35,21 @@ curl -k -X PUT "${ELASTIC_URL}/${ELASTIC_INDEX}" \
 						"filter": ["lowercase"]
 					}
 				},
+				"char_filter": {
+					"replace_annotation_type": {
+						"type": "pattern_replace",
+						"pattern": "_",
+						"replacement": " "
+					}
+				},
 				"normalizer": {
 					"lowercase_norm": {
 						"type": "custom",
+						"filter": ["lowercase"]
+					},
+					"annotation_type_norm": {
+						"type": "custom",
+						"char_filter": ["replace_annotation_type"],
 						"filter": ["lowercase"]
 					}
 				}
@@ -117,7 +129,7 @@ curl -k -X PUT "${ELASTIC_URL}/${ELASTIC_INDEX}" \
 							"type": "object",
 							"properties": {
 								"method_type": {
-									"type": "keyword", "normalizer": "lowercase_norm" 
+									"type": "keyword", "normalizer": "annotation_type_norm" 
 								}
 							}
 						}
