@@ -34,7 +34,9 @@ from bia_shared_datamodels.ro_crate_models import ROCrateCreativeWork
 logger = logging.getLogger("__main__." + __name__)
 
 
-def convert_biostudies_to_ro_crate(accession_id: str, crate_path: Optional[Path]):
+def convert_biostudies_to_ro_crate(
+    accession_id: str, crate_path: Optional[Path], combine_file_list: bool = True
+):
     try:
         # Get information from biostudies
         submission = load_submission(accession_id)
@@ -97,13 +99,23 @@ def convert_biostudies_to_ro_crate(accession_id: str, crate_path: Optional[Path]
         bio_samples_association=bs_association_map,
         protocols=roc_generic_protocols,
     )
-    graph += roc_datasets.values()
 
-    roc_file_list_schema_objects = file_list.create_file_list(
-        ro_crate_dir, submission, roc_datasets
-    )
+    if combine_file_list:
+        roc_file_list_schema_objects = file_list.create_combined_file_list_for_study(
+            ro_crate_dir, submission, roc_datasets
+        )
+
+        # TODO - Update 'hasPart' relationships in datasets to point to combined file list
+        file_list.update_datasets_with_combined_file_list(roc_datasets)
+    else:
+        roc_file_list_schema_objects = file_list.create_file_list(
+            ro_crate_dir, submission, roc_datasets
+        )
+
+    graph += roc_datasets.values()
     graph += roc_file_list_schema_objects
 
+    # TODO - Ask about adding pagetab files into the combined file list
     if submission.section.files and len(submission.section.files) > 0:
         # create a default dataset for the files that are part of the pagetab, rather than referenced via filelist
         default_dataset = pagetab_file.create_root_dataset_for_submission(

@@ -1,4 +1,5 @@
 import tempfile
+from urllib.parse import unquote
 import pandas as pd
 from ro_crate_ingest.biostudies_to_ro_crate.biostudies.filelist_api import (
     File,
@@ -17,6 +18,9 @@ from bia_shared_datamodels import ro_crate_models
 from bia_shared_datamodels.linked_data.pydantic_ld.LDModel import ObjectReference
 from ro_crate_ingest.save_utils import write_filelist
 from urllib.parse import quote
+
+
+COMBINED_FILE_LIST_ID = "combined_file_list.tsv"
 
 
 def generate_relative_filelist_path(dataset_path: str, file_list_name: str) -> str:
@@ -72,6 +76,7 @@ def create_file_list(
     for x in column_by_name_url.values():
         [column_list.append(col) for col in x.values()]
 
+    # TODO: Discuss with FR whether to return as dict or tuple.
     return column_list + schema_list + filelist
 
 
@@ -180,8 +185,9 @@ def get_column(
 
 
 def combine_file_lists(
-    file_list_paths: list[Path],
+    file_list_path_by_dataset: dict[str, Path],
     output_ro_crate_path: Path,
+    file_list_id: str,
 ):
 
     # TODO: Add log messages
@@ -190,33 +196,33 @@ def combine_file_lists(
     # Some file lists may be quite large, so avoid loading them all into memory at once
     # Also preserve order of columns as they first appear therefore, not using set
     all_columns = []
-    for file_list_path in file_list_paths:
+    for file_list_path in file_list_path_by_dataset.values():
         df = pd.read_csv(file_list_path, sep="\t", dtype=str, nrows=0)
         for column in df.columns.tolist():
             if column not in all_columns:
                 all_columns.append(column)
 
-    for file_list_path in file_list_paths:
+    # Add dataset ID column if not already present
+    if "dataset_id" not in all_columns:
+        all_columns.insert(3, "dataset_id")
+
+    for dataset_id, file_list_path in file_list_path_by_dataset.items():
         df = pd.read_csv(file_list_path, sep="\t", dtype=str)
         df = df.reindex(columns=all_columns, fill_value="")
+
         if df.empty:
             continue
-        if all_columns[0] not in df.columns:
-            # If the first column is missing, it's an error in the file list
-            raise ValueError(
-                f"Missing expected column '{all_columns[0]}' in file list {file_list_path}"
-            )
+
         df = df.fillna("")
-        if all_columns[0] not in df.columns:
-            raise ValueError(
-                f"Missing expected column '{all_columns[0]}' in file list {file_list_path}"
-            )
+        df["dataset_id"] = dataset_id
+
+        output_path = output_ro_crate_path / file_list_id
         df.to_csv(
-            output_ro_crate_path,
+            output_path,
             sep="\t",
             index=False,
             mode="a",
-            header=not output_ro_crate_path.exists(),
+            header=not output_path.exists(),
         )
 
 
@@ -226,15 +232,29 @@ def create_combined_file_list_for_study(
     dataset_by_accno: dict[str, ro_crate_models.Dataset],
 ):
 
+    file_list_paths_by_dataset: dict[str, Path] = {}
     with tempfile.TemporaryDirectory() as temporary_dir:
         temporary_output_directory = Path(temporary_dir)
-        file_list_by_dataset_artefacts = create_file_list(
+
+        # Create individual file lists in temp directory then combine them.
+        created_file_list_artefacts = create_file_list(
             temporary_output_directory, submission, dataset_by_accno
         )
+
         file_list_paths = [f for f in temporary_output_directory.rglob("*.tsv")]
+
+        for dataset in dataset_by_accno.values():
+            file_list_path = temporary_output_directory / unquote(
+                dataset.associationFileMetadata.id
+            )
+            assert (
+                file_list_path in file_list_paths
+            ), f"File list path for dataset with id {dataset.id} not found while combining file lists."
+            file_list_paths_by_dataset[dataset.id] = file_list_path
         combine_file_lists(
-            file_list_paths,
+            file_list_paths_by_dataset,
             output_ro_crate_path,
+            COMBINED_FILE_LIST_ID,
         )
 
     global COLUMN_BNODE_INT
@@ -242,4 +262,44 @@ def create_combined_file_list_for_study(
     global SCHEMA_BNODE_INT
     SCHEMA_BNODE_INT = 0
 
-    file_list_name = "combined_file_list.tsv"
+    column_by_name_url: dict[str, dict[str, ro_crate_models.Column]] = {}
+    schema_list: list[ro_crate_models.TableSchema] = []
+    combined_filelist: list[ro_crate_models.FileList] = []
+
+    column_headers = pd.read_csv(
+        output_ro_crate_path / COMBINED_FILE_LIST_ID, sep="\t", dtype=str, nrows=0
+    ).columns.values.tolist()
+
+    combined_filelist.append(
+        create_ro_crate_filelist_and_schema_objects(
+            filelist_id=COMBINED_FILE_LIST_ID,
+            column_headers=column_headers,
+            column_by_name_url=column_by_name_url,
+            schema_list=schema_list,
+        )
+    )
+
+    column_list = []
+    for x in column_by_name_url.values():
+        [column_list.append(col) for col in x.values()]
+
+    return column_list + schema_list + combined_filelist
+
+
+def update_datasets_with_combined_file_list(
+    dataset_by_accno: dict[str, ro_crate_models.Dataset],
+) -> None:
+
+    for accno, dataset in dataset_by_accno.items():
+        n_has_part = len(dataset.hasPart) if dataset.hasPart else 0
+        assert (
+            n_has_part <= 1
+        ), "Dataset has more than one file list, cannot update 'hasPart' to combined file list"
+        if n_has_part == 1:
+            combined_file_list_id = ro_crate_models.ObjectReference.model_validate(
+                {"@id": COMBINED_FILE_LIST_ID}
+            )
+            dataset_by_accno[accno].hasPart = [
+                combined_file_list_id,
+            ]
+            dataset_by_accno[accno].associationFileMetadata = combined_file_list_id

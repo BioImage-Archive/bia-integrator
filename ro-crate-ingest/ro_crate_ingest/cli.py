@@ -75,9 +75,17 @@ def biostudies_to_ro_crate(
             help="Path to output the ro-crate document",
         ),
     ] = None,
+    combine_file_list: Annotated[
+        bool,
+        typer.Option(
+            "--combine-file-list/--no-combine-file-list",
+            case_sensitive=False,
+            help="Whether to combine all dataset file lists into a single file list in the ro-crate",
+        ),
+    ] = True,
 ):
 
-    convert_biostudies_to_ro_crate(accession_id, crate_path)
+    convert_biostudies_to_ro_crate(accession_id, crate_path, combine_file_list)
 
 
 @ro_crate_ingest.command("empiar-to-roc")
