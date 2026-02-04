@@ -1,14 +1,15 @@
-from pydantic import Field, AnyUrl, ConfigDict, BaseModel, field_validator
+from pydantic import AnyUrl, BaseModel, ConfigDict, Field, field_validator
 from typing_extensions import Annotated, Optional
-from bia_shared_datamodels.linked_data.pydantic_ld.ROCrateModel import ROCrateModel
-from bia_shared_datamodels.linked_data.pydantic_ld.FieldContext import FieldContext
-from bia_shared_datamodels.linked_data.pydantic_ld.LDModel import ObjectReference
+
 from bia_shared_datamodels.linked_data.ontology_terms import (
-    SCHEMA,
-    DUBLINCORE,
     BIA,
     CSVW,
+    DUBLINCORE,
+    SCHEMA,
 )
+from bia_shared_datamodels.linked_data.pydantic_ld.FieldContext import FieldContext
+from bia_shared_datamodels.linked_data.pydantic_ld.LDModel import ObjectReference
+from bia_shared_datamodels.linked_data.pydantic_ld.ROCrateModel import ROCrateModel
 
 
 class ROCrateCreativeWork(ROCrateModel):
@@ -120,7 +121,7 @@ class ExternalReference(ROCrateModel):
         default=None
     )
 
-    model_config = ConfigDict(model_type=BIA.ExternalRereference)
+    model_config = ConfigDict(model_type=BIA.ExternalReference)
 
 
 # Datasets and associations?
@@ -146,6 +147,16 @@ class Dataset(ROCrateModel):
         Optional[ObjectReference],
         FieldContext(BIA.associatedSubject, is_id_field=True),
     ] = Field(default=None)
+
+    associatedCreationProcess: Annotated[
+        Optional[ObjectReference],
+        FieldContext(BIA.associatedCreationProcess, is_id_field=True),
+    ] = Field(default=None)
+
+    associatedSourceImage: Annotated[
+        list[ObjectReference],
+        FieldContext(BIA.associatedSourceImage, is_id_field=True),
+    ] = Field(default_factory=list)
 
     associatedImageAcquisitionProtocol: Annotated[
         list[ObjectReference],
@@ -195,10 +206,8 @@ class FileList(ROCrateModel):
 class TableSchema(ROCrateModel):
     column: Annotated[
         list[ObjectReference],
-        FieldContext(
-            CSVW.column, is_id_field=True
-        ),  # MISSING: CSVW.column not defined (only "colum")
-    ] = Field()
+        FieldContext(CSVW.column, is_id_field=True),
+    ] = Field(min_length=1)
 
     model_config = ConfigDict(model_type=CSVW.Schema)
 
@@ -239,11 +248,11 @@ class AnnotationData(ROCrateModel):
 class Specimen(ROCrateModel):
     biologicalEntity: Annotated[
         list[ObjectReference], FieldContext(BIA.sampleOf, is_id_field=True)
-    ] = Field(default_factory=list)
+    ] = Field(min_length=1)
     imagingPreparationProtocol: Annotated[
         list[ObjectReference],
         FieldContext(BIA.imagingPreparationProtocol, is_id_field=True),
-    ] = Field(default_factory=list)
+    ] = Field(min_length=1)
 
     model_config = ConfigDict(model_type=BIA.Specimen)
 

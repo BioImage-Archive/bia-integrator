@@ -11,11 +11,11 @@ def test_parser_to_graph_equivalent():
         Path(__file__).parent
         / "ro_crate_to_bia"
         / "input_ro_crate"
-        / "S-TEST_overlapping_file_list_and_ro_crate_info"
+        / "typical_ro_crate"
     )
 
-    parser = JSONLDMetadataParser()
-    parser.parse(ro_crate)
+    parser = JSONLDMetadataParser(ro_crate)
+    parser.parse()
     metadata = parser.result
     metadata_graph = metadata.to_graph()
 
@@ -28,4 +28,4 @@ def test_parser_to_graph_equivalent():
     assert len(metadata_graph) == len(direct_graph)
     for statement in metadata_graph:
         direct_statement = list(direct_graph.triples(statement))
-        check.equal(len(direct_statement), 1)
+        check.equal(len(direct_statement), 1, msg=f"{statement}")

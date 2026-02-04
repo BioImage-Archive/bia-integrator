@@ -1,20 +1,20 @@
-import pandas as pd
-import pandas.api.typing as pdtypes
 import logging
-
-from bia_shared_datamodels.package_specific_uuid_creation import (
-    shared,
-    ro_crate_uuid_creation,
-)
-from bia_shared_datamodels.linked_data.ontology_terms import BIA, SCHEMA, DUBLINCORE
-from bia_shared_datamodels.linked_data.pydantic_ld.ROCrateModel import ROCrateModel
-from bia_shared_datamodels import ro_crate_models, attribute_models
-import bia_integrator_api.models as APIModels
-from urllib.parse import quote
 from concurrent.futures import ProcessPoolExecutor
 from functools import partial
-from rdflib import RDF
+from urllib.parse import quote
 from uuid import UUID
+
+import bia_integrator_api.models as APIModels
+import pandas as pd
+import pandas.api.typing as pdtypes
+from bia_shared_datamodels import attribute_models, ro_crate_models
+from bia_shared_datamodels.linked_data.ontology_terms import BIA, DUBLINCORE, SCHEMA
+from bia_shared_datamodels.linked_data.pydantic_ld.ROCrateModel import ROCrateModel
+from bia_shared_datamodels.package_specific_uuid_creation import (
+    ro_crate_uuid_creation,
+    shared,
+)
+from rdflib import RDF, URIRef
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -26,7 +26,7 @@ def prepare_all_ids_for_result_data(
     max_workers: int,
 ) -> tuple[pd.DataFrame, dict[str, str]]:
     result_data_by_id: pdtypes.DataFrameGroupBy = typed_object_dataframe.groupby(
-        str(SCHEMA.name), dropna=True
+        SCHEMA.name, dropna=True
     )
 
     with ProcessPoolExecutor(max_workers=max_workers) as executor:
@@ -65,9 +65,9 @@ def prep_result_data_row(
     result_data_label = group_df[0]
     df = group_df[1]
 
-    result_type = flatten_set_of_same_values(df[str(RDF.type)])
-    dataset_uuid = flatten_set_of_same_values(df[str(SCHEMA.isPartOf)])
-    file_reference_uuids = list(df[str(DUBLINCORE.identifier)])
+    result_type = flatten_set_of_same_values(df[RDF.type])
+    dataset_uuid = flatten_set_of_same_values(df[SCHEMA.isPartOf])
+    file_reference_uuids = list(df[DUBLINCORE.identifier])
     result_data_uuid, result_data_uuid_attr = create_result_data_uuid(
         result_type, file_reference_uuids, study_uuid
     )
@@ -81,11 +81,11 @@ def prep_result_data_row(
         "result_data_uuid_attr": result_data_uuid_attr.model_dump(),
         "creation_process_uuid": None,
         "creation_process_uuid_attr": None,
-        "original_file_ref_total_size": int(df[str(BIA.sizeInBytes)].sum()),
+        "original_file_ref_total_size": int(df[BIA.sizeInBytes].sum()),
         "original_file_ref_format": flatten_set_of_same_values(
-            df[str(DUBLINCORE.hasFormat)]
+            df[DUBLINCORE.hasFormat]
         ),
-        "original_file_ref_uri": list(df[str(BIA.uri)]),
+        "original_file_ref_uri": list(df[BIA.uri]),
         "specimen_id": None,
         "specimen_uuid": None,
         "specimen_uuid_attr": None,
@@ -99,9 +99,9 @@ def prep_result_data_row(
         "image_rep_uuid_attr": None,
     }
 
-    if len(df[str(BIA.associatedCreationProcess)].dropna()) != 0:
+    if len(df[BIA.associatedCreationProcess].dropna()) != 0:
         creation_process_roc_id = flatten_set_of_same_values(
-            df[str(BIA.associatedCreationProcess)]
+            df[BIA.associatedCreationProcess]
         )
 
         populate_from_creation_process(
@@ -116,17 +116,15 @@ def prep_result_data_row(
             study_uuid, df, result_data_uuid, pre_requisite_ids_row
         )
 
-        if len(df[str(BIA.associatedSubject)].dropna()) != 0:
-            specimen_roc_id = flatten_set_of_same_values(
-                df[str(BIA.associatedCreationProcess)]
-            )
+        if len(df[BIA.associatedSubject].dropna()) != 0:
+            specimen_roc_id = flatten_set_of_same_values(df[BIA.associatedSubject])
             populate_from_specimen(
                 pre_requisite_ids_row,
                 specimen_roc_id,
                 crate_objects_by_id,
                 study_uuid,
             )
-        elif has_biosample_or_imaging_preparation_protocol(df):
+        elif has_biosample_and_imaging_preparation_protocol(df):
             populate_specimen_info_from_columns(
                 study_uuid, df, result_data_uuid, pre_requisite_ids_row
             )
@@ -151,13 +149,11 @@ def populate_specimen_info_from_columns(
     pre_requisite_ids_row["specimen_uuid_attr"] = specimen_uuid_attr.model_dump()
 
     pre_requisite_ids_row["bio_sample_id"] = collect_association_list_values(
-        df[str(BIA.associatedBiologicalEntity)]
+        df[BIA.associatedBiologicalEntity]
     )
 
     pre_requisite_ids_row["specimen_imaging_preparation_protocol_id"] = (
-        collect_association_list_values(
-            df[str(BIA.associatedImagingPreparationProtocol)]
-        )
+        collect_association_list_values(df[BIA.associatedImagingPreparationProtocol])
     )
 
 
@@ -175,29 +171,27 @@ def populate_creation_process_info_from_columns(
     )
 
     pre_requisite_ids_row["annotation_method_id"] = collect_association_list_values(
-        df[str(BIA.associatedAnnotationMethod)]
+        df[BIA.associatedAnnotationMethod]
     )
     pre_requisite_ids_row["image_acquisition_protocol_id"] = (
-        collect_association_list_values(df[str(BIA.associatedImageAcquisitionProtocol)])
+        collect_association_list_values(df[BIA.associatedImageAcquisitionProtocol])
     )
     pre_requisite_ids_row["protocol_id"] = collect_association_list_values(
-        df[str(BIA.associatedProtocol)]
+        df[BIA.associatedProtocol]
     )
     pre_requisite_ids_row["source_image_name"] = collect_association_list_values(
-        df[str(BIA.associatedInputImage)]
+        df[BIA.associatedSourceImage]
     )
 
 
-def has_biosample_or_imaging_preparation_protocol(df):
+def has_biosample_and_imaging_preparation_protocol(df):
     bio_entity_count = len(
-        collect_association_list_values(df[str(BIA.associatedBiologicalEntity)])
+        collect_association_list_values(df[BIA.associatedBiologicalEntity])
     )
     sipp_count = len(
-        collect_association_list_values(
-            df[str(BIA.associatedImagingPreparationProtocol)]
-        )
+        collect_association_list_values(df[BIA.associatedImagingPreparationProtocol])
     )
-    return bio_entity_count > 0 or sipp_count > 0
+    return bio_entity_count > 0 and sipp_count > 0
 
 
 def populate_from_creation_process(
@@ -265,17 +259,17 @@ def populate_from_specimen(
 def create_result_data_uuid(
     result_data_type: str, file_refernce_uuids: list[str], study_uuid: str
 ) -> tuple[UUID, attribute_models.DocumentUUIDUinqueInputAttribute]:
-    match result_data_type:
-        case str(BIA.Image):
-            return shared.create_image_uuid(
-                study_uuid, file_refernce_uuids, APIModels.Provenance.BIA_INGEST
-            )
-        case str(BIA.AnnotationData):
-            return shared.create_annotation_data_uuid(
-                study_uuid, file_refernce_uuids, APIModels.Provenance.BIA_INGEST
-            )
-        case _:
-            raise ValueError(f"Unexpected type for result data: {result_data_type}")
+    result_data_type = URIRef(result_data_type)
+    if result_data_type == BIA.Image:
+        return shared.create_image_uuid(
+            study_uuid, file_refernce_uuids, APIModels.Provenance.BIA_INGEST
+        )
+    elif result_data_type == BIA.AnnotationData:
+        return shared.create_annotation_data_uuid(
+            study_uuid, file_refernce_uuids, APIModels.Provenance.BIA_INGEST
+        )
+    else:
+        raise ValueError(f"Unexpected type for result data: {result_data_type}")
 
 
 def flatten_set_of_same_values(column: pd.Series):

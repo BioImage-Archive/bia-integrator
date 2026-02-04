@@ -1,0 +1,40 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "d9cbec88-be22-4e35-8b08-0dab10029344",
+  "version": 0,
+  "model": {
+    "type_name": "FileReference",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "data/particle_lists/TS_026_cyto_ribosomes.csv12"
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "attributes_from_file_list",
+      "value": {
+        "file_path": "data/particle_lists/TS_026_cyto_ribosomes.csv",
+        "size_in_bytes": 12,
+        "dataset": "#Annotation%20Dataset",
+        "type": "http://bia/AnnotationData",
+        "label": "TS_026 ribosome annotations defocus data",
+        "source_image_label": "TS_026 tomogram",
+        "associated_specimen": null,
+        "associated_annotation_method": [
+          "#Annotation%20Method"
+        ],
+        "associated_protocol": []
+      }
+    }
+  ],
+  "file_path": "data/particle_lists/TS_026_cyto_ribosomes.csv",
+  "format": ".csv",
+  "size_in_bytes": 12,
+  "uri": "None?",
+  "submission_dataset_uuid": "0a5cb9f6-08f2-469b-bf43-bfb622e8ed68"
+}

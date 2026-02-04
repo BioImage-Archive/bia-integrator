@@ -1,0 +1,42 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "d5bf43d9-4e67-452d-b4b4-b95623082f13",
+  "version": 0,
+  "model": {
+    "type_name": "Study",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "S-TEST123"
+      }
+    }
+  ],
+  "accession_id": "S-TEST123",
+  "doi": null,
+  "licence": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "author": [
+    {
+      "rorid": null,
+      "address": null,
+      "website": null,
+      "orcid": "https://orcid.org/9999-0001-2222-3333",
+      "display_name": "Test Author",
+      "affiliation": [],
+      "contact_email": null,
+      "role": []
+    }
+  ],
+  "title": "Test specimen creation",
+  "release_date": "2023-09-05",
+  "description": "",
+  "keyword": [],
+  "acknowledgement": null,
+  "see_also": [],
+  "related_publication": [],
+  "grant": [],
+  "funding_statement": null
+}

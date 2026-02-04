@@ -4,6 +4,7 @@ from bia_shared_datamodels.linked_data.pydantic_ld.ROCrateModel import ROCrateMo
 from bia_shared_datamodels.linked_data.ld_context.SimpleJSONLDContext import (
     SimpleJSONLDContext,
 )
+from rdflib import URIRef
 
 
 def get_standard_bia_context_prefixes() -> dict[str, str]:
@@ -30,7 +31,7 @@ def generate_standard_bia_context() -> SimpleJSONLDContext:
     return context
 
 
-def get_all_ro_crate_classes() -> dict[str, type[ROCrateModel]]:
+def get_all_ro_crate_classes() -> dict[URIRef, type[ROCrateModel]]:
     ro_crate_pydantic_models = {
         ro_crate_class.model_config["model_type"]: ro_crate_class
         for name, ro_crate_class in inspect.getmembers(

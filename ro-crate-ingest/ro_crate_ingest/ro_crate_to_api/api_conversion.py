@@ -1,4 +1,12 @@
 import logging
+from pathlib import Path
+
+from bia_integrator_api import models
+from rich.logging import RichHandler
+
+from ro_crate_ingest.bia_ro_crate.parser.jsonld_metadata_parser import (
+    JSONLDMetadataParser,
+)
 from ro_crate_ingest.ro_crate_to_api.entity_conversion import (
     annotation_method,
     bio_sample,
@@ -11,15 +19,9 @@ from ro_crate_ingest.ro_crate_to_api.entity_conversion import (
     specimen_imaging_preparation_protocol,
     study,
 )
-from pathlib import Path
-from rich.logging import RichHandler
-from ..save_utils import PersistenceMode, persist
-from bia_integrator_api import models
 from ro_crate_ingest.settings import get_settings
-from ro_crate_ingest.bia_ro_crate.parser.jsonld_metadata_parser import (
-    JSONLDMetadataParser,
-)
 
+from ..save_utils import PersistenceMode, persist
 
 logging.basicConfig(
     level="NOTSET", format="%(message)s", datefmt="[%X]", handlers=[RichHandler()]
@@ -32,8 +34,8 @@ def convert_ro_crate_to_bia_api(
     persistence_mode: PersistenceMode,
     file_ref_url_prefix: str | None,
 ):
-    ro_crate_metadata_parser = JSONLDMetadataParser()
-    ro_crate_metadata_parser.parse(crate_path)
+    ro_crate_metadata_parser = JSONLDMetadataParser(crate_path)
+    ro_crate_metadata_parser.parse()
     roc_metadata = ro_crate_metadata_parser.result
     crate_graph = roc_metadata.to_graph()
 
@@ -94,6 +96,7 @@ def convert_ro_crate_to_bia_api(
 
     identified_result_data = file_list.process_and_persist_file_references(
         file_list_with_sizes,
+        roc_metadata,
         study_uuid,
         accession_id,
         file_ref_url_prefix,

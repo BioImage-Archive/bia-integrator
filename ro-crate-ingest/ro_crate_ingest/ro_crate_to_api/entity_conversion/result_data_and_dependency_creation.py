@@ -1,20 +1,20 @@
-import pandas as pd
-
-from bia_shared_datamodels.package_specific_uuid_creation.ro_crate_uuid_creation import (
-    create_bio_sample_uuid,
-    create_specimen_imaging_preparation_protocol_uuid,
-    create_protocol_uuid,
-    create_image_acquisition_protocol_uuid,
-    create_annotation_method_uuid,
-)
-from bia_shared_datamodels import ro_crate_models
-import bia_integrator_api.models as APIModels
-from ro_crate_ingest.save_utils import PersistenceMode, persist
-
+import logging
 from concurrent.futures import ProcessPoolExecutor
 from functools import partial
 
-import logging
+import bia_integrator_api.models as APIModels
+import pandas as pd
+from bia_shared_datamodels import ro_crate_models
+from bia_shared_datamodels.linked_data.ontology_terms import BIA
+from bia_shared_datamodels.package_specific_uuid_creation.ro_crate_uuid_creation import (
+    create_annotation_method_uuid,
+    create_bio_sample_uuid,
+    create_image_acquisition_protocol_uuid,
+    create_protocol_uuid,
+    create_specimen_imaging_preparation_protocol_uuid,
+)
+
+from ro_crate_ingest.save_utils import PersistenceMode, persist
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -191,13 +191,13 @@ def create_result_data(
     accession_id: str,
     persistence_mode: PersistenceMode,
 ) -> None:
-    if row["result_type"] == ro_crate_models.Image.model_config["model_type"]:
+    if row["result_type"] == str(BIA.Image):
         create_image(row, accession_id, persistence_mode)
         create_image_representation(row, accession_id, persistence_mode)
-    elif (
-        row["result_type"] == ro_crate_models.AnnotationData.model_config["model_type"]
-    ):
+    elif row["result_type"] == str(BIA.AnnotationData):
         create_annotation_data(row, accession_id, persistence_mode)
+    else:
+        raise ValueError(f"Unexpected result data type: {row["result_type"]}")
 
 
 def create_image(

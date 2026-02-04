@@ -1,12 +1,11 @@
+import logging
+
+import bia_integrator_api.models as APIModels
+import bia_shared_datamodels.ro_crate_models as ROCrateModels
 from bia_shared_datamodels.linked_data.pydantic_ld.ROCrateModel import ROCrateModel
 from bia_shared_datamodels.package_specific_uuid_creation.ro_crate_uuid_creation import (
     create_protocol_uuid,
 )
-import bia_integrator_api.models as APIModels
-import bia_shared_datamodels.ro_crate_models as ROCrateModels
-import bia_shared_datamodels.attribute_models as AttributeModels
-
-import logging
 
 logger = logging.getLogger("__main__." + __name__)
 

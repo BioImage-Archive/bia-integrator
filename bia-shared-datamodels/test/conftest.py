@@ -1,6 +1,7 @@
-from rdflib.graph import Graph
 from pathlib import Path
+
 import pytest
+from rdflib.graph import Graph
 
 
 @pytest.fixture(scope="session")
@@ -31,6 +32,12 @@ def related_ontologies():
     dc.parse(
         "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/dublin_core_terms.ttl"
     )
+
+    dwc = Graph()
+    dwc.parse("http://rs.tdwg.org/dwc/terms.ttl")
+
+    dwciri = Graph()
+    dwciri.parse("http://rs.tdwg.org/dwc/iri.ttl")
 
     csvw = Graph()
     csvw.parse("http://www.w3.org/ns/csvw#")

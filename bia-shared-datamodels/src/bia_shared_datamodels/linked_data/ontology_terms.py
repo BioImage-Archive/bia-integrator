@@ -6,9 +6,9 @@ class SCHEMA(DefinedNamespace):
     # Classes
     CreativeWork: URIRef
     Dataset: URIRef
-    Organisation: URIRef
+    Organization: URIRef
     Person: URIRef
-    PublishedArticle: URIRef
+    ScholarlyArticle: URIRef
 
     # Properties
     address: URIRef
@@ -19,6 +19,7 @@ class SCHEMA(DefinedNamespace):
     email: URIRef
     hasPart: URIRef
     identifier: URIRef
+    isPartOf: URIRef
     keywords: URIRef
     license: URIRef
     memberOf: URIRef
@@ -32,6 +33,7 @@ class DUBLINCORE(DefinedNamespace):
     # Properties
     identifier: URIRef
     hasFormat: URIRef
+    conformsTo: URIRef
 
     _NS = Namespace("http://purl.org/dc/terms/")
 
@@ -74,7 +76,7 @@ class BIA(DefinedNamespace):
     Contributor: URIRef
     CreationProcess: URIRef
     Dataset: URIRef
-    ExternalRereference: URIRef
+    ExternalReference: URIRef
     FileList: URIRef
     FundingBody: URIRef
     Grant: URIRef
@@ -104,10 +106,9 @@ class BIA(DefinedNamespace):
     associatedCreationProcess: URIRef
     associatedImageAcquisitionProtocol: URIRef
     associatedImagingPreparationProtocol: URIRef
-    associatedInputImage: URIRef
     associatedProtocol: URIRef
-    associatedSubject: URIRef
     associatedSourceImage: URIRef
+    associatedSubject: URIRef
     authorNames: URIRef
     biologicalEntityDescription: URIRef
     channelBiologicalEntity: URIRef

@@ -1,17 +1,22 @@
 import json
+from pathlib import Path
+
+import deepdiff
 import pytest
 import pytest_check as check
-import deepdiff
-
-from pathlib import Path
-from typer.testing import CliRunner
-from ro_crate_ingest.cli import ro_crate_ingest
 from bia_shared_datamodels.package_specific_uuid_creation.ro_crate_uuid_creation import (
     create_specimen_uuid,
+    create_bio_sample_uuid,
 )
 from bia_shared_datamodels.package_specific_uuid_creation.shared import (
     create_study_uuid,
+    create_file_reference_uuid,
+    create_image_uuid,
+    create_specimen_uuid as generate_specimen_uuid_from_image,
 )
+from typer.testing import CliRunner
+
+from ro_crate_ingest.cli import ro_crate_ingest
 
 runner = CliRunner()
 
@@ -53,15 +58,16 @@ def get_expected_files(accession_id) -> list[Path]:
     return expected_files
 
 
-
-
-def test_basic_ROCrate(tmp_bia_data_dir):
-    ro_crate_path = get_test_ro_crate_path("NEW-FormatExample")
+def test_basic_ROCrate_local(tmp_bia_data_dir):
+    ro_crate_path = get_test_ro_crate_path("typical_ro_crate")
 
     ingest_local_test("S-TEST123", tmp_bia_data_dir, ro_crate_path)
 
 
+def test_basic_ROCrate_api(get_bia_api_client):
+    ro_crate_path = get_test_ro_crate_path("typical_ro_crate")
 
+    ingest_api_test("S-TEST123", get_bia_api_client, ro_crate_path)
 
 
 @pytest.mark.parametrize(
@@ -191,38 +197,6 @@ def ingest_api_test(
         )
 
 
-def test_specimen_ro_crate_ingest(
-    tmp_bia_data_dir: Path,
-):
-    """
-    Checks that a specimen that is included in the ro-crate but isn't connected to any objects doesn't get created.
-    I'm not sure whether this is really the intended behaviour (we still create protocol etc. objects even if they aren't connected to by any other object)
-    """
-
-    accession_id = "S-TEST_specimen"
-    crate_path = get_test_ro_crate_path(accession_id)
-
-    ingest_local_test(
-        accession_id,
-        tmp_bia_data_dir,
-        crate_path,
-        file_ref_url_prefix=None,
-    )
-
-    not_created_specmimen_uuid = create_specimen_uuid(
-        str(create_study_uuid(accession_id)[0]), "_:UnusedSpecimen"
-    )[0]
-
-    not_created_path = (
-        tmp_bia_data_dir
-        / "specimen"
-        / accession_id
-        / f"{not_created_specmimen_uuid}.json"
-    )
-
-    assert not not_created_path.exists()
-
-
 def test_overlapping_image_data(
     tmp_bia_data_dir: Path,
 ):
@@ -235,7 +209,7 @@ def test_overlapping_image_data(
     And includes situation where the images descriptions overlap & contradict one another in order to make sure a certain heirarchy of infomation is followed.
     """
 
-    accession_id = "S-TEST_overlapping_file_list_and_ro_crate_info"
+    accession_id = "ro_crate_with_overlapping_associations"
     crate_path = get_test_ro_crate_path(accession_id)
 
     arguments = ["ingest", "-c", crate_path]
@@ -244,64 +218,106 @@ def test_overlapping_image_data(
     assert result.exit_code == 0
 
     image_folder_path = tmp_bia_data_dir / "image" / accession_id
-    annotation_data_folder_path = tmp_bia_data_dir / "annotation_data" / accession_id
     creation_process_folder_path = tmp_bia_data_dir / "creation_process" / accession_id
-    file_reference_folder_path = tmp_bia_data_dir / "file_reference" / accession_id
+    specimen_folder_path = tmp_bia_data_dir / "specimen" / accession_id
+    bio_sample_folder_path = tmp_bia_data_dir / "bio_sample" / accession_id
+
     result_data_files = list(image_folder_path.glob("*.json"))
-    result_data_files.extend(list(annotation_data_folder_path.glob("*.json")))
 
-    assert len(result_data_files) == 3
-
-    result_field_length_expectations = {
-        "data/annotation_data_in_ro_crate_refs_file_list_file.tsv": {
-            "subject_specimen_uuid": 0,
-            "image_acquisition_protocol_uuid": 0,
-            "input_image_uuid": 1,
-            "protocol_uuid": 0,
-            "annotation_method_uuid": 1,
+    result_expectations: dict[str, dict[str, int | str | None]] = {
+        "image using assigned specimen and its biosample": {
+            "file_path": "data/image_1.tif",
+            "file_size": 12,
+            "subject_specimen_uuid_input": "#Specimen%20used%20by%20images",
+            "biosample_uuid_input": "#Biosample%20used%20by%20specimen",
         },
-        "data/image_1_use_ro_crate_info.tiff": {
-            "subject_specimen_uuid": 1,
-            "image_acquisition_protocol_uuid": 1,
-            "input_image_uuid": 0,
-            "protocol_uuid": 0,
-            "annotation_method_uuid": 0,
+        "image with generated specimen": {
+            "file_path": "data/image_2.tif",
+            "file_size": 12,
+            "subject_specimen_uuid_input": "d52777fd-18e2-4ad9-a5f1-0462d4410425",
+            "biosample_uuid_input": "#Biosample%20used%20by%20specimen",
         },
-        "data/image_2_use_file_list_info.tiff": {
-            "subject_specimen_uuid": 1,
-            "image_acquisition_protocol_uuid": 1,
-            "input_image_uuid": 1,
-            "protocol_uuid": 0,
-            "annotation_method_uuid": 0,
+        "image without biosample or specimen": {
+            "file_path": "data/image_3.tif",
+            "file_size": 12,
+            "subject_specimen_uuid_input": None,
+            "biosample_uuid_input": None,
         },
     }
 
-    for result_data_path in result_data_files:
+    assert len(result_data_files) == len(result_expectations)
 
-        with open(result_data_path, "r") as f:
-            result_data = json.load(f)
+    study_uuid = str(create_study_uuid(accession_id)[0])
 
-        creation_process_uuid = result_data["creation_process_uuid"]
+    for image_label, lookup_info in result_expectations.items():
+        # Created expected UUIDS for all objects
+        expected_file_reference_uuid: str = str(
+            create_file_reference_uuid(
+                study_uuid, str(lookup_info["file_path"]), lookup_info["file_size"]
+            )[0]
+        )
+        expected_image_uuid: str = str(
+            create_image_uuid(
+                study_uuid, [expected_file_reference_uuid], provenance="bia_ingest"
+            )[0]
+        )
 
+        specimen_uuid_input = lookup_info["subject_specimen_uuid_input"]
+        expected_specimen_uuid: str | None = None
+        if specimen_uuid_input and str(specimen_uuid_input).startswith("#"):
+            expected_specimen_uuid = str(
+                create_specimen_uuid(study_uuid, str(specimen_uuid_input))[0]
+            )
+        elif specimen_uuid_input:
+            expected_specimen_uuid = str(
+                generate_specimen_uuid_from_image(
+                    study_uuid,
+                    str(specimen_uuid_input),
+                    provenance="bia_ingest",
+                )[0]
+            )
+        else:
+            expected_specimen_uuid = None
+        expected_bio_sample_uuid: str | None = (
+            str(
+                create_bio_sample_uuid(
+                    study_uuid, str(lookup_info["biosample_uuid_input"])
+                )[0]
+            )
+            if lookup_info["biosample_uuid_input"]
+            else None
+        )
+
+        # Follow uuid links and check they correspond
+        image_path = image_folder_path / f"{expected_image_uuid}.json"
+        with open(image_path, "r") as f:
+            image_data = json.load(f)
+        check.equal(image_data["label"], image_label)
+
+        creation_process_uuid = image_data["creation_process_uuid"]
         with open(
             creation_process_folder_path / f"{creation_process_uuid}.json", "r"
         ) as f:
             creation_process = json.load(f)
+        check.equal(
+            expected_specimen_uuid,
+            creation_process["subject_specimen_uuid"],
+            f"creation process -> specimen UUID mismatch for {image_label}",
+        )
 
-        file_reference_uuid = result_data["original_file_reference_uuid"][0]
+        if expected_specimen_uuid:
+            specimen_path = specimen_folder_path / f"{expected_specimen_uuid}.json"
+            with open(specimen_path, "r") as f:
+                specimen = json.load(f)
 
-        with open(file_reference_folder_path / f"{file_reference_uuid}.json", "r") as f:
-            file_reference = json.load(f)
+            check.equal(
+                expected_bio_sample_uuid,
+                specimen["sample_of_uuid"][0],
+                "specimen -> biosample UUID mismatch for {image_label}",
+            )
 
-        original_file_path = file_reference["file_path"]
-
-        for field, expected_length in result_field_length_expectations[
-            original_file_path
-        ].items():
-            field_value = creation_process[field]
-            if isinstance(field_value, list):
-                assert len(field_value) == expected_length
-            elif expected_length == 0:
-                assert field_value == None
-            elif expected_length == 1:
-                assert field_value
+            biosample_file = bio_sample_folder_path / f"{expected_bio_sample_uuid}.json"
+            check.is_true(
+                biosample_file.is_file(),
+                f"For {image_label} biosample file does not exist: {biosample_file}",
+            )

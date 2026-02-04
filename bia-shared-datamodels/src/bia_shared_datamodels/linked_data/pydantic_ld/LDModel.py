@@ -1,12 +1,17 @@
-from pydantic import BaseModel, Field
+from typing import Annotated
+
+from pydantic import AfterValidator, BaseModel, Field
+from rdflib import OWL, RDF
 from rdflib.graph import Graph
-from rdflib import RDF, OWL
+
 from bia_shared_datamodels.linked_data.ld_context.ContextTerm import ContextTerm
+
 from .FieldContext import FieldContext
+from .utils import id_validate
 
 
 class ObjectReference(BaseModel):
-    id: str = Field(alias="@id")
+    id: Annotated[str, AfterValidator(id_validate)] = Field(alias="@id")
 
 
 class LDModel(BaseModel):

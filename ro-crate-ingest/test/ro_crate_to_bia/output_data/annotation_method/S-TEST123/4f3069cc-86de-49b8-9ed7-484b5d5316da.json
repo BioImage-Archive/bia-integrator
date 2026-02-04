@@ -1,0 +1,26 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "4f3069cc-86de-49b8-9ed7-484b5d5316da",
+  "version": 0,
+  "model": {
+    "type_name": "AnnotationMethod",
+    "version": 4
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Annotation Method"
+      }
+    }
+  ],
+  "title": "Cell boundary annotation.",
+  "protocol_description": "Hand annotated",
+  "annotation_criteria": null,
+  "annotation_coverage": null,
+  "transformation_description": null,
+  "spatial_information": null,
+  "method_type": [],
+  "annotation_source_indicator": null
+}

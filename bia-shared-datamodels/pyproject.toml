@@ -16,6 +16,7 @@ rdflib = "^7"
 rocrate = "^0"
 roc-validator = "^0"
 pyld = "^2"
+pytest-check = "^2.6.2"
 
 [tool.poetry.group.dev.dependencies]
 ipython = "^8.25.0"
