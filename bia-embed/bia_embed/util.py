@@ -16,6 +16,7 @@ LOCAL_MODELS_DIR = settings.cache_dir / "sentence_transformers_local"
 
 os.environ["HF_HUB_OFFLINE"] = "1"
 os.environ["TRANSFORMERS_OFFLINE"] = "1"
+models = {}
 
 def download_models():
     """Download models explicitly offline inference."""
@@ -38,10 +39,13 @@ def download_models():
 
 def embed_text(embed_text: str):
     """Generate embeddings using locally downloaded models."""
-    model_paths = download_models()
-    models = models = {
-        model_name: SentenceTransformer(str(model_paths[model_name])) for model_name in MODEL_NAMES
-    }
+    global models
+
+    if not models:
+        model_paths = download_models()
+        models = {
+            model_name: SentenceTransformer(str(model_paths[model_name])) for model_name in MODEL_NAMES
+        }
        
     embeddings = {}
     
