@@ -36,13 +36,16 @@ def download_models():
     return model_paths
 
 MODEL_PATHS = download_models()
+models = {
+    model_name: SentenceTransformer(str(MODEL_PATHS[model_name])) for model_name in MODEL_NAMES
+}
 
 def embed_text(embed_text: str, model_paths=MODEL_PATHS):
     """Generate embeddings using locally downloaded models."""    
     embeddings = {}
     
     for model_name in MODEL_NAMES:
-        model = SentenceTransformer(str(model_paths[model_name]))
+        model = models[model_name]
         # model = SentenceTransformer(str(model_paths[model_name]))
         # embed_text = str(json.dumps(study))
         embeddings[model_name] = {
