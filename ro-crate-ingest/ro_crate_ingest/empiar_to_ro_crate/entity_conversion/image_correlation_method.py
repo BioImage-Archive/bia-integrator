@@ -1,7 +1,10 @@
 import logging
 from bia_shared_datamodels.ro_crate_models import ImageCorrelationMethod
+from urllib.parse import quote
+
 
 logger = logging.getLogger("__main__." + __name__)
+
 
 def get_image_correlation_methods(
     rembi_yaml: dict,
@@ -21,7 +24,7 @@ def get_image_correlation_methods(
 def get_image_correlation_method(yaml_object: dict) -> ImageCorrelationMethod:
 
     model_dict = {
-        "@id": f"_:{yaml_object["title"]}",
+        "@id": f"#{quote(yaml_object["title"])}",
         "@type": ["bia:ImageCorrelationMethod"],
         "title": yaml_object["title"],
         "protocolDescription": yaml_object["protocol_description"],

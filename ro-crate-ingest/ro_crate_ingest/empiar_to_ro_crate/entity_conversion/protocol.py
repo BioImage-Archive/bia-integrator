@@ -1,5 +1,7 @@
 import logging
 from bia_shared_datamodels import ro_crate_models
+from urllib.parse import quote
+
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -20,7 +22,7 @@ def get_protocols(
 def get_protocol(yaml_object: dict) -> ro_crate_models.Protocol:
 
     model_dict = {
-        "@id": f"_:{yaml_object["title"]}",
+        "@id": f"#{quote(yaml_object["title"])}",
         "@type": ["bia:Protocol"],
         "title": yaml_object["title"],
         "protocolDescription": yaml_object["protocol_description"],

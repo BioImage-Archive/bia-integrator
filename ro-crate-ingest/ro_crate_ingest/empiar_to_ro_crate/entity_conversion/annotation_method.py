@@ -1,5 +1,7 @@
-from bia_shared_datamodels.ro_crate_models import AnnotationMethod
 import logging
+from bia_shared_datamodels.ro_crate_models import AnnotationMethod
+from urllib.parse import quote
+
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -22,7 +24,7 @@ def get_annotation_method(
 ) -> AnnotationMethod:
 
     model_dict = {
-        "@id": f"_:{yaml_object["title"]}",
+        "@id": f"#{quote(yaml_object["title"])}",
         "@type": ["bia:AnnotationMethod"],
         "title": yaml_object["title"],
         "protocolDescription": yaml_object["protocol_description"],

@@ -1,11 +1,9 @@
-from bia_shared_datamodels import ro_crate_models
-from ro_crate_ingest.empiar_to_ro_crate.empiar.entry_api_models import Imageset, Entry
-from ro_crate_ingest.empiar_to_ro_crate.entity_conversion.file_list import (
-    generate_relative_filelist_path,
-)
 import logging
+from bia_shared_datamodels import ro_crate_models
 from itertools import chain
+from ro_crate_ingest.empiar_to_ro_crate.empiar.entry_api_models import Imageset, Entry
 from urllib.parse import quote
+
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -60,17 +58,14 @@ def get_dataset(
         dataset_dict, 
         specimens_yaml, 
     )
-
-    id = quote(dataset_dict.get("id", f"{imageset.name} {imageset.directory}/"))
-
-    filelist_id = generate_relative_filelist_path(id)
+    
+    id = f"#{quote(dataset_dict.get('id', f'{imageset.name} {imageset.directory}/'))}"
 
     model_dict = {
         "@id": id,
         "@type": ["Dataset", "bia:Dataset"],
         "name": imageset.name,
         "description": imageset.details,
-        "hasPart": [{"@id": filelist_id}],
         "associatedImageAcquisitionProtocol": association_yaml_fields[
             "image_acquisition_protocol_title"
         ],
@@ -82,7 +77,6 @@ def get_dataset(
         "associatedImageAnalysisMethod": association_yaml_fields["image_analysis_method_title"],
         "associatedImageCorrelationMethod": association_yaml_fields["image_correlation_method_title"],
         "associatedProtocol": association_yaml_fields["protocol_title"],
-        "associationFileMetadata": {"@id": filelist_id},
     }
     return ro_crate_models.Dataset(**model_dict)
 
@@ -101,7 +95,7 @@ def get_assigned_dataset_rembis_and_associations_from_assigned_objects(
             if field in yaml_object:
                 titles = [yaml_object[field]] if isinstance(yaml_object[field], str) else yaml_object[field]
                 for title in titles:
-                    id = {"@id": f"_:{title}"}
+                    id = {"@id": f"#{quote(title)}"}
                     if id not in association_yaml_fields[field]:
                         association_yaml_fields[field].append(id)
 
@@ -126,7 +120,7 @@ def get_associations_via_assigned_specimens(
                 if field in specimen_yaml:
                     titles = [specimen_yaml[field]] if isinstance(specimen_yaml[field], str) else specimen_yaml[field]
                     for title in titles:
-                        id = {"@id": f"_:{title}"}
+                        id = {"@id": f"#{quote(title)}"}
                         if id not in association_yaml_fields[field]:
                             association_yaml_fields[field].append(id)
 

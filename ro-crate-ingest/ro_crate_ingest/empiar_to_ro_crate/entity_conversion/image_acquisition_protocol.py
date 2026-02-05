@@ -1,5 +1,7 @@
-from bia_shared_datamodels.ro_crate_models import ImageAcquisitionProtocol
 import logging
+from bia_shared_datamodels.ro_crate_models import ImageAcquisitionProtocol
+from urllib.parse import quote
+
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -18,7 +20,7 @@ def get_image_acquisition_protocols(rembi_yaml: dict) -> list[ImageAcquisitionPr
 def get_image_acquisition_protocol(yaml_object: dict) -> ImageAcquisitionProtocol:
 
     model_dict = {
-        "@id": f"_:{yaml_object["title"]}",
+        "@id": f"#{quote(yaml_object["title"])}",
         "@type": ["bia:ImageAcquisitionProtocol"],
         "title": yaml_object["title"],
         "protocolDescription": yaml_object["protocol_description"],

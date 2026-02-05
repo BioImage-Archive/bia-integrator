@@ -1,5 +1,7 @@
-from bia_shared_datamodels.ro_crate_models import Specimen
 import logging
+from bia_shared_datamodels.ro_crate_models import Specimen
+from urllib.parse import quote
+
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -30,10 +32,10 @@ def get_specimen(yaml_object: dict) -> Specimen:
         specimen_imaging_prep_protocol_titles = [specimen_imaging_prep_protocol_titles]
     
     model_dict = {
-        "@id": f"_:{yaml_object["title"]}",
+        "@id": f"#{quote(yaml_object["title"])}",
         "@type": ["bia:Specimen"],
-        "biologicalEntity": [{"@id": f"_:{title}"} for title in biosample_titles],
-        "imagingPreparationProtocol": [{"@id": f"_:{title}"} for title in specimen_imaging_prep_protocol_titles],
+        "biologicalEntity": [{"@id": f"#{quote(title)}"} for title in biosample_titles],
+        "imagingPreparationProtocol": [{"@id": f"#{quote(title)}"} for title in specimen_imaging_prep_protocol_titles],
     }
     
     return Specimen(**model_dict)
