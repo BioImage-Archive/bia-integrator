@@ -315,11 +315,14 @@
                 },
                 {
                     "@id": "_:col6"
+                },
+                {
+                    "@id": "_:col7"
                 }
             ]
         },
         {
-            "@id": "_:col6",
+            "@id": "_:col7",
             "@type": [
                 "csvw:Column"
             ],
@@ -327,7 +330,7 @@
             "propertyUrl": null
         },
         {
-            "@id": "_:col5",
+            "@id": "_:col6",
             "@type": [
                 "csvw:Column"
             ],
@@ -335,7 +338,7 @@
             "propertyUrl": null
         },
         {
-            "@id": "_:col4",
+            "@id": "_:col5",
             "@type": [
                 "csvw:Column"
             ],
@@ -343,11 +346,19 @@
             "propertyUrl": null
         },
         {
-            "@id": "_:col3",
+            "@id": "_:col4",
             "@type": [
                 "csvw:Column"
             ],
             "columnName": "Genotype/Line",
+            "propertyUrl": null
+        },
+        {
+            "@id": "_:col3",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "dataset_id",
             "propertyUrl": null
         },
         {
