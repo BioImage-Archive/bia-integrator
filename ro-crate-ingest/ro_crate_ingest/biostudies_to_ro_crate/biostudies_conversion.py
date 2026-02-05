@@ -17,7 +17,6 @@ from ro_crate_ingest.biostudies_to_ro_crate.entity_conversion import (
     protocol,
     pagetab_file,
 )
-from bia_shared_datamodels.uuid_creation import create_study_uuid
 from pathlib import Path
 import logging
 from typing import Optional
@@ -40,7 +39,7 @@ def convert_biostudies_to_ro_crate(
     try:
         # Get information from biostudies
         submission = load_submission(accession_id)
-    except AssertionError as error:
+    except AssertionError:
         logger.error("Failed to retrieve information from BioStudies")
         logging.exception("message")
         return
@@ -105,7 +104,7 @@ def convert_biostudies_to_ro_crate(
             ro_crate_dir, submission, roc_datasets
         )
 
-        # TODO - Update 'hasPart' relationships in datasets to point to combined file list
+        # Update 'hasPart' relationships in datasets to point to combined file list
         file_list.update_datasets_with_combined_file_list(roc_datasets)
     else:
         roc_file_list_schema_objects = file_list.create_file_list(
@@ -115,7 +114,7 @@ def convert_biostudies_to_ro_crate(
     graph += roc_datasets.values()
     graph += roc_file_list_schema_objects
 
-    # TODO - Ask about adding pagetab files into the combined file list
+    # TODO - Assume in this case only one filelist is present - no need to combine. However, add dataset_id column?
     if submission.section.files and len(submission.section.files) > 0:
         # create a default dataset for the files that are part of the pagetab, rather than referenced via filelist
         default_dataset = pagetab_file.create_root_dataset_for_submission(

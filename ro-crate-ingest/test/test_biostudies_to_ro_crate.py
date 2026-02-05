@@ -42,11 +42,11 @@ def expected_path_to_created_path(expected_path: str, output_dir: Path) -> Path:
 @pytest.mark.parametrize(
     ("accession_id", "combine_file_list"),
     [
-        # ("S-BIADTEST_AUTHOR_AFFILIATION", "--no-combine-file-list"),
-        # ("S-BIADTEST_COMPLEX_BIOSAMPLE", "--no-combine-file-list"),
+        ("S-BIADTEST_AUTHOR_AFFILIATION", "--no-combine-file-list"),
+        ("S-BIADTEST_COMPLEX_BIOSAMPLE", "--no-combine-file-list"),
         ("S-BIADTEST_PROTOCOL_STUDY", "--no-combine-file-list"),
         ("S-BIADTEST_COMBINE_FILELIST", "--combine-file-list"),
-        # ("S-BSST_PAGETAB_FILES", "--no-combine-file-list"),
+        ("S-BSST_PAGETAB_FILES", "--no-combine-file-list"),
     ],
 )
 def test_biostudies_to_ro_crate(

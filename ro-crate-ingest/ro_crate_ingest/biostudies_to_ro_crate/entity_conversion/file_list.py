@@ -76,7 +76,6 @@ def create_file_list(
     for x in column_by_name_url.values():
         [column_list.append(col) for col in x.values()]
 
-    # TODO: Discuss with FR whether to return as dict or tuple.
     return column_list + schema_list + filelist
 
 
@@ -189,9 +188,6 @@ def combine_file_lists(
     output_ro_crate_path: Path,
     file_list_id: str,
 ):
-
-    # TODO: Add log messages
-
     # Run in two passes: first to gather all columns, then to write combined filelist
     # Some file lists may be quite large, so avoid loading them all into memory at once
     # Also preserve order of columns as they first appear therefore, not using set
@@ -202,9 +198,20 @@ def combine_file_lists(
             if column not in all_columns:
                 all_columns.append(column)
 
-    # Add dataset ID column if not already present
+    # Add dataset ID column (after 'type' column) if not already present
     if "dataset_id" not in all_columns:
         all_columns.insert(3, "dataset_id")
+
+    # Write headers for combined file list
+    output_path = output_ro_crate_path / file_list_id
+    df = pd.DataFrame(columns=all_columns)
+    df.to_csv(
+        output_path,
+        sep="\t",
+        index=False,
+        mode="w",
+        header=True,
+    )
 
     for dataset_id, file_list_path in file_list_path_by_dataset.items():
         df = pd.read_csv(file_list_path, sep="\t", dtype=str)
@@ -216,13 +223,12 @@ def combine_file_lists(
         df = df.fillna("")
         df["dataset_id"] = dataset_id
 
-        output_path = output_ro_crate_path / file_list_id
         df.to_csv(
             output_path,
             sep="\t",
             index=False,
             mode="a",
-            header=not output_path.exists(),
+            header=False,
         )
 
 
@@ -231,15 +237,12 @@ def create_combined_file_list_for_study(
     submission: Submission,
     dataset_by_accno: dict[str, ro_crate_models.Dataset],
 ):
-
     file_list_paths_by_dataset: dict[str, Path] = {}
     with tempfile.TemporaryDirectory() as temporary_dir:
         temporary_output_directory = Path(temporary_dir)
 
         # Create individual file lists in temp directory then combine them.
-        created_file_list_artefacts = create_file_list(
-            temporary_output_directory, submission, dataset_by_accno
-        )
+        create_file_list(temporary_output_directory, submission, dataset_by_accno)
 
         file_list_paths = [f for f in temporary_output_directory.rglob("*.tsv")]
 
@@ -247,9 +250,10 @@ def create_combined_file_list_for_study(
             file_list_path = temporary_output_directory / unquote(
                 dataset.associationFileMetadata.id
             )
-            assert (
-                file_list_path in file_list_paths
-            ), f"File list path for dataset with id {dataset.id} not found while combining file lists."
+            if file_list_path not in file_list_paths:
+                raise ValueError(
+                    f"File list path for dataset with id {dataset.id} not found while combining file lists."
+                )
             file_list_paths_by_dataset[dataset.id] = file_list_path
         combine_file_lists(
             file_list_paths_by_dataset,
@@ -289,13 +293,13 @@ def create_combined_file_list_for_study(
 def update_datasets_with_combined_file_list(
     dataset_by_accno: dict[str, ro_crate_models.Dataset],
 ) -> None:
-
     for accno, dataset in dataset_by_accno.items():
         n_has_part = len(dataset.hasPart) if dataset.hasPart else 0
-        assert (
-            n_has_part <= 1
-        ), "Dataset has more than one file list, cannot update 'hasPart' to combined file list"
-        if n_has_part == 1:
+        if n_has_part > 1:
+            raise ValueError(
+                f"Dataset with ID {dataset.id} has more than one file list, cannot update 'hasPart' to combined file list"
+            )
+        elif n_has_part == 1:
             combined_file_list_id = ro_crate_models.ObjectReference.model_validate(
                 {"@id": COMBINED_FILE_LIST_ID}
             )
