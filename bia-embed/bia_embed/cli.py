@@ -60,10 +60,10 @@ def study(
     ]
     logger.debug(f"Example embed data: {studies_embed_data[0]}")
 
-    study_embeddings = [
+    for idx, embed_data in enumerate(studies_embed_data):
+        if idx % 100 == 0:
+            logger.info(f"Progress: {idx} of {len(studies_embed_data)}")
         embed_text(embed_data)
-        for embed_data in studies_embed_data
-    ]
     
     for (study, data, embedding) in zip(studies, studies_embed_data, study_embeddings):
         model = "sentence-transformers/all-roberta-large-v1"
