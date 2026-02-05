@@ -1,3 +1,5 @@
+import json
+from pathlib import Path
 from typing import Annotated, List, Optional
 import typer
 import logging
@@ -6,6 +8,7 @@ from rich.logging import RichHandler
 from bia_embed.util import embed_text
 from bia_embed.settings import Settings
 from bia_integrator_api.util import get_client_private
+from bia_integrator_api.exceptions import NotFoundException
 from bia_integrator_api.models.embedding import Embedding
 from uuid import UUID
 import hashlib
@@ -83,6 +86,53 @@ def study(
 @app.command()
 def delete_for_model(model: str = "sentence-transformers/all-roberta-large-v1"):
     api_client.delete_embedding_by_model(model)
+
+@app.command()
+def export_study(
+    id_list: Annotated[
+            Optional[List[str]], typer.Argument(help="Accession IDs of the study to export embeddings for")
+        ] = None,
+    output_filename: Annotated[
+        Optional[Path],
+        typer.Option(
+            "--out_file",
+            "-o",
+        ),
+    ] = Path("bia-study-embeddings.jsonl")
+):
+    embeddings_export = []
+    studies = []
+
+    if id_list:
+        for accno in id_list:
+            study = api_client.search_study_by_accession(accno)
+            studies.append(study)
+    else:
+        studies = api_client.search_study(page_size=10000)
+        assert len(studies) < 10000, "More studies than one max page"
+    for study in studies:
+        embeddings_export.append({
+            'study': {
+                'title': study.title,
+                'uuid': study.uuid,
+                'accession_id': study.accession_id
+            }
+        })
+    logger.info(f"Exporting embeddings for {len(embeddings_export)} studies")
+
+    for embedding in embeddings_export:
+        try:
+            embedding['embedding'] = api_client.search_embedding_by_study_uuid(embedding['study']['uuid']).to_dict()
+        except NotFoundException as e:
+            logger.debug(f"Could not find embedding for study {embedding['study']['uuid']}")
+            pass
+
+    embeddings_export = [embedding for embedding in embeddings_export if embedding.get('embedding', None)]
+    logger.info(f"Exporting embeddings for {len(embeddings_export)} studies")
+
+    with output_filename.open("w", encoding="utf-8") as f:
+        for embedding in embeddings_export:
+            f.write(json.dumps(embedding) + "\n")
 
 if __name__ == "__main__":
     app()

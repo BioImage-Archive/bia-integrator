@@ -3,7 +3,7 @@ import os
 from pathlib import Path
 from sentence_transformers import SentenceTransformer
 from huggingface_hub import snapshot_download
-from cli import settings
+from .settings import settings
 
 MODEL_NAMES = [
     # smaller models - not used except for testing
