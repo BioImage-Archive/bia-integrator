@@ -1,3 +1,4 @@
+from ast import List
 import json
 import os
 from pathlib import Path
@@ -35,13 +36,13 @@ def download_models():
     
     return model_paths
 
-MODEL_PATHS = download_models()
-models = {
-    model_name: SentenceTransformer(str(MODEL_PATHS[model_name])) for model_name in MODEL_NAMES
-}
-
-def embed_text(embed_text: str, model_paths=MODEL_PATHS):
-    """Generate embeddings using locally downloaded models."""    
+def embed_text(embed_text: str):
+    """Generate embeddings using locally downloaded models."""
+    model_paths = download_models()
+    models = models = {
+        model_name: SentenceTransformer(str(model_paths[model_name])) for model_name in MODEL_NAMES
+    }
+       
     embeddings = {}
     
     for model_name in MODEL_NAMES:
@@ -54,8 +55,14 @@ def embed_text(embed_text: str, model_paths=MODEL_PATHS):
         }
     return embeddings
 
-def embed_query(query: str, model_paths=MODEL_PATHS):
+def embed_query(query: str):
     """Generate embeddings using locally downloaded models."""
+    model_paths = download_models()
+    models = models = {
+        model_name: SentenceTransformer(str(model_paths[model_name])) for model_name in MODEL_NAMES
+    }
+
+
     query_embeddings = {}
     for model_name in MODEL_NAMES:
         model = SentenceTransformer(str(model_paths[model_name]))
