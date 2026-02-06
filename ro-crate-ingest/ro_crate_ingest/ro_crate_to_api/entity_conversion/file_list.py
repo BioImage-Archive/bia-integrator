@@ -237,27 +237,3 @@ def get_dataset_field_map() -> dict[URIRef, str]:
         if not context_term.is_reverse:
             field_map[URIRef(context_term.full_uri)] = context_term.field_name
     return field_map
-
-
-# def fill_missing_association_columns(dataframe: pd.DataFrame) -> None:
-#     list_fields = [
-#         str(BIA.associatedBiologicalEntity),
-#         str(BIA.associatedImagingPreparationProtocol),
-#         str(BIA.associatedImageAcquisitionProtocol),
-#         str(BIA.associatedAnnotationMethod),
-#         str(BIA.associatedProtocol),
-#         str(BIA.associatedSourceImage),
-#     ]
-
-#     for field in list_fields:
-#         if field not in dataframe.columns:
-#             dataframe[field] = [[] for _ in range(dataframe.shape[0])]
-
-#     unique_fields = [
-#         str(BIA.associatedCreationProcess),
-#         str(BIA.associatedSubject),
-#     ]
-
-#     for field in unique_fields:
-#         if field not in dataframe:
-#             dataframe[field] = np.nan

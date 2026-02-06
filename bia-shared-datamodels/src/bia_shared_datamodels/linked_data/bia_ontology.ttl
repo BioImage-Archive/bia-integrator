@@ -271,7 +271,7 @@ bia:associatedSourceImage a owl:ObjectProperty ;
 
 bia:associatedCreationProcess a owl:ObjectProperty ;
     rdfs:label "associated creation process"@en ;
-    rdfs:comment """Used to indicate an CreationProcess as the process that resulted in the creation of all the Images or Annotation Data associated with the subject data."""@en ;
+    rdfs:comment """Used to indicate a CreationProcess as the process that resulted in the creation of all the Images or Annotation Data associated with the subject data."""@en ;
     rdfs:domain obo:IAO_0000030 ;
     rdfs:range bia:CreationProcess .
 

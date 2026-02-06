@@ -6,7 +6,7 @@ class Severity(str, Enum):
     Copying logging levels from the logging module
     """
 
-    CRITICAL = "CRICITCAL"
+    CRITICAL = "CRITICAL"
     ERROR = "ERROR"
     WARNING = "WARNING"
     INFO = "INFO"
