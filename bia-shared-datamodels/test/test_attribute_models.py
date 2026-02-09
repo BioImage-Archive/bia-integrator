@@ -20,7 +20,7 @@ from typing import Callable
             mock_objects.get_dataset_associatation_attribute,
         ),
         (
-            attribute_models.DocumentUUIDUinqueInputAttribute,
+            attribute_models.DocumentUUIDUniqueInputAttribute,
             mock_objects.get_document_uuid_uinque_input_attribute,
         ),
         (

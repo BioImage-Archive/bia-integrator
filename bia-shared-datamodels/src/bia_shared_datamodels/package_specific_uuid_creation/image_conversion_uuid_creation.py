@@ -6,7 +6,7 @@ from bia_shared_datamodels.package_specific_uuid_creation import shared
 
 def create_image_representation_uuid(
     study_uuid: str, conversion_process_dict: dict
-) -> tuple[UUID, attribute_models.DocumentUUIDUinqueInputAttribute]:
+) -> tuple[UUID, attribute_models.DocumentUUIDUniqueInputAttribute]:
     """
     An example conversion_process_dict is:
 

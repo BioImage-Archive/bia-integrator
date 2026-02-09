@@ -109,7 +109,7 @@ class DatasetAssociatedUUIDAttribute(Attribute, SubAttributeMixin):
     value: dict[str, list[str]] = Field()
 
 
-class DocumentUUIDUinqueInputAttribute(Attribute, SubAttributeMixin):
+class DocumentUUIDUniqueInputAttribute(Attribute, SubAttributeMixin):
     """
     Model for storing the string that was used to generate the uuid of the object.
     Note this does not need to contain the type nor the study uuid, since those should be findable in the rest of the document / through object links.

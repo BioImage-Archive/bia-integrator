@@ -13,7 +13,7 @@ def unencode_relative_id(ro_crate_id: str):
 
 def create_dataset_uuid(
     study_uuid: str, ro_crate_id: str
-) -> tuple[UUID, attribute_models.DocumentUUIDUinqueInputAttribute]:
+) -> tuple[UUID, attribute_models.DocumentUUIDUniqueInputAttribute]:
     # unqote is used to transform %20 that may be present in the uri id into spaces
     unique_string = unencode_relative_id(ro_crate_id).removesuffix("/")
     return (
@@ -26,8 +26,8 @@ def create_dataset_uuid(
 
 def create_bio_sample_uuid(
     study_uuid: str, ro_crate_id: str
-) -> tuple[UUID, attribute_models.DocumentUUIDUinqueInputAttribute]:
-    # _:_ can be present for 
+) -> tuple[UUID, attribute_models.DocumentUUIDUniqueInputAttribute]:
+    # _:_ can be present for
     unique_string = unencode_relative_id(str(ro_crate_id).removeprefix("_:_"))
     return (
         uuid_creation.create_bio_sample_uuid(
@@ -39,7 +39,7 @@ def create_bio_sample_uuid(
 
 def create_protocol_uuid(
     study_uuid: str, ro_crate_id: str
-) -> tuple[UUID, attribute_models.DocumentUUIDUinqueInputAttribute]:
+) -> tuple[UUID, attribute_models.DocumentUUIDUniqueInputAttribute]:
     unique_string = unencode_relative_id(ro_crate_id)
     return (
         uuid_creation.create_protocol_uuid(
@@ -51,7 +51,7 @@ def create_protocol_uuid(
 
 def create_annotation_method_uuid(
     study_uuid: str, ro_crate_id: str
-) -> tuple[UUID, attribute_models.DocumentUUIDUinqueInputAttribute]:
+) -> tuple[UUID, attribute_models.DocumentUUIDUniqueInputAttribute]:
     unique_string = unencode_relative_id(ro_crate_id)
     return (
         uuid_creation.create_annotation_method_uuid(
@@ -63,7 +63,7 @@ def create_annotation_method_uuid(
 
 def create_specimen_imaging_preparation_protocol_uuid(
     study_uuid: str, ro_crate_id: str
-):
+) -> tuple[UUID, attribute_models.DocumentUUIDUniqueInputAttribute]:
     unique_string = unencode_relative_id(ro_crate_id)
     return (
         uuid_creation.create_specimen_imaging_preparation_protocol_uuid(
@@ -75,7 +75,7 @@ def create_specimen_imaging_preparation_protocol_uuid(
 
 def create_image_acquisition_protocol_uuid(
     study_uuid: str, ro_crate_id: str
-) -> tuple[UUID, attribute_models.DocumentUUIDUinqueInputAttribute]:
+) -> tuple[UUID, attribute_models.DocumentUUIDUniqueInputAttribute]:
     unique_string = unencode_relative_id(ro_crate_id)
     return (
         uuid_creation.create_image_acquisition_protocol_uuid(
@@ -88,7 +88,7 @@ def create_image_acquisition_protocol_uuid(
 def create_specimen_uuid(
     study_uuid: str,
     ro_crate_id: str,
-) -> tuple[UUID, attribute_models.DocumentUUIDUinqueInputAttribute]:
+) -> tuple[UUID, attribute_models.DocumentUUIDUniqueInputAttribute]:
     """
     This is for creating a specimen object assuming it was included in the ro-crate.
     """
@@ -104,7 +104,7 @@ def create_specimen_uuid(
 def create_creation_process_uuid(
     study_uuid: str,
     ro_crate_id: str,
-) -> tuple[UUID, attribute_models.DocumentUUIDUinqueInputAttribute]:
+) -> tuple[UUID, attribute_models.DocumentUUIDUniqueInputAttribute]:
     """
     This is for creating a creation process object assuming it was included in the ro-crate.
     """
