@@ -34,7 +34,8 @@ logger = logging.getLogger("__main__." + __name__)
 
 
 def convert_biostudies_to_ro_crate(
-    accession_id: str, crate_path: Optional[Path], combine_file_list: bool = True
+    accession_id: str,
+    crate_path: Optional[Path],
 ):
     try:
         # Get information from biostudies
