@@ -44,7 +44,7 @@ def expected_combined_file_list() -> str:
                 "path",
                 "size",
                 "type",
-                "dataset_id",
+                "dataset",
                 f"metadata_header1_1",
                 f"metadata_header1_2",
                 f"metadata_header1_3",

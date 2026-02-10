@@ -40,11 +40,6 @@ def create_file_list(
 ) -> list[
     ro_crate_models.FileList | ro_crate_models.TableSchema | ro_crate_models.Column
 ]:
-    global COLUMN_BNODE_INT
-    COLUMN_BNODE_INT = 0
-    global SCHEMA_BNODE_INT
-    SCHEMA_BNODE_INT = 0
-
     dataset_sections: list[Section] = []
     find_sections_with_filelists_recursive(submission.section, dataset_sections)
 
@@ -112,8 +107,8 @@ def create_ro_crate_filelist_and_schema_objects(
 ) -> ro_crate_models.FileList:
     columns_for_schema = []
 
-    for header in column_headers:
-        column = get_column(header, column_by_name_url)
+    for column_bnode_int, header in enumerate(column_headers):
+        column = get_column(header, column_by_name_url, column_bnode_int)
         columns_for_schema.append(ObjectReference(**{"@id": column.id}))
 
     schema = get_schema(columns_for_schema, schema_list)
@@ -130,15 +125,14 @@ def create_ro_crate_filelist_and_schema_objects(
 def get_schema(
     columns_for_schema: list[ObjectReference],
     schema_list: list[ro_crate_models.TableSchema],
+    schema_bnode_int: int = 0,
 ) -> ro_crate_models.TableSchema:
     for existing_schema in schema_list:
         pairs = zip(existing_schema.column, columns_for_schema)
         if all(x == y for x, y in pairs):
             return existing_schema
 
-    global SCHEMA_BNODE_INT
-    ts_id = f"_:ts{SCHEMA_BNODE_INT}"
-    SCHEMA_BNODE_INT += 1
+    ts_id = f"_:ts{schema_bnode_int}"
     tableSchema = {
         "@id": ts_id,
         "@type": ["csvw:Schema"],
@@ -150,12 +144,15 @@ def get_schema(
 
 
 def get_column(
-    column_name: str, column_by_name_url: dict[str, dict[str, ro_crate_models.Column]]
+    column_name: str,
+    column_by_name_url: dict[str, dict[str, ro_crate_models.Column]],
+    column_bnode_int,
 ) -> ro_crate_models.Column:
     ontology_map = {
         "path": "http://bia/filePath",
         "size": "http://bia/sizeInBytes",
         "sourceImage": "http://bia/sourceImagePath",
+        "dataset": "http://schema.org/isPartOf",
     }
 
     column_data = {"columnName": column_name}
@@ -169,9 +166,7 @@ def get_column(
             column_data["propertyUrl"]
         ]
     except KeyError:
-        global COLUMN_BNODE_INT
-        column_id = f"_:col{COLUMN_BNODE_INT}"
-        COLUMN_BNODE_INT += 1
+        column_id = f"_:col{column_bnode_int}"
         column_dict = column_data | {"@id": column_id, "@type": ["csvw:Column"]}
         column = ro_crate_models.Column(**column_dict)
 
@@ -199,8 +194,8 @@ def combine_file_lists(
                 all_columns.append(column)
 
     # Add dataset ID column (after 'type' column) if not already present
-    if "dataset_id" not in all_columns:
-        all_columns.insert(3, "dataset_id")
+    if "dataset" not in all_columns:
+        all_columns.insert(3, "dataset")
 
     # Write headers for combined file list
     output_path = output_ro_crate_path / file_list_id
@@ -213,7 +208,7 @@ def combine_file_lists(
         header=True,
     )
 
-    for dataset_id, file_list_path in file_list_path_by_dataset.items():
+    for dataset, file_list_path in file_list_path_by_dataset.items():
         df = pd.read_csv(file_list_path, sep="\t", dtype=str)
         df = df.reindex(columns=all_columns, fill_value="")
 
@@ -221,7 +216,7 @@ def combine_file_lists(
             continue
 
         df = df.fillna("")
-        df["dataset_id"] = dataset_id
+        df["dataset"] = dataset
 
         df.to_csv(
             output_path,
@@ -236,7 +231,11 @@ def create_combined_file_list_for_study(
     output_ro_crate_path: Path,
     submission: Submission,
     dataset_by_accno: dict[str, ro_crate_models.Dataset],
-):
+) -> tuple[
+    list[ro_crate_models.Column],
+    list[ro_crate_models.TableSchema],
+    ro_crate_models.FileList,
+]:
     file_list_paths_by_dataset: dict[str, Path] = {}
     with tempfile.TemporaryDirectory() as temporary_dir:
         temporary_output_directory = Path(temporary_dir)
@@ -247,14 +246,18 @@ def create_combined_file_list_for_study(
         file_list_paths = [f for f in temporary_output_directory.rglob("*.tsv")]
 
         for dataset in dataset_by_accno.values():
-            file_list_path = temporary_output_directory / unquote(
-                dataset.associationFileMetadata.id
-            )
-            if file_list_path not in file_list_paths:
+            file_list_dir = temporary_output_directory / unquote(dataset.id)
+            file_list_path = [p for p in file_list_dir.glob("*.tsv")]
+            n_file_lists = len(file_list_path)
+            if n_file_lists != 1:
                 raise ValueError(
-                    f"File list path for dataset with id {dataset.id} not found while combining file lists."
+                    f"Exactly one file list for dataset with ID {dataset.id}. Got {n_file_lists}. Values {file_list_path}."
                 )
-            file_list_paths_by_dataset[dataset.id] = file_list_path
+            elif file_list_path[0] not in file_list_paths:
+                raise ValueError(
+                    f"Expected file list path for dataset with id {dataset.id} not found while combining file lists. Got {file_list_path[0]}, expected one of {file_list_path[0]}. Expected on of {file_list_paths}"
+                )
+            file_list_paths_by_dataset[dataset.id] = file_list_path[0]
         combine_file_lists(
             file_list_paths_by_dataset,
             output_ro_crate_path,
@@ -263,47 +266,23 @@ def create_combined_file_list_for_study(
 
     global COLUMN_BNODE_INT
     COLUMN_BNODE_INT = 0
-    global SCHEMA_BNODE_INT
-    SCHEMA_BNODE_INT = 0
 
     column_by_name_url: dict[str, dict[str, ro_crate_models.Column]] = {}
     schema_list: list[ro_crate_models.TableSchema] = []
-    combined_filelist: list[ro_crate_models.FileList] = []
 
     column_headers = pd.read_csv(
         output_ro_crate_path / COMBINED_FILE_LIST_ID, sep="\t", dtype=str, nrows=0
     ).columns.values.tolist()
 
-    combined_filelist.append(
-        create_ro_crate_filelist_and_schema_objects(
-            filelist_id=COMBINED_FILE_LIST_ID,
-            column_headers=column_headers,
-            column_by_name_url=column_by_name_url,
-            schema_list=schema_list,
-        )
+    combined_file_list = create_ro_crate_filelist_and_schema_objects(
+        filelist_id=COMBINED_FILE_LIST_ID,
+        column_headers=column_headers,
+        column_by_name_url=column_by_name_url,
+        schema_list=schema_list,
     )
 
-    column_list = []
+    column_list: list[ro_crate_models.Column] = []
     for x in column_by_name_url.values():
         [column_list.append(col) for col in x.values()]
 
-    return column_list + schema_list + combined_filelist
-
-
-def update_datasets_with_combined_file_list(
-    dataset_by_accno: dict[str, ro_crate_models.Dataset],
-) -> None:
-    for accno, dataset in dataset_by_accno.items():
-        n_has_part = len(dataset.hasPart) if dataset.hasPart else 0
-        if n_has_part > 1:
-            raise ValueError(
-                f"Dataset with ID {dataset.id} has more than one file list, cannot update 'hasPart' to combined file list"
-            )
-        elif n_has_part == 1:
-            combined_file_list_id = ro_crate_models.ObjectReference.model_validate(
-                {"@id": COMBINED_FILE_LIST_ID}
-            )
-            dataset_by_accno[accno].hasPart = [
-                combined_file_list_id,
-            ]
-            dataset_by_accno[accno].associationFileMetadata = combined_file_list_id
+    return column_list, schema_list, combined_file_list

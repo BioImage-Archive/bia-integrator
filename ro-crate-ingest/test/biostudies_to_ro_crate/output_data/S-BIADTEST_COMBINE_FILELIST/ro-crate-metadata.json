@@ -240,10 +240,13 @@
             "acknowledgement": null,
             "hasPart": [
                 {
-                    "@id": "Study%20Component-1/"
+                    "@id": "#Study%20Component-1"
                 },
                 {
-                    "@id": "Study%20Component-2/"
+                    "@id": "#Study%20Component-2"
+                },
+                {
+                    "@id": "combined_file_list.tsv"
                 }
             ],
             "accessionId": "S-BIADTEST_COMBINE_FILELIST"
@@ -358,8 +361,8 @@
             "@type": [
                 "csvw:Column"
             ],
-            "columnName": "dataset_id",
-            "propertyUrl": null
+            "columnName": "dataset",
+            "propertyUrl": "http://schema.org/isPartOf"
         },
         {
             "@id": "_:col2",
@@ -386,7 +389,7 @@
             "propertyUrl": "http://bia/filePath"
         },
         {
-            "@id": "Study%20Component-2/",
+            "@id": "#Study%20Component-2",
             "@type": [
                 "Dataset",
                 "bia:Dataset"
@@ -413,17 +416,11 @@
             "associatedImageAnalysisMethod": [],
             "associatedImageCorrelationMethod": [],
             "associatedProtocol": [],
-            "hasPart": [
-                {
-                    "@id": "combined_file_list.tsv"
-                }
-            ],
-            "associationFileMetadata": {
-                "@id": "combined_file_list.tsv"
-            }
+            "hasPart": [],
+            "associationFileMetadata": null
         },
         {
-            "@id": "Study%20Component-1/",
+            "@id": "#Study%20Component-1",
             "@type": [
                 "Dataset",
                 "bia:Dataset"
@@ -450,14 +447,8 @@
             "associatedImageAnalysisMethod": [],
             "associatedImageCorrelationMethod": [],
             "associatedProtocol": [],
-            "hasPart": [
-                {
-                    "@id": "combined_file_list.tsv"
-                }
-            ],
-            "associationFileMetadata": {
-                "@id": "combined_file_list.tsv"
-            }
+            "hasPart": [],
+            "associationFileMetadata": null
         },
         {
             "@id": "_:Image Acquisition-1",

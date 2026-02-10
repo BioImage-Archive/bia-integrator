@@ -76,18 +76,15 @@ def get_dataset_from_study_component(
     association_dict: dict[str, dict[str, str]],
 ):
 
-    roc_id = f"{quote(section.accno)}/"
+    roc_id = f"#{quote(section.accno)}"
 
     attr_dict = attributes_to_dict(section.attributes)
-    filelist_id_ref = {"@id": get_filelist_reference(roc_id, section)}
 
     model_dict = association_dict | {
         "@id": roc_id,
         "@type": ["Dataset", "bia:Dataset"],
         "name": attr_dict["name"],
         "description": attr_dict["description"],
-        "hasPart": [filelist_id_ref],
-        "associationFileMetadata": filelist_id_ref,
     }
 
     return ro_crate_models.Dataset(**model_dict)
@@ -96,10 +93,9 @@ def get_dataset_from_study_component(
 def get_dataset_from_annotation_component(
     section: Section, annotation_methods: dict[str, ro_crate_models.AnnotationMethod]
 ):
-    roc_id = f"{quote(section.accno)}/"
+    roc_id = f"{quote(section.accno)}"
 
     attr_dict = attributes_to_dict(section.attributes)
-    filelist_id_ref = {"@id": get_filelist_reference(roc_id, section)}
 
     model_dict = {
         "@id": roc_id,
@@ -109,8 +105,6 @@ def get_dataset_from_annotation_component(
         "associatedAnnotationMethod": [
             {"@id": annotation_methods[attr_dict["title"]].id}
         ],
-        "hasPart": [filelist_id_ref],
-        "associationFileMetadata": filelist_id_ref,
     }
     return ro_crate_models.Dataset(**model_dict)
 
@@ -118,10 +112,9 @@ def get_dataset_from_annotation_component(
 def get_dataset_from_generic_filelist_section(
     section: Section, protocols: dict[str, ro_crate_models.Protocol]
 ):
-    roc_id = f"{quote(section.accno)}/"
+    roc_id = f"{quote(section.accno)}"
 
     attr_dict = attributes_to_dict(section.attributes)
-    filelist_id_ref = {"@id": get_filelist_reference(roc_id, section)}
 
     # Handle older submission formats (prior to v4 template submission) by creating protocols for the subsections.
     protocol_subsections_ids = [
@@ -136,8 +129,6 @@ def get_dataset_from_generic_filelist_section(
         "associatedProtocol": [
             {"@id": protocols[accno].id} for accno in protocol_subsections_ids
         ],
-        "hasPart": [filelist_id_ref],
-        "associationFileMetadata": filelist_id_ref,
     }
 
     return ro_crate_models.Dataset(**model_dict)
@@ -192,7 +183,7 @@ def get_association_field_from_associations(
                 of the biosample being present in the assoication (the key of the outer dict) and b) whether the association Specimen
                 resulted in a Growth Protocol. In this case the correct id for the ro-crate BioSample will be under [Biosample Title]
                 [Specimen title]. If no Growth protocol was needed the correct id for the BioSample is under [Biosample Title][None].
-                See get_taxons_bio_samples_and_association_map in bio_sample.py for how this is created. See S-BIADTEST_COMPLEX_BIOSAMPLE 
+                See get_taxons_bio_samples_and_association_map in bio_sample.py for how this is created. See S-BIADTEST_COMPLEX_BIOSAMPLE
                 in the tests for an example of the expected end-to-end input-output.
 
             Returns:

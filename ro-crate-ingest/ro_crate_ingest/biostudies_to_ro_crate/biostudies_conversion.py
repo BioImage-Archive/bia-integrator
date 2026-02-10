@@ -99,17 +99,16 @@ def convert_biostudies_to_ro_crate(
         protocols=roc_generic_protocols,
     )
 
-    if combine_file_list:
-        roc_file_list_schema_objects = file_list.create_combined_file_list_for_study(
+    column_list, schema_list, combined_file_list = (
+        file_list.create_combined_file_list_for_study(
             ro_crate_dir, submission, roc_datasets
         )
-
-        # Update 'hasPart' relationships in datasets to point to combined file list
-        file_list.update_datasets_with_combined_file_list(roc_datasets)
-    else:
-        roc_file_list_schema_objects = file_list.create_file_list(
-            ro_crate_dir, submission, roc_datasets
-        )
+    )
+    roc_file_list_schema_objects = (
+        column_list + schema_list + [combined_file_list]
+        if combined_file_list
+        else list(schema_list) + list(column_list)
+    )
 
     graph += roc_datasets.values()
     graph += roc_file_list_schema_objects
@@ -136,7 +135,12 @@ def convert_biostudies_to_ro_crate(
     )
     graph += roc_contributors
 
-    roc_study = study.get_study(submission, roc_contributors, roc_datasets.values())
+    roc_study = study.get_study(
+        submission,
+        roc_contributors,
+        roc_datasets.values(),
+        combined_file_list,
+    )
     graph.append(roc_study)
 
     graph.append(ROCrateCreativeWork())

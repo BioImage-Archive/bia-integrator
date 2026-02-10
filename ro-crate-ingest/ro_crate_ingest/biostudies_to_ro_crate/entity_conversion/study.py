@@ -16,9 +16,14 @@ def get_study(
     submission: Submission,
     contributors: list[ro_crate_models.Contributor],
     datasets: Iterable[ro_crate_models.Dataset],
+    combined_file_list: ro_crate_models.FileList,
 ) -> ro_crate_models.Study:
     submission_attributes = attributes_to_dict(submission.attributes)
     study_attributes = attributes_to_dict(submission.section.attributes)
+
+    has_part_ids = [{"@id": d.id} for d in datasets]
+    if combined_file_list:
+        has_part_ids.append({"@id": combined_file_list.id})
 
     study_dict = {
         "@id": "./",
@@ -31,7 +36,10 @@ def get_study(
         "acknowledgement": study_attributes.get("acknowledgements", None),
         "keyword": study_attributes.get("keywords", []),
         "contributor": [{"@id": c.id} for c in contributors],
-        "hasPart": [{"@id": d.id} for d in datasets],
+        "hasPart": has_part_ids,
+        "associationFileMetadata": (
+            {"@id": combined_file_list.id} if combined_file_list else None
+        ),
         # TODO handle grants & funding statements
     }
 
