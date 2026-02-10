@@ -23,9 +23,8 @@ logger = logging.getLogger("__main__." + __name__)
 
 def create_root_dataset_for_submission(root_section: Section):
     section_name = "Default template. No Study Components"
-    id = f"{quote(section_name)}/"
+    id = f"#{quote(section_name)}"
 
-    filelist_id_ref = {"@id": generate_relative_filelist_path(id, "filelist.tsv")}
     root_attributes = attributes_to_dict(root_section.attributes)
 
     model_dict = {
@@ -33,8 +32,8 @@ def create_root_dataset_for_submission(root_section: Section):
         "@type": ["Dataset", "bia:Dataset"],
         "name": root_attributes["title"],
         "description": root_attributes["description"],
-        "hasPart": [filelist_id_ref],
-        "associationFileMetadata": filelist_id_ref,
+        "hasPart": [],
+        "associationFileMetadata": None,
     }
 
     return ro_crate_models.Dataset(**model_dict)
@@ -50,7 +49,11 @@ def create_file_list_from_pagetab_files(
     dataframe_filelist = convert_filelist_to_dataframe(files)
     normalise_headers(dataframe_filelist)
 
-    filelist_id = generate_relative_filelist_path(dataset_id, "filelist.tsv")
+    # Add dataset ID column to file list dataframe
+    dataset_id_column_name = "dataset"
+    dataframe_filelist[dataset_id_column_name] = dataset_id
+
+    filelist_id = "combined_file_list.tsv"
     write_filelist(output_ro_crate_path, filelist_id, dataframe_filelist)
 
     filelist = create_ro_crate_filelist_and_schema_objects(

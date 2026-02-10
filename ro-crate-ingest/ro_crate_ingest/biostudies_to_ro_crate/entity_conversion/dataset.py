@@ -93,7 +93,7 @@ def get_dataset_from_study_component(
 def get_dataset_from_annotation_component(
     section: Section, annotation_methods: dict[str, ro_crate_models.AnnotationMethod]
 ):
-    roc_id = f"{quote(section.accno)}"
+    roc_id = f"#{quote(section.accno)}"
 
     attr_dict = attributes_to_dict(section.attributes)
 
@@ -112,7 +112,7 @@ def get_dataset_from_annotation_component(
 def get_dataset_from_generic_filelist_section(
     section: Section, protocols: dict[str, ro_crate_models.Protocol]
 ):
-    roc_id = f"{quote(section.accno)}"
+    roc_id = f"#{quote(section.accno)}"
 
     attr_dict = attributes_to_dict(section.attributes)
 

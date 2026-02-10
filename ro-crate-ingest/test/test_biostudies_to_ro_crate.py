@@ -42,17 +42,22 @@ def expected_path_to_created_path(expected_path: str, output_dir: Path) -> Path:
 @pytest.mark.parametrize(
     "accession_id",
     [
-        # "S-BIADTEST_AUTHOR_AFFILIATION",
-        # "S-BIADTEST_COMPLEX_BIOSAMPLE",
-        # "S-BIADTEST_PROTOCOL_STUDY",
+        "S-BIADTEST_AUTHOR_AFFILIATION",
+        "S-BIADTEST_COMPLEX_BIOSAMPLE",
+        "S-BIADTEST_PROTOCOL_STUDY",
         "S-BIADTEST_COMBINE_FILELIST",
-        # "S-BSST_PAGETAB_FILES",
+        "S-BSST_PAGETAB_FILES",
     ],
 )
 def test_biostudies_to_ro_crate(accession_id: str, tmp_bia_data_dir: Path):
     result = runner.invoke(
         ro_crate_ingest,
-        ["biostudies-to-roc", "-c", tmp_bia_data_dir, accession_id, combine_file_list],
+        [
+            "biostudies-to-roc",
+            "-c",
+            tmp_bia_data_dir,
+            accession_id,
+        ],
     )
 
     assert result.exit_code == 0

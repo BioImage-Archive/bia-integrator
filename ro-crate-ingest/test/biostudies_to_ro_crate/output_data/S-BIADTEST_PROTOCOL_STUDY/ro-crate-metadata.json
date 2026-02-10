@@ -240,7 +240,10 @@
             "acknowledgement": null,
             "hasPart": [
                 {
-                    "@id": "experimentB/"
+                    "@id": "#experimentB"
+                },
+                {
+                    "@id": "combined_file_list.tsv"
                 }
             ],
             "accessionId": "S-BIADTEST_PROTOCOL_STUDY"
@@ -273,7 +276,7 @@
             "website": null
         },
         {
-            "@id": "experimentB/experiment%20results.tsv",
+            "@id": "combined_file_list.tsv",
             "@type": [
                 "File",
                 "bia:FileList",
@@ -309,11 +312,14 @@
                 },
                 {
                     "@id": "_:col6"
+                },
+                {
+                    "@id": "_:col7"
                 }
             ]
         },
         {
-            "@id": "_:col6",
+            "@id": "_:col7",
             "@type": [
                 "csvw:Column"
             ],
@@ -321,7 +327,7 @@
             "propertyUrl": null
         },
         {
-            "@id": "_:col5",
+            "@id": "_:col6",
             "@type": [
                 "csvw:Column"
             ],
@@ -329,7 +335,7 @@
             "propertyUrl": null
         },
         {
-            "@id": "_:col4",
+            "@id": "_:col5",
             "@type": [
                 "csvw:Column"
             ],
@@ -337,12 +343,20 @@
             "propertyUrl": null
         },
         {
-            "@id": "_:col3",
+            "@id": "_:col4",
             "@type": [
                 "csvw:Column"
             ],
             "columnName": "Gene Identifier",
             "propertyUrl": null
+        },
+        {
+            "@id": "_:col3",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "dataset",
+            "propertyUrl": "http://schema.org/isPartOf"
         },
         {
             "@id": "_:col2",
@@ -369,7 +383,7 @@
             "propertyUrl": "http://bia/filePath"
         },
         {
-            "@id": "experimentB/",
+            "@id": "#experimentB",
             "@type": [
                 "Dataset",
                 "bia:Dataset"
@@ -397,14 +411,8 @@
                     "@id": "_:experimentB : data analysis protocol"
                 }
             ],
-            "hasPart": [
-                {
-                    "@id": "experimentB/experiment%20results.tsv"
-                }
-            ],
-            "associationFileMetadata": {
-                "@id": "experimentB/experiment%20results.tsv"
-            }
+            "hasPart": [],
+            "associationFileMetadata": null
         },
         {
             "@id": "_:experimentB : data analysis protocol",

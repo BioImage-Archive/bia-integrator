@@ -240,13 +240,16 @@
             "acknowledgement": null,
             "hasPart": [
                 {
-                    "@id": "Study%20Component-1/"
+                    "@id": "#Study%20Component-1"
                 },
                 {
-                    "@id": "Study%20Component-2/"
+                    "@id": "#Study%20Component-2"
                 },
                 {
-                    "@id": "Study%20Component-3/"
+                    "@id": "#Study%20Component-3"
+                },
+                {
+                    "@id": "combined_file_list.tsv"
                 }
             ],
             "accessionId": "S-BIADTEST_COMPLEX_BIOSAMPLE"
@@ -282,29 +285,7 @@
             "website": null
         },
         {
-            "@id": "Study%20Component-3/file_list_test_3.tsv",
-            "@type": [
-                "File",
-                "bia:FileList",
-                "csvw:Table"
-            ],
-            "tableSchema": {
-                "@id": "_:ts0"
-            }
-        },
-        {
-            "@id": "Study%20Component-2/file_list_test_2.tsv",
-            "@type": [
-                "File",
-                "bia:FileList",
-                "csvw:Table"
-            ],
-            "tableSchema": {
-                "@id": "_:ts0"
-            }
-        },
-        {
-            "@id": "Study%20Component-1/file_list_test_1.tsv",
+            "@id": "combined_file_list.tsv",
             "@type": [
                 "File",
                 "bia:FileList",
@@ -334,11 +315,14 @@
                 },
                 {
                     "@id": "_:col4"
+                },
+                {
+                    "@id": "_:col5"
                 }
             ]
         },
         {
-            "@id": "_:col4",
+            "@id": "_:col5",
             "@type": [
                 "csvw:Column"
             ],
@@ -346,12 +330,20 @@
             "propertyUrl": null
         },
         {
-            "@id": "_:col3",
+            "@id": "_:col4",
             "@type": [
                 "csvw:Column"
             ],
             "columnName": "Genotype/Line",
             "propertyUrl": null
+        },
+        {
+            "@id": "_:col3",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "dataset",
+            "propertyUrl": "http://schema.org/isPartOf"
         },
         {
             "@id": "_:col2",
@@ -378,7 +370,7 @@
             "propertyUrl": "http://bia/filePath"
         },
         {
-            "@id": "Study%20Component-3/",
+            "@id": "#Study%20Component-3",
             "@type": [
                 "Dataset",
                 "bia:Dataset"
@@ -408,17 +400,11 @@
             "associatedImageAnalysisMethod": [],
             "associatedImageCorrelationMethod": [],
             "associatedProtocol": [],
-            "hasPart": [
-                {
-                    "@id": "Study%20Component-3/file_list_test_3.tsv"
-                }
-            ],
-            "associationFileMetadata": {
-                "@id": "Study%20Component-3/file_list_test_3.tsv"
-            }
+            "hasPart": [],
+            "associationFileMetadata": null
         },
         {
-            "@id": "Study%20Component-2/",
+            "@id": "#Study%20Component-2",
             "@type": [
                 "Dataset",
                 "bia:Dataset"
@@ -445,17 +431,11 @@
             "associatedImageAnalysisMethod": [],
             "associatedImageCorrelationMethod": [],
             "associatedProtocol": [],
-            "hasPart": [
-                {
-                    "@id": "Study%20Component-2/file_list_test_2.tsv"
-                }
-            ],
-            "associationFileMetadata": {
-                "@id": "Study%20Component-2/file_list_test_2.tsv"
-            }
+            "hasPart": [],
+            "associationFileMetadata": null
         },
         {
-            "@id": "Study%20Component-1/",
+            "@id": "#Study%20Component-1",
             "@type": [
                 "Dataset",
                 "bia:Dataset"
@@ -485,14 +465,8 @@
             "associatedImageAnalysisMethod": [],
             "associatedImageCorrelationMethod": [],
             "associatedProtocol": [],
-            "hasPart": [
-                {
-                    "@id": "Study%20Component-1/file_list_test_1.tsv"
-                }
-            ],
-            "associationFileMetadata": {
-                "@id": "Study%20Component-1/file_list_test_1.tsv"
-            }
+            "hasPart": [],
+            "associationFileMetadata": null
         },
         {
             "@id": "_:Image Acquisition-1",
