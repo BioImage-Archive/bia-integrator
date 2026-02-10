@@ -57,7 +57,7 @@ def convert_study(
         "see_also": external_references,
         "object_creator": APIModels.Provenance.BIA_INGEST,
         "additional_metadata": [
-            AttributeModels.DocumentUUIDUinqueInputAttribute(
+            AttributeModels.DocumentUUIDUniqueInputAttribute(
                 provenance=APIModels.Provenance.BIA_INGEST,
                 name="uuid_unique_input",
                 value={"uuid_unique_input": ro_crate_study.accessionId},

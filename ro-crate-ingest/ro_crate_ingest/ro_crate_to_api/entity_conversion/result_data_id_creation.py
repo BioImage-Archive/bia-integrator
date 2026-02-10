@@ -1,7 +1,6 @@
 import logging
 from concurrent.futures import ProcessPoolExecutor
 from functools import partial
-from urllib.parse import quote
 from uuid import UUID
 
 import bia_integrator_api.models as APIModels
@@ -258,7 +257,7 @@ def populate_from_specimen(
 
 def create_result_data_uuid(
     result_data_type: str, file_refernce_uuids: list[str], study_uuid: str
-) -> tuple[UUID, attribute_models.DocumentUUIDUinqueInputAttribute]:
+) -> tuple[UUID, attribute_models.DocumentUUIDUniqueInputAttribute]:
     result_data_type = URIRef(result_data_type)
     if result_data_type == BIA.Image:
         return shared.create_image_uuid(
