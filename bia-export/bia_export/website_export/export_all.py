@@ -54,13 +54,12 @@ def get_study_ids(root_directory: Optional[Path] = None):
 def study_sort_key(study: Union[apiStudy, exportStudy, dict]) -> tuple[str, str]:
     def get_accno(acc_id):
         match = re.search(r"\d+$", acc_id)
-        return int(match.group()) if match else 9999
-
+        return int(match.group()) if match else None
+    
     if isinstance(study, (apiStudy, exportStudy)):
         study = study.model_dump()
-
+    
     return (study["release_date"], get_accno(study["accession_id"]))
-
 
 def sort_studies(studies_list: list[Union[apiStudy, exportStudy]]):
     sorted_studies = sorted(
