@@ -50,15 +50,17 @@ def create_file_list_from_pagetab_files(
     normalise_headers(dataframe_filelist)
 
     # Add dataset ID column to file list dataframe
-    dataset_id_column_name = "dataset"
-    dataframe_filelist[dataset_id_column_name] = dataset_id
+    column_headers = dataframe_filelist.columns.values.tolist()
+    column_headers.insert(3, "dataset")
+    dataframe_filelist = dataframe_filelist.reindex(columns=column_headers)
+    dataframe_filelist["dataset"] = dataset_id
 
     filelist_id = "combined_file_list.tsv"
     write_filelist(output_ro_crate_path, filelist_id, dataframe_filelist)
 
     filelist = create_ro_crate_filelist_and_schema_objects(
         filelist_id=filelist_id,
-        column_headers=dataframe_filelist.columns.values.tolist(),
+        column_headers=column_headers,
         column_by_name_url=column_by_name_url,
         schema_list=schema_list,
     )

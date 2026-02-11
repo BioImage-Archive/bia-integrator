@@ -105,14 +105,15 @@ def convert_biostudies_to_ro_crate(
             ro_crate_dir, submission, roc_datasets
         )
     )
-    roc_file_list_schema_objects = (
-        column_list + schema_list + [combined_file_list]
-        if combined_file_list
-        else list(schema_list) + list(column_list)
-    )
+    if roc_datasets:
+        roc_file_list_schema_objects = (
+            column_list + schema_list + [combined_file_list]
+            if combined_file_list
+            else list(schema_list) + list(column_list)
+        )
 
-    graph += roc_datasets.values()
-    graph += roc_file_list_schema_objects
+        graph += roc_datasets.values()
+        graph += roc_file_list_schema_objects
 
     # TODO - Assume in this case only one filelist is present - no need to combine. However, add dataset_id column?
     if submission.section.files and len(submission.section.files) > 0:
