@@ -15,7 +15,7 @@ class ClosedBaseModel(BaseModel):
 class SpecimenProposal(ClosedBaseModel):
     title: str = Field()
     biosample_title: str = Field()
-    specimen_imaging_preparation_protocol_title: list = Field()
+    specimen_imaging_preparation_protocol_title: str | list = Field()
 
 
 class Taxon(ClosedBaseModel):
