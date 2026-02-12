@@ -230,7 +230,7 @@
       "name": "A scanning electron microscopy-based screen of leaves of Solanum lycopersicum cv. M82 x\nSolanum pennellii ac. LA716 introgression lines provides a resource for identification of loci\ninvolved in epidermal development in tomato.",
       "contributor": [
         {
-          "@id": "_:c0"
+          "@id": "#c0"
         }
       ],
       "description": "This submission contains cryo-SEM micrographs of S. lycopersicum x S. pennellii introgression line (IL) population. Ther terms \"FEL\" and \"L\" both refer to the first fully-expanded true leaf of the plants assayed.",
@@ -246,7 +246,7 @@
       "accessionId": "S-BSST_PAGETAB_FILES"
     },
     {
-      "@id": "_:c0",
+      "@id": "#c0",
       "@type": [
         "Person",
         "bia:Contributor"

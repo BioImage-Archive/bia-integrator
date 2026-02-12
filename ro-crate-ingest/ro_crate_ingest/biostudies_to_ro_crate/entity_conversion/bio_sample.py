@@ -52,7 +52,6 @@ def get_taxons_bio_samples_and_association_map(
     taxon_bnode_int = 0
 
     for section in biosample_sections:
-
         biosample_taxons, taxon_bnode_int = get_taxon_under_biosample(
             bio_sample_section=section,
             unique_taxon_list=taxon_list,
@@ -71,9 +70,9 @@ def get_taxons_bio_samples_and_association_map(
                 association_mapping[bio_sample.title] = {}
 
             if growth_protocol:
-                association_mapping[bio_sample.title][
-                    growth_protocol.title
-                ] = bio_sample.id
+                association_mapping[bio_sample.title][growth_protocol.title] = (
+                    bio_sample.id
+                )
             else:
                 association_mapping[bio_sample.title][None] = bio_sample.id
 
@@ -90,9 +89,9 @@ def get_bio_sample(
 
     model_dict = {
         "@id": (
-            f"_:{section.accno} {str(biostudies_ingest_uuid_creation.create_protocol_uuid(str(shared.create_study_uuid(accession_id)[0]), growth_protocol.id.removeprefix("_:_"))[0])}"
+            f"#{section.accno} {str(biostudies_ingest_uuid_creation.create_protocol_uuid(str(shared.create_study_uuid(accession_id)[0]), growth_protocol.id.removeprefix('#_'))[0])}"
             if growth_protocol
-            else f"_:{section.accno}"
+            else f"#{section.accno}"
         ),
         "@type": ["bia:BioSample"],
         "title": attr_dict["title"],

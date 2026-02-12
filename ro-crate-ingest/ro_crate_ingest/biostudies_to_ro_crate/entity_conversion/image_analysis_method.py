@@ -16,7 +16,6 @@ logger = logging.getLogger("__main__." + __name__)
 def get_image_analysis_method_by_title(
     submission: Submission,
 ) -> dict[str, ro_crate_models.ImageAnalysisMethod]:
-
     sections = find_sections_recursive(submission.section, ["Image analysis"], [])
 
     roc_object_dict = {}
@@ -32,7 +31,7 @@ def get_image_analysis_method(
     attr_dict = attributes_to_dict(section.attributes)
 
     model_dict = {
-        "@id": f"_:{section.accno}",
+        "@id": f"#{section.accno}",
         "@type": ["bia:ImageAnalysisMethod"],
         "title": attr_dict["title"],
         "protocolDescription": attr_dict.get("image analysis overview", ""),

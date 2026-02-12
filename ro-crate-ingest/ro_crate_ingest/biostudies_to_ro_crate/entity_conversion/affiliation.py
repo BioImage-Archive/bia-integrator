@@ -17,7 +17,6 @@ logger = logging.getLogger("__main__." + __name__)
 def get_affiliations_by_accno(
     submission: Submission,
 ) -> dict[str, ro_crate_models.Affiliaton]:
-
     sections = find_sections_recursive(
         submission.section, ["organisation", "organization"], []
     )
@@ -29,11 +28,10 @@ def get_affiliations_by_accno(
 
 
 def get_affiliation(section: Section):
-
     attr_dict = attributes_to_dict(section.attributes)
 
     model_dict = {
-        "@id": attr_dict.get("rorid", f"_:{section.accno}"),
+        "@id": attr_dict.get("rorid", f"#{section.accno}"),
         "@type": ["Organisation", "bia:Affiliation"],
         "displayName": attr_dict["name"],
         "website": attr_dict.get("website"),

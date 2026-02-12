@@ -18,7 +18,6 @@ def get_growth_protocol_by_title(
     submission: Submission,
     study_uuid: str,
 ) -> dict[str, ro_crate_models.Protocol]:
-
     sections = find_sections_recursive(submission.section, ["Specimen"], [])
 
     roc_object_dict = {}
@@ -39,7 +38,7 @@ def get_growth_protocol(section: Section) -> Optional[ro_crate_models.Protocol]:
         return None
 
     model_dict = {
-        "@id": f"_:_{section.accno}",  # Note Growth Protocol has a extra _ at the start to avoid clashing with the specimen imaging preparation protocol ID
+        "@id": f"#_{section.accno}",  # Note Growth Protocol has a extra _ at the start to avoid clashing with the specimen imaging preparation protocol ID
         "@type": ["bia:Protocol"],
         "title": attr_dict["title"],
         "protocolDescription": attr_dict.get("growth protocol", ""),

@@ -233,13 +233,13 @@
                     "@id": "https://orcid.org/0009-0007-4223-1439"
                 },
                 {
-                    "@id": "_:c0"
+                    "@id": "#c0"
                 },
                 {
                     "@id": "https://orcid.org/0000-0000-0000-TEST"
                 },
                 {
-                    "@id": "_:c1"
+                    "@id": "#c1"
                 }
             ],
             "description": "Description 1",
@@ -258,7 +258,7 @@
             "accessionId": "S-BIADTEST_AUTHOR_AFFILIATION"
         },
         {
-            "@id": "_:c1",
+            "@id": "#c1",
             "@type": [
                 "Person",
                 "bia:Contributor"
@@ -268,10 +268,10 @@
             "website": null,
             "affiliation": [
                 {
-                    "@id": "_:o1"
+                    "@id": "#o1"
                 },
                 {
-                    "@id": "_:o2"
+                    "@id": "#o2"
                 }
             ],
             "role": [
@@ -292,10 +292,10 @@
             "website": null,
             "affiliation": [
                 {
-                    "@id": "_:o1"
+                    "@id": "#o1"
                 },
                 {
-                    "@id": "_:o2"
+                    "@id": "#o2"
                 }
             ],
             "role": [
@@ -306,7 +306,7 @@
             "contactEmail": null
         },
         {
-            "@id": "_:c0",
+            "@id": "#c0",
             "@type": [
                 "Person",
                 "bia:Contributor"
@@ -316,7 +316,7 @@
             "website": null,
             "affiliation": [
                 {
-                    "@id": "_:o1"
+                    "@id": "#o1"
                 }
             ],
             "role": [
@@ -337,7 +337,7 @@
             "website": null,
             "affiliation": [
                 {
-                    "@id": "_:o1"
+                    "@id": "#o1"
                 }
             ],
             "role": [
@@ -347,7 +347,7 @@
             "contactEmail": "user1@ebi.ac.uk"
         },
         {
-            "@id": "_:o2",
+            "@id": "#o2",
             "@type": [
                 "Organisation",
                 "bia:Affiliation"
@@ -357,7 +357,7 @@
             "website": null
         },
         {
-            "@id": "_:o1",
+            "@id": "#o1",
             "@type": [
                 "Organisation",
                 "bia:Affiliation"
@@ -461,18 +461,18 @@
             "description": "Study component description 1",
             "associatedBiologicalEntity": [
                 {
-                    "@id": "_:Biosample-1"
+                    "@id": "#Biosample-1"
                 }
             ],
             "associatedSpecimenImagingPreparationProtocol": [
                 {
-                    "@id": "_:Specimen-1"
+                    "@id": "#Specimen-1"
                 }
             ],
             "associatedSpecimen": null,
             "associatedImageAcquisitionProtocol": [
                 {
-                    "@id": "_:Image Acquisition-1"
+                    "@id": "#Image Acquisition-1"
                 }
             ],
             "associatedAnnotationMethod": [],
@@ -483,7 +483,7 @@
             "associationFileMetadata": null
         },
         {
-            "@id": "_:Image Acquisition-1",
+            "@id": "#Image Acquisition-1",
             "@type": [
                 "bia:ImageAcquisitionProtocol"
             ],
@@ -498,7 +498,7 @@
             ]
         },
         {
-            "@id": "_:Specimen-1",
+            "@id": "#Specimen-1",
             "@type": [
                 "bia:SpecimenImagingPreparationProtocol"
             ],
@@ -515,7 +515,7 @@
             "scientificName": "Drosophila melanogaster"
         },
         {
-            "@id": "_:Biosample-1",
+            "@id": "#Biosample-1",
             "@type": [
                 "bia:BioSample"
             ],

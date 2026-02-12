@@ -262,7 +262,7 @@
             "website": null,
             "affiliation": [
                 {
-                    "@id": "_:o1"
+                    "@id": "#o1"
                 }
             ],
             "role": [
@@ -272,7 +272,7 @@
             "contactEmail": "user1@ebi.ac.uk"
         },
         {
-            "@id": "_:o1",
+            "@id": "#o1",
             "@type": [
                 "Organisation",
                 "bia:Affiliation"
@@ -398,18 +398,18 @@
             "description": "Has filelist with some columns not in study component 1",
             "associatedBiologicalEntity": [
                 {
-                    "@id": "_:Biosample-1 3af9100c-56dd-4419-9bde-f0c43157918f"
+                    "@id": "#Biosample-1 3af9100c-56dd-4419-9bde-f0c43157918f"
                 }
             ],
             "associatedSpecimenImagingPreparationProtocol": [
                 {
-                    "@id": "_:Specimen-2"
+                    "@id": "#Specimen-2"
                 }
             ],
             "associatedSpecimen": null,
             "associatedImageAcquisitionProtocol": [
                 {
-                    "@id": "_:Image Acquisition-1"
+                    "@id": "#Image Acquisition-1"
                 }
             ],
             "associatedAnnotationMethod": [],
@@ -429,18 +429,18 @@
             "description": "Has filelist with a set of columns that should be combined.",
             "associatedBiologicalEntity": [
                 {
-                    "@id": "_:Biosample-1"
+                    "@id": "#Biosample-1"
                 }
             ],
             "associatedSpecimenImagingPreparationProtocol": [
                 {
-                    "@id": "_:Specimen-1"
+                    "@id": "#Specimen-1"
                 }
             ],
             "associatedSpecimen": null,
             "associatedImageAcquisitionProtocol": [
                 {
-                    "@id": "_:Image Acquisition-1"
+                    "@id": "#Image Acquisition-1"
                 }
             ],
             "associatedAnnotationMethod": [],
@@ -451,7 +451,7 @@
             "associationFileMetadata": null
         },
         {
-            "@id": "_:Image Acquisition-1",
+            "@id": "#Image Acquisition-1",
             "@type": [
                 "bia:ImageAcquisitionProtocol"
             ],
@@ -466,7 +466,7 @@
             ]
         },
         {
-            "@id": "_:Specimen-2",
+            "@id": "#Specimen-2",
             "@type": [
                 "bia:SpecimenImagingPreparationProtocol"
             ],
@@ -475,7 +475,7 @@
             "signalChannelInformation": []
         },
         {
-            "@id": "_:Specimen-1",
+            "@id": "#Specimen-1",
             "@type": [
                 "bia:SpecimenImagingPreparationProtocol"
             ],
@@ -492,7 +492,7 @@
             "scientificName": "Drosophila melanogaster"
         },
         {
-            "@id": "_:Biosample-1 3af9100c-56dd-4419-9bde-f0c43157918f",
+            "@id": "#Biosample-1 3af9100c-56dd-4419-9bde-f0c43157918f",
             "@type": [
                 "bia:BioSample"
             ],
@@ -507,11 +507,11 @@
                 }
             ],
             "growthProtocol": {
-                "@id": "_:_Specimen-2"
+                "@id": "#_Specimen-2"
             }
         },
         {
-            "@id": "_:Biosample-1",
+            "@id": "#Biosample-1",
             "@type": [
                 "bia:BioSample"
             ],
@@ -528,7 +528,7 @@
             "growthProtocol": null
         },
         {
-            "@id": "_:_Specimen-2",
+            "@id": "#_Specimen-2",
             "@type": [
                 "bia:Protocol"
             ],
