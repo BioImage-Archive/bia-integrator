@@ -17,7 +17,6 @@ from ro_crate_ingest.biostudies_to_ro_crate.entity_conversion import (
     protocol,
     pagetab_file,
 )
-from bia_shared_datamodels.uuid_creation import create_study_uuid
 from pathlib import Path
 import logging
 from typing import Optional
@@ -34,11 +33,14 @@ from bia_shared_datamodels.ro_crate_models import ROCrateCreativeWork
 logger = logging.getLogger("__main__." + __name__)
 
 
-def convert_biostudies_to_ro_crate(accession_id: str, crate_path: Optional[Path]):
+def convert_biostudies_to_ro_crate(
+    accession_id: str,
+    crate_path: Optional[Path],
+):
     try:
         # Get information from biostudies
         submission = load_submission(accession_id)
-    except AssertionError as error:
+    except AssertionError:
         logger.error("Failed to retrieve information from BioStudies")
         logging.exception("message")
         return
@@ -97,13 +99,23 @@ def convert_biostudies_to_ro_crate(accession_id: str, crate_path: Optional[Path]
         bio_samples_association=bs_association_map,
         protocols=roc_generic_protocols,
     )
-    graph += roc_datasets.values()
 
-    roc_file_list_schema_objects = file_list.create_file_list(
-        ro_crate_dir, submission, roc_datasets
+    column_list, schema_list, combined_file_list = (
+        file_list.create_combined_file_list_for_study(
+            ro_crate_dir, submission, roc_datasets
+        )
     )
-    graph += roc_file_list_schema_objects
+    if roc_datasets:
+        roc_file_list_schema_objects = (
+            column_list + schema_list + [combined_file_list]
+            if combined_file_list
+            else list(schema_list) + list(column_list)
+        )
 
+        graph += roc_datasets.values()
+        graph += roc_file_list_schema_objects
+
+    # TODO - Assume in this case only one filelist is present - no need to combine. However, add dataset_id column?
     if submission.section.files and len(submission.section.files) > 0:
         # create a default dataset for the files that are part of the pagetab, rather than referenced via filelist
         default_dataset = pagetab_file.create_root_dataset_for_submission(
@@ -125,7 +137,12 @@ def convert_biostudies_to_ro_crate(accession_id: str, crate_path: Optional[Path]
     )
     graph += roc_contributors
 
-    roc_study = study.get_study(submission, roc_contributors, roc_datasets.values())
+    roc_study = study.get_study(
+        submission,
+        roc_contributors,
+        roc_datasets.values(),
+        combined_file_list,
+    )
     graph.append(roc_study)
 
     graph.append(ROCrateCreativeWork())

@@ -230,7 +230,7 @@
       "name": "A scanning electron microscopy-based screen of leaves of Solanum lycopersicum cv. M82 x\nSolanum pennellii ac. LA716 introgression lines provides a resource for identification of loci\ninvolved in epidermal development in tomato.",
       "contributor": [
         {
-          "@id": "_:c0"
+          "@id": "#c0"
         }
       ],
       "description": "This submission contains cryo-SEM micrographs of S. lycopersicum x S. pennellii introgression line (IL) population. Ther terms \"FEL\" and \"L\" both refer to the first fully-expanded true leaf of the plants assayed.",
@@ -238,11 +238,15 @@
       "datePublished": "2018-11-30",
       "keyword": [],
       "acknowledgement": null,
-      "hasPart": [],
+      "hasPart": [
+        {
+            "@id": "combined_file_list.tsv"
+        }
+      ],
       "accessionId": "S-BSST_PAGETAB_FILES"
     },
     {
-      "@id": "_:c0",
+      "@id": "#c0",
       "@type": [
         "Person",
         "bia:Contributor"
@@ -255,7 +259,7 @@
       "contactEmail": "jagalar92@gmail.com"
     },
     {
-      "@id": "Default%20template.%20No%20Study%20Components/",
+      "@id": "#Default%20template.%20No%20Study%20Components",
       "@type": [
         "Dataset",
         "bia:Dataset"
@@ -270,17 +274,11 @@
       "associatedImageAnalysisMethod": [],
       "associatedImageCorrelationMethod": [],
       "associatedProtocol": [],
-      "hasPart": [
-        {
-          "@id": "Default%20template.%20No%20Study%20Components/filelist.tsv"
-        }
-      ],
-      "associationFileMetadata": {
-        "@id": "Default%20template.%20No%20Study%20Components/filelist.tsv"
-      }
+      "hasPart": [],
+      "associationFileMetadata": null
     },
     {
-      "@id": "Default%20template.%20No%20Study%20Components/filelist.tsv",
+      "@id": "combined_file_list.tsv",
       "@type": [
         "File",
         "bia:FileList",
@@ -315,7 +313,15 @@
       "propertyUrl": null
     },
     {
-      "@id": "_:col3",
+        "@id": "_:col3",
+        "@type": [
+            "csvw:Column"
+        ],
+        "columnName": "dataset",
+        "propertyUrl": "http://schema.org/isPartOf"
+    },
+    {
+      "@id": "_:col4",
       "@type": [
         "csvw:Column"
       ],
@@ -339,6 +345,9 @@
         },
         {
           "@id": "_:col3"
+        },
+        {
+          "@id": "_:col4"
         }
       ]
     }

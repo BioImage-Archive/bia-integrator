@@ -227,7 +227,7 @@
                 "Dataset",
                 "bia:Study"
             ],
-            "name": "BIADTEST AUTHOR AFFILIATION TEST",
+            "name": "BIADTEST COMBINE FILELIST",
             "contributor": [
                 {
                     "@id": "https://orcid.org/0009-0007-4223-1439"
@@ -246,13 +246,10 @@
                     "@id": "#Study%20Component-2"
                 },
                 {
-                    "@id": "#Study%20Component-3"
-                },
-                {
                     "@id": "combined_file_list.tsv"
                 }
             ],
-            "accessionId": "S-BIADTEST_COMPLEX_BIOSAMPLE"
+            "accessionId": "S-BIADTEST_COMBINE_FILELIST"
         },
         {
             "@id": "https://orcid.org/0009-0007-4223-1439",
@@ -318,8 +315,30 @@
                 },
                 {
                     "@id": "_:col5"
+                },
+                {
+                    "@id": "_:col6"
+                },
+                {
+                    "@id": "_:col7"
                 }
             ]
+        },
+        {
+            "@id": "_:col7",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "Channel 3",
+            "propertyUrl": null
+        },
+        {
+            "@id": "_:col6",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "Channel 2",
+            "propertyUrl": null
         },
         {
             "@id": "_:col5",
@@ -370,50 +389,16 @@
             "propertyUrl": "http://bia/filePath"
         },
         {
-            "@id": "#Study%20Component-3",
-            "@type": [
-                "Dataset",
-                "bia:Dataset"
-            ],
-            "name": "Component 3",
-            "description": "Has 2 associations with the two biosamples that should have the same taxon.",
-            "associatedBiologicalEntity": [
-                {
-                    "@id": "#Biosample-2"
-                },
-                {
-                    "@id": "#Biosample-3"
-                }
-            ],
-            "associatedSpecimenImagingPreparationProtocol": [
-                {
-                    "@id": "#Specimen-1"
-                }
-            ],
-            "associatedSpecimen": null,
-            "associatedImageAcquisitionProtocol": [
-                {
-                    "@id": "#Image%20Acquisition-1"
-                }
-            ],
-            "associatedAnnotationMethod": [],
-            "associatedImageAnalysisMethod": [],
-            "associatedImageCorrelationMethod": [],
-            "associatedProtocol": [],
-            "hasPart": [],
-            "associationFileMetadata": null
-        },
-        {
             "@id": "#Study%20Component-2",
             "@type": [
                 "Dataset",
                 "bia:Dataset"
             ],
             "name": "Component 2",
-            "description": "Has 1 association, re-using biosample 1, but with different specimen to Component 1 (which has a growth protocol) so should have a different ro-crate biosample.",
+            "description": "Has filelist with some columns not in study component 1",
             "associatedBiologicalEntity": [
                 {
-                    "@id": "#Biosample-1%209094eed1-c332-4f45-add1-dc6e153ceb56"
+                    "@id": "#Biosample-1%203af9100c-56dd-4419-9bde-f0c43157918f"
                 }
             ],
             "associatedSpecimenImagingPreparationProtocol": [
@@ -441,13 +426,10 @@
                 "bia:Dataset"
             ],
             "name": "Component 1",
-            "description": "Has 2 associations, with the same specimen, image aquisition, but differnt biosamples",
+            "description": "Has filelist with a set of columns that should be combined.",
             "associatedBiologicalEntity": [
                 {
                     "@id": "#Biosample-1"
-                },
-                {
-                    "@id": "#Biosample-4"
                 }
             ],
             "associatedSpecimenImagingPreparationProtocol": [
@@ -502,22 +484,6 @@
             "signalChannelInformation": []
         },
         {
-            "@id": "#tx1",
-            "@type": [
-                "bia:Taxon"
-            ],
-            "commonName": "zebra fish",
-            "scientificName": "Danio  rerio"
-        },
-        {
-            "@id": "#tx0",
-            "@type": [
-                "bia:Taxon"
-            ],
-            "commonName": "Homo sapiens",
-            "scientificName": "Human"
-        },
-        {
             "@id": "NCBI:txid7227",
             "@type": [
                 "bia:Taxon"
@@ -526,58 +492,7 @@
             "scientificName": "Drosophila melanogaster"
         },
         {
-            "@id": "#Biosample-4",
-            "@type": [
-                "bia:BioSample"
-            ],
-            "title": "Second Biosample with organism subsection without ncbi id",
-            "biologicalEntityDescription": "Specific part of fish.",
-            "experimentalVariableDescription": [],
-            "extrinsicVariableDescription": [],
-            "intrinsicVariableDescription": [],
-            "organismClassification": [
-                {
-                    "@id": "#tx1"
-                }
-            ],
-            "growthProtocol": null
-        },
-        {
-            "@id": "#Biosample-3",
-            "@type": [
-                "bia:BioSample"
-            ],
-            "title": "Second Biosample with organism attribute",
-            "biologicalEntityDescription": "Specific part of human.",
-            "experimentalVariableDescription": [],
-            "extrinsicVariableDescription": [],
-            "intrinsicVariableDescription": [],
-            "organismClassification": [
-                {
-                    "@id": "#tx0"
-                }
-            ],
-            "growthProtocol": null
-        },
-        {
-            "@id": "#Biosample-2",
-            "@type": [
-                "bia:BioSample"
-            ],
-            "title": "Biosample with organism attribute",
-            "biologicalEntityDescription": "Specific part of human.",
-            "experimentalVariableDescription": [],
-            "extrinsicVariableDescription": [],
-            "intrinsicVariableDescription": [],
-            "organismClassification": [
-                {
-                    "@id": "#tx0"
-                }
-            ],
-            "growthProtocol": null
-        },
-        {
-            "@id": "#Biosample-1%209094eed1-c332-4f45-add1-dc6e153ceb56",
+            "@id": "#Biosample-1%203af9100c-56dd-4419-9bde-f0c43157918f",
             "@type": [
                 "bia:BioSample"
             ],

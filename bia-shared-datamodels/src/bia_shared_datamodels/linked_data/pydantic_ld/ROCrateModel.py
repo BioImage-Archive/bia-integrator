@@ -55,9 +55,10 @@ class ROCrateModel(LDModel):
             "Dataset",
         ]
         rdf_types = self.type if isinstance(self.type, list) else [self.type]
-        for class_string in dataset_class:
-            if class_string in rdf_types:
-                self.id = f"{self.id}/" if not str.endswith(self.id, "/") else self.id
+        # TODO: Check if we want to stop this for datasets now that they are not directories.
+        # for class_string in dataset_class:
+        #    if class_string in rdf_types:
+        #        self.id = f"{self.id}/" if not str.endswith(self.id, "/") else self.id
 
         return self
 
@@ -71,8 +72,6 @@ class ROCrateModel(LDModel):
         json_ld_string = json.dumps(json_ld)
 
         base_file_uri = str(base_path.as_uri())
-        graph.parse(
-            data=json_ld_string, format="json-ld", publicID=f"{base_file_uri}/"
-        )
+        graph.parse(data=json_ld_string, format="json-ld", publicID=f"{base_file_uri}/")
 
         return graph

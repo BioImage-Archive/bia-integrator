@@ -20,13 +20,11 @@ def get_contributors(
     submission: Submission,
     roc_affiliation_by_accno: dict[str, ro_crate_models.Affiliaton],
 ) -> list[ro_crate_models.Contributor]:
-
     contributor_bnode_int = 0
     sections = find_sections_recursive(submission.section, ["author"])
 
     contributors = []
     for section in sections:
-
         contributor, contributor_bnode_int = get_contributor(
             section, roc_affiliation_by_accno, contributor_bnode_int
         )
@@ -40,10 +38,11 @@ def get_contributor(
     roc_affiliation_by_accno: dict[str, ro_crate_models.Affiliaton],
     contributor_bnode_int: int,
 ) -> tuple[ro_crate_models.Contributor, int]:
-
     attributes_dict = attributes_to_dict(section.attributes)
 
-    contributor_id, contributor_bnode_int = get_contributor_id(attributes_dict, contributor_bnode_int)
+    contributor_id, contributor_bnode_int = get_contributor_id(
+        attributes_dict, contributor_bnode_int
+    )
 
     contributor_dict = {
         "@type": ["Person", "bia:Contributor"],
@@ -58,14 +57,15 @@ def get_contributor(
     return ro_crate_models.Contributor(**contributor_dict), contributor_bnode_int
 
 
-def get_contributor_id(attributes_dict: dict, contributor_bnode_int: int) -> tuple[str, int]:
-
+def get_contributor_id(
+    attributes_dict: dict, contributor_bnode_int: int
+) -> tuple[str, int]:
     if "orcid" in attributes_dict:
         id: str = attributes_dict["orcid"]
         if not id.startswith("https://orcid.org/"):
             id = f"https://orcid.org/{id}"
     else:
-        id = f"_:c{contributor_bnode_int}"
+        id = f"#c{contributor_bnode_int}"
         contributor_bnode_int += 1
 
     return id, contributor_bnode_int
@@ -95,7 +95,6 @@ def get_affiliaitons(
     attributes_dict: dict,
     roc_affiliation_by_accno: dict[str, ro_crate_models.Affiliaton],
 ):
-
     if "affiliation" not in attributes_dict:
         return []
 

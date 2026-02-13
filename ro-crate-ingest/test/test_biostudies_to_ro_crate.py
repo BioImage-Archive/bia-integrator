@@ -45,13 +45,19 @@ def expected_path_to_created_path(expected_path: str, output_dir: Path) -> Path:
         "S-BIADTEST_AUTHOR_AFFILIATION",
         "S-BIADTEST_COMPLEX_BIOSAMPLE",
         "S-BIADTEST_PROTOCOL_STUDY",
-        "S-BSST_PAGETAB_FILES"
+        "S-BIADTEST_COMBINE_FILELIST",
+        "S-BSST_PAGETAB_FILES",
     ],
 )
 def test_biostudies_to_ro_crate(accession_id: str, tmp_bia_data_dir: Path):
-
     result = runner.invoke(
-        ro_crate_ingest, ["biostudies-to-roc", "-c", tmp_bia_data_dir, accession_id]
+        ro_crate_ingest,
+        [
+            "biostudies-to-roc",
+            "-c",
+            tmp_bia_data_dir,
+            accession_id,
+        ],
     )
 
     assert result.exit_code == 0

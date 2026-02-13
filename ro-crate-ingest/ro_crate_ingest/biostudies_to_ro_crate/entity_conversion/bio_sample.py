@@ -1,4 +1,5 @@
 import logging
+from urllib.parse import quote
 from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_parsing_utils import (
     attributes_to_dict,
     find_sections_recursive,
@@ -52,7 +53,6 @@ def get_taxons_bio_samples_and_association_map(
     taxon_bnode_int = 0
 
     for section in biosample_sections:
-
         biosample_taxons, taxon_bnode_int = get_taxon_under_biosample(
             bio_sample_section=section,
             unique_taxon_list=taxon_list,
@@ -71,9 +71,9 @@ def get_taxons_bio_samples_and_association_map(
                 association_mapping[bio_sample.title] = {}
 
             if growth_protocol:
-                association_mapping[bio_sample.title][
-                    growth_protocol.title
-                ] = bio_sample.id
+                association_mapping[bio_sample.title][growth_protocol.title] = (
+                    bio_sample.id
+                )
             else:
                 association_mapping[bio_sample.title][None] = bio_sample.id
 
@@ -88,12 +88,19 @@ def get_bio_sample(
 ) -> ro_crate_models.BioSample:
     attr_dict = attributes_to_dict(section.attributes)
 
+    if growth_protocol:
+        study_uuid = str(shared.create_study_uuid(accession_id)[0])
+        protocol_uuid = str(
+            biostudies_ingest_uuid_creation.create_protocol_uuid(
+                study_uuid, growth_protocol.id.removeprefix("#_")
+            )[0]
+        )
+        id = "#" + quote(f"{section.accno} {protocol_uuid}")
+    else:
+        id = f"#{quote(section.accno)}"
+
     model_dict = {
-        "@id": (
-            f"_:{section.accno} {str(biostudies_ingest_uuid_creation.create_protocol_uuid(str(shared.create_study_uuid(accession_id)[0]), growth_protocol.id.removeprefix("_:_"))[0])}"
-            if growth_protocol
-            else f"_:{section.accno}"
-        ),
+        "@id": id,
         "@type": ["bia:BioSample"],
         "title": attr_dict["title"],
         "biologicalEntityDescription": attr_dict.get("biological entity", ""),

@@ -1,4 +1,6 @@
 import logging
+from urllib.parse import quote
+
 from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_parsing_utils import (
     attributes_to_dict,
     find_sections_recursive,
@@ -16,7 +18,6 @@ logger = logging.getLogger("__main__." + __name__)
 def get_annotation_method_by_title(
     submission: Submission,
 ) -> dict[str, ro_crate_models.AnnotationMethod]:
-
     sections = find_sections_recursive(submission.section, ["Annotations"], [])
 
     roc_object_dict = {}
@@ -32,7 +33,7 @@ def get_annotation_method(
     attr_dict = attributes_to_dict(section.attributes)
 
     model_dict = {
-        "@id": f"_:{section.accno}",
+        "@id": f"#{quote(section.accno)}",
         "@type": ["bia:AnnotationMethod"],
         "title": attr_dict["title"],
         "protocolDescription": attr_dict.get("annotation method", ""),

@@ -4,7 +4,6 @@ from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_parsing_utils 
     find_sections_recursive,
 )
 from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_api import (
-    Submission,
     Section,
 )
 
@@ -19,7 +18,6 @@ def get_taxon_under_biosample(
     unique_taxon_list: list[ro_crate_models.Taxon],
     taxon_bnode_int: int,
 ) -> tuple[list[ro_crate_models.Taxon], int]:
-
     roc_object_list = []
 
     sections = find_sections_recursive(bio_sample_section, ["Organism"])
@@ -90,7 +88,6 @@ def get_taxon(
     taxon_id: str,
     taxon_info: dict,
 ) -> ro_crate_models.Taxon:
-
     model_dict = {
         "@id": taxon_id,
         "@type": ["bia:Taxon"],
@@ -126,6 +123,6 @@ def get_taxon_id_and_uniqueness(
                 add_to_taxon_list = False
                 return taxon_id, add_to_taxon_list, taxon_bnode_int
 
-        taxon_id = f"_:tx{taxon_bnode_int}"
+        taxon_id = f"#tx{taxon_bnode_int}"
         taxon_bnode_int += 1
         return taxon_id, is_unique, taxon_bnode_int

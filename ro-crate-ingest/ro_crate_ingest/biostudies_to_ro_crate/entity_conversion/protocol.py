@@ -1,4 +1,5 @@
 import logging
+from urllib.parse import quote
 from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_parsing_utils import (
     attributes_to_dict,
     find_sections_recursive,
@@ -16,7 +17,6 @@ logger = logging.getLogger("__main__." + __name__)
 def get_protocol_by_title(
     submission: Submission,
 ) -> dict[str, ro_crate_models.Protocol]:
-
     sections = find_sections_recursive(submission.section, ["Protocol"], [])
 
     roc_object_dict = {}
@@ -29,12 +29,10 @@ def get_protocol_by_title(
 def get_protocol(
     section: Section,
 ) -> ro_crate_models.Protocol:
-
     attr_dict = attributes_to_dict(section.attributes)
 
-
     model_dict = {
-        "@id": f"_:{section.accno}",
+        "@id": f"#{quote(section.accno)}",
         "@type": ["bia:Protocol"],
         "title": f"{section.accno}",
         "protocolDescription": attr_dict.get("description", ""),

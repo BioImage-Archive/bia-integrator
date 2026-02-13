@@ -3,7 +3,8 @@ set -ex
 set -o pipefail
 
 SCRIPT_DIR="$(dirname "$0")"
-API_BASE_URL=${API_BASE_URL:-"http://localhost/api"}
+#API_BASE_URL=${API_BASE_URL:-"http://localhost/api"}
+API_BASE_URL=${API_BASE_URL:-"https://wwwdev.ebi.ac.uk/bioimage-archive/api"}
 EXPORT_JSON_OUT_FILE=${EXPORT_JSON_OUT_FILE:-"/tmp/api_elastic_refresh.json"}
 ELASTIC_URL=${ELASTIC_URL:-"http://localhost:9200"}
 ELASTIC_USERNAME=${ELASTIC_USERNAME:-"elastic"}
