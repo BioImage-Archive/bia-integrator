@@ -1,4 +1,5 @@
 import logging
+from urllib.parse import quote
 from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_parsing_utils import (
     attributes_to_dict,
     find_sections_recursive,
@@ -87,12 +88,19 @@ def get_bio_sample(
 ) -> ro_crate_models.BioSample:
     attr_dict = attributes_to_dict(section.attributes)
 
+    if growth_protocol:
+        study_uuid = str(shared.create_study_uuid(accession_id)[0])
+        protocol_uuid = str(
+            biostudies_ingest_uuid_creation.create_protocol_uuid(
+                study_uuid, growth_protocol.id.removeprefix("#_")
+            )[0]
+        )
+        id = "#" + quote(f"{section.accno} {protocol_uuid}")
+    else:
+        id = f"#{quote(section.accno)}"
+
     model_dict = {
-        "@id": (
-            f"#{section.accno} {str(biostudies_ingest_uuid_creation.create_protocol_uuid(str(shared.create_study_uuid(accession_id)[0]), growth_protocol.id.removeprefix('#_'))[0])}"
-            if growth_protocol
-            else f"#{section.accno}"
-        ),
+        "@id": id,
         "@type": ["bia:BioSample"],
         "title": attr_dict["title"],
         "biologicalEntityDescription": attr_dict.get("biological entity", ""),

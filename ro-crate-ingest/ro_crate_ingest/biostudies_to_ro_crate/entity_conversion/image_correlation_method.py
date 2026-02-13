@@ -1,4 +1,5 @@
 import logging
+from urllib.parse import quote
 from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_parsing_utils import (
     attributes_to_dict,
     find_sections_recursive,
@@ -32,7 +33,7 @@ def get_image_correlation_method(
     attr_dict = attributes_to_dict(section.attributes)
 
     model_dict = {
-        "@id": f"#{section.accno}",
+        "@id": f"#{quote(section.accno)}",
         "@type": ["bia:ImageCorrelationMethod"],
         "title": attr_dict["title"],
         "protocolDescription": attr_dict.get("spatial and temporal alignment", ""),

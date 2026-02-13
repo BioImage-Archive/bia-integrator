@@ -1,4 +1,5 @@
 import logging
+from urllib.parse import quote
 from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_parsing_utils import (
     attributes_to_dict,
     find_sections_recursive,
@@ -40,7 +41,7 @@ def get_image_acquisition_protocol(
         fbbi_id = []
 
     model_dict = {
-        "@id": f"#{section.accno}",
+        "@id": f"#{quote(section.accno)}",
         "@type": ["bia:ImageAcquisitionProtocol"],
         "title": attr_dict["title"],
         "protocolDescription": attr_dict.get("image acquisition parameters", ""),

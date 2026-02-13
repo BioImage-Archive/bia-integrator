@@ -393,7 +393,7 @@
             "associatedSpecimen": null,
             "associatedImageAcquisitionProtocol": [
                 {
-                    "@id": "#Image Acquisition-1"
+                    "@id": "#Image%20Acquisition-1"
                 }
             ],
             "associatedAnnotationMethod": [],
@@ -413,7 +413,7 @@
             "description": "Has 1 association, re-using biosample 1, but with different specimen to Component 1 (which has a growth protocol) so should have a different ro-crate biosample.",
             "associatedBiologicalEntity": [
                 {
-                    "@id": "#Biosample-1 9094eed1-c332-4f45-add1-dc6e153ceb56"
+                    "@id": "#Biosample-1%209094eed1-c332-4f45-add1-dc6e153ceb56"
                 }
             ],
             "associatedSpecimenImagingPreparationProtocol": [
@@ -424,7 +424,7 @@
             "associatedSpecimen": null,
             "associatedImageAcquisitionProtocol": [
                 {
-                    "@id": "#Image Acquisition-1"
+                    "@id": "#Image%20Acquisition-1"
                 }
             ],
             "associatedAnnotationMethod": [],
@@ -458,7 +458,7 @@
             "associatedSpecimen": null,
             "associatedImageAcquisitionProtocol": [
                 {
-                    "@id": "#Image Acquisition-1"
+                    "@id": "#Image%20Acquisition-1"
                 }
             ],
             "associatedAnnotationMethod": [],
@@ -469,7 +469,7 @@
             "associationFileMetadata": null
         },
         {
-            "@id": "#Image Acquisition-1",
+            "@id": "#Image%20Acquisition-1",
             "@type": [
                 "bia:ImageAcquisitionProtocol"
             ],
@@ -577,7 +577,7 @@
             "growthProtocol": null
         },
         {
-            "@id": "#Biosample-1 9094eed1-c332-4f45-add1-dc6e153ceb56",
+            "@id": "#Biosample-1%209094eed1-c332-4f45-add1-dc6e153ceb56",
             "@type": [
                 "bia:BioSample"
             ],

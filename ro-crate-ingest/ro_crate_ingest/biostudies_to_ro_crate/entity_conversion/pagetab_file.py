@@ -10,7 +10,6 @@ from bia_shared_datamodels import ro_crate_models
 from ro_crate_ingest.biostudies_to_ro_crate.entity_conversion.file_list import (
     convert_filelist_to_dataframe,
     normalise_headers,
-    generate_relative_filelist_path,
     create_ro_crate_filelist_and_schema_objects,
 )
 from urllib.parse import quote
@@ -42,7 +41,6 @@ def create_root_dataset_for_submission(root_section: Section):
 def create_file_list_from_pagetab_files(
     files: list[File], output_ro_crate_path: Path, dataset_id: str
 ):
-
     column_by_name_url: dict[str, dict[str, ro_crate_models.Column]] = {}
     schema_list: list[ro_crate_models.TableSchema] = []
 

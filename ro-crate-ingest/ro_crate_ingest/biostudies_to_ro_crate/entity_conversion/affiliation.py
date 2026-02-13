@@ -1,4 +1,6 @@
 import logging
+from urllib.parse import quote
+
 from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_parsing_utils import (
     attributes_to_dict,
     find_sections_recursive,
@@ -31,7 +33,7 @@ def get_affiliation(section: Section):
     attr_dict = attributes_to_dict(section.attributes)
 
     model_dict = {
-        "@id": attr_dict.get("rorid", f"#{section.accno}"),
+        "@id": attr_dict.get("rorid", f"#{quote(section.accno)}"),
         "@type": ["Organisation", "bia:Affiliation"],
         "displayName": attr_dict["name"],
         "website": attr_dict.get("website"),
