@@ -275,7 +275,8 @@
       "associatedImageCorrelationMethod": [],
       "associatedProtocol": [],
       "hasPart": [],
-      "associationFileMetadata": null
+      "associatedCreationProcess": null,
+      "associatedSourceImage": []
     },
     {
       "@id": "combined_file_list.tsv",

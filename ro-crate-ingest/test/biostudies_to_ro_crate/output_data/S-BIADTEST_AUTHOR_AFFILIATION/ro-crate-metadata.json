@@ -480,7 +480,8 @@
             "associatedImageCorrelationMethod": [],
             "associatedProtocol": [],
             "hasPart": [],
-            "associationFileMetadata": null
+            "associatedCreationProcess": null,
+            "associatedSourceImage": []
         },
         {
             "@id": "#Image%20Acquisition-1",

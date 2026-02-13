@@ -412,7 +412,8 @@
                 }
             ],
             "hasPart": [],
-            "associationFileMetadata": null
+            "associatedCreationProcess": null,
+            "associatedSourceImage": []
         },
         {
             "@id": "#Glucose%20control%20condition",
