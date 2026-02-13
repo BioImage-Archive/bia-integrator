@@ -16,7 +16,7 @@ logger = logging.getLogger()
 #       other UUIDs from this.
 def get_image(
     image_uuid: UUID,
-    image_uuid_unique_string_attribute: attribute_models.DocumentUUIDUinqueInputAttribute,
+    image_uuid_unique_string_attribute: attribute_models.DocumentUUIDUniqueInputAttribute,
     submission_dataset_uuid: UUID,
     creation_process_uuid: UUID,
     file_references: List[bia_data_model.FileReference,],

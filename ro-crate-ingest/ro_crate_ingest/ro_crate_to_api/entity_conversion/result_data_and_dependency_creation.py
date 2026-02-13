@@ -1,20 +1,20 @@
-import pandas as pd
-
-from bia_shared_datamodels.package_specific_uuid_creation.ro_crate_uuid_creation import (
-    create_bio_sample_uuid,
-    create_specimen_imaging_preparation_protocol_uuid,
-    create_protocol_uuid,
-    create_image_acquisition_protocol_uuid,
-    create_annotation_method_uuid,
-)
-from bia_shared_datamodels import ro_crate_models
-import bia_integrator_api.models as APIModels
-from ro_crate_ingest.save_utils import PersistenceMode, persist
-
+import logging
 from concurrent.futures import ProcessPoolExecutor
 from functools import partial
 
-import logging
+import bia_integrator_api.models as APIModels
+import pandas as pd
+from bia_shared_datamodels import ro_crate_models
+from bia_shared_datamodels.linked_data.ontology_terms import BIA
+from bia_shared_datamodels.package_specific_uuid_creation.ro_crate_uuid_creation import (
+    create_annotation_method_uuid,
+    create_bio_sample_uuid,
+    create_image_acquisition_protocol_uuid,
+    create_protocol_uuid,
+    create_specimen_imaging_preparation_protocol_uuid,
+)
+
+from ro_crate_ingest.save_utils import PersistenceMode, persist
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -28,13 +28,11 @@ def create_images_and_dependencies(
     max_workers: int,
 ) -> None:
 
-
     # Calculate dependency chain length before trying to create any specimens, that way we fail fast prior to incorrect objects being created.
     result_data_dataframe["dependency_chain_length"] = (
         caluclate_dependency_chain_length(result_data_dataframe)
     )
     max_dependency_chain_length = result_data_dataframe["dependency_chain_length"].max()
-
 
     specimens_by_group = [
         (uuid, group_df)
@@ -147,9 +145,9 @@ def create_creation_process(
     # All rows in group should have the same value for the point of view of creating a creation process.
     first_entry = dataframe_group.iloc[0]
 
-    if isinstance(first_entry["source_image_id"], list):
+    if isinstance(first_entry["source_image_name"], list):
         input_image_uuid = [
-            image_id_uuid_map[x] for x in first_entry["source_image_id"]
+            image_id_uuid_map[x] for x in first_entry["source_image_name"]
         ]
     else:
         input_image_uuid = []
@@ -193,13 +191,13 @@ def create_result_data(
     accession_id: str,
     persistence_mode: PersistenceMode,
 ) -> None:
-    if row["result_type"] == ro_crate_models.Image.model_config["model_type"]:
+    if row["result_type"] == str(BIA.Image):
         create_image(row, accession_id, persistence_mode)
         create_image_representation(row, accession_id, persistence_mode)
-    elif (
-        row["result_type"] == ro_crate_models.AnnotationData.model_config["model_type"]
-    ):
+    elif row["result_type"] == str(BIA.AnnotationData):
         create_annotation_data(row, accession_id, persistence_mode)
+    else:
+        raise ValueError(f"Unexpected result data type: {row["result_type"]}")
 
 
 def create_image(
@@ -218,7 +216,7 @@ def create_image(
         "original_file_reference_uuid": row["file_ref_uuids"],
         "additional_metadata": [row["result_data_uuid_attr"]],
         "label": (
-            row["result_data_label"] if not pd.isna(row["result_data_label"]) else None
+            row["result_data_name"] if not pd.isna(row["result_data_name"]) else None
         ),
     }
 
@@ -301,7 +299,7 @@ def caluclate_dependency_chain_length(df) -> pd.DataFrame:
     Calculate the longest dependency chain for a given result data (image or annotation data).
     This is always 1 more than the largest value of all of it's dependencies.
     """
-    dep_map = dict(zip(df["result_data_id"], df["source_image_id"]))
+    dep_map = dict(zip(df["result_data_name"], df["source_image_name"]))
 
     heights = {}
     visiting = set()
@@ -326,4 +324,4 @@ def caluclate_dependency_chain_length(df) -> pd.DataFrame:
         heights[id] = height
         return height
 
-    return df["result_data_id"].map(calculate_height).astype(int)
+    return df["result_data_name"].map(calculate_height).astype(int)

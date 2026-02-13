@@ -1,0 +1,4 @@
+file_path	size_in_bytes	dataset	type	label	associated_specimen	associated_biosample
+data/image_1.tif	12	#Imaging%20Dataset	http://bia/Image	image using assigned specimen and its biosample	#Specimen%20used%20by%20images	#Overriden%20biosample
+data/image_2.tif	12	#Imaging%20Dataset	http://bia/Image	image with generated specimen		#Biosample%20used%20by%20specimen
+data/image_3.tif	12	#Imaging%20Dataset	http://bia/Image	image without biosample or specimen		

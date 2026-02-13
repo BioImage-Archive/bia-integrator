@@ -412,7 +412,8 @@
                 }
             ],
             "hasPart": [],
-            "associationFileMetadata": null
+            "associatedCreationProcess": null,
+            "associatedSourceImage": []
         },
         {
             "@id": "#experimentB%20%3A%20data%20analysis%20protocol",

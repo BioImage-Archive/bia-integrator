@@ -1,0 +1,23 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "d00b8468-2364-46a0-9ccc-e1bb1d86793c",
+  "version": 0,
+  "model": {
+    "type_name": "ImageAcquisitionProtocol",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Imaging Method"
+      }
+    }
+  ],
+  "title": "Microscopy",
+  "protocol_description": "Microscopy with a 2x magnification setting",
+  "imaging_instrument_description": "Microscope",
+  "fbbi_id": [],
+  "imaging_method_name": []
+}

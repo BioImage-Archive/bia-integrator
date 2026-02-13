@@ -1,9 +1,10 @@
-import pytest
 import logging
-import pytest_check as check
-
 from pathlib import Path
+
+import pytest
+import pytest_check as check
 from typer.testing import CliRunner
+
 from ro_crate_ingest.cli import ro_crate_ingest
 
 runner = CliRunner()
@@ -17,116 +18,89 @@ def get_test_ro_crate_path(accession_id, test_folder="validator") -> Path:
     "accession_id,expected_result,messages",
     [
         (
-            "test_invalid_ro_crate",
-            1,
-            [
-                ("field_not_included_in_context",),
-                (
-                    "At ro-crate object with @id: ./",
-                    "description",
-                ),
-                (
-                    "At ro-crate object with @id: ./",
-                    "MUST be linked to either File or Directory instances",
-                ),
-                (
-                    "does not include",
-                    "data2_missing_folder",
-                ),
-                (
-                    "At ro-crate object with @id: ./data1FailedReference/",
-                    "http://schema.org/hasPart",
-                ),
-                (
-                    "At ro-crate object with @id: ./missing_has_part.tiff",
-                    "http://schema.org/hasPart",
-                ),
-            ],
-        ),
-        (
-            "test_invalid_redefined_context_term",
+            "test_redefined_context",
             1,
             [
                 (
-                    "At accessionId",
+                    "At title",
                     "Term has been remapped in context",
                 ),
             ],
         ),
         (
-            "test_invalid_ro_crate_object_ids",
+            "test_duplicate_entity_id",
             1,
             [
                 (
-                    "At ro-crate object with @id: _:RepeatedBiosample1",
-                    "Two objects with the same @id",
+                    "At ro-crate object with @id: https://orcid.org/9999-0001-2222-3333",
+                    "Found more than one object with @id",
                 ),
             ],
         ),
         (
-            "test_invalid_ro_crate_objects",
+            "test_invalid_objects",
             1,
             [
                 (
-                    "At ro-crate object with @id: data2/",
-                    "@type of object does not contain any BIA classes.",
+                    "At ro-crate object with @id: ./",
+                    "is not a valid IRI",
                 ),
                 (
-                    "At ro-crate object with @id: data2/groupedImage/",
-                    "@type of object contains multiple BIA classes",
+                    "At ro-crate object with @id: ID with invalid characters such as: ^ %ZZ",
+                    "is not a valid IRI",
                 ),
                 (
-                    "At ro-crate object with @id: _:SpecimenPreparation:",
-                    "1 validation error for SpecimenImagingPreparationProtocol",
+                    "At ro-crate object with @id: #dataset",
+                    "Input should be a valid dictionary or instance of ObjectReference",
                 ),
                 (
-                    "At ro-crate object with @id: _:ImageAcquisitionProtocol1",
-                    "1 validation error for ImageAcquisitionProtocol",
+                    "At ro-crate object with @id: #object_with_mixed_types",
+                    "@type of object does not contain exactly 1 BIA classes.",
+                ),
+                (
+                    "At ro-crate object with @id: #object_no_expected_types",
+                    "@type of object does not contain exactly 1 BIA classes.",
                 ),
             ],
         ),
         (
-            "test_invalid_ro_crate_object_references",
+            "test_id_reference_mismatch",
             1,
             [
-                (
-                    "At ro-crate object with @id: Biosample1",
-                    "contains references to Non-existant growth protocol",
-                    "not defined",
-                ),
-                (
-                    "At ro-crate object with @id: Biosample2",
-                    "contains references to Biosample1",
-                    "not of the expected type",
-                ),
+                ("Found undefined references", "#non_existant_dataset"),
             ],
         ),
         (
-            "test_invalid_ro_crate_with_file_list_without_path_column",
+            "test_file_list_missing_path_column",
             1,
             [
-                ("No column has been assigned csvw:propertyUrl http://bia/filePath",),
                 (
-                    "At ro-crate TableSchema object with @id: ts0",
+                    "At file list file_list.tsv and TableSchema #ts0",
                     "Missing column with required property: http://bia/filePath",
                 ),
             ],
         ),
         (
-            "test_invalid_file_list_references",
+            "test_file_list_roc_id_reference_mismatch",
             1,
             [
                 (
-                    "filelist: data1/file_list_with_missing_references.tsv",
-                    "row: example_file_1.tiff",
-                    "NCBI:txid9606",
-                    "unexpected type",
+                    "In file list, at row: file_a.txt",
+                    "#missing_dataset does not exist in ro-crate-metadata.json",
+                ),
+            ],
+        ),
+        (
+            "test_file_list_self_reference_mismatch",
+            1,
+            [
+                (
+                    "In file list, at row: processed_image",
+                    "Reference 'missing_input_image' not found in file list.",
                 ),
                 (
-                    "filelist: data1/file_list_with_missing_references.tsv",
-                    "row: example_file_2.tiff",
-                    "_:not_present",
-                    "does not exist",
+                    "In file list, at row: processed_image",
+                    "Reference 'input_file' has no rdf:type, expected 'http://bia/Image'",
                 ),
             ],
         ),
@@ -181,26 +155,7 @@ def test_ro_crate_context_validation_error_messages(
     )
     assert len(unique_error_messages) == len(messages)
 
-    for message_position, message in enumerate(captured_messages):
-        severity, error_message = message
+    for message_position, captured_message in enumerate(captured_messages):
+        severity, error_message = captured_message
         for expected_message_snippet in messages[message_position]:
             check.is_in(expected_message_snippet, error_message)
-
-
-@pytest.mark.parametrize(
-    "accession_id",
-    ["S-TEST_specimen", "S-TEST_overlapping_file_list_and_ro_crate_info"],
-)
-def test_valid_ro_crate(accession_id, caplog):
-    """
-    Check that the ro-crates that get used to test our ingest pipeline are valid
-    """
-
-    caplog.set_level(logging.ERROR)
-
-    crate_path = get_test_ro_crate_path(accession_id, "ro_crate_to_bia")
-
-    arguments = ["validate", str(crate_path)]
-    result = runner.invoke(ro_crate_ingest, arguments)
-    assert result.exit_code == 0
-    assert len(caplog.records) == 0

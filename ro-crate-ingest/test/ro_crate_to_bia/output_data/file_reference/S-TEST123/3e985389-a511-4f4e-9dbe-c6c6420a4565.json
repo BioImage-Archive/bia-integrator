@@ -1,0 +1,38 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "3e985389-a511-4f4e-9dbe-c6c6420a4565",
+  "version": 0,
+  "model": {
+    "type_name": "FileReference",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "data/frames/TS_026_001_-0.0.tif12"
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "attributes_from_file_list",
+      "value": {
+        "file_path": "data/frames/TS_026_001_-0.0.tif",
+        "size_in_bytes": 12,
+        "dataset": "#Imaging%20Dataset",
+        "type": "http://bia/Image",
+        "label": "TS_026_001_-0.0",
+        "source_image_label": null,
+        "associated_specimen": null,
+        "associated_annotation_method": [],
+        "associated_protocol": []
+      }
+    }
+  ],
+  "file_path": "data/frames/TS_026_001_-0.0.tif",
+  "format": ".tif",
+  "size_in_bytes": 12,
+  "uri": "None?",
+  "submission_dataset_uuid": "968069de-6773-4476-a8f2-ced5c2a4e62d"
+}

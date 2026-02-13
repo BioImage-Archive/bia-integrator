@@ -1,11 +1,11 @@
-from bia_shared_datamodels.linked_data.pydantic_ld.ROCrateModel import ROCrateModel
+import logging
+
 import bia_integrator_api.models as APIModels
 import bia_shared_datamodels.ro_crate_models as ROCrateModels
+from bia_shared_datamodels.linked_data.pydantic_ld.ROCrateModel import ROCrateModel
 from bia_shared_datamodels.package_specific_uuid_creation.ro_crate_uuid_creation import (
     create_image_acquisition_protocol_uuid,
 )
-
-import logging
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -37,7 +37,9 @@ def convert_image_acquisition_protocol(
     elif ro_crate_iap.id:
         title = ro_crate_iap.id
 
-    uuid, uuid_attribute = create_image_acquisition_protocol_uuid(study_uuid, ro_crate_iap.id)
+    uuid, uuid_attribute = create_image_acquisition_protocol_uuid(
+        study_uuid, ro_crate_iap.id
+    )
 
     iap = {
         "uuid": str(uuid),

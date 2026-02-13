@@ -238,7 +238,11 @@
       "datePublished": "2023-09-05",
       "keyword": [],
       "acknowledgement": null,
-      "hasPart": [],
+      "hasPart": [
+        {
+          "@id": "file_list.tsv"
+        }
+      ],
       "accessionId": "test_valid_minimal_ro_crate"
     },
     {
@@ -253,6 +257,47 @@
       "affiliation": [],
       "role": [],
       "contactEmail": null
+    },
+    {
+      "@id": "file_list.tsv",
+      "@type": [
+        "File",
+        "bia:FileList",
+        "csvw:Table"
+      ],
+      "tableSchema": {
+        "@id": "#ts0"
+      }
+    },
+    {
+      "@id": "#col1",
+      "@type": [
+        "csvw:Column"
+      ],
+      "columnName": "dataset",
+      "propertyUrl": "http://schema.org/isPartOf"
+    },
+    {
+      "@id": "#col0",
+      "@type": [
+        "csvw:Column"
+      ],
+      "columnName": "file_path",
+      "propertyUrl": "http://bia/filePath"
+    },
+    {
+      "@id": "#ts0",
+      "@type": [
+        "csvw:Schema"
+      ],
+      "column": [
+        {
+          "@id": "#col0"
+        },
+        {
+          "@id": "#col1"
+        }
+      ]
     }
   ]
 }

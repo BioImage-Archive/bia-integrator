@@ -1,16 +1,17 @@
-from .LDModel import LDModel, ObjectReference
-from pydantic import Field, field_validator, model_validator
-from rdflib import URIRef, Graph, Literal, RDF, BNode
-from typing import Union
-from ..ld_context.SimpleJSONLDContext import SimpleJSONLDContext
-from ..ld_context.ContextTerm import ContextTerm
-from .FieldContext import FieldContext
 import json
 from pathlib import Path
+from typing import Annotated, Union
+
+from pydantic import AfterValidator, Field, field_validator
+from rdflib import Graph, URIRef
+
+from ..ld_context.SimpleJSONLDContext import SimpleJSONLDContext
+from .LDModel import LDModel
+from .utils import id_validate
 
 
 class ROCrateModel(LDModel):
-    id: str = Field(alias="@id")
+    id: Annotated[str, AfterValidator(id_validate)] = Field(alias="@id")
     type: Union[str, list[str]] = Field(alias="@type")
 
     @classmethod
@@ -26,7 +27,7 @@ class ROCrateModel(LDModel):
         """
         Note, this assume the object has either been expanded to have full urls for the types, or the standard bia context is being used. The actual document context is not checked.
         """
-        expected_class: str = cls.model_config.get("model_type")
+        expected_class: str = str(cls.model_config.get("model_type"))
         short_string = (
             expected_class.replace("http://www.w3.org/ns/csvw#", "csvw:")
             .replace("http://bia/", "bia:")
@@ -47,21 +48,6 @@ class ROCrateModel(LDModel):
 
         return value
 
-    @model_validator(mode="after")
-    def coerce_dataset_ids(self):
-        dataset_class = [
-            "http://schema.org/Dataset",
-            "https://schema.org/Dataset",
-            "Dataset",
-        ]
-        rdf_types = self.type if isinstance(self.type, list) else [self.type]
-        # TODO: Check if we want to stop this for datasets now that they are not directories.
-        # for class_string in dataset_class:
-        #    if class_string in rdf_types:
-        #        self.id = f"{self.id}/" if not str.endswith(self.id, "/") else self.id
-
-        return self
-
     def to_graph(self, context: SimpleJSONLDContext, base_path: Path) -> Graph:
         graph = Graph()
 
@@ -72,6 +58,6 @@ class ROCrateModel(LDModel):
         json_ld_string = json.dumps(json_ld)
 
         base_file_uri = str(base_path.as_uri())
-        graph.parse(data=json_ld_string, format="json-ld", publicID=f"{base_file_uri}/")
+        graph.parse(data=json_ld_string, format="json-ld", publicID=f"{base_file_uri}")
 
         return graph

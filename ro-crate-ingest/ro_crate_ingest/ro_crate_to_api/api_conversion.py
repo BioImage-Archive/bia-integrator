@@ -1,26 +1,26 @@
 import logging
+from pathlib import Path
+
+from bia_integrator_api import models
+from rich.logging import RichHandler
+
+from ro_crate_ingest.bia_ro_crate.parser.jsonld_metadata_parser import (
+    JSONLDMetadataParser,
+)
 from ro_crate_ingest.ro_crate_to_api.entity_conversion import (
     annotation_method,
     bio_sample,
     dataset,
-    file_metadata_dataframe_assembly,
-    file_reference_and_result_dataframe,
+    file_list,
     image_acquisition_protocol,
     protocol,
     result_data_and_dependency_creation,
-    result_data_prerequisite_ids,
+    result_data_id_creation,
     specimen_imaging_preparation_protocol,
     study,
 )
-from pathlib import Path
-from rich.logging import RichHandler
-from ..save_utils import PersistenceMode, persist
-from bia_integrator_api import models
+from ro_crate_ingest.save_utils import PersistenceMode, persist
 from ro_crate_ingest.settings import get_settings
-from ro_crate_ingest.bia_ro_crate.parser.jsonld_metadata_parser import (
-    JSONLDMetadataParser,
-)
-
 
 logging.basicConfig(
     level="NOTSET", format="%(message)s", datefmt="[%X]", handlers=[RichHandler()]
@@ -33,8 +33,8 @@ def convert_ro_crate_to_bia_api(
     persistence_mode: PersistenceMode,
     file_ref_url_prefix: str | None,
 ):
-    ro_crate_metadata_parser = JSONLDMetadataParser()
-    ro_crate_metadata_parser.parse(crate_path)
+    ro_crate_metadata_parser = JSONLDMetadataParser(crate_path)
+    ro_crate_metadata_parser.parse()
     roc_metadata = ro_crate_metadata_parser.result
     crate_graph = roc_metadata.to_graph()
 
@@ -91,30 +91,28 @@ def convert_ro_crate_to_bia_api(
     )
     api_objects += specimen_imaging_preparation_protocols
 
-    file_dataframe = file_metadata_dataframe_assembly.create_combined_file_dataframe(
-        roc_metadata.get_object_lookup(), crate_path, crate_graph
-    )
+    file_list_with_sizes = file_list.parse_file_list(roc_metadata)
 
-    identified_result_data = (
-        file_reference_and_result_dataframe.process_and_persist_file_references(
-            file_dataframe,
-            study_uuid,
-            accession_id,
-            file_ref_url_prefix,
-            persistence_mode,
-            get_settings().parallelisation_max_workers,
-        )
+    identified_result_data = file_list.process_and_persist_file_references(
+        file_list_with_sizes,
+        roc_metadata,
+        study_uuid,
+        accession_id,
+        file_ref_url_prefix,
+        persistence_mode,
+        get_settings().parallelisation_max_workers,
     )
 
     if not identified_result_data.empty:
         image_dataframe, id_uuid_map = (
-            result_data_prerequisite_ids.prepare_all_ids_for_images(
+            result_data_id_creation.prepare_all_ids_for_result_data(
                 identified_result_data,
                 roc_metadata.get_object_lookup(),
                 study_uuid,
                 get_settings().parallelisation_max_workers,
             )
         )
+
         result_data_and_dependency_creation.create_images_and_dependencies(
             image_dataframe,
             id_uuid_map,

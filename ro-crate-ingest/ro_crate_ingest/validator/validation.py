@@ -1,76 +1,31 @@
-import json
 import logging
 from pathlib import Path
 
-import typer
-
-from ro_crate_ingest.validator.file_list import (
-    FileListDefinitionValidator,
-    FileListReferenceValidator,
-)
-from ro_crate_ingest.validator.rdf_graph import ContextValidator, ReferenceValidation
-from ro_crate_ingest.validator.ro_crate_metadata_objects import (
-    IDValidator,
-    ModelTypeValidator,
-)
-from ro_crate_ingest.validator.ro_crate_standard import (
-    ReadableMetadataValidator,
-    SHACLValidator,
-)
-from ro_crate_ingest.validator.validator import ValidationResult, Validator
+from ro_crate_ingest.bia_ro_crate.parser import JSONLDMetadataParser, TSVMetadataParser
 
 logger = logging.getLogger("__main__." + __name__)
 logging.getLogger().setLevel(logging.INFO)
+logging.getLogger("rdflib").setLevel(logging.ERROR)
 
 
 def bia_roc_validation(ro_crate_directory: Path):
 
-    metadata_path = ro_crate_directory / "ro-crate-metadata.json"
+    roc_metadata = None
+    try:
+        roc_medatadata_parser = JSONLDMetadataParser(ro_crate_directory)
+        roc_medatadata_parser.parse()
+        roc_metadata = roc_medatadata_parser.result
+    except ExceptionGroup as validationExceptionGroup:
+        for exception in validationExceptionGroup.exceptions:
+            logger.error(exception)
+        exit(1)
 
-    logging.info(f"Perfoming generic ro-crate validation of {ro_crate_directory}")
-    validate(SHACLValidator.SHACLValidator(ro_crate_directory))
-    validate(ReadableMetadataValidator.ReadableMetadataValidator(metadata_path))
-
-    with open(metadata_path, "r") as f:
-        ro_crate_json = json.load(f)
-
-    graph: list[dict] = ro_crate_json["@graph"]
-    context = ro_crate_json["@context"]
-
-    validate(ContextValidator.ContextValidator(context))
-
-    logging.info(f"Validating ro-crate objects under in the @graph of {metadata_path}")
-    validate(IDValidator.IDValidator(graph)).validated_object
-    validate(ModelTypeValidator.ModelTypeValidator(graph, context)).validated_object
-
-    validate(ReferenceValidation.ReferenceValidation(metadata_path))
-
-    validate(
-        FileListDefinitionValidator.FileListDefinitionValidator(
-            metadata_path,
-        )
-    )
-
-    validate(FileListReferenceValidator.FileListReferenceValidator(metadata_path))
-
-    # TODO: validate file / image references
-
-
-def log_issues(validation_result: ValidationResult):
-    for issue in validation_result.issues:
-        if issue.location_description:
-            logger.__getattribute__(issue.severity.lower())(
-                f"{issue.location_description}:\n{issue.message}"
-            )
-        else:
-            logger.__getattribute__(issue.severity.lower())(issue.message)
-
-
-def validate(validator: Validator) -> ValidationResult:
-    validation_result = validator.validate()
-    if validation_result.result == 1:
-        log_issues(validation_result)
-        raise typer.Exit(1)
-    else:
-        logging.info(f"Passed {type(validator).__name__}.")
-        return validation_result
+    file_list = None
+    try:
+        file_list_parser = TSVMetadataParser(roc_metadata)
+        file_list_parser.parse()
+        file_list = file_list_parser.result
+    except ExceptionGroup as validationExceptionGroup:
+        for exception in validationExceptionGroup.exceptions:
+            logger.error(exception)
+        exit(1)

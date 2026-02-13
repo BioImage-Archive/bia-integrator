@@ -2,27 +2,9 @@ import rdflib
 import pathlib
 import logging
 from urllib.parse import urljoin
+from bia_shared_datamodels.linked_data.ontology_terms import BIA, SCHEMA
 
 logger = logging.getLogger("__main__." + __name__)
-
-
-def get_dataset_for_filelist(
-    file_list_id: str, graph: rdflib.Graph, crate_path: pathlib.Path
-) -> str:
-    pathlib_path_uri = pathlib.Path(crate_path).absolute().as_uri() + "/"
-    file_list_rdf_ref = urljoin(pathlib_path_uri, file_list_id)
-    subjects = list(
-        graph.subjects(
-            rdflib.URIRef("http://bia/associationFileMetadata"), rdflib.URIRef(file_list_rdf_ref)
-        )
-    )
-    if len(subjects) == 1:
-        parent_id = pathlib.Path.from_uri(str(subjects[0])).relative_to(crate_path)
-        return f"{str(parent_id)}/"
-    else:
-        raise ValueError(
-            f"Incorrect number of datasets found for filelist {file_list_id}. Please check the RO-Crate metadata."
-        )
 
 
 def get_hasPart_parent_id_from_child(
@@ -30,11 +12,7 @@ def get_hasPart_parent_id_from_child(
 ) -> str:
     pathlib_path_uri = pathlib.Path(crate_path).absolute().as_uri() + "/"
     child_rdf_ref = urljoin(pathlib_path_uri, child_id)
-    subjects = list(
-        graph.subjects(
-            rdflib.URIRef("http://schema.org/hasPart"), rdflib.URIRef(child_rdf_ref)
-        )
-    )
+    subjects = list(graph.subjects((SCHEMA.hasPart), rdflib.URIRef(child_rdf_ref)))
     if len(subjects) == 0:
         logger.exception(f"No dataset found for image {child_id}.")
         raise ValueError(

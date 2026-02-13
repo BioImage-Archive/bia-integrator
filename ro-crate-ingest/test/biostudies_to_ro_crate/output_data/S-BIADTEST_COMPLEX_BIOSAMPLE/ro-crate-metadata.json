@@ -401,7 +401,8 @@
             "associatedImageCorrelationMethod": [],
             "associatedProtocol": [],
             "hasPart": [],
-            "associationFileMetadata": null
+            "associatedCreationProcess": null,
+            "associatedSourceImage": []
         },
         {
             "@id": "#Study%20Component-2",
@@ -432,7 +433,8 @@
             "associatedImageCorrelationMethod": [],
             "associatedProtocol": [],
             "hasPart": [],
-            "associationFileMetadata": null
+            "associatedCreationProcess": null,
+            "associatedSourceImage": []
         },
         {
             "@id": "#Study%20Component-1",
@@ -466,7 +468,8 @@
             "associatedImageCorrelationMethod": [],
             "associatedProtocol": [],
             "hasPart": [],
-            "associationFileMetadata": null
+            "associatedCreationProcess": null,
+            "associatedSourceImage": []
         },
         {
             "@id": "#Image%20Acquisition-1",

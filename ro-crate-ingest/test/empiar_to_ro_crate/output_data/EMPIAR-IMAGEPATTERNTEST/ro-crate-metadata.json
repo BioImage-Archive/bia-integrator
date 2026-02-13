@@ -408,7 +408,8 @@
             "associatedImageCorrelationMethod": [],
             "associatedProtocol": [],
             "hasPart": [],
-            "associationFileMetadata": null
+            "associatedCreationProcess": null,
+            "associatedSourceImage": []
         },
         {
             "@id": "#Cryo-FIB/SEM%20sample%20preparation",

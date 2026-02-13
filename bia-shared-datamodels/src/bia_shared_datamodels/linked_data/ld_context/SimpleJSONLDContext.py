@@ -1,5 +1,6 @@
-from .ContextTerm import ContextTerm
 from typing import Iterable
+
+from .ContextTerm import ContextTerm
 
 
 class SimpleJSONLDContext:

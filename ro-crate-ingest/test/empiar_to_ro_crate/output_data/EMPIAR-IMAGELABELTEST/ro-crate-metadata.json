@@ -410,7 +410,8 @@
                 }
             ],
             "hasPart": [],
-            "associationFileMetadata": null
+            "associatedCreationProcess": null,
+            "associatedSourceImage": []
         },
         {
             "@id": "#Tilt%20series%20data/metadata/",
@@ -423,6 +424,8 @@
             "associatedBiologicalEntity": [],
             "associatedSpecimenImagingPreparationProtocol": [],
             "associatedSpecimen": null,
+            "associatedCreationProcess": null,
+            "associatedSourceImage": [],
             "associatedImageAcquisitionProtocol": [],
             "associatedAnnotationMethod": [],
             "associatedImageAnalysisMethod": [],
@@ -432,8 +435,7 @@
                     "@id": "#Tilt%20series%20preprocessing"
                 }
             ],
-            "hasPart": [],
-            "associationFileMetadata": null
+            "hasPart": []
         },
         {
             "@id": "#Movie%20stacks%20data/frames/",
@@ -464,7 +466,8 @@
             "associatedImageCorrelationMethod": [],
             "associatedProtocol": [],
             "hasPart": [],
-            "associationFileMetadata": null
+            "associatedCreationProcess": null,
+            "associatedSourceImage": []
         },
         {
             "@id": "#Tomogram%20reconstruction",

@@ -34,7 +34,7 @@ def file_references() -> List[bia_data_model.FileReference]:
 @pytest.fixture()
 def image_uuid(
     study_uuid, file_references
-) -> tuple[UUID, attribute_models.DocumentUUIDUinqueInputAttribute]:
+) -> tuple[UUID, attribute_models.DocumentUUIDUniqueInputAttribute]:
     return shared.create_image_uuid(
         study_uuid,
         [fr.uuid for fr in file_references],

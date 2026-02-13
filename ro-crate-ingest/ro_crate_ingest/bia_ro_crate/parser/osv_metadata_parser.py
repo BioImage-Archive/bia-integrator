@@ -1,40 +1,27 @@
-import os
 import re
-from pathlib import Path
 
 import pandas as pd
-from bia_shared_datamodels.ro_crate_models import (
-    Column,
-)
-from bia_shared_datamodels.ro_crate_models import FileList as FileListMetadata
-from bia_shared_datamodels.ro_crate_models import (
-    TableSchema,
-)
+from bia_shared_datamodels.linked_data.ontology_terms import BIA
+from bia_shared_datamodels.ro_crate_models import Column
 
 from ro_crate_ingest.bia_ro_crate.bia_ro_crate_metadata import BIAROCrateMetadata
-from ro_crate_ingest.bia_ro_crate.file_list import FileList
-from ro_crate_ingest.bia_ro_crate.parser.metadata_parser import MetadataParser
+from ro_crate_ingest.bia_ro_crate.parser.file_list_parser import FileListParser
 
 
-class OSVMetadataParser(MetadataParser[FileList]):
+class OSVMetadataParser(FileListParser):
     """
     Generic parser for operator separated value (e.g. csv, tsv) file lists:
     i.e. structured files who's schema is described in the ro-crate metadata.json
     """
 
     DEFAULT_LIST_PROPERTIES = [
-        "http://bia/associatedBiologicalEntity",
-        "http://bia/associatedImagingPreparationProtocol",
-        "http://bia/associatedImageAcquisitionProtocol",
-        "http://bia/associatedAnnotationMethod",
-        "http://bia/associatedProtocol",
-        "http://bia/associatedSourceImage",
-        "http://bia/sourceImagePath",
-        "http://bia/sourceImageName",
+        str(BIA.associatedBiologicalEntity),
+        str(BIA.associatedImagingPreparationProtocol),
+        str(BIA.associatedImageAcquisitionProtocol),
+        str(BIA.associatedAnnotationMethod),
+        str(BIA.associatedProtocol),
+        str(BIA.associatedSourceImage),
     ]
-
-    bia_rocrate_metadata: BIAROCrateMetadata
-    ro_crate_root: Path
 
     def __init__(
         self,
@@ -42,9 +29,6 @@ class OSVMetadataParser(MetadataParser[FileList]):
         *,
         context: dict | None = None,
     ) -> None:
-
-        self.bia_rocrate_metadata = ro_crate_metadata
-        self.ro_crate_root = ro_crate_metadata.get_base_path()
 
         multivalued_properties_key = "multivalued_properties"
         if context and multivalued_properties_key in context:
@@ -59,33 +43,7 @@ class OSVMetadataParser(MetadataParser[FileList]):
         else:
             self.multivalued_properties = self.DEFAULT_LIST_PROPERTIES
 
-        super().__init__(context=context)
-
-    def _get_full_path(self, path) -> Path:
-        full_file_path = self.ro_crate_root / path
-
-        if not os.path.exists(full_file_path) or not os.path.isfile(full_file_path):
-            raise ValueError(f"{full_file_path} does not exist or is not a file.")
-
-        return full_file_path
-
-    def _get_schema(self, file_list_id) -> dict[str, Column]:
-
-        file_list: FileListMetadata = self.bia_rocrate_metadata.get_object(file_list_id)
-
-        if not file_list:
-            raise KeyError(f"{file_list_id} not found in ro-crate")
-
-        schema_object: TableSchema = self.bia_rocrate_metadata.get_object(
-            file_list.tableSchema.id
-        )
-
-        columns: dict[str, Column] = {
-            column_ref.id: self.bia_rocrate_metadata.get_object(column_ref.id)
-            for column_ref in schema_object.column
-        }
-
-        return columns
+        super().__init__(ro_crate_metadata=ro_crate_metadata, context=context)
 
     def _expand_list_columns(
         self, data: pd.DataFrame, columns: dict[str, Column]

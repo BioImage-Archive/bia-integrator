@@ -1,23 +1,24 @@
 from pathlib import Path
-from urllib.parse import quote
 
 import pandas as pd
-from ro_crate_ingest.bia_ro_crate.parser.osv_metadata_parser import OSVMetadataParser
 
 from ro_crate_ingest.bia_ro_crate.file_list import FileList
+from ro_crate_ingest.bia_ro_crate.parser.osv_metadata_parser import OSVMetadataParser
 
 
 class TSVMetadataParser(OSVMetadataParser):
 
-    def parse(self, path: Path):
+    def parse(self, target: Path | str | None = None):
+        self._set_file_list_path_and_id(target)
 
-        file_list_id = quote(str(path))
-        columns = self._get_schema(file_list_id)
+        columns = self._get_schema()
 
-        full_file_path = self._get_full_path(path)
-
-        data = pd.read_csv(full_file_path, delimiter="\t")
+        data = pd.read_csv(self._file_list_path, delimiter="\t")
 
         self._expand_list_columns(data, columns)
 
-        self._result = FileList(ro_crate_id=file_list_id, schema=columns, data=data)
+        self._validate_reference_columns(data, columns)
+
+        self._result = FileList(
+            ro_crate_id=self._file_list_id, schema=columns, data=data
+        )

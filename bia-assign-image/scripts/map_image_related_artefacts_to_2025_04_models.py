@@ -103,7 +103,7 @@ def map_image_representation_to_2025_04_model(
             attribute["provenance"] = "bia_image_conversion"
         image_representation_dict["additional_metadata"].append(attribute)
 
-    # Add DocumentUUIDUinqueInputAttribute which is new in 2025_04 models
+    # Add DocumentUUIDUniqueInputAttribute which is new in 2025_04 models
     image_representation_dict["additional_metadata"].append(
         {
             "provenance": object_creator,

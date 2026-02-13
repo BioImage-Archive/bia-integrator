@@ -419,7 +419,8 @@
                 }
             ],
             "hasPart": [],
-            "associationFileMetadata": null
+            "associatedCreationProcess": null,
+            "associatedSourceImage": []
         },
         {
             "@id": "#Tilt%20series%20and%20alignment%20information%20for%20dataset%202%20%28220330%29%20data/220330/alignment/",
@@ -442,7 +443,8 @@
             "associatedImageCorrelationMethod": [],
             "associatedProtocol": [],
             "hasPart": [],
-            "associationFileMetadata": null
+            "associatedCreationProcess": null,
+            "associatedSourceImage": []
         },
         {
             "@id": "#Unaligned%20multi-frame%20micrographs%20for%20dataset%202%20%28220330%29%20data/220330/data/",
@@ -473,7 +475,8 @@
             "associatedImageCorrelationMethod": [],
             "associatedProtocol": [],
             "hasPart": [],
-            "associationFileMetadata": null
+            "associatedCreationProcess": null,
+            "associatedSourceImage": []
         },
         {
             "@id": "#Reconstructed%20tomograms%20for%20dataset%201%20%28211206%29%20data/211206/tomograms/",
@@ -504,7 +507,8 @@
                 }
             ],
             "hasPart": [],
-            "associationFileMetadata": null
+            "associatedCreationProcess": null,
+            "associatedSourceImage": []
         },
         {
             "@id": "#Tilt%20series%20and%20alignment%20information%20for%20dataset%201%20%28211206%29%20data/211206/alignment/",
@@ -527,7 +531,8 @@
             "associatedImageCorrelationMethod": [],
             "associatedProtocol": [],
             "hasPart": [],
-            "associationFileMetadata": null
+            "associatedCreationProcess": null,
+            "associatedSourceImage": []
         },
         {
             "@id": "#Unaligned%20multi-frame%20micrographs%20for%20dataset%201%20%28211206%29%20data/211206/data/",
@@ -558,7 +563,8 @@
             "associatedImageCorrelationMethod": [],
             "associatedProtocol": [],
             "hasPart": [],
-            "associationFileMetadata": null
+            "associatedCreationProcess": null,
+            "associatedSourceImage": []
         },
         {
             "@id": "#Tomogram%20reconstruction%20and%20sub-tomogram%20averaging",

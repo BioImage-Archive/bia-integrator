@@ -1,7 +1,17 @@
+import pytest
+import pytest_check as check
+from rdflib import Namespace, URIRef
 from rdflib.graph import Graph
 from rdflib.namespace import OWL, RDF, RDFS, XSD
-from rdflib import URIRef
 
+from bia_shared_datamodels.linked_data.ontology_terms import (
+    BIA,
+    CSVW,
+    DARWINCORE,
+    DARWINCOREIRI,
+    DUBLINCORE,
+    SCHEMA,
+)
 
 # TODO: Add a full owl consistency check using an owl reasoner,
 # Note our metaclasses have issues with the python version of owlready2, (to do with python class inheritance, rather than ontology)
@@ -29,11 +39,10 @@ def test_bia_properties_use_defined_terms(
 
     combined_ontology = bia_ontology + related_ontologies
 
-    all_classes = (
-        set(combined_ontology.subjects(RDF.type, OWL.Class))
-        | set(combined_ontology.subjects(RDF.type, RDFS.Class))        
+    all_classes = set(combined_ontology.subjects(RDF.type, OWL.Class)) | set(
+        combined_ontology.subjects(RDF.type, RDFS.Class)
     )
-    # We use IAO's information content entity (IAO_0000030) as the domain for some classes
+    # We use IAO's information content entity (IAO_0000030) as the domain for some classes
     all_classes.add(URIRef("http://purl.obolibrary.org/obo/IAO_0000030"))
 
     all_properties = (
@@ -108,3 +117,40 @@ def test_bia_terms_have_label_and_comment(bia_ontology: Graph):
 
         assert len(labels) > 0
         assert len(comments) > 0
+
+
+def test_bia_namespace_terms(bia_ontology: Graph):
+    bia_terms = list(
+        term for term in bia_ontology.subjects(unique=True) if isinstance(term, URIRef)
+    )
+
+    for attribute in dir(BIA):
+        if not attribute.startswith("_") and isinstance(attribute, URIRef):
+            check.is_in(attribute, bia_terms, msg=f"{attribute} not in BIA ontology")
+
+
+@pytest.mark.parametrize(
+    ("python_terms", "ontology_url"),
+    (
+        (SCHEMA, "https://schema.org/version/latest/schemaorg-current-http.ttl"),
+        (DARWINCORE, "http://rs.tdwg.org/dwc/terms.ttl"),
+        (DARWINCOREIRI, "http://rs.tdwg.org/dwc/iri.ttl"),
+        (CSVW, "http://www.w3.org/ns/csvw#"),
+        (
+            DUBLINCORE,
+            "https://www.dublincore.org/specifications/dublin-core/dcmi-terms/dublin_core_terms.ttl",
+        ),
+    ),
+)
+def test_other_namespace_terms(python_terms: Namespace, ontology_url: str):
+    ontology = Graph()
+    ontology.parse(ontology_url)
+    defined_terms = list(
+        term for term in ontology.subjects(unique=True) if isinstance(term, URIRef)
+    )
+
+    for attribute in dir(python_terms):
+        if not attribute.startswith("_") and isinstance(attribute, URIRef):
+            check.is_true(
+                attribute in defined_terms, msg=f"{attribute} not in {ontology_url}"
+            )

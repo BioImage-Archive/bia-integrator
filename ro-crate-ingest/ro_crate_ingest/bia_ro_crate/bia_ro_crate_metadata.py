@@ -1,13 +1,14 @@
 import json
 from collections import defaultdict
+from pathlib import Path
 from typing import Iterable
 
 from bia_shared_datamodels.linked_data.ld_context.SimpleJSONLDContext import (
     SimpleJSONLDContext,
 )
 from bia_shared_datamodels.linked_data.pydantic_ld.ROCrateModel import ROCrateModel
+from bia_shared_datamodels.ro_crate_models import FileList
 from rdflib import Graph
-from pathlib import Path
 
 
 class BIAROCrateMetadata:
@@ -15,22 +16,40 @@ class BIAROCrateMetadata:
     _graph_bia_entities: dict[str, ROCrateModel]
     _context: SimpleJSONLDContext
     _base_path: Path
+    _file_list_id: str
 
     def __init__(
         self,
         graph_bia_entities: dict[str, ROCrateModel],
         context: SimpleJSONLDContext,
         base_path: Path,
+        file_list_id: str | None = None,
     ) -> None:
         self._graph_bia_entities = graph_bia_entities
         self._context = context
         self._base_path = base_path
 
+        if file_list_id:
+            if file_list_id not in graph_bia_entities:
+                raise ValueError(
+                    f"File list with ID {file_list_id} not graph entities."
+                )
+            self._file_list_id = file_list_id
+        else:
+            file_lists = self.get_objects_by_type()[FileList]
+            if (file_list_count := len(file_lists)) != 1:
+                raise ValueError(
+                    f"Found unexpected number of file lists: {file_list_count}"
+                )
+            self._file_list_id = list(file_lists.keys())[0]
+
     def to_graph(self) -> Graph:
         graph = Graph()
 
         for entity in self._graph_bia_entities.values():
-            graph += entity.to_graph(self._context, self._base_path)
+            graph += entity.to_graph(
+                self._context, self._base_path / "ro-crate-metadata.json"
+            )
 
         return graph
 
@@ -77,3 +96,6 @@ class BIAROCrateMetadata:
             objects_by_type[type(bia_object)][object_id] = bia_object
 
         return objects_by_type
+
+    def get_file_list_entity(self):
+        return self._graph_bia_entities[self._file_list_id]
