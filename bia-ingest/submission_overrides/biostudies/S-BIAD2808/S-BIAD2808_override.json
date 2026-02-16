@@ -1,0 +1,557 @@
+{
+  "accno" : "S-BIAD2808",
+  "attributes" : [ {
+    "name" : "Template",
+    "value" : "BioImages.v5"
+  }, {
+    "name" : "Title",
+    "value" : "MitoEM 2.0 - A Benchmark for Challenging 3D Mitochondria Instance Segmentation from EM Images"
+  }, {
+    "name" : "DOI",
+    "value" : "10.6019/S-BIAD2808"
+  }, {
+    "name" : "ReleaseDate",
+    "value" : "2026-01-19"
+  }, {
+    "name" : "AttachTo",
+    "value" : "BioImages"
+  } ],
+  "section" : {
+    "accno" : "study-0-70nb",
+    "type" : "Study",
+    "attributes" : [ {
+      "name" : "Title",
+      "value" : "MitoEM 2.0 - A Benchmark for Challenging 3D Mitochondria Instance Segmentation from EM Images"
+    }, {
+      "name" : "ReleaseDate",
+      "value" : "2026-01-19"
+    }, {
+      "name" : "Description",
+      "value" : "We present MitoEM 2.0, a curated benchmark resource for training and evaluating three-dimensional (3D) mitochondria instance segmentation in volume electron microscopy (vEM). The collection assembles multiscale vEM datasets (FIB-SEM, SBF-SEM, and ssSEM) spanning diverse tissues and species, with expert-verified instance labels emphasizing biologically difficult scenarios, including dense mitochondrial packing, hyperfused networks, and thin filamentous connections with ambiguous boundaries.  All releases include native-resolution volumes and standardized processed versions, per-volume metadata (voxel size, modality, tissue, and data splits), and official train/validation/test partitions to enable reproducible benchmarking. Annotations follow a consistent protocol with quality checks and instance reindexing. Data are provided in NIfTI format with an nnU-Net–compatible layout, alongside machine-readable split files and checksums. MitoEM 2.0 facilitates robust model development and fair comparison across methods while supporting reuse in bioimage analysis, algorithm benchmarking, and teaching."
+    }, {
+      "name" : "Keywords",
+      "value" : "volume electron microscopy"
+    }, {
+      "name" : "Keywords",
+      "value" : "mitochondria"
+    }, {
+      "name" : "Keywords",
+      "value" : "instance segmentation"
+    }, {
+      "name" : "Keywords",
+      "value" : "benchmark"
+    }, {
+      "name" : "Keywords",
+      "value" : "FIB-SEM"
+    }, {
+      "name" : "Keywords",
+      "value" : "SBF-SEM"
+    }, {
+      "name" : "Keywords",
+      "value" : "serial section EM"
+    }, {
+      "name" : "License",
+      "value" : "CC0",
+      "valqual" : [ {
+        "name" : "URL",
+        "value" : "https://creativecommons.org/publicdomain/zero/1.0/legalcode"
+      } ]
+    } ],
+    "links" : [ {
+      "url" : "https://doi.org/10.1101/2025.11.12.687478",
+      "attributes" : [ {
+        "name" : "Description",
+        "value" : "Paper doi"
+      } ]
+    }, {
+      "url" : "https://github.com/luckieucas/MitoEM2.0",
+      "attributes" : [ {
+        "name" : "Description",
+        "value" : "Paper code"
+      } ]
+    } ],
+    "subsections" : [ {
+      "accno" : "Biosample-1",
+      "type" : "Biosample",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Mouse biosamples (Mus musculus) — ME2-Beta"
+      }, {
+        "name" : "Organism",
+        "value" : "Mus musculus (mouse)"
+      }, {
+        "name" : "Description",
+        "value" : "Volumetric EM datasets from mouse pancreatic β-cells used in the MitoEM 2.0 benchmark"
+      }, {
+        "name" : "Biological entity",
+        "value" : "pancreas β-cells"
+      } ]
+    }, {
+      "accno" : "Biosample-2",
+      "type" : "Biosample",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Homo sapiens (human) — ME2-Jurkat"
+      }, {
+        "name" : "Organism",
+        "value" : "Homo sapiens (human)"
+      }, {
+        "name" : "Description",
+        "value" : "Volumetric EM datasets from human T lymphocytes used in the MitoEM 2.0 benchmark"
+      }, {
+        "name" : "Biological entity",
+        "value" : "T lymphocytes"
+      } ]
+    }, {
+      "accno" : "Biosample-3",
+      "type" : "Biosample",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Homo sapiens (human) — ME2-Macro"
+      }, {
+        "name" : "Organism",
+        "value" : "Homo sapiens (human)"
+      }, {
+        "name" : "Description",
+        "value" : "Volumetric EM datasets from human macrophages used in the MitoEM 2.0 benchmark"
+      }, {
+        "name" : "Biological entity",
+        "value" : "macrophages"
+      } ]
+    }, {
+      "accno" : "Biosample-4",
+      "type" : "Biosample",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Mouse biosamples (Mus musculus) — ME2-Mossy"
+      }, {
+        "name" : "Organism",
+        "value" : "Mus musculus (mouse)"
+      }, {
+        "name" : "Description",
+        "value" : "Volumetric EM datasets from mouse mossy fiber boutons used in the MitoEM 2.0 benchmark."
+      }, {
+        "name" : "Biological entity",
+        "value" : "mossy-fiber boutons"
+      } ]
+    }, {
+      "accno" : "Biosample-5",
+      "type" : "Biosample",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Mouse biosamples (Mus musculus) —ME2-Podo"
+      }, {
+        "name" : "Organism",
+        "value" : "Mus musculus (mouse)"
+      }, {
+        "name" : "Description",
+        "value" : "Volumetric EM datasets from mouse kidney podocytes used in the MitoEM 2.0 benchmark"
+      }, {
+        "name" : "Biological entity",
+        "value" : "kidney podocytes"
+      } ]
+    }, {
+      "accno" : "Biosample-6",
+      "type" : "Biosample",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Homo sapiens (human) — ME2-Pyra"
+      }, {
+        "name" : "Organism",
+        "value" : "Homo sapiens (human)"
+      }, {
+        "name" : "Description",
+        "value" : "Volumetric EM datasets from human pyramidal neurons used in the MitoEM 2.0 benchmark"
+      }, {
+        "name" : "Biological entity",
+        "value" : "pyramidal neurons"
+      } ]
+    }, {
+      "accno" : "Biosample-7",
+      "type" : "Biosample",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Drosophila melanogaster (fruit fly) — ME2-Sperm"
+      }, {
+        "name" : "Organism",
+        "value" : "Drosophila melanogaster (fruit fly)"
+      }, {
+        "name" : "Description",
+        "value" : "Volumetric EM datasets from fruit fly spermatocytes used in the MitoEM 2.0 benchmark"
+      }, {
+        "name" : "Biological entity",
+        "value" : "spermatocytes"
+      } ]
+    }, {
+      "accno" : "Biosample-8",
+      "type" : "Biosample",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Mouse biosamples (Mus musculus) — ME2-Stem"
+      }, {
+        "name" : "Organism",
+        "value" : "Mus musculus (mouse)"
+      }, {
+        "name" : "Description",
+        "value" : "Volumetric EM datasets from mouse brainstem tissue used in the MitoEM 2.0 benchmark"
+      }, {
+        "name" : "Biological entity",
+        "value" : "brainstem tissue"
+      } ]
+    }, {
+      "accno" : "Specimen-1",
+      "type" : "Specimen",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "High-pressure freezing"
+      }, {
+        "name" : "Sample preparation protocol",
+        "value" : "High-pressure freezing followed by freeze substitution"
+      } ]
+    }, {
+      "accno" : "Specimen-2",
+      "type" : "Specimen",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Chemical fixation"
+      }, {
+        "name" : "Sample preparation protocol",
+        "value" : "Chemical fixation with resin embedding"
+      } ]
+    }, {
+      "accno" : "Image Acquisition-1",
+      "type" : "Image acquisition",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "FIB-SEM"
+      }, {
+        "name" : "Imaging instrument",
+        "value" : "Focused ion beam scanning electron microscopes (FIB-SEM)"
+      }, {
+        "name" : "Image acquisition parameters",
+        "value" : "Voxel sizes, section thicknesses, and imaging resolutions vary across datasets and are provided in the file-level metadata."
+      }, {
+        "name" : "Imaging method",
+        "value" : "electron microscopy"
+      }, {
+        "name" : "Imaging method",
+        "value" : "focussed ion beam scanning electron microscopy (FIB-SEM)"
+      } ]
+    }, {
+      "accno" : "Image Acquisition-2",
+      "type" : "Image acquisition",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "SBF-SEM"
+      }, {
+        "name" : "Imaging instrument",
+        "value" : "Serial block-face scanning electron microscopes (SBF-SEM)"
+      }, {
+        "name" : "Image acquisition parameters",
+        "value" : "Voxel sizes, section thicknesses, and imaging resolutions vary across datasets and are provided in the file-level metadata."
+      }, {
+        "name" : "Imaging method",
+        "value" : "electron microscopy"
+      }, {
+        "name" : "Imaging method",
+        "value" : "serial block face SEM (SBFSEM)"
+      } ]
+    }, {
+      "accno" : "Image Acquisition-3",
+      "type" : "Image acquisition",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Serial section scanning electron microscopy"
+      }, {
+        "name" : "Imaging instrument",
+        "value" : "Serial section scanning electron microscopes"
+      }, {
+        "name" : "Image acquisition parameters",
+        "value" : "Voxel sizes, section thicknesses, and imaging resolutions vary across datasets and are provided in the file-level metadata."
+      }, {
+        "name" : "Imaging method",
+        "value" : "electron microscopy"
+      } ]
+    }, {
+      "accno" : "imag-7-gzcl",
+      "type" : "Image correlation",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Serial section alignment for volume EM"
+      }, {
+        "name" : "Spatial and temporal alignment",
+        "value" : "Spatial alignment was performed across serial sections to reconstruct three-dimensional volumes. No temporal alignment was involved, as all datasets represent static biological specimens acquired using volume electron microscopy."
+      } ]
+    }, {
+      "accno" : "imag-8-4i72",
+      "type" : "Image analysis",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Mitochondria instance segmentation and quality control"
+      }, {
+        "name" : "Image analysis overview",
+        "value" : "Image analysis consisted of semi-automatic mitochondria instance segmentation followed by extensive manual proofreading and quality control. Initial segmentation was generated using automated or learning-based tools to produce candidate mitochondrial instances. Expert annotators then manually refined the segmentations to correct merge and split errors, ensure biologically meaningful instance separation, and resolve ambiguous thin connections.  All annotations were reviewed for topological consistency and reindexed to ensure unique instance identifiers. Final instance masks were validated by domain experts prior to release and organized in a standardized format to support reproducible benchmarking and downstream method development."
+      } ]
+    }, {
+      "accno" : "anno-9-pzyg",
+      "type" : "Annotation",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Instance-level mitochondria annotations for volume EM"
+      }, {
+        "name" : "Annotation Overview",
+        "value" : "This dataset provides instance-level mitochondria segmentation annotations for 3D volume electron microscopy (vEM) datasets. Each mitochondrion is annotated as a unique instance, including biologically challenging cases such as densely packed mitochondria, hyperfused networks, and thin filamentous connections with ambiguous boundaries.  Annotations were generated using a semi-automatic workflow combining automated segmentation tools with extensive manual proofreading by expert annotators. Final instance masks were reviewed for biological plausibility, topological consistency, and labeling accuracy prior to release."
+      }, {
+        "name" : "Annotation Type",
+        "value" : "segmentation_mask"
+      }, {
+        "name" : "Annotation Method",
+        "value" : "Semi-automatic annotation. Initial mitochondria segmentation was generated using automated or learning-based algorithms to produce candidate instances. Expert annotators manually refined the results to correct merge and split errors, resolve ambiguous thin connections, and ensure biologically meaningful instance separation."
+      }, {
+        "name" : "File List",
+        "value" : "annotation_file_list.json"
+      } ]
+    }, {
+      "accno" : "Study Component-1",
+      "type" : "Study Component",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Dataset001_ME2-Beta"
+      }, {
+        "name" : "Description",
+        "value" : "3D electron microscopy volumes of mouse pancreatic beta cells with instance-level mitochondria segmentation annotations, acquired using focused ion beam scanning electron microscopy (FIB-SEM) and fully proofread by domain experts."
+      }, {
+        "name" : "File List",
+        "value" : "file_list_images1.json"
+      } ],
+      "subsections" : [ {
+        "accno" : "asso-1",
+        "type" : "Associations",
+        "attributes" : [ {
+          "name" : "Biosample",
+          "value" : "Mouse biosamples (Mus musculus) — ME2-Beta"
+        }, {
+          "name" : "Specimen",
+          "value" : "High-pressure freezing"
+        }, {
+          "name" : "Image acquisition",
+          "value" : "FIB-SEM"
+        } ]
+      } ]
+    }, {
+      "accno" : "Study Component-2",
+      "type" : "Study Component",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Dataset002_ME2-Jurkat"
+      }, {
+        "name" : "Description",
+        "value" : "3D electron microscopy volumes of human T lymphocytes with instance-level mitochondria segmentation annotations, acquired using focused ion beam scanning electron microscopy (FIB-SEM) and fully proofread by domain experts."
+      }, {
+        "name" : "File List",
+        "value" : "file_list_images2.json"
+      } ],
+      "subsections" : [ {
+        "accno" : "asso-2",
+        "type" : "Associations",
+        "attributes" : [ {
+          "name" : "Biosample",
+          "value" : "Homo sapiens (human) — ME2-Jurkat"
+        }, {
+          "name" : "Specimen",
+          "value" : "High-pressure freezing"
+        }, {
+          "name" : "Image acquisition",
+          "value" : "FIB-SEM"
+        } ]
+      } ]
+    }, {
+      "accno" : "Study Component-3",
+      "type" : "Study Component",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Dataset003_ME2-Macro"
+      }, {
+        "name" : "Description",
+        "value" : "3D electron microscopy volumes of human macrophages with instance-level mitochondria segmentation annotations, acquired using focused ion beam scanning electron microscopy (FIB-SEM) and fully proofread by domain experts."
+      }, {
+        "name" : "File List",
+        "value" : "file_list_images3.json"
+      } ],
+      "subsections" : [ {
+        "accno" : "asso-3",
+        "type" : "Associations",
+        "attributes" : [ {
+          "name" : "Biosample",
+          "value" : "Homo sapiens (human) — ME2-Macro"
+        }, {
+          "name" : "Specimen",
+          "value" : "High-pressure freezing"
+        }, {
+          "name" : "Image acquisition",
+          "value" : "FIB-SEM"
+        } ]
+      } ]
+    }, {
+      "accno" : "Study Component-4",
+      "type" : "Study Component",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Dataset004_ME2-Mossy"
+      }, {
+        "name" : "Description",
+        "value" : "3D electron microscopy volumes of mouse mossy fiber boutons with instance-level mitochondria segmentation annotations, acquired using serial section electron microscopy and fully proofread by domain experts."
+      }, {
+        "name" : "File List",
+        "value" : "file_list_images4.json"
+      } ],
+      "subsections" : [ {
+        "accno" : "asso-4",
+        "type" : "Associations",
+        "attributes" : [ {
+          "name" : "Biosample",
+          "value" : "Mouse biosamples (Mus musculus) — ME2-Mossy"
+        }, {
+          "name" : "Specimen",
+          "value" : "Chemical fixation"
+        }, {
+          "name" : "Image acquisition",
+          "value" : "Serial section scanning electron microscopy"
+        } ]
+      } ]
+    }, {
+      "accno" : "Study Component-5",
+      "type" : "Study Component",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Dataset005_ME2-Podo"
+      }, {
+        "name" : "Description",
+        "value" : "3D electron microscopy volumes of mouse kidney podocytes with instance-level mitochondria segmentation annotations, acquired using focused ion beam scanning electron microscopy (FIB-SEM) and fully proofread by domain experts."
+      }, {
+        "name" : "File List",
+        "value" : "file_list_images5.json"
+      } ],
+      "subsections" : [ {
+        "accno" : "asso-5",
+        "type" : "Associations",
+        "attributes" : [ {
+          "name" : "Biosample",
+          "value" : "Mouse biosamples (Mus musculus) —ME2-Podo"
+        }, {
+          "name" : "Specimen",
+          "value" : "High-pressure freezing"
+        }, {
+          "name" : "Image acquisition",
+          "value" : "FIB-SEM"
+        } ]
+      } ]
+    }, {
+      "accno" : "Study Component-6",
+      "type" : "Study Component",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Dataset006_ME2-Pyra"
+      }, {
+        "name" : "Description",
+        "value" : "3D electron microscopy volumes of human pyramidal neurons with instance-level mitochondria segmentation annotations, acquired using serial section electron microscopy and fully proofread by domain experts."
+      }, {
+        "name" : "File List",
+        "value" : "file_list_images6.json"
+      } ],
+      "subsections" : [ {
+        "accno" : "asso-6",
+        "type" : "Associations",
+        "attributes" : [ {
+          "name" : "Biosample",
+          "value" : "Homo sapiens (human) — ME2-Pyra"
+        }, {
+          "name" : "Specimen",
+          "value" : "Chemical fixation"
+        }, {
+          "name" : "Image acquisition",
+          "value" : "Serial section scanning electron microscopy"
+        } ]
+      } ]
+    }, {
+      "accno" : "Study Component-7",
+      "type" : "Study Component",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Dataset007_ME2-Sperm"
+      }, {
+        "name" : "Description",
+        "value" : "3D electron microscopy volumes of fruit fly spermatocytes with instance-level mitochondria segmentation annotations, acquired using focused ion beam scanning electron microscopy (FIB-SEM) and fully proofread by domain experts."
+      }, {
+        "name" : "File List",
+        "value" : "file_list_images7.json"
+      } ],
+      "subsections" : [ {
+        "accno" : "asso-7",
+        "type" : "Associations",
+        "attributes" : [ {
+          "name" : "Biosample",
+          "value" : "Drosophila melanogaster (fruit fly) — ME2-Sperm"
+        }, {
+          "name" : "Specimen",
+          "value" : "High-pressure freezing"
+        }, {
+          "name" : "Image acquisition",
+          "value" : "FIB-SEM"
+        } ]
+      } ]
+    }, {
+      "accno" : "Study Component-8",
+      "type" : "Study Component",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Dataset008_ME2-Stem"
+      }, {
+        "name" : "Description",
+        "value" : "3D electron microscopy volumes of mouse brainstem tissue with instance-level mitochondria segmentation annotations, acquired using serial block-face scanning electron microscopy and fully proofread by domain experts."
+      }, {
+        "name" : "File List",
+        "value" : "file_list_images8.json"
+      } ],
+      "subsections" : [ {
+        "accno" : "asso-8",
+        "type" : "Associations",
+        "attributes" : [ {
+          "name" : "Biosample",
+          "value" : "Mouse biosamples (Mus musculus) — ME2-Stem"
+        }, {
+          "name" : "Specimen",
+          "value" : "Chemical fixation"
+        }, {
+          "name" : "Image acquisition",
+          "value" : "SBF-SEM"
+        } ]
+      } ]
+    }, {
+      "accno" : "author-1",
+      "type" : "Author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "peng liu"
+      }, {
+        "name" : "E-mail",
+        "value" : "luckiepeng@gmail.com"
+      }, {
+        "name" : "ORCID",
+        "value" : "0000-0001-5437-1294"
+      }, {
+        "name" : "affiliation",
+        "value" : "o1",
+        "reference" : true
+      } ]
+    }, {
+      "accno" : "o1",
+      "type" : "organisation",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Boston College"
+      } ]
+    } ]
+  },
+  "type" : "submission"
+}
