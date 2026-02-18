@@ -294,7 +294,7 @@
       } ]
     }, {
       "accno" : "anno-9-pzyg",
-      "type" : "Annotation",
+      "type" : "Annotations",
       "attributes" : [ {
         "name" : "Title",
         "value" : "Instance-level mitochondria annotations for volume EM"
