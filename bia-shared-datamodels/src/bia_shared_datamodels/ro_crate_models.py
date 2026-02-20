@@ -6,6 +6,7 @@ from bia_shared_datamodels.linked_data.ontology_terms import (
     CSVW,
     DUBLINCORE,
     SCHEMA,
+    DARWINCORE,
 )
 from bia_shared_datamodels.linked_data.pydantic_ld.FieldContext import FieldContext
 from bia_shared_datamodels.linked_data.pydantic_ld.LDModel import ObjectReference
@@ -296,7 +297,7 @@ class BioSample(ROCrateModel):
         list[str], FieldContext(BIA.intrinsicVariableDescription)
     ] = Field(default_factory=list)
     organismClassification: Annotated[
-        list[ObjectReference], FieldContext(BIA.organismClassification)
+        list[ObjectReference], FieldContext(SCHEMA.taxonomicRange)
     ] = Field(default_factory=list)
     growthProtocol: Annotated[
         Optional[ObjectReference], FieldContext(BIA.growthProtocol, is_id_field=True)
@@ -306,10 +307,10 @@ class BioSample(ROCrateModel):
 
 
 class Taxon(ROCrateModel):
-    commonName: Annotated[Optional[str], FieldContext(BIA.commonName)] = Field(
+    commonName: Annotated[Optional[str], FieldContext(DARWINCORE.vernacularName)] = Field(
         default=None
     )
-    scientificName: Annotated[Optional[str], FieldContext(BIA.scientificName)] = Field(
+    scientificName: Annotated[Optional[str], FieldContext(DARWINCORE.scientificName)] = Field(
         default=None
     )
 
