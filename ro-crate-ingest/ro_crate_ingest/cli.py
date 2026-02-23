@@ -11,6 +11,9 @@ from ro_crate_ingest.biostudies_to_ro_crate.biostudies_conversion import (
 from ro_crate_ingest.empiar_to_ro_crate.empiar_proposal_conversion import (
     convert_empiar_proposal_to_ro_crate,
 )
+from ro_crate_ingest.empiar_to_ro_crate.empiar_proposal_generation import (
+    generate_empiar_proposal
+)
 from ro_crate_ingest.validator.validation import bia_roc_validation
 
 ro_crate_ingest = typer.Typer()
@@ -76,8 +79,26 @@ def biostudies_to_ro_crate(
         ),
     ] = None,
 ):
-
     convert_biostudies_to_ro_crate(accession_id, crate_path)
+
+
+@ro_crate_ingest.command("generate-empiar-proposal")
+def empiar_proposal(
+    proposal_config_path: Annotated[
+        Path, 
+        typer.Argument(help="Path to the yaml proposal config file.")
+    ], 
+    proposal_output_path: Annotated[
+        Optional[Path], 
+        typer.Option(
+            "--proposal-path", 
+            "-p", 
+            case_sensitive=False, 
+            help="Path to output proposal file."
+        )
+    ] = None
+):
+    generate_empiar_proposal(proposal_config_path, proposal_output_path)
 
 
 @ro_crate_ingest.command("empiar-to-roc")
@@ -96,7 +117,6 @@ def empiar_to_ro_crate(
         ),
     ] = None,
 ):
-
     convert_empiar_proposal_to_ro_crate(proposal_path, crate_path)
 
 
