@@ -250,6 +250,7 @@ def load_submission(accession_id: str) -> Submission:
         "S-BIAD1763": "Add missing '1' to start of DOI",
         "S-BIAD1982": "DOI mising leading '10 and entered incorrectly. Correct errors in DOI",
         "S-BIAD2324": "Changed DOI of publication from arXiv:2504.18737v1 to 10.48550/arXiv.2504.18737",
+        "S-BIAD2808": "Fix missing erroneous references in study component associations",
     }
     if accession_id in overrides:
         return read_override(accession_id)
