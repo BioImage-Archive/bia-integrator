@@ -5,10 +5,10 @@ from ruamel.yaml.scalarstring import DoubleQuotedScalarString as dq
 
 from ro_crate_ingest.empiar_to_ro_crate.empiar.file_api import get_files
 from ro_crate_ingest.empiar_to_ro_crate.proposal_generation.components import (
+    assign_specimen_metadata, 
     build_dataset_blocks,
 )
 from ro_crate_ingest.empiar_to_ro_crate.proposal_generation.image_tracks import (
-    assign_specimen_metadata,
     identify_tracks,
     validate_tracks,
 )
@@ -16,17 +16,26 @@ from ro_crate_ingest.empiar_to_ro_crate.proposal_generation.image_tracks import 
 logger = logging.getLogger(__name__)
 
 
-def dq_all(obj):
+def _dq_all(obj):
     if isinstance(obj, str):
         return dq(obj)
     elif isinstance(obj, list):
-        return [dq_all(item) for item in obj]
+        return [_dq_all(item) for item in obj]
     elif isinstance(obj, dict):
-        return {k: dq_all(v) for k, v in obj.items()}
+        return {k: _dq_all(v) for k, v in obj.items()}
     return obj
 
 
-def _write_proposal(proposal: dict, output_path: Path) -> None:
+def _write_proposal(
+    proposal: dict, 
+    output_dir_path: Path, 
+    accession_id: str
+) -> str:
+
+    output_dir_path = output_dir_path or Path(__file__).parents[2] / "generated_proposals"
+    output_dir_path.mkdir(parents=True, exist_ok=True)
+    output_file_path = output_dir_path / f"{accession_id.lower().replace("-", "_")}.yaml"
+
     ryaml = YAML()
     ryaml.default_flow_style = False
     ryaml.indent(mapping=2, sequence=4, offset=2)
@@ -34,13 +43,15 @@ def _write_proposal(proposal: dict, output_path: Path) -> None:
     # avoid alias references for repeated list objects
     ryaml.representer.ignore_aliases = lambda data: True
 
-    with open(output_path, "w") as f:
+    with open(output_file_path, "w") as f:
         ryaml.dump(proposal, f)
+    
+    return str(output_file_path)
 
 
 def generate_empiar_proposal(
     proposal_config_path: Path,
-    proposal_output_path: Path | None = None,
+    proposal_output_dir_path: Path | None = None,
 ) -> dict:
     """
     Generate a full EMPIAR proposal YAML from a minimal pre-proposal config,
@@ -55,10 +66,10 @@ def generate_empiar_proposal(
     files = get_files(accession_id)
     logger.info(f"Loaded {len(files)} files for {accession_id}.")
 
-    global_defaults: dict = config.get("defaults", {})
     datasets_config: list[dict] = config.get("datasets", [])
+    specimen_id_config = config.get("specimens", [])
 
-    tracks = identify_tracks(files, datasets_config)
+    tracks = identify_tracks(files, datasets_config, specimen_id_config)
 
     validation = validate_tracks(tracks, files)
     logger.info(
@@ -68,7 +79,8 @@ def generate_empiar_proposal(
         f"Orphaned files: {validation['orphaned_file_count']}."
     )
 
-    specimens = assign_specimen_metadata(tracks, global_defaults, datasets_config)
+    specimen_defaults: dict = config.get("specimen_defaults", {})
+    specimens = assign_specimen_metadata(tracks, specimen_defaults, datasets_config)
 
     all_dataset_blocks: list[dict] = []
     for dataset_config in datasets_config:
@@ -76,24 +88,21 @@ def generate_empiar_proposal(
         all_dataset_blocks.extend(build_dataset_blocks(tracks, dataset_config))
 
     proposal = {
-        "accession_id": dq_all(accession_id),
-        "paper_doi": dq_all(config.get("paper_doi")),
+        "accession_id": _dq_all(accession_id),
+        "paper_doi": _dq_all(config.get("paper_doi")),
         "rembis": {
-            "BioSample": dq_all(config.get("biosamples", [])),
-            "SpecimenImagingPreparationProtocol": dq_all(config.get(
+            "BioSample": _dq_all(config.get("biosamples", [])),
+            "SpecimenImagingPreparationProtocol": _dq_all(config.get(
                 "specimen_imaging_preparation_protocols", []
             )),
-            "Specimen": dq_all(specimens),
-            "ImageAcquisitionProtocol": dq_all(config.get("image_acquisition_protocols", [])),
-            "Protocol": dq_all(config.get("protocols", [])),
+            "Specimen": _dq_all(specimens),
+            "ImageAcquisitionProtocol": _dq_all(config.get("image_acquisition_protocols", [])),
+            "Protocol": _dq_all(config.get("protocols", [])),
         },
         "datasets": all_dataset_blocks,
     }
 
-    output_path = proposal_output_path or Path(
-        f"local-data/{accession_id}_proposal.yaml"
-    )
-    _write_proposal(proposal, output_path)
+    output_file_path = _write_proposal(proposal, proposal_output_dir_path, accession_id)
 
-    logger.info(f"Proposal written to {output_path}.")
+    logger.info(f"Proposal written to {output_file_path}.")
     return proposal

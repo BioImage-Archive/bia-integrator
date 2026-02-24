@@ -1,3 +1,4 @@
+import glob
 import logging
 import pandas as pd
 import re
@@ -40,18 +41,58 @@ class ImageTrack(BaseModel):
 
 
 def _extract_specimen_id(
-    path_str: str,
-    id_patterns: list[str],
+    file_path: Path,
+    specimen_config: dict,
 ) -> str | None:
     """
-    Try each regex pattern in id_patterns and return the first capturing
-    group from the first match. Returns None if no pattern matches.
+    Extract specimen ID using one of three methods:
+    
+    1. "patterns": list[str] - simple regex patterns
+    2. "pattern_alias_mappings": dict[str, list[str]] - canonical pattern -> alias patterns
+       (with algorithmic transformation, e.g., zero-padding)
+    3. "literal_alias_mappings": dict[str, list[str]] - canonical_id -> [literal_aliases]
+       (direct, or with globs, lookup table for arbitrary relationships)
     """
-    for pattern in id_patterns:
+    path_str = file_path.as_posix()
+
+    # Case 1: Simple patterns
+    patterns = specimen_config.get("patterns", [])
+    for pattern in patterns:
         match = re.search(pattern, path_str)
         if match:
             return match.group(1)
+    
+    # Case 2: Pattern alias mappings (with transformation)
+    pattern_mappings = specimen_config.get("pattern_alias_mappings", {})
+    for canonical_pattern, alias_patterns in pattern_mappings.items():
+        for alias_pattern in alias_patterns:
+            match = re.search(alias_pattern, path_str)
+            if match:
+                raw_id = match.group(1)
+                return _transform_to_canonical_id(raw_id, canonical_pattern)
+    
+    # Case 3: Literal alias mappings (glob matching with ** support)
+    literal_mappings = specimen_config.get("literal_alias_mappings", {})
+    for canonical_id, aliases in literal_mappings.items():
+        for alias in aliases:
+            regex_pattern = glob.translate(alias, recursive=True, include_hidden=True)
+            if re.match(regex_pattern, path_str):
+                return canonical_id
+    
     return None
+
+
+def _transform_to_canonical_id(raw_id: str, canonical_pattern: str) -> str:
+    """
+    Transform a raw specimen ID to match the canonical pattern format.
+    For example: "12" with pattern "(\\d{4})" -> "0012"
+    """
+    digit_length_match = re.search(r'\\d\{(\d+)\}', canonical_pattern)
+    if digit_length_match:
+        target_length = int(digit_length_match.group(1))
+        if raw_id.isdigit():
+            return raw_id.zfill(target_length)
+    return raw_id
 
 
 def _match_any_pattern(path: Path, patterns: str | list[str]) -> bool:
@@ -83,6 +124,7 @@ def _classify_file(
                     f"Dataset '{dataset_name}': pattern key '{type_name}' does "
                     f"not correspond to a known ImageType and will be ignored."
                 )
+                break
 
     if len(matched) > 1:
         logger.warning(
@@ -105,6 +147,7 @@ def _rate_dataset_specificity(data_directories: list[str]) -> int:
 def _build_file_dataframe(
     files: list[EMPIARFile],
     datasets_config: list[dict],
+    specimen_id_config: dict
 ) -> pd.DataFrame:
     """
     Builds a one-row-per-file DataFrame covering all datasets.
@@ -140,7 +183,7 @@ def _build_file_dataframe(
         data_dirs = dataset_config.get("data_directories", [])
         if isinstance(data_dirs, str):
             data_dirs = [data_dirs]
-
+        
         dir_mask = pd.Series(False, index=base_df.index)
         for data_dir in data_dirs:
             dir_mask |= base_df["path"].astype(str).str.startswith(data_dir)
@@ -153,12 +196,8 @@ def _build_file_dataframe(
             )
             continue
 
-        id_patterns = dataset_config.get("specimen_id_patterns", [])
-        if isinstance(id_patterns, str):
-            id_patterns = [id_patterns]
-
-        subset["specimen_id"] = subset["path"].astype(str).apply(
-            lambda p: _extract_specimen_id(p, id_patterns)
+        subset["specimen_id"] = subset["path"].apply(
+            lambda p: _extract_specimen_id(p, specimen_id_config)
         )
 
         unmatched_ids = subset["specimen_id"].isna().sum()
@@ -169,7 +208,7 @@ def _build_file_dataframe(
             )
         subset = subset.dropna(subset=["specimen_id"])
 
-        file_type_patterns: dict[str, str | list[str]] = dataset_config.get("patterns", {})
+        file_type_patterns: dict[str, str | list[str]] = dataset_config.get("file_globs", {})
         subset["image_type"] = subset["path"].apply(
             lambda p: (
                 t.value
@@ -295,7 +334,8 @@ def _merge_tracks(df: pd.DataFrame) -> list[ImageTrack]:
 
 def identify_tracks(
     files: list[EMPIARFile],
-    datasets_config: list[dict],
+    datasets_config: list[dict], 
+    specimen_id_config: dict
 ) -> list[ImageTrack]:
     """
     Build one ImageTrack per specimen by processing all dataset config blocks
@@ -311,6 +351,9 @@ def identify_tracks(
                 data_directories     : str | list[str]
                 specimen_id_patterns : str | list[str]
                 patterns             : dict[str, str | list[str]]
+        specimen_id_patterns:
+            A dict for identifying specimens - see example config yaml and 
+            the proposal generation readme for details. 
 
     Returns ---
         list[ImageTrack]
@@ -319,7 +362,7 @@ def identify_tracks(
             corresponding dataset blocks did not cover that specimen; use
             `validate_tracks` for a completeness report.
     """
-    df = _build_file_dataframe(files, datasets_config)
+    df = _build_file_dataframe(files, datasets_config, specimen_id_config)
 
     if df.empty:
         logger.warning("No files could be classified across any dataset block.")
@@ -332,63 +375,6 @@ def identify_tracks(
         f"{len(datasets_config)} dataset block(s)."
     )
     return tracks
-
-
-def assign_specimen_metadata(
-    tracks: list[ImageTrack],
-    global_defaults: dict,
-    datasets_config: list[dict] | None = None,
-) -> list[dict]:
-    """
-    Build Specimen dicts from tracks using a cascade of metadata sources:
-
-        global defaults  <  specimen_groups (from any dataset)
-
-    specimen_groups entries across all dataset blocks are merged into a single
-    lookup; later dataset blocks take precedence for the same specimen_id.
-
-    Each specimen_groups entry is a dict with:
-        specimen_ids                                 : list[str]
-        biosample_title                              : str  (optional)
-        specimen_imaging_preparation_protocol_titles : list[str]  (optional)
-    """
-    # we get groups if there are overrides for specimens
-    group_lookup: dict[str, dict] = {}
-    for dataset_config in (datasets_config or []):
-        for group in dataset_config.get("specimen_groups", []):
-            group_meta = {k: v for k, v in group.items() if k != "specimen_ids"}
-            for sid in group.get("specimen_ids", []):
-                group_lookup[str(sid)] = group_meta
-
-    specimens: list[dict] = []
-    for track in tracks:
-        sid = track.specimen_id
-
-        biosample_title = global_defaults.get("biosample_title")
-        # NOTE: create a new list to avoid YAML alias references — 
-        # the belt to the yaml writer's 'ignore alias' braces
-        prep_protocol_titles = list(
-            global_defaults.get("specimen_imaging_preparation_protocol_titles", [])
-        )
-
-        if sid in group_lookup:
-            override = group_lookup[sid]
-            if "biosample_title" in override:
-                biosample_title = override["biosample_title"]
-            if "specimen_imaging_preparation_protocol_titles" in override:
-                prep_protocol_titles = list(
-                    override["specimen_imaging_preparation_protocol_titles"]
-                )
-
-        specimens.append(
-            {
-                "title": f"Specimen {sid}",
-                "biosample_title": biosample_title,
-                "specimen_imaging_preparation_protocol_title": prep_protocol_titles,
-            }
-        )
-
-    return specimens
 
 
 def validate_tracks(

@@ -5,7 +5,7 @@ paper_doi: https://doi.org/10.1073/pnas.2415233122
 # Global defaults for specimen metadata.
 # Applied to every specimen unless overridden at dataset or group level.
 # ---------------------------------------------------------------------------
-defaults:
+specimen_defaults:
   biosample_title: "Encephalitozoon intestinalis ATCC 50506"
   specimen_imaging_preparation_protocol_titles:
     - "Cryo-ET grid preparation"
@@ -14,6 +14,10 @@ defaults:
     - "Lamellae pre-cuts"
     - "Lamellae pre-cleans"
     - "Notch milling and final lamellae positioning"
+
+specimens:
+  patterns:
+    - "tomo_(\\d{4})"
 
 # ---------------------------------------------------------------------------
 # REMBI objects (provided separately; referenced by title in specimens)
@@ -70,10 +74,7 @@ datasets:
     data_directories:
       - "data/Data_Set_1"
 
-    specimen_id_patterns:
-      - "tomo_(\\d{4})"
-
-    patterns:
+    file_globs:
       frames:
         - "**/raw_frames/*.tif"
 
@@ -87,18 +88,13 @@ datasets:
     data_directories:
       - "data/Data_Set_1"
 
-    specimen_id_patterns:
-      - "tomo_(\\d{4})"
-
-    patterns:
+    file_globs:
       tilt_series:
         - "**/tilt_series/*.mrc"
       aligned_tilt_series:
         - "**/aligned_tilt_series/*.mrc"
 
     protocol_titles:
-      tilt_series:
-        - "Dataset 1 pre-processing"
       aligned_tilt_series:
         - "Dataset 1 pre-processing"
 
@@ -106,10 +102,7 @@ datasets:
     data_directories:
       - "data/Data_Set_1"
 
-    specimen_id_patterns:
-      - "tomo_(\\d{4})"
-
-    patterns:
+    file_globs:
       tomograms:
         - "**/tomo_rec_4bin_SART/*.mrc"
 

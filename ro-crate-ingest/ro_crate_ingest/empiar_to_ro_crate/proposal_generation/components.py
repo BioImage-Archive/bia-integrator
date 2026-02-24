@@ -363,3 +363,60 @@ def build_dataset_blocks(
         )
 
     return blocks
+
+
+def assign_specimen_metadata(
+    tracks: list[ImageTrack],
+    global_defaults: dict,
+    datasets_config: list[dict] | None = None,
+) -> list[dict]:
+    """
+    Build Specimen dicts from tracks using a cascade of metadata sources:
+
+        global defaults  <  specimen_groups (from any dataset)
+
+    specimen_groups entries across all dataset blocks are merged into a single
+    lookup; later dataset blocks take precedence for the same specimen_id.
+
+    Each specimen_groups entry is a dict with:
+        specimen_ids                                 : list[str]
+        biosample_title                              : str  (optional)
+        specimen_imaging_preparation_protocol_titles : list[str]  (optional)
+    """
+    # there are only groups if there are overrides for specimens in dataset blocks
+    group_lookup: dict[str, dict] = {}
+    for dataset_config in (datasets_config or []):
+        for group in dataset_config.get("specimen_groups", []):
+            group_meta = {k: v for k, v in group.items() if k != "specimen_ids"}
+            for sid in group.get("specimen_ids", []):
+                group_lookup[str(sid)] = group_meta
+
+    specimens: list[dict] = []
+    for track in tracks:
+        sid = track.specimen_id
+
+        biosample_title = global_defaults.get("biosample_title")
+        # NOTE: create a new list to avoid YAML alias references — 
+        # the belt to the yaml writer's 'ignore alias' braces
+        prep_protocol_titles = list(
+            global_defaults.get("specimen_imaging_preparation_protocol_titles", [])
+        )
+
+        if sid in group_lookup:
+            override = group_lookup[sid]
+            if "biosample_title" in override:
+                biosample_title = override["biosample_title"]
+            if "specimen_imaging_preparation_protocol_titles" in override:
+                prep_protocol_titles = list(
+                    override["specimen_imaging_preparation_protocol_titles"]
+                )
+
+        specimens.append(
+            {
+                "title": f"Specimen {sid}",
+                "biosample_title": biosample_title,
+                "specimen_imaging_preparation_protocol_title": prep_protocol_titles,
+            }
+        )
+
+    return specimens

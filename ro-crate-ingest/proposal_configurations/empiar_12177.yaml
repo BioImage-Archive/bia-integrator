@@ -1,0 +1,109 @@
+accession_id: EMPIAR-12177
+paper_doi: https://doi.org/10.1101/2024.07.13.603322v1
+
+# ---------------------------------------------------------------------------
+# Global defaults for specimen metadata.
+# Applied to every specimen unless overridden at dataset or group level.
+# ---------------------------------------------------------------------------
+specimen_defaults:
+  biosample_title: "Encephalitozoon intestinalis ATCC 50506"
+  specimen_imaging_preparation_protocol_titles:
+    - "Cryo-ET grid preparation"
+    - "Cryo-FIB milling and lamella preparation for cryo-ET"
+    - "Preparation and lamella site assignment"
+    - "Lamellae pre-cuts"
+    - "Lamellae pre-cleans"
+    - "Notch milling and final lamellae positioning"
+
+specimens:
+  patterns:
+    - "tomo_(\\d{4})"
+
+# ---------------------------------------------------------------------------
+# REMBI objects (provided separately; referenced by title in specimens)
+# ---------------------------------------------------------------------------
+biosamples:
+  - title: "Encephalitozoon intestinalis ATCC 50506"
+    organism_classification:
+      - common_name: "Encephalitozoon intestinalis"
+        scientific_name: "Encephalitozoon intestinalis ATCC 50506"
+        ncbi_id: "NCBI:txid876142"
+    biological_entity_description: "Encephalitozoon intestinalis ATCC 50506 dormant spores."
+    growth_protocol_title: "Spore propagation and purification"
+
+specimen_imaging_preparation_protocols:
+  - title: "Cryo-ET grid preparation"
+    protocol_description: "..."
+  - title: "Cryo-FIB milling and lamella preparation for cryo-ET"
+    protocol_description: "..."
+  - title: "Preparation and lamella site assignment"
+    protocol_description: "..."
+  - title: "Lamellae pre-cuts"
+    protocol_description: "..."
+  - title: "Lamellae pre-cleans"
+    protocol_description: "..."
+  - title: "Notch milling and final lamellae positioning"
+    protocol_description: "..."
+
+image_acquisition_protocols:
+  - title: "Cryo-electron tomography"
+    protocol_description: "..."
+    imaging_instrument_description: "..."
+    fbbi_id:
+      - "obo:FBbi_00000256"
+    imaging_method_name:
+      - "Cryo-electron tomography"
+
+# Protocol REMBI objects for this entry.
+# Referenced by title in dataset-level protocol_titles blocks below.
+protocols:
+  - title: "Spore propagation and purification"
+    protocol_description: "..."
+  - title: "Dataset 3 pre-processing"
+    protocol_description: "..."
+  - title: "Tomogram reconstruction"
+    protocol_description: "..."
+
+# ---------------------------------------------------------------------------
+# Datasets: file pattern rules to identify tracks from the filesystem
+# ---------------------------------------------------------------------------
+datasets:
+  - name: "Raw frames from dataset 3 of microsporidian Encephalitozoon intestinalis"
+    data_directories:
+      - "data/Data_Set_3"
+
+    file_globs:
+      frames:
+        - "**/raw_frames/*.tif"
+
+    # IAP at dataset level — applies to the dataset block as a whole.
+    # Use image-type keys instead of 'dataset' to restrict to specific types.
+    image_acquisition_protocol_title:
+      dataset:
+        - "Cryo-electron tomography"
+
+  - name: "Unaligned tilt stacks from dataset 3 of microsporidian Encephalitozoon intestinalis"
+    data_directories:
+      - "data/Data_Set_3"
+
+    file_globs:
+      tilt_series:
+        - "**/tilt_series/*.mrc.st"
+      aligned_tilt_series:
+        - "**/aligned_tilt_series/*.mrc"
+
+    protocol_titles:
+      aligned_tilt_series:
+        - "Dataset 3 pre-processing"
+
+  - name: "Reconstructed tomograms from dataset 3 of microsporidian Encephalitozoon intestinalis"
+    data_directories:
+      - "data/Data_Set_3"
+
+    file_globs:
+      tomograms:
+        - "**/tomo_rec_4bin_SART/*.mrc"
+
+    protocol_titles:
+      tomograms:
+        - "Tomogram reconstruction"

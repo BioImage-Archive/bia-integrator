@@ -88,17 +88,17 @@ def empiar_proposal(
         Path, 
         typer.Argument(help="Path to the yaml proposal config file.")
     ], 
-    proposal_output_path: Annotated[
+    proposal_output_dir_path: Annotated[
         Optional[Path], 
         typer.Option(
-            "--proposal-path", 
+            "--proposal-dir-path", 
             "-p", 
             case_sensitive=False, 
-            help="Path to output proposal file."
+            help="Path to output proposal directory."
         )
     ] = None
 ):
-    generate_empiar_proposal(proposal_config_path, proposal_output_path)
+    generate_empiar_proposal(proposal_config_path, proposal_output_dir_path)
 
 
 @ro_crate_ingest.command("empiar-to-roc")
