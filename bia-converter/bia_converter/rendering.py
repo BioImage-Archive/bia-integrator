@@ -349,12 +349,17 @@ def render_proxy_image(
 
 
 def generate_padded_thumbnail_from_ngff_uri(
-    ngff_uri, dims=(256, 256), autocontrast=True
+    ngff_uri,
+    dims=(256, 256),
+    autocontrast=True,
+    skip_scale_ratio_validation: bool = False,
 ):
     """Given a NGFF URI, generate a 2D thumbnail of the given dimensions."""
 
     # proxy_im = NGFFProxyImage(ngff_uri)
-    proxy_im = ome_zarr_image_from_ome_zarr_uri(ngff_uri)
+    proxy_im = ome_zarr_image_from_ome_zarr_uri(
+        ngff_uri, skip_scale_ratio_validation=skip_scale_ratio_validation
+    )
 
     im = render_proxy_image(proxy_im)
     im.thumbnail(dims)

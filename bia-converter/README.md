@@ -36,14 +36,16 @@ poetry run bia-converter convert <IMAGE_REP_UUID> --api local
 Run a specified image conversion function on a given image representation.
 
 ```bash
-poetry run bia-converter convert <IMAGE_REP_UUID> [CONVERSION_FUNCTION_NAME] [CONVERSION_CONFIG] [--api {prod|local}] [--dry_run {True\False}]
+poetry run bia-converter convert <IMAGE_REP_UUID> [CONVERSION_FUNCTION_NAME] [CONVERSION_CONFIG] [--api {prod|local}] [--dry_run {True\False}] [--skip-scale-ratio-validation]
 ```
 
 - `IMAGE_REP_UUID`: UUID of the image representation.
 - `CONVERSION_FUNCTION_NAME` (optional): Name of the function in `bia_converter.convert` to run. Options are `convert_uploaded_by_submitter_to_interactive_display` (default) and `convert_zipped_ome_zarr_archive`.
+  - `convert_zipped_ome_zarr_archive` accepts uploaded archive representations with image format `.ome.zarr.zip` or `.zarr.zip`.
 - `CONVERSION_CONFIG` (optional): JSON string with config options (not currently used).
 - `--api, -a` (optional): API target environment. Defaults to `local`.
 - `--dry_run, -dr` (optional): Whether to do the actual upload to S3, and create/modify API objects accordingly. Just pass the option itself to specify a dry run; no value is needed. Default is `False` (i.e., do the upload and API object creation/modification). If set when calling `convert`, the created Image Representation object is saved locally at `cache_root_dirpath/image_rep/dry_run_image_rep.json`.
+- `--skip-scale-ratio-validation` (optional): Skip strict consistency checks of multiscale ratios when reading OME-Zarr metadata. Useful for archives with minor scale rounding differences across levels.
 
 **Examples**:
 
@@ -66,7 +68,7 @@ poetry run bia-converter convert 123e4567-e89b-12d3-a456-426614174000 --api loca
 Create a thumbnail from an `INTERACTIVE_DISPLAY` image representation.
 
 ```bash
-poetry run bia-converter create-thumbnail <IMAGE_REP_UUID> [--api {prod|local}] [--dry_run {True\False}]
+poetry run bia-converter create-thumbnail <IMAGE_REP_UUID> [--api {prod|local}] [--dry_run {True\False}] [--skip-scale-ratio-validation]
 ```
 
 **Example**:
@@ -88,7 +90,7 @@ This will log the URI of the generated thumbnail after processing.
 Create a static display from an `INTERACTIVE_DISPLAY` image representation.
 
 ```bash
-poetry run bia-converter create-static-display <IMAGE_REP_UUID> [--api {prod|local}] [--dry_run {True\False}]
+poetry run bia-converter create-static-display <IMAGE_REP_UUID> [--api {prod|local}] [--dry_run {True\False}] [--skip-scale-ratio-validation]
 ```
 
 **Example**:
