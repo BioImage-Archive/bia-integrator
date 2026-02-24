@@ -9,6 +9,10 @@ authors = [
   {name = "Kola Babalola", email = "kola@ebi.ac.uk"},
 ]
 dependencies = [
+  "bia-shared-datamodels",
+  "bia-integrator-api",
+  "bia-test-data",
+  "persistence",
   "rich>=13.8.1,<14.0.0",
   "typer>=0.20,<0.21",
   "click<=8.1.7",
@@ -30,6 +34,12 @@ dependencies = [
 [project.scripts]
 bia-converter = "bia_converter.cli:app"
 zarr2zarr = "bia_converter.zarr2zarr:app"
+
+[tool.uv.sources]
+bia-shared-datamodels = { path = "../bia-shared-datamodels", editable = true }
+bia-integrator-api = { path = "../clients/python", editable = true }
+bia-test-data = { path = "../bia-test-data", editable = true }
+persistence = { path = "../persistence", editable = true }
 
 [tool.poetry]
 name = "bia-converter"
