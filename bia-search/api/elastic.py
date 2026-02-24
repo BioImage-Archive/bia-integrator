@@ -71,10 +71,16 @@ class Elastic:
                                 "analyzer": "analyzerCaseInsensitive",
                             },
                             "keyword": {"type": "keyword"},
+                            "acknowledgement": {
+                                "type": "text",
+                                "analyzer": "analyzerCaseInsensitive",
+                            },
                             "author": {
                                 "type": "nested",
                                 "dynamic": False,
                                 "properties": {
+                                    "rorid": {"type": "keyword"},
+                                    "orcid": {"type": "keyword"},
                                     "display_name": {
                                         "type": "text",
                                         "analyzer": "analyzerCaseInsensitive",
@@ -83,10 +89,11 @@ class Elastic:
                                         "type": "nested",
                                         "dynamic": False,
                                         "properties": {
+                                            "rorid": {"type": "keyword"},
                                             "display_name": {
-                                                "type": "text",
-                                                "analyzer": "analyzerCaseInsensitive",
-                                            }
+                                                "type": "keyword",
+                                                "normalizer": "lowercase_norm",
+                                            },
                                         },
                                     },
                                 },
@@ -97,6 +104,7 @@ class Elastic:
                                 "type": "object",
                                 "properties": {
                                     "uuid": {"type": "keyword"},
+                                    "example_image_uri": {"type": "keyword"},
                                     "biological_entity": {
                                         "type": "object",
                                         "properties": {
@@ -104,8 +112,14 @@ class Elastic:
                                                 "type": "object",
                                                 "properties": {
                                                     "scientific_name": {
-                                                        "type": "keyword",
-                                                        "normalizer": "lowercase_norm",
+                                                        "type": "text",
+                                                        "analyzer": "analyzerCaseInsensitive",
+                                                        "fields": {
+                                                            "keyword": {
+                                                                "type": "keyword",
+                                                                "normalizer": "lowercase_norm",
+                                                            }
+                                                        },
                                                     },
                                                     "common_name": {
                                                         "type": "keyword",
@@ -120,8 +134,14 @@ class Elastic:
                                         "type": "object",
                                         "properties": {
                                             "imaging_method_name": {
-                                                "type": "keyword",
-                                                "normalizer": "lowercase_norm",
+                                                "type": "text",
+                                                "analyzer": "analyzerCaseInsensitive",
+                                                "fields": {
+                                                    "keyword": {
+                                                        "type": "keyword",
+                                                        "normalizer": "lowercase_norm",
+                                                    }
+                                                },
                                             }
                                         },
                                     },
@@ -129,8 +149,14 @@ class Elastic:
                                         "type": "object",
                                         "properties": {
                                             "method_type": {
-                                                "type": "keyword",
-                                                "normalizer": "annotation_type_norm",
+                                                "type": "text",
+                                                "analyzer": "analyzerCaseInsensitive",
+                                                "fields": {
+                                                    "keyword": {
+                                                        "type": "keyword",
+                                                        "normalizer": "annotation_type_norm",
+                                                    }
+                                                },
                                             }
                                         },
                                     },
@@ -160,7 +186,12 @@ class Elastic:
                                     "type": "pattern_replace",
                                     "pattern": "^\\.",
                                     "replacement": "",
-                                }
+                                },
+                                "replace_annotation_type": {
+                                    "type": "pattern_replace",
+                                    "pattern": "_",
+                                    "replacement": " ",
+                                },
                             },
                             "normalizer": {
                                 "lowercase_norm": {
@@ -170,6 +201,11 @@ class Elastic:
                                 "file_format_norm": {
                                     "type": "custom",
                                     "char_filter": ["replace_file_format"],
+                                    "filter": ["lowercase"],
+                                },
+                                "annotation_type_norm": {
+                                    "type": "custom",
+                                    "char_filter": ["replace_annotation_type"],
                                     "filter": ["lowercase"],
                                 },
                             },
@@ -212,8 +248,29 @@ class Elastic:
                                         "type": "object",
                                         "properties": {
                                             "imaging_method_name": {
-                                                "type": "keyword",
-                                                "normalizer": "lowercase_norm",
+                                                "type": "text",
+                                                "analyzer": "analyzerCaseInsensitive",
+                                                "fields": {
+                                                    "keyword": {
+                                                        "type": "keyword",
+                                                        "normalizer": "lowercase_norm",
+                                                    }
+                                                },
+                                            }
+                                        },
+                                    },
+                                    "annotation_method": {
+                                        "type": "object",
+                                        "properties": {
+                                            "method_type": {
+                                                "type": "text",
+                                                "analyzer": "analyzerCaseInsensitive",
+                                                "fields": {
+                                                    "keyword": {
+                                                        "type": "keyword",
+                                                        "normalizer": "annotation_type_norm",
+                                                    }
+                                                },
                                             }
                                         },
                                     },
@@ -238,8 +295,14 @@ class Elastic:
                                                                 "type": "keyword"
                                                             },
                                                             "scientific_name": {
-                                                                "type": "keyword",
-                                                                "normalizer": "lowercase_norm",
+                                                                "type": "text",
+                                                                "analyzer": "analyzerCaseInsensitive",
+                                                                "fields": {
+                                                                    "keyword": {
+                                                                        "type": "keyword",
+                                                                        "normalizer": "lowercase_norm",
+                                                                    }
+                                                                },
                                                             },
                                                         },
                                                     },

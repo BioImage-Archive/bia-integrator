@@ -3,7 +3,7 @@ from fastapi.testclient import TestClient
 
 def test_advanced_search_query(api_client: TestClient):
     rsp = api_client.get(
-        f"/search/advanced",
+        f"/v1/search/advanced",
         params={
             "query": "Homo sapiens",
         },
@@ -15,7 +15,7 @@ def test_advanced_search_query(api_client: TestClient):
 
 def test_advanced_search_facet_organism(api_client: TestClient):
     rsp = api_client.get(
-        f"/search/advanced",
+        f"/v1/search/advanced",
         params={"facet.organism": "Homo sapiens", "size_x.gt": "1024"},
     )
     assert rsp.status_code == 200
@@ -23,7 +23,7 @@ def test_advanced_search_facet_organism(api_client: TestClient):
     assert body["hits"]["total"]["value"] == 1
 
     rsp = api_client.get(
-        f"/search/advanced",
+        f"/v1/search/advanced",
         params={
             "facet.organism.not": "Homo sapiens",
         },
@@ -33,9 +33,9 @@ def test_advanced_search_facet_organism(api_client: TestClient):
     assert body["hits"]["total"]["value"] == 4
 
     rsp = api_client.get(
-        f"/search/advanced",
+        f"/v1/search/advanced",
         params={
-            "facet.organism.or": "Homo sapiens,Mus musculus",
+            "facet.organism.or": ["Homo sapiens", "Mus musculus"],
         },
     )
     assert rsp.status_code == 200
@@ -45,7 +45,7 @@ def test_advanced_search_facet_organism(api_client: TestClient):
 
 def test_advanced_search_image_attributes(api_client: TestClient):
     rsp = api_client.get(
-        f"/search/advanced",
+        f"/v1/search/advanced",
         params={
             "size_c.lt": "2",
         },
@@ -55,7 +55,7 @@ def test_advanced_search_image_attributes(api_client: TestClient):
     assert body["hits"]["total"]["value"] == 2
 
     rsp = api_client.get(
-        f"/search/advanced",
+        f"/v1/search/advanced",
         params={"query": "fluorescence microscopy", "size_y.lt": "1024"},
     )
     assert rsp.status_code == 200
@@ -63,7 +63,7 @@ def test_advanced_search_image_attributes(api_client: TestClient):
     assert body["hits"]["total"]["value"] == 1
 
     rsp = api_client.get(
-        f"/search/advanced",
+        f"/v1/search/advanced",
         params={"facet.image_format": ".mcd"},
     )
     assert rsp.status_code == 200
@@ -73,7 +73,7 @@ def test_advanced_search_image_attributes(api_client: TestClient):
 
 def test_advanced_search_paging(api_client: TestClient):
     rsp = api_client.get(
-        f"/search/advanced",
+        f"/v1/search/advanced",
         params={"query": "", "pagination.page": 1, "pagination.page_size": 1},
     )
     assert rsp.status_code == 200
@@ -83,7 +83,7 @@ def test_advanced_search_paging(api_client: TestClient):
     assert page_1["pagination"]["page_size"] == 1
 
     rsp = api_client.get(
-        f"/search/advanced",
+        f"/v1/search/advanced",
         params={"query": "", "pagination.page": 2, "pagination.page_size": 1},
     )
     assert rsp.status_code == 200
@@ -93,7 +93,7 @@ def test_advanced_search_paging(api_client: TestClient):
     assert page_2["pagination"]["page_size"] == 1
 
     rsp = api_client.get(
-        f"/search/advanced",
+        f"/v1/search/advanced",
         params={"query": "", "pagination.page": 1, "pagination.page_size": 2},
     )
     assert rsp.status_code == 200
