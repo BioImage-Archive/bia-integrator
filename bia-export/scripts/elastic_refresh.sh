@@ -75,7 +75,7 @@ curl -k -X PUT "${ELASTIC_URL}/${ELASTIC_INDEX}" \
 					"type": "text", "analyzer": "analyzerCaseInsensitive"
 				},
 				"keyword": {
-					"type": "keyword"
+					"type": "keyword", "doc_values": "false"
 				},
 				"acknowledgement": { "type": "text", "analyzer": "analyzerCaseInsensitive" },
 				"author": {
@@ -83,14 +83,14 @@ curl -k -X PUT "${ELASTIC_URL}/${ELASTIC_INDEX}" \
 					"dynamic": false,
 					"properties": {
 						"display_name": { "type": "text", "analyzer": "analyzerCaseInsensitive" },
-						"orcid": {"type": "keyword"},
-						"rorid": {"type": "keyword"},
+						"orcid": {"type": "keyword", "doc_values": "false"},
+						"rorid": {"type": "keyword", "doc_values": "false"},
 						"affiliation": {
 							"type": "nested",
 							"dynamic": false,
 							"properties": {
-								"display_name": { "type": "keyword", "normalizer": "lowercase_norm" },
-								"rorid": {"type": "keyword"}
+								"display_name": { "type": "keyword", "normalizer": "lowercase_norm", "doc_values": "false" },
+								"rorid": {"type": "keyword", "doc_values": "false"}
 							}
 						}
 					}
@@ -102,8 +102,8 @@ curl -k -X PUT "${ELASTIC_URL}/${ELASTIC_INDEX}" \
 				"dataset": {
 					"type": "object",
 					"properties": {
-						"uuid": { "type": "keyword" },
-						"example_image_uri": {"type": "keyword"},
+						"uuid": { "type": "keyword", "doc_values": "false" },
+						"example_image_uri": {"type": "keyword", "index": "false", "doc_values": "true"},
 						"biological_entity": {
 							"type": "object",
 							"properties": {
@@ -117,12 +117,8 @@ curl -k -X PUT "${ELASTIC_URL}/${ELASTIC_INDEX}" \
 												"keyword": { "type": "keyword", "normalizer": "lowercase_norm" }
 											}
 										},
-										"common_name": {
-											"type": "keyword", "normalizer": "lowercase_norm" 
-										},
-										"ncbi_id": {
-											"type": "keyword"
-										}
+										"common_name": { "type": "text", "analyzer": "analyzerCaseInsensitive" },
+										"ncbi_id": { "type": "keyword", "doc_values": "false" }
 									}
 								}
 							}
@@ -246,7 +242,7 @@ curl -k -X PUT "${ELASTIC_URL}/${ELASTIC_INDEX_IMAGES}" \
 			"creation_process": {
 				"type": "object",
 				"properties": {
-					"input_image_uuid": { "type": "keyword" },
+					"input_image_uuid": { "type": "keyword", "doc_values": "false" },
 					"acquisition_process": {
 						"type": "object",
 						"properties": {
@@ -278,7 +274,7 @@ curl -k -X PUT "${ELASTIC_URL}/${ELASTIC_INDEX_IMAGES}" \
 										"type": "object",
 										"properties": {
 											"common_name": { "type": "text", "analyzer": "analyzerCaseInsensitive"},
-											"ncbi_id": { "type": "keyword" },
+											"ncbi_id": { "type": "keyword", "doc_values": "false" },
 											"scientific_name": { 
 												"type": "text", 
 												"analyzer": "analyzerCaseInsensitive",

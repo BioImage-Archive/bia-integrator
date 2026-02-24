@@ -70,7 +70,7 @@ class Elastic:
                                 "type": "text",
                                 "analyzer": "analyzerCaseInsensitive",
                             },
-                            "keyword": {"type": "keyword"},
+                            "keyword": {"type": "keyword", "doc_values": False},
                             "acknowledgement": {
                                 "type": "text",
                                 "analyzer": "analyzerCaseInsensitive",
@@ -79,8 +79,8 @@ class Elastic:
                                 "type": "nested",
                                 "dynamic": False,
                                 "properties": {
-                                    "rorid": {"type": "keyword"},
-                                    "orcid": {"type": "keyword"},
+                                    "rorid": {"type": "keyword", "doc_values": False},
+                                    "orcid": {"type": "keyword", "doc_values": False},
                                     "display_name": {
                                         "type": "text",
                                         "analyzer": "analyzerCaseInsensitive",
@@ -89,10 +89,14 @@ class Elastic:
                                         "type": "nested",
                                         "dynamic": False,
                                         "properties": {
-                                            "rorid": {"type": "keyword"},
+                                            "rorid": {
+                                                "type": "keyword",
+                                                "doc_values": False,
+                                            },
                                             "display_name": {
                                                 "type": "keyword",
                                                 "normalizer": "lowercase_norm",
+                                                "doc_values": False,
                                             },
                                         },
                                     },
@@ -103,8 +107,12 @@ class Elastic:
                             "dataset": {
                                 "type": "object",
                                 "properties": {
-                                    "uuid": {"type": "keyword"},
-                                    "example_image_uri": {"type": "keyword"},
+                                    "uuid": {"type": "keyword", "doc_values": False},
+                                    "example_image_uri": {
+                                        "type": "keyword",
+                                        "doc_values": True,
+                                        "index": False,
+                                    },
                                     "biological_entity": {
                                         "type": "object",
                                         "properties": {
@@ -122,10 +130,13 @@ class Elastic:
                                                         },
                                                     },
                                                     "common_name": {
-                                                        "type": "keyword",
-                                                        "normalizer": "lowercase_norm",
+                                                        "type": "text",
+                                                        "analyzer": "analyzerCaseInsensitive",
                                                     },
-                                                    "ncbi_id": {"type": "keyword"},
+                                                    "ncbi_id": {
+                                                        "type": "keyword",
+                                                        "doc_values": False,
+                                                    },
                                                 },
                                             }
                                         },
@@ -214,7 +225,9 @@ class Elastic:
                     "mappings": {
                         "dynamic": False,
                         "properties": {
-                            "uuid": {"type": "keyword"},
+                            "uuid": {
+                                "type": "keyword",
+                            },
                             "accession_id": {
                                 "type": "keyword",
                                 "normalizer": "lowercase_norm",
@@ -243,7 +256,10 @@ class Elastic:
                             "creation_process": {
                                 "type": "object",
                                 "properties": {
-                                    "input_image_uuid": {"type": "keyword"},
+                                    "input_image_uuid": {
+                                        "type": "keyword",
+                                        "doc_values": False,
+                                    },
                                     "acquisition_process": {
                                         "type": "object",
                                         "properties": {
@@ -292,7 +308,8 @@ class Elastic:
                                                                 "analyzer": "analyzerCaseInsensitive",
                                                             },
                                                             "ncbi_id": {
-                                                                "type": "keyword"
+                                                                "type": "keyword",
+                                                                "doc_values": False,
                                                             },
                                                             "scientific_name": {
                                                                 "type": "text",
