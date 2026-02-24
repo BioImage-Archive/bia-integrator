@@ -484,12 +484,6 @@ bia:Taxon a owl:Class ;
 
 # Properties
 
-bia:organismClassification a owl:ObjectProperty ;
-    rdfs:label "organism classifcation"@en ;
-    rdfs:comment "The classification of th ebiological matter."@en ;
-    rdfs:range bia:Taxon ;
-    rdfs:domain bia:BioSample .
-
 bia:biologicalEntityDescription a owl:DatatypeProperty ;
     rdfs:label "biological entity description"@en ;
     rdfs:comment "A short description of the biological entity."@en ;
@@ -513,18 +507,6 @@ bia:intrinsicVariableDescription a owl:DatatypeProperty ;
     rdfs:comment "Intrinsic (e.g. genetic) alteration."@en ;
     rdfs:range rdf:langString ;
     rdfs:domain bia:BioSample .
-
-bia:commonName a owl:DatatypeProperty ;
-    rdfs:label "common name"@en ;
-    rdfs:comment "Name used to refer to the species that can vary by locallity."@en ;
-    rdfs:range rdf:langString ;
-    rdfs:domain bia:Taxon .
-
-bia:scientificName a owl:DatatypeProperty ;
-    rdfs:label "scientific name"@en ;
-    rdfs:comment "Unique name used by the scientific community to identify species."@en ;
-    rdfs:range rdf:langString ;
-    rdfs:domain bia:Taxon .
 
 bia:ncbiId a owl:DatatypeProperty ;
     rdfs:label "ncbi id"@en ;
