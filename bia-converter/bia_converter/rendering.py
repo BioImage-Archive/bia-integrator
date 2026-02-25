@@ -293,12 +293,19 @@ def render_proxy_image(
     # rich.print(darray, proxy_im.dimensions)
     # import sys; sys.exit(0)
 
-    if not t:
+    _, arr_size_c, arr_size_z, _, _ = darray.shape
+
+    if t is None:
         t = proxy_im.sizeT // 2
-    if not z:
+    if z is None:
         z = proxy_im.sizeZ // 2
 
-    channels_to_render = min(proxy_im.sizeC, len(DEFAULT_COLORS))
+    # For some pyramids, the selected level can have fewer z/c slices than the
+    # metadata-reported base level. Clamp indices to the actual array bounds.
+    t = max(0, min(int(t), int(darray.shape[0]) - 1))
+    z = max(0, min(int(z), int(arr_size_z) - 1))
+
+    channels_to_render = min(proxy_im.sizeC, len(DEFAULT_COLORS), int(arr_size_c))
     if not mode:
         if channels_to_render == 1:
             mode = "grayscale"
@@ -349,12 +356,17 @@ def render_proxy_image(
 
 
 def generate_padded_thumbnail_from_ngff_uri(
-    ngff_uri, dims=(256, 256), autocontrast=True
+    ngff_uri,
+    dims=(256, 256),
+    autocontrast=True,
+    skip_scale_ratio_validation: bool = False,
 ):
     """Given a NGFF URI, generate a 2D thumbnail of the given dimensions."""
 
     # proxy_im = NGFFProxyImage(ngff_uri)
-    proxy_im = ome_zarr_image_from_ome_zarr_uri(ngff_uri)
+    proxy_im = ome_zarr_image_from_ome_zarr_uri(
+        ngff_uri, skip_scale_ratio_validation=skip_scale_ratio_validation
+    )
 
     im = render_proxy_image(proxy_im)
     im.thumbnail(dims)
