@@ -65,72 +65,6 @@ def infer_frame_pattern(frame_files: list[pathlib.Path]) -> str | None:
     return "".join(result_chars)
 
 
-# def infer_frame_pattern(frame_files: list[pathlib.Path]) -> str | None:
-#     """
-#     Given a list of frame file paths (all from one specimen), infer the
-#     file pattern by replacing the variable numeric/tilt-angle parts with {}.
-
-#     For example:
-#         raw_frames/b3g1_SR_ts50_101_0000_-15.0.tif
-#         raw_frames/b3g1_SR_ts50_101_0001_-15.0.tif
-#         ...
-#     becomes:
-#         raw_frames/b3g1_SR_ts50_101_{}_{}.tif
-
-#     The heuristic replaces sequences of digits (and optionally a leading
-#     minus and decimal point) that differ across files.
-#     """
-#     if not frame_files:
-#         return None
-
-#     str_paths = [str(p) for p in sorted(frame_files)]
-#     if len(str_paths) == 1:
-#         return re.sub(r"_-?\d+(\.\d+)?(?=\.\w+$)", "_{}", str_paths[0])
-
-#     first = str_paths[0]
-#     varying_positions: set[int] = set()
-#     for other in str_paths[1:]:
-#         if len(first) != len(other):
-#             logger.warning(
-#                 f"File paths are different lengths, and may not produce a sensible pattern: '{first}' vs '{other}'."
-#             )
-#         for i, (a, b) in enumerate(zip(first, other)):
-#             if a != b:
-#                 varying_positions.add(i)
-
-#     if not varying_positions:
-#         return first
-
-#     pattern_chars = list(first)
-#     in_replacement = False
-#     result_chars: list[str] = []
-#     i = 0
-#     while i < len(pattern_chars):
-#         ch = pattern_chars[i]
-#         if i in varying_positions:
-#             token_start = i
-#             while token_start > 0 and pattern_chars[token_start - 1] in "-0123456789.":
-#                 token_start -= 1
-#             token_end = i
-#             while token_end < len(pattern_chars) - 1 and pattern_chars[token_end + 1] in "0123456789.":
-#                 token_end += 1
-
-#             if not in_replacement:
-#                 while result_chars and result_chars[-1] in "-0123456789.":
-#                     result_chars.pop()
-#                 result_chars.append("{}")
-#                 in_replacement = True
-#                 i = token_end + 1
-#             else:
-#                 i += 1
-#         else:
-#             in_replacement = False
-#             result_chars.append(ch)
-#             i += 1
-
-#     return "".join(result_chars)
-
-
 def _protocol_title_value(titles: list[str]) -> str | list:
     """
     Return a single dq string if there is one title, or a list of dq strings
@@ -167,7 +101,8 @@ def _protocol_titles_config(dataset_config: dict) -> dict[str, list[str]]:
 def build_frames_assigned_images(
     tracks: list[ImageTrack],
     dataset_name: str,
-    iap: dict[str, list[str]],
+    iap_titles: dict[str, list[str]],
+    protocol_titles: dict[str, list[str]]
 ) -> list[dict]:
     """
     Build assigned_images entries for raw movie frame collections.
@@ -177,7 +112,8 @@ def build_frames_assigned_images(
     IAPs for 'frames' are attached per entry here (dataset-level IAPs are
     handled in build_dataset_blocks via assigned_dataset_rembis).
     """
-    frames_iap_titles = iap.get(ImageType.FRAMES, [])
+    frames_iap_titles = iap_titles.get(ImageType.FRAMES, [])
+    frames_protocol_titles = protocol_titles.get(ImageType.FRAMES, [])
 
     entries = []
     for track in tracks:
@@ -192,14 +128,16 @@ def build_frames_assigned_images(
             )
             continue
         entry: dict = {
-            "label_prefix": dq(f"Tomo_{track.specimen_id}_frames"),
+            "label_prefix": dq(f"Specimen_{track.specimen_id} frames"),
             "file_pattern": dq(pattern),
-            "specimen_title": dq(f"Specimen {track.specimen_id}"),
+            "specimen_title": dq(f"Specimen_{track.specimen_id}"),
         }
         if frames_iap_titles:
             entry["image_acquisition_protocol_title"] = _protocol_title_value(
                 frames_iap_titles
             )
+        if frames_protocol_titles:
+            entry["protocol_title"] = _protocol_title_value(frames_protocol_titles)
         entries.append(entry)
     return entries
 
@@ -207,7 +145,8 @@ def build_frames_assigned_images(
 def build_tilt_series_assigned_images(
     tracks: list[ImageTrack],
     dataset_name: str,
-    protocol_titles: dict[str, list[str]],
+    iap_titles: dict[str, list[str]], 
+    protocol_titles: dict[str, list[str]]
 ) -> list[dict]:
     """
     Build assigned_images entries for unaligned and aligned tilt series.
@@ -216,8 +155,11 @@ def build_tilt_series_assigned_images(
     dataset_name. Cross-dataset input linkages (back to frames) are preserved
     regardless of which dataset those frames came from.
     """
-    ts_titles = protocol_titles.get(ImageType.TILT_SERIES, [])
-    ats_titles = protocol_titles.get(ImageType.ALIGNED_TILT_SERIES, [])
+    ts_protocol_titles = protocol_titles.get(ImageType.TILT_SERIES, [])
+    ts_iap_titles = iap_titles.get(ImageType.TILT_SERIES, [])
+
+    ats_protocol_titles = protocol_titles.get(ImageType.ALIGNED_TILT_SERIES, [])
+    ats_iap_titles = iap_titles.get(ImageType.ALIGNED_TILT_SERIES, [])
 
     entries = []
     for track in tracks:
@@ -227,16 +169,28 @@ def build_tilt_series_assigned_images(
             and track.dataset_for.get(ImageType.TILT_SERIES) == dataset_name
         ):
             entry: dict = {
-                "label": dq(f"Tomo_{track.specimen_id} unaligned tilt series"),
+                "label": dq(f"Specimen_{track.specimen_id} tilt_series"),
                 "file_pattern": dq(str(track.tilt_series)),
             }
             if track.frames:
                 frame_pattern = infer_frame_pattern(track.frames)
                 if frame_pattern:
-                    entry["input_label_prefix"] = dq(f"Tomo_{track.specimen_id}_frames")
+                    entry["input_label_prefix"] = dq(f"Specimen_{track.specimen_id} frames")
                     entry["input_file_pattern"] = dq(frame_pattern)
-            if ts_titles:
-                entry["protocol_title"] = _protocol_title_value(ts_titles)
+            else:
+                if track.track_start:
+                    entry["specimen_title"] = dq(f"Specimen_{track.specimen_id}")
+                else:
+                    raise ValueError(
+                        f"Track for specimen {track.specimen_id} has no frames, but the tilt series "
+                        "is not marked as track_start — specimen must be assigned as early in track as possible."
+                        )
+            if ts_protocol_titles:
+                entry["protocol_title"] = _protocol_title_value(ts_protocol_titles)
+            if ts_iap_titles:
+                entry["image_acquisition_protocol_title"] = _protocol_title_value(
+                    ts_iap_titles
+                )
             entries.append(entry)
 
         # Aligned tilt series
@@ -245,15 +199,32 @@ def build_tilt_series_assigned_images(
             and track.dataset_for.get(ImageType.ALIGNED_TILT_SERIES) == dataset_name
         ):
             entry = {
-                "label": dq(f"Tomo_{track.specimen_id} aligned tilt series"),
+                "label": dq(f"Specimen_{track.specimen_id} aligned_tilt_series"),
                 "file_pattern": dq(str(track.aligned_tilt_series)),
             }
             if track.tilt_series is not None:
                 entry["input_label"] = dq(
-                    f"Tomo_{track.specimen_id} unaligned tilt series"
+                    f"Specimen_{track.specimen_id} tilt_series"
                 )
-            if ats_titles:
-                entry["protocol_title"] = _protocol_title_value(ats_titles)
+            elif track.frames is not None:
+                frame_pattern = infer_frame_pattern(track.frames)
+                if frame_pattern:
+                    entry["input_label_prefix"] = dq(f"Specimen_{track.specimen_id} frames")
+                    entry["input_file_pattern"] = dq(frame_pattern)
+            else:
+                if track.track_start:
+                    entry["specimen_title"] = dq(f"Specimen_{track.specimen_id}")
+                else:
+                    raise ValueError(
+                        f"Track for specimen {track.specimen_id} has no frames or tilt series, but the aligned tilt series "
+                        "is not marked as track_start — specimen must be assigned as early in track as possible."
+                        )
+            if ats_protocol_titles:
+                entry["protocol_title"] = _protocol_title_value(ats_protocol_titles)
+            if ats_iap_titles:
+                entry["image_acquisition_protocol_title"] = _protocol_title_value(
+                    ats_iap_titles
+                )
             entries.append(entry)
 
     return entries
@@ -262,6 +233,7 @@ def build_tilt_series_assigned_images(
 def build_tomogram_assigned_images(
     tracks: list[ImageTrack],
     dataset_name: str,
+    iap_titles: dict[str, list[str]], 
     protocol_titles: dict[str, list[str]],
 ) -> list[dict]:
     """
@@ -269,7 +241,8 @@ def build_tomogram_assigned_images(
 
     Only includes tracks whose tomogram belongs to dataset_name.
     """
-    tomo_titles = protocol_titles.get(ImageType.TOMOGRAMS, [])
+    tomo_protocol_titles = protocol_titles.get(ImageType.TOMOGRAMS, [])
+    tomo_iap_titles = iap_titles.get(ImageType.TOMOGRAMS, [])
 
     entries = []
     for track in tracks:
@@ -279,19 +252,36 @@ def build_tomogram_assigned_images(
         ):
             continue
         entry: dict = {
-            "label": dq(f"Tomo_{track.specimen_id} tomogram"),
+            "label": dq(f"Specimen_{track.specimen_id} tomogram"),
             "file_pattern": dq(str(track.tomogram)),
         }
         if track.aligned_tilt_series is not None:
             entry["input_label"] = dq(
-                f"Tomo_{track.specimen_id} aligned tilt series"
+                f"Specimen_{track.specimen_id} aligned_tilt_series"
             )
         elif track.tilt_series is not None:
             entry["input_label"] = dq(
-                f"Tomo_{track.specimen_id} unaligned tilt series"
+                f"Specimen_{track.specimen_id} tilt_series"
             )
-        if tomo_titles:
-            entry["protocol_title"] = _protocol_title_value(tomo_titles)
+        elif track.frames is not None:
+            frame_pattern = infer_frame_pattern(track.frames)
+            if frame_pattern:
+                entry["input_label_prefix"] = dq(f"Specimen_{track.specimen_id} frames")
+                entry["input_file_pattern"] = dq(frame_pattern)
+        else:
+            if track.track_start:
+                entry["specimen_title"] = dq(f"Specimen_{track.specimen_id}")
+            else:
+                raise ValueError(
+                    f"Track for specimen {track.specimen_id} has no frames or tilt series (aligned or otherwise), but the tomogram "
+                    "is not marked as track_start — specimen must be assigned as early in track as possible."
+                    )
+        if tomo_protocol_titles:
+            entry["protocol_title"] = _protocol_title_value(tomo_protocol_titles)
+        if tomo_iap_titles:
+            entry["image_acquisition_protocol_title"] = _protocol_title_value(
+                tomo_iap_titles
+            )
         entries.append(entry)
     return entries
 
@@ -299,10 +289,11 @@ def build_tomogram_assigned_images(
 def build_dataset_blocks(
     tracks: list[ImageTrack],
     dataset_config: dict,
-) -> list[dict]:
+) -> dict:
     """
-    Build the dataset output blocks (frames, tilt series, tomograms) for one
-    dataset config entry.
+    Build a single dataset output block for one dataset config entry.
+    All image types (frames, tilt series, tomograms) are combined into
+    a single assigned_images list.
 
     image_acquisition_protocol_title supports two modes:
         dataset-level : {'dataset': ['Title']}  — attached to the dataset block
@@ -317,52 +308,31 @@ def build_dataset_blocks(
     if dataset_name is None:
         raise ValueError(f"Dataset config {dataset_config} has no 'name' key.")
 
-    iap = _iap_config(dataset_config)
+    iap_titles = _iap_config(dataset_config)
     protocol_titles = _protocol_titles_config(dataset_config)
 
-    frames_images = build_frames_assigned_images(tracks, dataset_name, iap)
-    tilt_images = build_tilt_series_assigned_images(
-        tracks, dataset_name, protocol_titles
-    )
-    tomo_images = build_tomogram_assigned_images(
-        tracks, dataset_name, protocol_titles
-    )
+    assigned_images = [
+        *build_frames_assigned_images(tracks, dataset_name, iap_titles, protocol_titles),
+        *build_tilt_series_assigned_images(tracks, dataset_name, iap_titles, protocol_titles),
+        *build_tomogram_assigned_images(tracks, dataset_name, iap_titles, protocol_titles),
+    ]
 
-    blocks = []
+    block: dict = {
+        "title": dq(dataset_name),
+        "assigned_images": assigned_images,
+    }
 
-    if frames_images:
-        block: dict = {
-            "title": dq(dataset_name),
-            "assigned_images": frames_images,
-        }
-        dataset_iap_titles = iap.get("dataset", [])
-        if dataset_iap_titles:
-            block["assigned_dataset_rembis"] = [
-                {
-                    "image_acquisition_protocol_title": _protocol_title_value(
-                        dataset_iap_titles
-                    )
-                }
-            ]
-        blocks.append(block)
-
-    if tilt_images:
-        blocks.append(
+    dataset_iap_titles = iap_titles.get("dataset", [])
+    if dataset_iap_titles:
+        block["assigned_dataset_rembis"] = [
             {
-                "title": dq(dataset_name),
-                "assigned_images": tilt_images,
+                "image_acquisition_protocol_title": _protocol_title_value(
+                    dataset_iap_titles
+                )
             }
-        )
+        ]
 
-    if tomo_images:
-        blocks.append(
-            {
-                "title": dq(dataset_name),
-                "assigned_images": tomo_images,
-            }
-        )
-
-    return blocks
+    return block
 
 
 def assign_specimen_metadata(
@@ -402,6 +372,7 @@ def assign_specimen_metadata(
             global_defaults.get("specimen_imaging_preparation_protocol_titles", [])
         )
 
+        # TODO: match patterns for specimen id here
         if sid in group_lookup:
             override = group_lookup[sid]
             if "biosample_title" in override:
@@ -413,7 +384,7 @@ def assign_specimen_metadata(
 
         specimens.append(
             {
-                "title": f"Specimen {sid}",
+                "title": f"Specimen_{sid}",
                 "biosample_title": biosample_title,
                 "specimen_imaging_preparation_protocol_title": prep_protocol_titles,
             }

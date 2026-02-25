@@ -1,0 +1,75 @@
+accession_id: EMPIAR-12454
+paper_doi: https://doi.org/10.1016/j.cell.2024.12.008
+
+specimen_defaults:
+  biosample_title: "Human monocyte-derived macrophages (MDM)"
+  specimen_imaging_preparation_protocol_titles:
+    - "MDM infection and grid seeding"
+    - "Vitrification and cryo-FIB milling"
+
+specimens:
+  patterns: 
+    - "(\\d{3})"
+
+biosamples:
+  - title: "Human monocyte-derived macrophages (MDM)"
+    organism_classification:
+      - common_name: "Human"
+        scientific_name: "Homo sapiens"
+        ncbi_id: "NCBI:txid9606"
+    biological_entity_description: "Monocyte-derived macrophages (MDMs) obtained from human peripheral blood mononuclear cells isolated from buffy coats of healthy donors."
+    growth_protocol_title: "MDM isolation and culture"
+
+protocols:
+  - title: "MDM isolation and culture"
+    protocol_description: "Monocyte-derived macrophages (MDMs) were obtained from human peripheral blood mononuclear cells (PBMCs) isolated from buffy coats of healthy donors obtained from the Heidelberg University Hospital Blood Bank. MDMs were cultivated in RPMI 1640 medium supplemented with 10% heat-inactivated FBS, 100 U/ml penicillin, 100 mg/ml streptomycin, and 5% human AB serum at 37°C in a humidified incubator with 5% CO2. For seeding, MDMs were detached using Accutase according to the manufacturer's instructions."
+  - title: "Tomogram reconstruction"
+    protocol_description: "Motion-corrected tilt series were corrected for dose exposure using a MATLAB implementation adapted for tomographic tilt series. Projection images of poor quality were removed after visual inspection. Dose-filtered tilt series were aligned using patch-tracking in AreTomo (version 1.33) and reconstructed as back-projected tomograms with SIRT-like filtering (15 iterations) at a binned pixel size of 9.656 Å (bin4) using IMOD (version 4.11.5). Tomograms containing nuclear pore complexes and/or HIV capsids were selected by visual inspection. The same tilt series were additionally reconstructed with 3D-CTF correction using novaCTF with phase-flip correction, astigmatism correction, and a 30 nm slab. Tomograms were binned 2x, 4x, and 8x using Fourier3D."
+
+specimen_imaging_preparation_protocols:
+  - title: "MDM infection and grid seeding"
+    protocol_description: "MDMs were seeded at 4 × 10^4 cells per glow-discharged, UV-sterilized 200-mesh gold EM grid coated with R 2/2 holey carbon film (Quantifoil), placed in glass-bottomed microwell MatTek dishes, and cultured for 24 hours at 37°C. Cells were then incubated for 48 hours with IN.mScarlet-labelled non-infectious HIV-1 particles (NNHIV) pseudotyped with R5-tropic Env (isolate 4059) at 60 μU RT/cell."
+  - title: "Vitrification and cryo-FIB milling"
+    protocol_description: "Infected MDMs on EM grids were vitrified by plunge freezing using a Leica EM GP2 plunger with the blotting chamber maintained at 37°C and 90% humidity. Prior to freezing, 3 μl of culture medium was applied to each grid, which was then blotted from the back for 3 s using Whatman Grade 1 filter paper before plunging into liquid ethane at -183°C. Cryo-FIB milling was performed on a Thermo Fisher Scientific Aquilos 2 dual-beam microscope. Samples were coated with an organometallic platinum layer by gas injection for 10 s, then sputter-coated with platinum at 1 kV and 10 mA for 10 s. Stepwise milling was carried out using AutoTEM (version 2.4.2) with an ion beam at 30 kV, reducing the current from 1000 pA to 50 pA. Final polishing was performed at 30 pA to a target lamella thickness of 200 nm."
+
+image_acquisition_protocols:
+  - title: "Cryo-electron tomography"
+    protocol_description: "Cryo-ET data were collected at 300 kV on a Thermo Fisher Scientific Titan Krios G4 equipped with a cold field emission gun (E-CFEG), a Falcon 4 direct electron detector operated in counting mode, and a Selectris X imaging filter. Montaged grid overviews were acquired at 205 nm pixel size and individual lamella montages at 3 nm pixel size. Tilt series were acquired using SerialEM (version 4.0.20) in low-dose mode as 4K × 4K movies of 10 frames each, with on-the-fly motion correction in SerialEM. The acquisition magnification of 53,000x corresponded to a nominal pixel size of 2.414 Å. Tilt series were collected using a dose-symmetric scheme starting from the lamella pretilt of ±8°, with 2° increments grouped by 2, yielding 61 projections per tilt series, a total dose of ~135 e⁻/Å², and a dose rate of ~4–6 e⁻/px/s. The energy slit width was set to 10 eV and nominal defocus was varied between -2.0 and -4.0 μm."
+    imaging_instrument_description: "Thermo Fisher Scientific Titan Krios G4 cryo-TEM at 300 kV, equipped with a cold field emission gun (E-CFEG), Thermo Fisher Scientific Falcon 4 direct electron detector (counting mode), and Thermo Fisher Scientific Selectris X imaging filter."
+    fbbi_id:
+      - "obo:FBbi_00000256"
+    imaging_method_name:
+      - "Cryo-electron tomography"
+
+datasets:
+  - name: "Raw tilt-series of human macrophage cells infected with HIV-1"
+    data_directories:
+      - "data/MDM-infected/raw_data"
+
+    file_globs:
+      tilt_series:
+        - "**/*.mrc"
+
+    image_acquisition_protocol_title:
+      dataset:
+        - "Cryo-electron tomography"
+
+  - name: "Tilt cleaned, dose-filtered tilt-series of human macrophage cells infected with HIV-1"
+    data_directories:
+      - "data/MDM-infected/input_stacks"
+
+    file_globs:
+      aligned_tilt_series:
+        - "**/*_dose-filt.mrc"
+
+  - name: "Reconstructed tomograms of human macrophage cells infected with HIV-1 (4x binning and filtered with sirt-like filter)"
+    data_directories:
+      - "data/MDM-infected/bin4_rec"
+
+    file_globs:
+      tomograms:
+        - "**/*_fSIRT.mrc"
+
+    protocol_titles:
+      tomograms:
+        - "Tomogram reconstruction"

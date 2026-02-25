@@ -1,10 +1,6 @@
 accession_id: EMPIAR-12177
 paper_doi: https://doi.org/10.1101/2024.07.13.603322v1
 
-# ---------------------------------------------------------------------------
-# Global defaults for specimen metadata.
-# Applied to every specimen unless overridden at dataset or group level.
-# ---------------------------------------------------------------------------
 specimen_defaults:
   biosample_title: "Encephalitozoon intestinalis ATCC 50506"
   specimen_imaging_preparation_protocol_titles:
@@ -19,9 +15,6 @@ specimens:
   patterns:
     - "tomo_(\\d{4})"
 
-# ---------------------------------------------------------------------------
-# REMBI objects (provided separately; referenced by title in specimens)
-# ---------------------------------------------------------------------------
 biosamples:
   - title: "Encephalitozoon intestinalis ATCC 50506"
     organism_classification:
@@ -54,8 +47,6 @@ image_acquisition_protocols:
     imaging_method_name:
       - "Cryo-electron tomography"
 
-# Protocol REMBI objects for this entry.
-# Referenced by title in dataset-level protocol_titles blocks below.
 protocols:
   - title: "Spore propagation and purification"
     protocol_description: "..."
@@ -64,9 +55,6 @@ protocols:
   - title: "Tomogram reconstruction"
     protocol_description: "..."
 
-# ---------------------------------------------------------------------------
-# Datasets: file pattern rules to identify tracks from the filesystem
-# ---------------------------------------------------------------------------
 datasets:
   - name: "Raw frames from dataset 3 of microsporidian Encephalitozoon intestinalis"
     data_directories:
@@ -76,8 +64,6 @@ datasets:
       frames:
         - "**/raw_frames/*.tif"
 
-    # IAP at dataset level — applies to the dataset block as a whole.
-    # Use image-type keys instead of 'dataset' to restrict to specific types.
     image_acquisition_protocol_title:
       dataset:
         - "Cryo-electron tomography"

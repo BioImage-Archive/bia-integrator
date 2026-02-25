@@ -4,7 +4,7 @@ import pandas as pd
 import re
 from enum import Enum
 from pathlib import Path
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, computed_field, Field
 
 from ro_crate_ingest.empiar_to_ro_crate.empiar.file_api import EMPIARFile
 
@@ -38,6 +38,19 @@ class ImageTrack(BaseModel):
     tomogram: Path | None = None
     extra_files: list[Path] = Field(default_factory=list)
     dataset_for: dict[str, str] = Field(default_factory=dict)
+
+    @computed_field
+    @property
+    def track_start(self) -> ImageType:
+        if self.frames:
+            return ImageType.FRAMES
+        if self.tilt_series is not None:
+            return ImageType.TILT_SERIES
+        if self.aligned_tilt_series is not None:
+            return ImageType.ALIGNED_TILT_SERIES
+        if self.tomogram is not None:
+            return ImageType.TOMOGRAM
+        raise ValueError(f"ImageTrack for specimen '{self.specimen_id}' has no images")
 
 
 def _extract_specimen_id(
@@ -410,7 +423,7 @@ def validate_tracks(
             missing.append("tomogram")
         if missing:
             incomplete.append({"specimen_id": track.specimen_id, "missing": missing})
-            logger.warning(
+            logger.debug(
                 f"Incomplete track for specimen {track.specimen_id}: missing {missing}."
             )
 

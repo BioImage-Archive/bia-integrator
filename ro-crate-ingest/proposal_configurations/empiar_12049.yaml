@@ -1,10 +1,6 @@
 accession_id: "EMPIAR-12049"
 paper_doi: "https://doi.org/10.1016/j.devcel.2024.12.002"
 
-# ---------------------------------------------------------------------------
-# Global defaults for specimen metadata.
-# Applied to every specimen unless overridden at dataset or group level.
-# ---------------------------------------------------------------------------
 specimen_defaults:
   biosample_title: "C. elegans embryonic cells expressing GFP::SPD-5 and H2B::mCherry" 
   specimen_imaging_preparation_protocol_titles:
@@ -27,9 +23,6 @@ specimens:
     "centrosome_11": ["**/20210710/**/TS_006*", "**/cent11.mrc"]
     "centrosome_12": ["**/20210710/**/TS_002*", "**/cent12.mrc"]
 
-# ---------------------------------------------------------------------------
-# REMBI objects (provided separately; referenced by title in specimens)
-# ---------------------------------------------------------------------------
 biosamples:
   - title: "C. elegans embryonic cells expressing GFP::SPD-5 and H2B::mCherry"  
     organism_classification:
@@ -62,9 +55,6 @@ image_acquisition_protocols:
     imaging_method_name:
       - "Cryo-electron tomography"
 
-# ---------------------------------------------------------------------------
-# Datasets: file pattern rules to identify tracks from the filesystem
-# ---------------------------------------------------------------------------
 datasets:
   - name: "Unaligned multi-frame micrographs of C. elegans centrosomes"
     data_directories:
@@ -76,8 +66,6 @@ datasets:
       tilt_series:
         - "**/processing/*.st"
 
-    # IAP at dataset level — applies to the dataset block as a whole.
-    # Use image-type keys instead of 'dataset' to restrict to specific types.
     image_acquisition_protocol_title:
       dataset:
         - "Cryo-electron tomography"

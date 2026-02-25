@@ -85,7 +85,7 @@ def generate_empiar_proposal(
     all_dataset_blocks: list[dict] = []
     for dataset_config in datasets_config:
         logger.info(f"Building dataset block: {dataset_config.get('name')}")
-        all_dataset_blocks.extend(build_dataset_blocks(tracks, dataset_config))
+        all_dataset_blocks.append(build_dataset_blocks(tracks, dataset_config))
 
     proposal = {
         "accession_id": _dq_all(accession_id),
