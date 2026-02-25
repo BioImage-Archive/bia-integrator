@@ -2,7 +2,7 @@ from fastapi.testclient import TestClient
 
 
 def test_fts_image_facet_discovery_organism(api_client: TestClient):
-    rsp = api_client.get(f"/search/fts/image", params={"query": "Homo sapiens"})
+    rsp = api_client.get(f"search/fts/image", params={"query": "Homo sapiens"})
     assert rsp.status_code == 200
 
     body = rsp.json()
@@ -17,7 +17,7 @@ def test_fts_image_facet_discovery_organism(api_client: TestClient):
 
 def test_fts_image_facet_discovery_imaging_method(api_client: TestClient):
     rsp = api_client.get(
-        f"/search/fts/image", params={"query": "fluorescence microscopy"}
+        f"search/fts/image", params={"query": "fluorescence microscopy"}
     )
     assert rsp.status_code == 200
 
@@ -26,7 +26,7 @@ def test_fts_image_facet_discovery_imaging_method(api_client: TestClient):
 
 
 def test_fts_image_no_query(api_client: TestClient):
-    rsp = api_client.get(f"/search/fts/image")
+    rsp = api_client.get(f"search/fts/image")
     assert rsp.status_code == 200
     body = rsp.json()
     facet_homo_sapiens = next(
@@ -37,7 +37,7 @@ def test_fts_image_no_query(api_client: TestClient):
     assert len(body["hits"]["hits"]) == 3
 
     rsp = api_client.get(
-        f"/search/fts/image", params={"facet.organism": ["Homo sapiens"]}
+        f"search/fts/image", params={"facet.organism": ["Homo sapiens"]}
     )
     assert rsp.status_code == 200
     body = rsp.json()
@@ -46,7 +46,7 @@ def test_fts_image_no_query(api_client: TestClient):
 
 def test_fts_image_use_facet_imaging_method(api_client: TestClient):
     rsp = api_client.get(
-        f"/search/fts/image",
+        f"search/fts/image",
         params={
             "facet.imaging_method": [
                 "confocal microscopy",
@@ -59,9 +59,19 @@ def test_fts_image_use_facet_imaging_method(api_client: TestClient):
     assert len(body["hits"]["hits"]) == 2
 
 
+def test_fts_image_use_facet_annotation_method(api_client: TestClient):
+    rsp = api_client.get(
+        f"search/fts/image",
+        params={"facet.annotation_method": "segmentation mask"},
+    )
+    assert rsp.status_code == 200
+    body = rsp.json()
+    assert len(body["hits"]["hits"]) == 1
+
+
 def test_fts_image_use_facet_image_format(api_client: TestClient):
     rsp = api_client.get(
-        f"/search/fts/image",
+        f"search/fts/image",
         params={"facet.image_format.eq": ".mcd"},
     )
     assert rsp.status_code == 200
@@ -71,7 +81,7 @@ def test_fts_image_use_facet_image_format(api_client: TestClient):
 
 def test_fts_image_paging(api_client: TestClient):
     rsp = api_client.get(
-        f"/search/fts/image",
+        f"search/fts/image",
         params={"query": "", "pagination.page": 1, "pagination.page_size": 1},
     )
     assert rsp.status_code == 200
@@ -81,7 +91,7 @@ def test_fts_image_paging(api_client: TestClient):
     assert page_1["pagination"]["page_size"] == 1
 
     rsp = api_client.get(
-        f"/search/fts/image",
+        f"search/fts/image",
         params={"query": "", "pagination.page": 2, "pagination.page_size": 1},
     )
     assert rsp.status_code == 200
@@ -91,7 +101,7 @@ def test_fts_image_paging(api_client: TestClient):
     assert page_2["pagination"]["page_size"] == 1
 
     rsp = api_client.get(
-        f"/search/fts/image",
+        f"search/fts/image",
         params={"query": "", "pagination.page": 1, "pagination.page_size": 2},
     )
     assert rsp.status_code == 200
@@ -105,7 +115,7 @@ def test_fts_image_paging(api_client: TestClient):
 
 def test_fts_image_derived_images(api_client: TestClient):
     rsp = api_client.get(
-        f"/search/fts/image",
+        f"search/fts/image",
         params={
             "query": "0931a00e-d4dc-4c82-9809-4fdeffb1fc2e",
             "includeDerivedImages": "true",
@@ -127,7 +137,7 @@ def test_fts_image_derived_images(api_client: TestClient):
 
 def test_fts_image_imagerep_dimensions(api_client: TestClient):
     rsp = api_client.get(
-        f"/search/fts/image",
+        f"search/fts/image",
         params={
             "size_x.gt": "1024",
             "size_y.gt": "1024",
@@ -138,7 +148,7 @@ def test_fts_image_imagerep_dimensions(api_client: TestClient):
     assert body["hits"]["total"]["value"] == 1
 
     rsp = api_client.get(
-        f"/search/fts/image",
+        f"search/fts/image",
         params={
             "size_c.lt": "2",
         },
@@ -148,7 +158,7 @@ def test_fts_image_imagerep_dimensions(api_client: TestClient):
     assert body["hits"]["total"]["value"] == 2
 
     rsp = api_client.get(
-        f"/search/fts/image",
+        f"search/fts/image",
         params={
             "total_size_in_bytes.gt": "2000000",
         },
@@ -160,7 +170,7 @@ def test_fts_image_imagerep_dimensions(api_client: TestClient):
 
 def test_fts_image_highlight(api_client: TestClient):
     rsp = api_client.get(
-        f"/search/fts/image",
+        f"search/fts/image",
         params={"query": "cell line"},
     )
     assert rsp.status_code == 200

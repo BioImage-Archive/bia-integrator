@@ -75,18 +75,22 @@ curl -k -X PUT "${ELASTIC_URL}/${ELASTIC_INDEX}" \
 					"type": "text", "analyzer": "analyzerCaseInsensitive"
 				},
 				"keyword": {
-					"type": "keyword"
+					"type": "keyword", "doc_values": "false"
 				},
+				"acknowledgement": { "type": "text", "analyzer": "analyzerCaseInsensitive" },
 				"author": {
 					"type": "nested",
 					"dynamic": false,
 					"properties": {
 						"display_name": { "type": "text", "analyzer": "analyzerCaseInsensitive" },
+						"orcid": {"type": "keyword", "doc_values": "false"},
+						"rorid": {"type": "keyword", "doc_values": "false"},
 						"affiliation": {
 							"type": "nested",
 							"dynamic": false,
 							"properties": {
-								"display_name": { "type": "text", "analyzer": "analyzerCaseInsensitive" }
+								"display_name": { "type": "keyword", "normalizer": "lowercase_norm", "doc_values": "false" },
+								"rorid": {"type": "keyword", "doc_values": "false"}
 							}
 						}
 					}
@@ -98,7 +102,8 @@ curl -k -X PUT "${ELASTIC_URL}/${ELASTIC_INDEX}" \
 				"dataset": {
 					"type": "object",
 					"properties": {
-						"uuid": { "type": "keyword" },
+						"uuid": { "type": "keyword", "doc_values": "false" },
+						"example_image_uri": {"type": "keyword", "index": "false", "doc_values": "true"},
 						"biological_entity": {
 							"type": "object",
 							"properties": {
@@ -106,14 +111,14 @@ curl -k -X PUT "${ELASTIC_URL}/${ELASTIC_INDEX}" \
 									"type": "object",
 									"properties": {
 										"scientific_name": {
-											"type": "keyword", "normalizer": "lowercase_norm" 
+											"type": "text", 
+											"analyzer": "analyzerCaseInsensitive",
+											"fields": {
+												"keyword": { "type": "keyword", "normalizer": "lowercase_norm" }
+											}
 										},
-										"common_name": {
-											"type": "keyword", "normalizer": "lowercase_norm" 
-										},
-										"ncbi_id": {
-											"type": "keyword"
-										}
+										"common_name": { "type": "text", "analyzer": "analyzerCaseInsensitive" },
+										"ncbi_id": { "type": "keyword", "doc_values": "false" }
 									}
 								}
 							}
@@ -122,7 +127,11 @@ curl -k -X PUT "${ELASTIC_URL}/${ELASTIC_INDEX}" \
 							"type": "object",
 							"properties": {
 								"imaging_method_name": {
-									"type": "keyword", "normalizer": "lowercase_norm" 
+									"type": "text", 
+									"analyzer": "analyzerCaseInsensitive",
+									"fields": {
+										"keyword": { "type": "keyword", "normalizer": "lowercase_norm" }
+									}
 								}
 							}
 						},
@@ -130,7 +139,11 @@ curl -k -X PUT "${ELASTIC_URL}/${ELASTIC_INDEX}" \
 							"type": "object",
 							"properties": {
 								"method_type": {
-									"type": "keyword", "normalizer": "annotation_type_norm" 
+									"type": "text", 
+									"analyzer": "analyzerCaseInsensitive",
+									"fields": {
+										"keyword": { "type": "keyword", "normalizer": "annotation_type_norm" }
+									}
 								}
 							}
 						}
@@ -176,6 +189,11 @@ curl -k -X PUT "${ELASTIC_URL}/${ELASTIC_INDEX_IMAGES}" \
 					"type": "pattern_replace",
 					"pattern": "^\\.",
 					"replacement": ""
+				},
+				"replace_annotation_type": {
+						"type": "pattern_replace",
+						"pattern": "_",
+						"replacement": " "
 				}
 			},
 			"normalizer": {
@@ -187,6 +205,11 @@ curl -k -X PUT "${ELASTIC_URL}/${ELASTIC_INDEX_IMAGES}" \
 					"type": "custom",
           			"char_filter": ["replace_file_format"],
 					"filter": ["lowercase"]
+				},
+				"annotation_type_norm": {
+						"type": "custom",
+						"char_filter": ["replace_annotation_type"],
+						"filter": ["lowercase"]
 				}
 			}
 		}
@@ -219,11 +242,25 @@ curl -k -X PUT "${ELASTIC_URL}/${ELASTIC_INDEX_IMAGES}" \
 			"creation_process": {
 				"type": "object",
 				"properties": {
-					"input_image_uuid": { "type": "keyword" },
+					"input_image_uuid": { "type": "keyword", "doc_values": "false" },
 					"acquisition_process": {
 						"type": "object",
 						"properties": {
-							"imaging_method_name": { "type": "keyword", "normalizer": "lowercase_norm" }
+							"imaging_method_name": { 
+								"type": "text", 
+								"analyzer": "analyzerCaseInsensitive",
+								"fields": { "keyword": { "type": "keyword", "normalizer": "lowercase_norm" } }
+							}
+						}
+					},
+					"annotation_method": {
+						"type": "object",
+						"properties": {
+							"method_type": { 
+								"type": "text", 
+								"analyzer": "analyzerCaseInsensitive",
+								"fields": { "keyword": { "type": "keyword", "normalizer": "annotation_type_norm" } }
+							}
 						}
 					},
 					"subject": {
@@ -237,8 +274,14 @@ curl -k -X PUT "${ELASTIC_URL}/${ELASTIC_INDEX_IMAGES}" \
 										"type": "object",
 										"properties": {
 											"common_name": { "type": "text", "analyzer": "analyzerCaseInsensitive"},
-											"ncbi_id": { "type": "keyword" },
-											"scientific_name": { "type": "keyword", "normalizer": "lowercase_norm" }
+											"ncbi_id": { "type": "keyword", "doc_values": "false" },
+											"scientific_name": { 
+												"type": "text", 
+												"analyzer": "analyzerCaseInsensitive",
+												"fields": {
+													"keyword": { "type": "keyword", "normalizer": "lowercase_norm" }
+												}
+											}			
 										}
 									}
 								}

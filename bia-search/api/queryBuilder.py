@@ -3,8 +3,6 @@ from typing import Any
 from api.utils import (
     operators_map,
     fields_map,
-    reorder_dict_by_spec,
-    handle_numeric_fields_aggs_results,
 )
 
 
@@ -75,7 +73,7 @@ class QueryBuilder:
             )
         self.must.append({"bool": {"should": shoulds, "minimum_should_match": 1}})
 
-    def parse_numeric_filters(self, params: dict[str, Any]):
+    def parse_numeric_filters(self, params: dict[str, Any], index_type: str):
         ops = operators_map["numeric"]
         exact: dict[str, set[float]] = {}
         rng: dict[str, dict[str, float]] = {}
@@ -100,16 +98,19 @@ class QueryBuilder:
                     pass
             return out
 
+        if "numeric" not in fields_map[index_type].keys():
+            return
+
         for k, v in params.items():
             field, op = (k.split(".", 1) + ["or"])[:2] if "." in k else (k, "or")
-            if field not in fields_map["numeric"] or op not in (
+            if field not in fields_map[index_type]["numeric"] or op not in (
                 *ops.keys(),
                 "or",
                 "not",
             ):
                 continue
 
-            f, xs = fields_map["numeric"][field], floats(v)
+            f, xs = fields_map[index_type]["numeric"][field], floats(v)
             if not xs:
                 continue
 
@@ -158,12 +159,27 @@ class QueryBuilder:
             ),
             "not": self._handle_not,
         }
+        has_map = (
+            field_map.get("has", {}) if isinstance(field_map.get("has"), dict) else {}
+        )
 
         for param, value in params.items():
             parts = param.split(".")
-
-            if len(parts) < 2 or parts[0] in fields_map["numeric"]:
+            if len(parts) < 2 or (
+                "numeric" in fields_map[index_type].keys()
+                and parts[0] in fields_map[index_type]["numeric"]
+            ):
                 continue
+            if parts[0] == "has":
+
+                def str_to_bool(s: str) -> bool:
+                    return s.strip().lower() in {"true", "yes"}
+
+                elastic_field = has_map.get(parts[1])
+                if elastic_field and str_to_bool(value):
+                    self._handle_has(elastic_field)
+                elif elastic_field and not str_to_bool(value):
+                    self._handle_has_not(elastic_field)
 
             operator = parts[2] if len(parts) == 3 else "or"
 
@@ -174,18 +190,13 @@ class QueryBuilder:
             if not elastic_field:
                 continue
 
-            values = (
-                value.split(",") if isinstance(value, str) and "," in value else value
-            )
-            if values is None:
-                return
             if field_key == "facet.year" and index_type == "study":
-                self.parse_year_filter(values)
+                self.parse_year_filter(value)
                 continue
 
             handler = operator_handlers.get(operator)
             if handler:
-                handler(elastic_field, values)
+                handler(elastic_field, value)
 
     def _handle_eq(self, elastic_field: str, values: Any):
         if isinstance(values, list):
@@ -220,6 +231,12 @@ class QueryBuilder:
         else:
             self.must_not.append({"term": {elastic_field: values}})
 
+    def _handle_has(self, elastic_field: str):
+        self.filter.append({"exists": {"field": elastic_field}})
+
+    def _handle_has_not(self, elastic_field: str):
+        self.must_not.append({"exists": {"field": elastic_field}})
+
     def parse_year_filter(self, values):
         def _year_to_range(year: str) -> dict[str, Any]:
             return {
@@ -243,6 +260,18 @@ class QueryBuilder:
                 },
             }
         )
+
+    def parse_params(
+        self,
+        query: str | None,
+        params: dict[str, Any],
+        index_type: str,
+        include_nested_author: bool = False,
+        allow_root_should: bool = False,
+    ):
+        self.parse_text_query(query, include_nested_author)
+        self.parse_boolean_filters(params, index_type, allow_root_should)
+        self.parse_numeric_filters(params, index_type)
 
     def build(self) -> dict[str, Any]:
         if not (self.must or self.filter or self.should or self.must_not):
