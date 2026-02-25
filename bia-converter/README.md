@@ -18,6 +18,24 @@ poetry install
 ```
 See [Post installation configuration section](#post-installation-configuration) for setting configuration details
 
+### Running with uv
+
+The CLI entry points are also runnable with `uv`.
+
+From inside `bia-converter/`:
+
+```bash
+uv run bia-converter --help
+uv run zarr2zarr --help
+```
+
+From repo root:
+
+```bash
+uv run --directory bia-converter bia-converter --help
+uv run --directory bia-converter zarr2zarr --help
+```
+
 ## Usage
 The cli commands in this module take image representations as inputs. If the image representation is that of the image that was originally uploaded by the user, the *assignment* of a `BIA Image` object **must** have been carried out - see the [bia-assign-image subpackage](../bia-assign-image/README.md)
 
