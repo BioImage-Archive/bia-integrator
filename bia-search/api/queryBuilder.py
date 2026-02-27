@@ -50,16 +50,30 @@ class QueryBuilder:
                                     {
                                         "match": {
                                             "author.display_name": {"query": query}
-                                        }
+                                        },
                                     },
+                                    {"term": {"author.orcid": query}},
+                                    {"term": {"author.rorid": query}},
                                     {
                                         "nested": {
                                             "path": "author.affiliation",
                                             "query": {
-                                                "match": {
-                                                    "author.affiliation.display_name": {
-                                                        "query": query
-                                                    }
+                                                "bool": {
+                                                    "should": [
+                                                        {
+                                                            "term": {
+                                                                "author.affiliation.rorid": query
+                                                            }
+                                                        },
+                                                        {
+                                                            "match": {
+                                                                "author.affiliation.display_name": {
+                                                                    "query": query
+                                                                }
+                                                            }
+                                                        },
+                                                    ],
+                                                    "minimum_should_match": 1,
                                                 }
                                             },
                                         }
