@@ -131,11 +131,11 @@ def test_fts_author_search(api_client: TestClient):
 
     rsp = api_client.get(
         f"search/fts",
-        params={"query": "Max Planck"},
+        params={"query": "0000-0003-3862-8349"},
     )
     assert rsp.status_code == 200
     body = rsp.json()
-    assert len(body["hits"]["hits"]) == 0
+    assert len(body["hits"]["hits"]) == 2
 
     rsp = api_client.get(
         f"search/fts",
