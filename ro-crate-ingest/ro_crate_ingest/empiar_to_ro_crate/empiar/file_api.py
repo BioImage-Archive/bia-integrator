@@ -17,6 +17,11 @@ def get_files(accession_id: str) -> list[EMPIARFile]:
         "EMPIAR-STARFILETEST": "A test submission covering star file annotation, with tomograms, and other image dependencies.",
         "EMPIAR-IMAGELABELTEST": "A test submission covering file-to-image grouping strategies.", 
         "EMPIAR-SPECIMENTEST": "A test submission for one:many specimen:image assignment.",
+        "EMPIAR-SPECIMENPATTERNTEST": "Test submission for simple regex specimen patterns.",
+        "EMPIAR-SPECIMENALIASPATTERNSTEST": "Test submission for pattern alias mappings.",
+        "EMPIAR-SPECIMENALIASMAPPINGSTEST": "Test submission for literal alias mappings.",
+        "EMPIAR-SPECIMENGROUPTEST": "Test submission for specimen group overrides.",
+        "EMPIAR-ENTRYWITHOUTFRAMESTEST": "Test submission for entries without raw frames.",
     }
     if accession_id in overrides:
         return get_file_info_from_override(accession_id)
