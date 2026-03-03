@@ -30,9 +30,9 @@ curl -k -X PUT "${ELASTIC_URL}/${ELASTIC_INDEX}" \
 		"settings": {
 			"analysis": {
 				"analyzer": {
-					"default": { "type": "whitespace" },
+					"default": { "type": "standard" },
 					"analyzerCaseInsensitive": {
-						"tokenizer": "whitespace",
+						"tokenizer": "standard",
 						"filter": ["lowercase"]
 					}
 				},
@@ -178,9 +178,9 @@ curl -k -X PUT "${ELASTIC_URL}/${ELASTIC_INDEX_IMAGES}" \
 	"settings": {
 		"analysis": {
 			"analyzer": {
-				"default": { "type": "whitespace" },
+				"default": { "type": "standard" },
 				"analyzerCaseInsensitive": {
-					"tokenizer": "whitespace",
+					"tokenizer": "standard",
 					"filter": ["lowercase"]
 				}
 			},
