@@ -186,6 +186,6 @@ def test_fts_image_highlight(api_client: TestClient):
     )
     assert {
         "creation_process.subject.sample_of.biological_entity_description": [
-            "HaCaT cell line, a spontaneously transformed human epithelial __HIT__cell line__/HIT__ from adult skin"
+            "HaCaT __HIT__cell line__/HIT__, a spontaneously transformed human epithelial __HIT__cell line__/HIT__ from adult skin"
         ]
     } == body["hits"]["hits"][0]["highlight"]

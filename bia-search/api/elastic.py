@@ -24,9 +24,9 @@ class Elastic:
                     "settings": {
                         "analysis": {
                             "analyzer": {
-                                "default": {"type": "whitespace"},
+                                "default": {"type": "standard"},
                                 "analyzerCaseInsensitive": {
-                                    "tokenizer": "whitespace",
+                                    "tokenizer": "standard",
                                     "filter": ["lowercase"],
                                 },
                             },
@@ -186,9 +186,9 @@ class Elastic:
                     "settings": {
                         "analysis": {
                             "analyzer": {
-                                "default": {"type": "whitespace"},
+                                "default": {"type": "standard"},
                                 "analyzerCaseInsensitive": {
-                                    "tokenizer": "whitespace",
+                                    "tokenizer": "standard",
                                     "filter": ["lowercase"],
                                 },
                             },
