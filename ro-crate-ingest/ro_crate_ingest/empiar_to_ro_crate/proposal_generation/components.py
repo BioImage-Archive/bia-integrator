@@ -1,9 +1,9 @@
-import difflib
 import logging
 import pathlib
-# import re
+import re
 from ruamel.yaml.scalarstring import DoubleQuotedScalarString as dq
 
+from ro_crate_ingest.settings import get_settings
 from ro_crate_ingest.empiar_to_ro_crate.proposal_generation.image_tracks import (
     ImageTrack,
     ImageType,
@@ -12,21 +12,28 @@ from ro_crate_ingest.empiar_to_ro_crate.proposal_generation.image_tracks import 
 logger = logging.getLogger(__name__)
 
 
-def infer_frame_pattern(frame_files: list[pathlib.Path]) -> str | None:
+def infer_frame_pattern(
+    frame_files: list[pathlib.Path],
+    pattern_inference_delimiters: list[str] | None = None,
+) -> str | None:
     """
     Given a list of frame file paths (all from one specimen), infer the
-    file pattern by replacing the variable numeric/tilt-angle parts with {}.
+    file pattern by replacing the variable parts with {}.
+
+    Splits each path into tokens on the given delimiters, then compares
+    token-by-token across all files. Tokens that are constant across all
+    files are kept literal; tokens that vary become {}.
 
     For example:
         raw_frames/b3g1_SR_ts50_101_0000_-15.0.tif
         raw_frames/b3g1_SR_ts50_101_0001_-15.0.tif
         ...
     becomes:
-        raw_frames/b3g1_SR_ts50_101_{}_{}.tif
-
-    Uses difflib.SequenceMatcher to identify varying regions across all files,
-    then replaces each varying region with {}.
+        raw_frames/b3g1_SR_ts50_101_{}_-15.0.tif
     """
+    if pattern_inference_delimiters is None:
+        pattern_inference_delimiters = get_settings().empiar_proposal_generation_pattern_inference_delimiters
+
     if not frame_files:
         return None
 
@@ -34,35 +41,34 @@ def infer_frame_pattern(frame_files: list[pathlib.Path]) -> str | None:
     if len(str_paths) == 1:
         return str_paths[0]
 
-    first = str_paths[0]
+    escaped = [re.escape(d) for d in pattern_inference_delimiters]
+    split_pattern = '(' + '|'.join(escaped) + ')'
 
-    # Collect all character positions in `first` that vary across other paths
-    varying_positions: set[int] = set()
-    matcher = difflib.SequenceMatcher()
-    matcher.set_seq2(first)
-    for other in str_paths[1:]:
-        matcher.set_seq1(other)
-        for tag, i1, i2, j1, j2 in matcher.get_opcodes():
-            if tag != "equal":
-                # j1:j2 are the positions in `first` (seq2) that differ
-                varying_positions.update(range(j1, j2))
+    def split_with_delimiters(s: str) -> list[str]:
+        return re.split(split_pattern, s)
 
-    if not varying_positions:
-        return first
+    tokenised = [split_with_delimiters(p) for p in str_paths]
 
-    # Build the pattern from `first`, replacing varying regions with {}
-    result_chars: list[str] = []
-    in_replacement = False
-    for i, ch in enumerate(first):
-        if i in varying_positions:
-            if not in_replacement:
-                result_chars.append("{}")
-                in_replacement = True
+    lengths = {len(t) for t in tokenised}
+    if len(lengths) > 1:
+        logger.warning(
+            "Frame files for a specimen have inconsistent token counts after splitting "
+            f"on {pattern_inference_delimiters}; falling back to first path as pattern."
+        )
+        return str_paths[0]
+
+    first_tokens = tokenised[0]
+    result_parts = []
+    for i, token in enumerate(first_tokens):
+        if token in pattern_inference_delimiters:
+            result_parts.append(token)
+            continue
+        if all(t[i] == token for t in tokenised[1:]):
+            result_parts.append(token)
         else:
-            in_replacement = False
-            result_chars.append(ch)
+            result_parts.append('{}')
 
-    return "".join(result_chars)
+    return ''.join(result_parts)
 
 
 def _protocol_title_value(titles: list[str]) -> str | list:
@@ -102,7 +108,8 @@ def build_frames_assigned_images(
     tracks: list[ImageTrack],
     dataset_name: str,
     iap_titles: dict[str, list[str]],
-    protocol_titles: dict[str, list[str]]
+    protocol_titles: dict[str, list[str]], 
+    pattern_inference_delimiters: list[str] | None = None
 ) -> list[dict]:
     """
     Build assigned_images entries for raw movie frame collections.
@@ -121,7 +128,7 @@ def build_frames_assigned_images(
             continue
         if not track.frames:
             continue
-        pattern = infer_frame_pattern(track.frames)
+        pattern = infer_frame_pattern(track.frames, pattern_inference_delimiters)
         if pattern is None:
             logger.warning(
                 f"Could not infer frame pattern for specimen {track.specimen_id}; skipping."
@@ -146,7 +153,8 @@ def build_tilt_series_assigned_images(
     tracks: list[ImageTrack],
     dataset_name: str,
     iap_titles: dict[str, list[str]], 
-    protocol_titles: dict[str, list[str]]
+    protocol_titles: dict[str, list[str]], 
+    pattern_inference_delimiters: list[str] | None = None
 ) -> list[dict]:
     """
     Build assigned_images entries for unaligned and aligned tilt series.
@@ -173,7 +181,7 @@ def build_tilt_series_assigned_images(
                 "file_pattern": dq(str(track.tilt_series)),
             }
             if track.frames:
-                frame_pattern = infer_frame_pattern(track.frames)
+                frame_pattern = infer_frame_pattern(track.frames, pattern_inference_delimiters)
                 if frame_pattern:
                     entry["input_label_prefix"] = dq(f"Specimen_{track.specimen_id} frames")
                     entry["input_file_pattern"] = dq(frame_pattern)
@@ -207,7 +215,7 @@ def build_tilt_series_assigned_images(
                     f"Specimen_{track.specimen_id} tilt_series"
                 )
             elif track.frames is not None:
-                frame_pattern = infer_frame_pattern(track.frames)
+                frame_pattern = infer_frame_pattern(track.frames, pattern_inference_delimiters)
                 if frame_pattern:
                     entry["input_label_prefix"] = dq(f"Specimen_{track.specimen_id} frames")
                     entry["input_file_pattern"] = dq(frame_pattern)
@@ -234,7 +242,8 @@ def build_tomogram_assigned_images(
     tracks: list[ImageTrack],
     dataset_name: str,
     iap_titles: dict[str, list[str]], 
-    protocol_titles: dict[str, list[str]],
+    protocol_titles: dict[str, list[str]], 
+    pattern_inference_delimiters: list[str] | None = None
 ) -> list[dict]:
     """
     Build assigned_images entries for reconstructed tomograms.
@@ -264,7 +273,7 @@ def build_tomogram_assigned_images(
                 f"Specimen_{track.specimen_id} tilt_series"
             )
         elif track.frames is not None:
-            frame_pattern = infer_frame_pattern(track.frames)
+            frame_pattern = infer_frame_pattern(track.frames, pattern_inference_delimiters)
             if frame_pattern:
                 entry["input_label_prefix"] = dq(f"Specimen_{track.specimen_id} frames")
                 entry["input_file_pattern"] = dq(frame_pattern)
@@ -288,7 +297,8 @@ def build_tomogram_assigned_images(
 
 def build_dataset_blocks(
     tracks: list[ImageTrack],
-    dataset_config: dict,
+    dataset_config: dict, 
+    pattern_inference_delimiters: list[str] | None = None
 ) -> dict:
     """
     Build a single dataset output block for one dataset config entry.
@@ -312,9 +322,9 @@ def build_dataset_blocks(
     protocol_titles = _protocol_titles_config(dataset_config)
 
     assigned_images = [
-        *build_frames_assigned_images(tracks, dataset_name, iap_titles, protocol_titles),
-        *build_tilt_series_assigned_images(tracks, dataset_name, iap_titles, protocol_titles),
-        *build_tomogram_assigned_images(tracks, dataset_name, iap_titles, protocol_titles),
+        *build_frames_assigned_images(tracks, dataset_name, iap_titles, protocol_titles, pattern_inference_delimiters),
+        *build_tilt_series_assigned_images(tracks, dataset_name, iap_titles, protocol_titles, pattern_inference_delimiters),
+        *build_tomogram_assigned_images(tracks, dataset_name, iap_titles, protocol_titles, pattern_inference_delimiters),
     ]
 
     block: dict = {
@@ -349,32 +359,45 @@ def assign_specimen_metadata(
     lookup; later dataset blocks take precedence for the same specimen_id.
 
     Each specimen_groups entry is a dict with:
-        specimen_ids                                 : list[str]
-        biosample_title                              : str  (optional)
+        specimen_ids                                 : list[str]  (optional)
+        specimen_id_pattern                          : str        (optional)
+        biosample_title                              : str        (optional)
         specimen_imaging_preparation_protocol_titles : list[str]  (optional)
+
+    specimen_ids and specimen_id_pattern are mutually exclusive within a group.
     """
-    # there are only groups if there are overrides for specimens in dataset blocks
     group_lookup: dict[str, dict] = {}
+    group_patterns: list[tuple[str, dict]] = []
+
     for dataset_config in (datasets_config or []):
         for group in dataset_config.get("specimen_groups", []):
-            group_meta = {k: v for k, v in group.items() if k != "specimen_ids"}
-            for sid in group.get("specimen_ids", []):
-                group_lookup[str(sid)] = group_meta
+            if "specimen_id_pattern" in group:
+                pattern = group["specimen_id_pattern"]
+                group_metadata = {k: v for k, v in group.items() if k != "specimen_id_pattern"}
+                group_patterns.append((pattern, group_metadata))
+            else:
+                group_metadata = {k: v for k, v in group.items() if k != "specimen_ids"}
+                for sid in group.get("specimen_ids", []):
+                    group_lookup[str(sid)] = group_metadata
 
     specimens: list[dict] = []
     for track in tracks:
         sid = track.specimen_id
 
         biosample_title = global_defaults.get("biosample_title")
-        # NOTE: create a new list to avoid YAML alias references — 
-        # the belt to the yaml writer's 'ignore alias' braces
         prep_protocol_titles = list(
             global_defaults.get("specimen_imaging_preparation_protocol_titles", [])
         )
 
-        # TODO: match patterns for specimen id here
-        if sid in group_lookup:
-            override = group_lookup[sid]
+        # Resolve override: exact match takes precedence over pattern match
+        override = group_lookup.get(sid)
+        if override is None:
+            for pattern, group_metadata in group_patterns:
+                if re.search(pattern, sid):
+                    override = group_metadata
+                    break
+
+        if override is not None:
             if "biosample_title" in override:
                 biosample_title = override["biosample_title"]
             if "specimen_imaging_preparation_protocol_titles" in override:

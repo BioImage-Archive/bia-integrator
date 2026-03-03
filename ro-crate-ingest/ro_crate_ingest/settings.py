@@ -34,6 +34,7 @@ class Settings(ApiSettings):
     empiar_override_dir: str = Field(
         str(Path(__file__).parents[1] / "override_data" / "empiar")
     )
+    empiar_proposal_generation_pattern_inference_delimiters: list[str] = Field(["_", "."])
 
     accepted_bioformats_file: str = Field(
         str(

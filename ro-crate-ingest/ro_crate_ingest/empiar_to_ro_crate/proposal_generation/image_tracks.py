@@ -73,7 +73,10 @@ def _extract_specimen_id(
     for pattern in patterns:
         match = re.search(pattern, path_str)
         if match:
-            return match.group(1)
+            groups = [g for g in match.groups() if g is not None]
+            if len(groups) > 1:
+                return "_".join(groups)
+            return groups[0]
     
     # Case 2: Pattern alias mappings (with transformation)
     pattern_mappings = specimen_config.get("pattern_alias_mappings", {})
@@ -293,6 +296,9 @@ def _merge_tracks(df: pd.DataFrame) -> list[ImageTrack]:
         path = row["path"]
         image_type = row["image_type"]
         dataset_name = row["dataset_name"]
+        
+        if str(path).startswith("data/"):
+            path = Path(path.relative_to("data/"))
 
         track = tracks.setdefault(sid, ImageTrack(specimen_id=sid))
 

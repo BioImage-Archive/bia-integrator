@@ -51,7 +51,8 @@ def _write_proposal(
 
 def generate_empiar_proposal(
     proposal_config_path: Path,
-    proposal_output_dir_path: Path | None = None,
+    proposal_output_dir_path: Path | None = None, 
+    pattern_inference_delimiters: list[str] | None = None
 ) -> dict:
     """
     Generate a full EMPIAR proposal YAML from a minimal pre-proposal config,
@@ -85,7 +86,7 @@ def generate_empiar_proposal(
     all_dataset_blocks: list[dict] = []
     for dataset_config in datasets_config:
         logger.info(f"Building dataset block: {dataset_config.get('name')}")
-        all_dataset_blocks.append(build_dataset_blocks(tracks, dataset_config))
+        all_dataset_blocks.append(build_dataset_blocks(tracks, dataset_config, pattern_inference_delimiters))
 
     proposal = {
         "accession_id": _dq_all(accession_id),
