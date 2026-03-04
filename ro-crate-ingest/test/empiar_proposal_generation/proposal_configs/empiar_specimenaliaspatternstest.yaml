@@ -79,9 +79,9 @@ datasets:
       - "data/tomograms"
 
     file_globs:
-      tomograms:
+      tomogram:
         - "**/ts_*/*.mrc"
 
     protocol_titles:
-      tomograms:
+      tomogram:
         - "Tomogram reconstruction"

@@ -1,20 +1,27 @@
 accession_id: "EMPIAR-12534"
 paper_doi: "https://doi.org/10.1083/jcb.202407110"
 
+specimens:
+  patterns:
+    - "(YTC04[123]_\\d+_lam\\d+_\\d+_ts_\\d+)"   # lam with position suffix
+    - "(YTC04[123]_\\d+_lam\\d+_ts_\\d+)"         # lam without position suffix
+    - "(lam\\d+_ts\\d+)"                           # vehicle, YTC009 style
+    - "(lam\\d+_ts_\\d+)"                          # vehicle, YTC025 style
+
 biosamples:
-  - title: "BY4741 derivative grown in fermentative conditions"
-    organism_classification:
-      - common_name: "Baker's yeast"
-        scientific_name: "Saccharomyces cerevisiae"
-        ncbi_id: "NCBI:txid4932"
-    biological_entity_description: "S. cerevisiae strain BY4741 derivative expressing Su9-mCherry-Ura3 and TIM50-GFP-His3MX6. The TIM50-GFP strain was constructed by C-terminal tagging of the TIM50 open reading frame with GFP-HIS3MX6 using the Pringle method. Cells were grown in fermentative conditions (YPD: 1% yeast extract, 2% peptone, 2% glucose)."
-    growth_protocol_title: "S. cerevisiae culture and vitrification"
   - title: "BY4741 derivative grown in respiratory conditions"
     organism_classification:
       - common_name: "Baker's yeast"
         scientific_name: "Saccharomyces cerevisiae"
         ncbi_id: "NCBI:txid4932"
     biological_entity_description: "S. cerevisiae strain BY4741 derivative expressing Su9-mCherry-Ura3 and TIM50-GFP-His3MX6. The TIM50-GFP strain was constructed by C-terminal tagging of the TIM50 open reading frame with GFP-HIS3MX6 using the Pringle method. Cells were grown in respiratory conditions (YPG: 1% yeast extract, 2% peptone, 2% glycerol)."
+    growth_protocol_title: "S. cerevisiae culture and vitrification"
+  - title: "BY4741 derivative grown in fermentative conditions"
+    organism_classification:
+      - common_name: "Baker's yeast"
+        scientific_name: "Saccharomyces cerevisiae"
+        ncbi_id: "NCBI:txid4932"
+    biological_entity_description: "S. cerevisiae strain BY4741 derivative expressing Su9-mCherry-Ura3 and TIM50-GFP-His3MX6. The TIM50-GFP strain was constructed by C-terminal tagging of the TIM50 open reading frame with GFP-HIS3MX6 using the Pringle method. Cells were grown in fermentative conditions (YPD: 1% yeast extract, 2% peptone, 2% glucose)."
     growth_protocol_title: "S. cerevisiae culture and vitrification"
 
 protocols:
@@ -28,9 +35,13 @@ specimen_imaging_preparation_protocols:
     protocol_description: "Vitrified grids were clipped into Cryo-FIB Autogrids in liquid nitrogen vapour and loaded into a Leica CryoCLEM microscope. Fluorescence and bright-field tiled image atlases were acquired in cryo conditions using Leica LAS X software with 25 µm Z stacks (GFP channel: excitation 470 nm, emission 525 nm). Z stacks were stitched as maximum projection maps using LAS X Navigator to assess cell density, ice quality, and mitochondrial network morphology via the Su9-mCherry signal."
   - title: "Cryo-FIB milling"
     protocol_description: "Cryo-FIB milling was performed on an Aquilos 2 cryo-FIB/SEM (Thermo Fisher Scientific). Cryo-FM atlases were overlaid with SEM atlases in MAPS software. Grids were sputter-coated with platinum for 15 s (1 kV, 20 mA, 10 Pa), coated with organometallic platinum via gas injection for 45 s, then sputter-coated again for 15 s. Regions of interest were transferred to AutoTEM for eucentric positioning. Lamellae were defined with a width and height of 10 µm and target thickness of 250 nm. Relief cuts were generated at 0.5 nA. Automated milling proceeded in three steps: rough milling at 0.5 nA to 2 µm thickness, medium milling at 0.1 nA to 1.2 µm thickness, and fine milling at 50 pA to 600 nm thickness. Two automated thinning steps at 50 pA reduced thickness to 300 nm then 250 nm. A final manual polishing step at 50 pA produced lamellae under 200 nm thickness."
+  - title: "Cycloheximide treatment"
+    protocol_description: "Yeast liquid cultures at OD600 0.8 were diluted fourfold to OD600 0.2 in medium supplemented with 133 µg/ml cycloheximide (CHX), giving a final concentration of 100 µg/ml. Cells were incubated with CHX for 2 minutes prior to vitrification."
+  - title: "Vehicle treatment"
+    protocol_description: "Cells were treated with a vehicle control prior to vitrification."
 
 image_acquisition_protocols:
-  - title: "Cryo-ET tilt series acquisition on Titan Krios"
+  - title: "Cryo-ET acquisition on Titan Krios"
     protocol_description: "FIB-milled lamellae were imaged on a Titan Krios (Thermo Fisher Scientific) operated at 300 keV, equipped with a K3 direct electron camera and BioQuantum energy filter (Gatan). Target selection and tilt series acquisition were performed using PACE-tomo 1.5, enabling parallel collection of multiple tilt series per lamella via beam shift. Data were acquired at either 53,000× magnification (pixel size 1.6626 Å) or 33,000× magnification (pixel size 2.638 Å). Nominal defocus ranged from −4 to −6 µm in 1 µm steps. Tilt series were collected in a dose-symmetric scheme with a 3° tilt increment over a range of −60° to +60°, centred on −11° pretilt with +11° starttilt. Each tilt was collected with dose fractionation into 10–11 frames at 0.28–0.33 e/Å² per frame, giving approximately 3 e/Å² per tilt and a total accumulated dose of approximately 120 e/Å² per tilt series."
     imaging_instrument_description: "Thermo Fisher Scientific Titan Krios cryo-TEM at 300 keV, equipped with a K3 direct electron camera and Gatan BioQuantum energy filter."
     fbbi_id:
@@ -39,4 +50,96 @@ image_acquisition_protocols:
       - "Cryo-electron tomography"
 
 datasets:
-  - name: 
+  - name: "Raw unaligned frame and metadata for each tilt in tilt-series acquired on CHX-treated S. cerevisiae cryo-FIB lamellae"
+    data_directories:
+      - "data/EMPIAR_upload/Frames"
+    
+    file_globs:
+      frames: 
+        - "**/*.tif"
+    
+    image_acquisition_protocol_title:
+      dataset:
+        - "Cryo-ET acquisition on Titan Krios"
+    
+    specimen_groups:
+      - specimen_id_pattern: "YTC04[12]_.*"
+        biosample_title: "BY4741 derivative grown in respiratory conditions"
+        specimen_imaging_preparation_protocol_titles:
+          - "Cycloheximide treatment"
+          - "Cryo-fluorescence microscopy"
+          - "Cryo-FIB milling"
+
+      - specimen_id_pattern: "YTC043_.*"
+        biosample_title: "BY4741 derivative grown in fermentative conditions"
+        specimen_imaging_preparation_protocol_titles:
+          - "Cycloheximide treatment"
+          - "Cryo-fluorescence microscopy"
+          - "Cryo-FIB milling"
+
+  - name: "Unaligned tilt series stack of cryo-electron tomography acquired on CHX-treated S. cerevisiae cryo-FIB lamellae"
+    data_directories:
+      - "data/EMPIAR_upload/Tilt_series"
+
+    file_globs:
+      tilt_series:
+        - "**/*.mrc.st"
+  
+  - name: "Reconstructed tomograms of CHX-treated S. cerevisiae lamellae used for segmentation of mitochondria"
+    data_directories:
+      - "data/EMPIAR_upload/Reconstructed_tomograms"
+
+    file_globs:
+      tomogram:
+        - "**/*.mrc"
+    
+    protocol_titles:
+      tomogram:
+        - "Tomogram reconstruction"
+
+  - name: "Raw unaligned frame and metadata for each tilt in tilt-series acquired on vehicle-treated S. cerevisiae cryo-FIB lamellae"
+    data_directories:
+      - "data/EMPIAR_upload_nonCHX/Frames"
+    
+    file_globs:
+      frames: 
+        - "**/*.tif"
+    
+    image_acquisition_protocol_title:
+      dataset:
+        - "Cryo-ET acquisition on Titan Krios"
+    
+    specimen_groups:
+      - specimen_id_pattern: "lam\\d+_ts\\d+$"      # YTC009, no underscore = respiratory
+        biosample_title: "BY4741 derivative grown in respiratory conditions"
+        specimen_imaging_preparation_protocol_titles:
+          - "Vehicle treatment"
+          - "Cryo-fluorescence microscopy"
+          - "Cryo-FIB milling"
+
+      - specimen_id_pattern: "lam\\d+_ts_\\d+$"     # YTC025, underscore = fermentative
+        biosample_title: "BY4741 derivative grown in fermentative conditions"
+        specimen_imaging_preparation_protocol_titles:
+          - "Vehicle treatment"
+          - "Cryo-fluorescence microscopy"
+          - "Cryo-FIB milling"
+
+  - name: "Unaligned tilt series stack of cryo-electron tomography acquired on vehicle-treated S. cerevisiae cryo-FIB lamellae"
+    data_directories:
+      - "data/EMPIAR_upload_nonCHX/Tilt_series"
+
+    file_globs:
+      tilt_series:
+        - "**/*.mrc.st"
+  
+  - name: "Reconstructed tomograms of vehicle-treated S. cerevisiae lamellae used for segmentation of mitochondria"
+    data_directories:
+      - "data/EMPIAR_upload_nonCHX/Reconstructed_tomograms"
+
+    file_globs:
+      tomogram:
+        - "**/*.mrc"
+    
+    protocol_titles:
+      tomogram:
+        - "Tomogram reconstruction"

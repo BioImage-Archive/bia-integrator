@@ -3,10 +3,18 @@ import pathlib
 import re
 from ruamel.yaml.scalarstring import DoubleQuotedScalarString as dq
 
-from ro_crate_ingest.settings import get_settings
 from ro_crate_ingest.empiar_to_ro_crate.proposal_generation.image_tracks import (
     ImageTrack,
-    ImageType,
+)
+from ro_crate_ingest.empiar_to_ro_crate.proposal_generation.image_types import (
+    ImageType, 
+    ImageTypeSpec, 
+    IMAGE_TYPE_SPECS, 
+)
+from ro_crate_ingest.empiar_to_ro_crate.proposal_generation.proposal_config import (
+    DatasetConfig,
+    SpecimenDefaults,
+    SpecimenGroup,
 )
 
 logger = logging.getLogger(__name__)
@@ -14,7 +22,7 @@ logger = logging.getLogger(__name__)
 
 def infer_frame_pattern(
     frame_files: list[pathlib.Path],
-    pattern_inference_delimiters: list[str] | None = None,
+    pattern_inference_delimiters: list[str]
 ) -> str | None:
     """
     Given a list of frame file paths (all from one specimen), infer the
@@ -31,9 +39,6 @@ def infer_frame_pattern(
     becomes:
         raw_frames/b3g1_SR_ts50_101_{}_-15.0.tif
     """
-    if pattern_inference_delimiters is None:
-        pattern_inference_delimiters = get_settings().empiar_proposal_generation_pattern_inference_delimiters
-
     if not frame_files:
         return None
 
@@ -81,35 +86,120 @@ def _protocol_title_value(titles: list[str]) -> str | list:
     return [dq(t) for t in titles]
 
 
-def _iap_config(dataset_config: dict) -> dict[str, list[str]]:
+def _iap_config(dataset_config: DatasetConfig) -> dict[str, list[str]]:
     """
-    Parse the image_acquisition_protocol_title block from a dataset config.
+    Parse the image_acquisition_protocol_title block from a DatasetConfig.
 
     Returns a dict keyed by either 'dataset' or ImageType values, mapping to
     lists of protocol titles.
     """
-    iap_tile = dataset_config.get("image_acquisition_protocol_title")
-    if iap_tile is None:
+    iap_title = dataset_config.image_acquisition_protocol_title
+    if iap_title is None:
         return {}
-    return {k: ([v] if isinstance(v, str) else v) for k, v in iap_tile.items()}
+    return {k: ([v] if isinstance(v, str) else list(v)) for k, v in iap_title.items()}
 
 
-def _protocol_titles_config(dataset_config: dict) -> dict[str, list[str]]:
+def _protocol_titles_config(dataset_config: DatasetConfig) -> dict[str, list[str]]:
     """
-    Parse the protocol_titles block from a dataset config.
+    Parse the protocol_titles block from a DatasetConfig.
 
     Returns a dict keyed by ImageType values, mapping to lists of titles.
     """
-    protocol_titles = dataset_config.get("protocol_titles", {})
-    return {k: ([v] if isinstance(v, str) else v) for k, v in protocol_titles.items()}
+    return {
+        k: ([v] if isinstance(v, str) else list(v))
+        for k, v in dataset_config.protocol_titles.items()
+    }
+
+
+def _get_track_file(track: ImageTrack, image_type: ImageType) -> pathlib.Path | None:
+    """Return the file on a track for a given ImageType, or None."""
+    return getattr(track, image_type.value, None)
+
+
+def _build_single_file_assigned_image(
+    track: ImageTrack,
+    spec: ImageTypeSpec,
+    iap_titles: list[str],
+    pt_titles: list[str],
+    pattern_inference_delimiters: list[str]
+) -> dict:
+    """
+    Build one assigned_images entry for a single-file ImageType (i.e. anything
+    except frames). Input linkage is resolved by walking spec.upstream_types in
+    order, then falling back to frames (via label_prefix), then to track_start
+    (specimen_title) if the track has no earlier images at all.
+    """
+    sid = track.specimen_id
+    file_path = _get_track_file(track, spec.image_type)
+
+    entry: dict = {
+        "label": dq(f"Specimen_{sid} {spec.image_type.value}"),
+        "file_pattern": dq(str(file_path)),
+    }
+
+    for upstream in spec.upstream_types:
+        if _get_track_file(track, upstream) is not None:
+            entry["input_label"] = dq(f"Specimen_{sid} {upstream.value}")
+            break
+    else:
+        if track.frames:
+            frame_pattern = infer_frame_pattern(track.frames, pattern_inference_delimiters)
+            if frame_pattern:
+                entry["input_label_prefix"] = dq(f"Specimen_{sid} frames")
+                entry["input_file_pattern"] = dq(frame_pattern)
+        else:
+            if track.track_start == spec.image_type:
+                entry["specimen_title"] = dq(f"Specimen_{sid}")
+            else:
+                raise ValueError(
+                    f"Track for specimen {sid} has no upstream images for "
+                    f"{spec.image_type.value}, but it is not marked as track_start. "
+                    "Specimen must be assigned as early in the track as possible."
+                )
+
+    if pt_titles:
+        entry["protocol_title"] = _protocol_title_value(pt_titles)
+    if iap_titles:
+        entry["image_acquisition_protocol_title"] = _protocol_title_value(iap_titles)
+
+    return entry
+
+
+def _build_assigned_images_for_type(
+    tracks: list[ImageTrack],
+    dataset_name: str,
+    spec: ImageTypeSpec,
+    iap_titles: dict[str, list[str]],
+    protocol_titles: dict[str, list[str]],
+    pattern_inference_delimiters: list[str]
+) -> list[dict]:
+    """
+    General builder for a single non-frames ImageType.
+    """
+    type_iap_titles = iap_titles.get(spec.image_type, [])
+    type_protocol_titles = protocol_titles.get(spec.image_type, [])
+
+    entries = []
+    for track in tracks:
+        if _get_track_file(track, spec.image_type) is None:
+            continue
+        if track.dataset_for.get(spec.image_type) != dataset_name:
+            continue
+        entries.append(
+            _build_single_file_assigned_image(
+                track, spec, type_iap_titles, type_protocol_titles,
+                pattern_inference_delimiters,
+            )
+        )
+    return entries
 
 
 def build_frames_assigned_images(
     tracks: list[ImageTrack],
     dataset_name: str,
     iap_titles: dict[str, list[str]],
-    protocol_titles: dict[str, list[str]], 
-    pattern_inference_delimiters: list[str] | None = None
+    protocol_titles: dict[str, list[str]],
+    pattern_inference_delimiters: list[str]
 ) -> list[dict]:
     """
     Build assigned_images entries for raw movie frame collections.
@@ -149,159 +239,13 @@ def build_frames_assigned_images(
     return entries
 
 
-def build_tilt_series_assigned_images(
-    tracks: list[ImageTrack],
-    dataset_name: str,
-    iap_titles: dict[str, list[str]], 
-    protocol_titles: dict[str, list[str]], 
-    pattern_inference_delimiters: list[str] | None = None
-) -> list[dict]:
-    """
-    Build assigned_images entries for unaligned and aligned tilt series.
-
-    Only includes tracks whose tilt_series / aligned_tilt_series belong to
-    dataset_name. Cross-dataset input linkages (back to frames) are preserved
-    regardless of which dataset those frames came from.
-    """
-    ts_protocol_titles = protocol_titles.get(ImageType.TILT_SERIES, [])
-    ts_iap_titles = iap_titles.get(ImageType.TILT_SERIES, [])
-
-    ats_protocol_titles = protocol_titles.get(ImageType.ALIGNED_TILT_SERIES, [])
-    ats_iap_titles = iap_titles.get(ImageType.ALIGNED_TILT_SERIES, [])
-
-    entries = []
-    for track in tracks:
-        # Unaligned tilt series
-        if (
-            track.tilt_series is not None
-            and track.dataset_for.get(ImageType.TILT_SERIES) == dataset_name
-        ):
-            entry: dict = {
-                "label": dq(f"Specimen_{track.specimen_id} tilt_series"),
-                "file_pattern": dq(str(track.tilt_series)),
-            }
-            if track.frames:
-                frame_pattern = infer_frame_pattern(track.frames, pattern_inference_delimiters)
-                if frame_pattern:
-                    entry["input_label_prefix"] = dq(f"Specimen_{track.specimen_id} frames")
-                    entry["input_file_pattern"] = dq(frame_pattern)
-            else:
-                if track.track_start:
-                    entry["specimen_title"] = dq(f"Specimen_{track.specimen_id}")
-                else:
-                    raise ValueError(
-                        f"Track for specimen {track.specimen_id} has no frames, but the tilt series "
-                        "is not marked as track_start — specimen must be assigned as early in track as possible."
-                        )
-            if ts_protocol_titles:
-                entry["protocol_title"] = _protocol_title_value(ts_protocol_titles)
-            if ts_iap_titles:
-                entry["image_acquisition_protocol_title"] = _protocol_title_value(
-                    ts_iap_titles
-                )
-            entries.append(entry)
-
-        # Aligned tilt series
-        if (
-            track.aligned_tilt_series is not None
-            and track.dataset_for.get(ImageType.ALIGNED_TILT_SERIES) == dataset_name
-        ):
-            entry = {
-                "label": dq(f"Specimen_{track.specimen_id} aligned_tilt_series"),
-                "file_pattern": dq(str(track.aligned_tilt_series)),
-            }
-            if track.tilt_series is not None:
-                entry["input_label"] = dq(
-                    f"Specimen_{track.specimen_id} tilt_series"
-                )
-            elif track.frames is not None:
-                frame_pattern = infer_frame_pattern(track.frames, pattern_inference_delimiters)
-                if frame_pattern:
-                    entry["input_label_prefix"] = dq(f"Specimen_{track.specimen_id} frames")
-                    entry["input_file_pattern"] = dq(frame_pattern)
-            else:
-                if track.track_start:
-                    entry["specimen_title"] = dq(f"Specimen_{track.specimen_id}")
-                else:
-                    raise ValueError(
-                        f"Track for specimen {track.specimen_id} has no frames or tilt series, but the aligned tilt series "
-                        "is not marked as track_start — specimen must be assigned as early in track as possible."
-                        )
-            if ats_protocol_titles:
-                entry["protocol_title"] = _protocol_title_value(ats_protocol_titles)
-            if ats_iap_titles:
-                entry["image_acquisition_protocol_title"] = _protocol_title_value(
-                    ats_iap_titles
-                )
-            entries.append(entry)
-
-    return entries
-
-
-def build_tomogram_assigned_images(
-    tracks: list[ImageTrack],
-    dataset_name: str,
-    iap_titles: dict[str, list[str]], 
-    protocol_titles: dict[str, list[str]], 
-    pattern_inference_delimiters: list[str] | None = None
-) -> list[dict]:
-    """
-    Build assigned_images entries for reconstructed tomograms.
-
-    Only includes tracks whose tomogram belongs to dataset_name.
-    """
-    tomo_protocol_titles = protocol_titles.get(ImageType.TOMOGRAMS, [])
-    tomo_iap_titles = iap_titles.get(ImageType.TOMOGRAMS, [])
-
-    entries = []
-    for track in tracks:
-        if (
-            track.tomogram is None
-            or track.dataset_for.get(ImageType.TOMOGRAMS) != dataset_name
-        ):
-            continue
-        entry: dict = {
-            "label": dq(f"Specimen_{track.specimen_id} tomogram"),
-            "file_pattern": dq(str(track.tomogram)),
-        }
-        if track.aligned_tilt_series is not None:
-            entry["input_label"] = dq(
-                f"Specimen_{track.specimen_id} aligned_tilt_series"
-            )
-        elif track.tilt_series is not None:
-            entry["input_label"] = dq(
-                f"Specimen_{track.specimen_id} tilt_series"
-            )
-        elif track.frames is not None:
-            frame_pattern = infer_frame_pattern(track.frames, pattern_inference_delimiters)
-            if frame_pattern:
-                entry["input_label_prefix"] = dq(f"Specimen_{track.specimen_id} frames")
-                entry["input_file_pattern"] = dq(frame_pattern)
-        else:
-            if track.track_start:
-                entry["specimen_title"] = dq(f"Specimen_{track.specimen_id}")
-            else:
-                raise ValueError(
-                    f"Track for specimen {track.specimen_id} has no frames or tilt series (aligned or otherwise), but the tomogram "
-                    "is not marked as track_start — specimen must be assigned as early in track as possible."
-                    )
-        if tomo_protocol_titles:
-            entry["protocol_title"] = _protocol_title_value(tomo_protocol_titles)
-        if tomo_iap_titles:
-            entry["image_acquisition_protocol_title"] = _protocol_title_value(
-                tomo_iap_titles
-            )
-        entries.append(entry)
-    return entries
-
-
 def build_dataset_blocks(
     tracks: list[ImageTrack],
-    dataset_config: dict, 
-    pattern_inference_delimiters: list[str] | None = None
+    dataset_config: DatasetConfig,
+    pattern_inference_delimiters: list[str]
 ) -> dict:
     """
-    Build a single dataset output block for one dataset config entry.
+    Build a single dataset output block for one DatasetConfig entry.
     All image types (frames, tilt series, tomograms) are combined into
     a single assigned_images list.
 
@@ -314,17 +258,23 @@ def build_dataset_blocks(
     protocol_titles is keyed by image type and attached per assigned_image entry.
     Multiple titles produce a list; a single title produces a plain string.
     """
-    dataset_name = dataset_config.get("name")
-    if dataset_name is None:
-        raise ValueError(f"Dataset config {dataset_config} has no 'name' key.")
-
+    dataset_name = dataset_config.name
     iap_titles = _iap_config(dataset_config)
     protocol_titles = _protocol_titles_config(dataset_config)
 
     assigned_images = [
-        *build_frames_assigned_images(tracks, dataset_name, iap_titles, protocol_titles, pattern_inference_delimiters),
-        *build_tilt_series_assigned_images(tracks, dataset_name, iap_titles, protocol_titles, pattern_inference_delimiters),
-        *build_tomogram_assigned_images(tracks, dataset_name, iap_titles, protocol_titles, pattern_inference_delimiters),
+        *build_frames_assigned_images(
+            tracks, dataset_name, iap_titles, protocol_titles,
+            pattern_inference_delimiters,
+        ),
+        *(
+            entry
+            for spec in IMAGE_TYPE_SPECS
+            for entry in _build_assigned_images_for_type(
+                tracks, dataset_name, spec, iap_titles, protocol_titles,
+                pattern_inference_delimiters,
+            )
+        ),
     ]
 
     block: dict = {
@@ -347,62 +297,53 @@ def build_dataset_blocks(
 
 def assign_specimen_metadata(
     tracks: list[ImageTrack],
-    global_defaults: dict,
-    datasets_config: list[dict] | None = None,
+    specimen_defaults: SpecimenDefaults | None,
+    dataset_configs: list[DatasetConfig] | None = None,
 ) -> list[dict]:
     """
     Build Specimen dicts from tracks using a cascade of metadata sources:
 
-        global defaults  <  specimen_groups (from any dataset)
+        specimen_defaults  <  specimen_groups (from any dataset)
 
     specimen_groups entries across all dataset blocks are merged into a single
-    lookup; later dataset blocks take precedence for the same specimen_id.
-
-    Each specimen_groups entry is a dict with:
-        specimen_ids                                 : list[str]  (optional)
-        specimen_id_pattern                          : str        (optional)
-        biosample_title                              : str        (optional)
-        specimen_imaging_preparation_protocol_titles : list[str]  (optional)
-
-    specimen_ids and specimen_id_pattern are mutually exclusive within a group.
+    lookup; later dataset blocks take precedence for the same specimen_id, 
+    but it is not anticipated that one specimen_id would appear twice.
     """
-    group_lookup: dict[str, dict] = {}
-    group_patterns: list[tuple[str, dict]] = []
+    group_lookup: dict[str, SpecimenGroup] = {}
+    group_patterns: list[tuple[str, SpecimenGroup]] = []
 
-    for dataset_config in (datasets_config or []):
-        for group in dataset_config.get("specimen_groups", []):
-            if "specimen_id_pattern" in group:
-                pattern = group["specimen_id_pattern"]
-                group_metadata = {k: v for k, v in group.items() if k != "specimen_id_pattern"}
-                group_patterns.append((pattern, group_metadata))
+    for dataset_config in (dataset_configs or []):
+        for group in dataset_config.specimen_groups:
+            if group.specimen_id_pattern is not None:
+                group_patterns.append((group.specimen_id_pattern, group))
             else:
-                group_metadata = {k: v for k, v in group.items() if k != "specimen_ids"}
-                for sid in group.get("specimen_ids", []):
-                    group_lookup[str(sid)] = group_metadata
+                for sid in group.specimen_ids:
+                    group_lookup[sid] = group
 
     specimens: list[dict] = []
     for track in tracks:
         sid = track.specimen_id
 
-        biosample_title = global_defaults.get("biosample_title")
-        prep_protocol_titles = list(
-            global_defaults.get("specimen_imaging_preparation_protocol_titles", [])
+        biosample_title = specimen_defaults.biosample_title if specimen_defaults else None
+        prep_protocol_titles = (
+            list(specimen_defaults.specimen_imaging_preparation_protocol_titles)
+            if specimen_defaults else []
         )
 
-        # Resolve override: exact match takes precedence over pattern match
-        override = group_lookup.get(sid)
+        # Resolve override: exact match takes precedence over pattern match.
+        override: SpecimenGroup | None = group_lookup.get(sid)
         if override is None:
-            for pattern, group_metadata in group_patterns:
+            for pattern, group in group_patterns:
                 if re.search(pattern, sid):
-                    override = group_metadata
+                    override = group
                     break
 
         if override is not None:
-            if "biosample_title" in override:
-                biosample_title = override["biosample_title"]
-            if "specimen_imaging_preparation_protocol_titles" in override:
+            if override.biosample_title is not None:
+                biosample_title = override.biosample_title
+            if override.specimen_imaging_preparation_protocol_titles:
                 prep_protocol_titles = list(
-                    override["specimen_imaging_preparation_protocol_titles"]
+                    override.specimen_imaging_preparation_protocol_titles
                 )
 
         specimens.append(

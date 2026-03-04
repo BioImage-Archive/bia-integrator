@@ -20,14 +20,6 @@ def get_expected_proposal_path(accession_id: str) -> Path:
     return TEST_DIR / "empiar_proposal_generation" / "output_data" / f"{filename}.yaml"
 
 
-def get_proposal_input_path(accession_id: str, tmp_proposal_dir: Path) -> Path:
-    """
-    Return the path to the proposal that stage 2 should consume.
-    Uses the checked-in expected proposal so stage 2 can run independently.
-    """
-    return get_expected_proposal_path(accession_id)
-
-
 @pytest.fixture
 def tmp_proposal_dir(tmp_path: Path) -> Path:
     d = tmp_path / "proposals"
@@ -35,16 +27,24 @@ def tmp_proposal_dir(tmp_path: Path) -> Path:
     return d
 
 
-@pytest.fixture
-def tmp_ro_crate_dir(tmp_path: Path) -> Path:
-    d = tmp_path / "ro_crates"
-    d.mkdir()
-    return d
-
-
 def _load_yaml(path: Path) -> dict:
     with open(path) as f:
         return yaml.safe_load(f)
+
+
+def _invoke_generate(accession_id: str, tmp_proposal_dir: Path) -> dict:
+    """
+    Invoke the generate-empiar-proposal CLI command and return the loaded
+    proposal dict. Asserts that the CLI exits cleanly.
+    """
+    config_path = get_proposal_config_path(accession_id)
+    result = runner.invoke(
+        ro_crate_ingest,
+        ["generate-empiar-proposal", str(config_path), "-p", str(tmp_proposal_dir)],
+    )
+    assert result.exit_code == 0, f"CLI failed for {accession_id}:\n{result.output}"
+    filename = accession_id.lower().replace("-", "_") + ".yaml"
+    return _load_yaml(tmp_proposal_dir / filename)
 
 
 def _specimens_by_title(proposal: dict) -> dict[str, dict]:
@@ -81,23 +81,14 @@ def _assigned_image_by_label(dataset: dict, label: str) -> dict | None:
 )
 def test_proposal_matches_expected(accession_id: str, tmp_proposal_dir: Path):
     """The generated proposal matches the checked-in expected proposal exactly."""
-    config_path = get_proposal_config_path(accession_id)
-    result = runner.invoke(
-        ro_crate_ingest,
-        ["generate-empiar-proposal", str(config_path), "-p", str(tmp_proposal_dir)],
-    )
-    assert result.exit_code == 0, f"CLI failed:\n{result.output}"
-
-    filename = accession_id.lower().replace("-", "_") + ".yaml"
-    created_proposal = _load_yaml(tmp_proposal_dir / filename)
+    created_proposal = _invoke_generate(accession_id, tmp_proposal_dir)
     expected_proposal = _load_yaml(get_expected_proposal_path(accession_id))
-
     assert created_proposal == expected_proposal
 
 
 class TestSpecimenPattern:
     """
-    Case 1: simple regex patterns — tomo_(\d{4})
+    Case 1: simple regex patterns — tomo_(\\d{4})
     Accession-ID: EMPIAR-SPECIMENPATTERNTEST
     """
 
@@ -105,13 +96,7 @@ class TestSpecimenPattern:
 
     @pytest.fixture(autouse=True)
     def _proposal(self, tmp_proposal_dir):
-        config_path = get_proposal_config_path(self.accession_id)
-        runner.invoke(
-            ro_crate_ingest,
-            ["generate-empiar-proposal", str(config_path), "-p", str(tmp_proposal_dir)],
-        )
-        filename = self.accession_id.lower().replace("-", "_") + ".yaml"
-        self.proposal = _load_yaml(tmp_proposal_dir / filename)
+        self.proposal = _invoke_generate(self.accession_id, tmp_proposal_dir)
 
     def test_three_specimens_created(self):
         specimens = _specimens_by_title(self.proposal)
@@ -175,13 +160,7 @@ class TestSpecimenAliasPatterns:
 
     @pytest.fixture(autouse=True)
     def _proposal(self, tmp_proposal_dir):
-        config_path = get_proposal_config_path(self.accession_id)
-        runner.invoke(
-            ro_crate_ingest,
-            ["generate-empiar-proposal", str(config_path), "-p", str(tmp_proposal_dir)],
-        )
-        filename = self.accession_id.lower().replace("-", "_") + ".yaml"
-        self.proposal = _load_yaml(tmp_proposal_dir / filename)
+        self.proposal = _invoke_generate(self.accession_id, tmp_proposal_dir)
 
     def test_three_specimens_created(self):
         specimens = _specimens_by_title(self.proposal)
@@ -221,13 +200,7 @@ class TestSpecimenAliasMappings:
 
     @pytest.fixture(autouse=True)
     def _proposal(self, tmp_proposal_dir):
-        config_path = get_proposal_config_path(self.accession_id)
-        runner.invoke(
-            ro_crate_ingest,
-            ["generate-empiar-proposal", str(config_path), "-p", str(tmp_proposal_dir)],
-        )
-        filename = self.accession_id.lower().replace("-", "_") + ".yaml"
-        self.proposal = _load_yaml(tmp_proposal_dir / filename)
+        self.proposal = _invoke_generate(self.accession_id, tmp_proposal_dir)
 
     def test_three_specimens_created(self):
         specimens = _specimens_by_title(self.proposal)
@@ -268,13 +241,7 @@ class TestSpecimenGroupOverride:
 
     @pytest.fixture(autouse=True)
     def _proposal(self, tmp_proposal_dir):
-        config_path = get_proposal_config_path(self.accession_id)
-        runner.invoke(
-            ro_crate_ingest,
-            ["generate-empiar-proposal", str(config_path), "-p", str(tmp_proposal_dir)],
-        )
-        filename = self.accession_id.lower().replace("-", "_") + ".yaml"
-        self.proposal = _load_yaml(tmp_proposal_dir / filename)
+        self.proposal = _invoke_generate(self.accession_id, tmp_proposal_dir)
 
     def test_three_specimens_created(self):
         specimens = _specimens_by_title(self.proposal)
@@ -313,13 +280,7 @@ class TestEntryWithoutFrames:
 
     @pytest.fixture(autouse=True)
     def _proposal(self, tmp_proposal_dir):
-        config_path = get_proposal_config_path(self.accession_id)
-        runner.invoke(
-            ro_crate_ingest,
-            ["generate-empiar-proposal", str(config_path), "-p", str(tmp_proposal_dir)],
-        )
-        filename = self.accession_id.lower().replace("-", "_") + ".yaml"
-        self.proposal = _load_yaml(tmp_proposal_dir / filename)
+        self.proposal = _invoke_generate(self.accession_id, tmp_proposal_dir)
 
     def test_three_specimens_created(self):
         specimens = _specimens_by_title(self.proposal)

@@ -2,23 +2,17 @@ import glob
 import logging
 import pandas as pd
 import re
-from enum import Enum
 from pathlib import Path
 from pydantic import BaseModel, computed_field, Field
 
 from ro_crate_ingest.empiar_to_ro_crate.empiar.file_api import EMPIARFile
+from ro_crate_ingest.empiar_to_ro_crate.proposal_generation.image_types import ImageType
+from ro_crate_ingest.empiar_to_ro_crate.proposal_generation.proposal_config import (
+    DatasetConfig,
+    SpecimenConfig,
+)
 
 logger = logging.getLogger(__name__)
-
-
-class ImageType(str, Enum):
-    """
-    Controlled vocabulary for the image types that can appear in a track.
-    """
-    FRAMES = "frames"
-    TILT_SERIES = "tilt_series"
-    ALIGNED_TILT_SERIES = "aligned_tilt_series"
-    TOMOGRAMS = "tomograms"
 
 
 class ImageTrack(BaseModel):
@@ -36,6 +30,7 @@ class ImageTrack(BaseModel):
     tilt_series: Path | None = None
     aligned_tilt_series: Path | None = None
     tomogram: Path | None = None
+    denoised_tomogram: Path | None = None
     extra_files: list[Path] = Field(default_factory=list)
     dataset_for: dict[str, str] = Field(default_factory=dict)
 
@@ -50,51 +45,50 @@ class ImageTrack(BaseModel):
             return ImageType.ALIGNED_TILT_SERIES
         if self.tomogram is not None:
             return ImageType.TOMOGRAM
+        if self.denoised_tomogram is not None:
+            return ImageType.DENOISED_TOMOGRAM
         raise ValueError(f"ImageTrack for specimen '{self.specimen_id}' has no images")
 
 
 def _extract_specimen_id(
     file_path: Path,
-    specimen_config: dict,
+    specimen_config: "SpecimenConfig",
 ) -> str | None:
     """
     Extract specimen ID using one of three methods:
-    
-    1. "patterns": list[str] - simple regex patterns
-    2. "pattern_alias_mappings": dict[str, list[str]] - canonical pattern -> alias patterns
+
+    1. patterns: list[str] - simple regex patterns
+    2. pattern_alias_mappings: dict[str, list[str]] - canonical pattern -> alias patterns
        (with algorithmic transformation, e.g., zero-padding)
-    3. "literal_alias_mappings": dict[str, list[str]] - canonical_id -> [literal_aliases]
+    3. literal_alias_mappings: dict[str, list[str]] - canonical_id -> [literal_aliases]
        (direct, or with globs, lookup table for arbitrary relationships)
     """
     path_str = file_path.as_posix()
 
     # Case 1: Simple patterns
-    patterns = specimen_config.get("patterns", [])
-    for pattern in patterns:
+    for pattern in specimen_config.patterns:
         match = re.search(pattern, path_str)
         if match:
             groups = [g for g in match.groups() if g is not None]
             if len(groups) > 1:
                 return "_".join(groups)
             return groups[0]
-    
+
     # Case 2: Pattern alias mappings (with transformation)
-    pattern_mappings = specimen_config.get("pattern_alias_mappings", {})
-    for canonical_pattern, alias_patterns in pattern_mappings.items():
+    for canonical_pattern, alias_patterns in specimen_config.pattern_alias_mappings.items():
         for alias_pattern in alias_patterns:
             match = re.search(alias_pattern, path_str)
             if match:
                 raw_id = match.group(1)
                 return _transform_to_canonical_id(raw_id, canonical_pattern)
-    
+
     # Case 3: Literal alias mappings (glob matching with ** support)
-    literal_mappings = specimen_config.get("literal_alias_mappings", {})
-    for canonical_id, aliases in literal_mappings.items():
+    for canonical_id, aliases in specimen_config.literal_alias_mappings.items():
         for alias in aliases:
             regex_pattern = glob.translate(alias, recursive=True, include_hidden=True)
             if re.match(regex_pattern, path_str):
                 return canonical_id
-    
+
     return None
 
 
@@ -162,8 +156,8 @@ def _rate_dataset_specificity(data_directories: list[str]) -> int:
 
 def _build_file_dataframe(
     files: list[EMPIARFile],
-    datasets_config: list[dict],
-    specimen_id_config: dict
+    datasets_config: "list[DatasetConfig]",
+    specimen_config: "SpecimenConfig",
 ) -> pd.DataFrame:
     """
     Builds a one-row-per-file DataFrame covering all datasets.
@@ -192,14 +186,12 @@ def _build_file_dataframe(
     candidate_rows: list[pd.DataFrame] = []
 
     for dataset_config in datasets_config:
-        dataset_name: str = dataset_config.get("name", None)
-        if dataset_name is None:
-            raise ValueError(f"Datasets must have a name field — this does not: {dataset_config}")
+        dataset_name = dataset_config.name
 
-        data_dirs = dataset_config.get("data_directories", [])
+        data_dirs = dataset_config.data_directories
         if isinstance(data_dirs, str):
             data_dirs = [data_dirs]
-        
+
         dir_mask = pd.Series(False, index=base_df.index)
         for data_dir in data_dirs:
             dir_mask |= base_df["path"].astype(str).str.startswith(data_dir)
@@ -213,7 +205,7 @@ def _build_file_dataframe(
             continue
 
         subset["specimen_id"] = subset["path"].apply(
-            lambda p: _extract_specimen_id(p, specimen_id_config)
+            lambda p: _extract_specimen_id(p, specimen_config)
         )
 
         unmatched_ids = subset["specimen_id"].isna().sum()
@@ -224,11 +216,10 @@ def _build_file_dataframe(
             )
         subset = subset.dropna(subset=["specimen_id"])
 
-        file_type_patterns: dict[str, str | list[str]] = dataset_config.get("file_globs", {})
         subset["image_type"] = subset["path"].apply(
             lambda p: (
                 t.value
-                if (t := _classify_file(p, file_type_patterns, dataset_name))
+                if (t := _classify_file(p, dataset_config.file_globs, dataset_name))
                 else None
             )
         )
@@ -246,7 +237,6 @@ def _build_file_dataframe(
     candidates = pd.concat(candidate_rows, ignore_index=True)
 
     # Encode dataset precedence as sortable columns: typed rows first, deeper dirs first.
-    # (and stable sort preserves datasets_config order within remaining ties., i.e. point 3 abin docstring.)
     candidates["_has_type"] = candidates["image_type"].notna().astype(int)
     candidates = candidates.sort_values(
         ["_has_type", "_specificity"],
@@ -296,7 +286,7 @@ def _merge_tracks(df: pd.DataFrame) -> list[ImageTrack]:
         path = row["path"]
         image_type = row["image_type"]
         dataset_name = row["dataset_name"]
-        
+
         if str(path).startswith("data/"):
             path = Path(path.relative_to("data/"))
 
@@ -308,12 +298,9 @@ def _merge_tracks(df: pd.DataFrame) -> list[ImageTrack]:
 
         if image_type == ImageType.FRAMES:
             track.frames.append(path)
-            # All frames for a specimen come from the same dataset;
-            # recording on every frame since value is constant.
             track.dataset_for[ImageType.FRAMES] = dataset_name
 
-        # TODO: allow for more tilt series per specimen?
-        # What to do in general about branched tracks?
+        # TODO: even/odd tilt series images
         elif image_type == ImageType.TILT_SERIES:
             if track.tilt_series is not None:
                 logger.warning(
@@ -334,7 +321,7 @@ def _merge_tracks(df: pd.DataFrame) -> list[ImageTrack]:
                 track.aligned_tilt_series = path
                 track.dataset_for[ImageType.ALIGNED_TILT_SERIES] = dataset_name
 
-        elif image_type == ImageType.TOMOGRAMS:
+        elif image_type == ImageType.TOMOGRAM:
             if track.tomogram is not None:
                 logger.warning(
                     f"Specimen {sid}: second tomogram file encountered "
@@ -342,7 +329,17 @@ def _merge_tracks(df: pd.DataFrame) -> list[ImageTrack]:
                 )
             else:
                 track.tomogram = path
-                track.dataset_for[ImageType.TOMOGRAMS] = dataset_name
+                track.dataset_for[ImageType.TOMOGRAM] = dataset_name
+
+        elif image_type == ImageType.DENOISED_TOMOGRAM:
+            if track.denoised_tomogram is not None:
+                logger.warning(
+                    f"Specimen {sid}: second denoised tomogram file "
+                    f"encountered ('{path}'); keeping the first."
+                )
+            else:
+                track.denoised_tomogram = path
+                track.dataset_for[ImageType.DENOISED_TOMOGRAM] = dataset_name
 
     for track in tracks.values():
         track.frames.sort()
@@ -353,8 +350,8 @@ def _merge_tracks(df: pd.DataFrame) -> list[ImageTrack]:
 
 def identify_tracks(
     files: list[EMPIARFile],
-    datasets_config: list[dict], 
-    specimen_id_config: dict
+    datasets_config: "list[DatasetConfig]",
+    specimen_config: "SpecimenConfig",
 ) -> list[ImageTrack]:
     """
     Build one ImageTrack per specimen by processing all dataset config blocks
@@ -364,15 +361,9 @@ def identify_tracks(
         files:
             Full file listing for the EMPIAR entry.
         datasets_config:
-            The datasets list from the proposal config YAML. Each element is
-            a dict with at least:
-                name                 : str
-                data_directories     : str | list[str]
-                specimen_id_patterns : str | list[str]
-                patterns             : dict[str, str | list[str]]
-        specimen_id_patterns:
-            A dict for identifying specimens - see example config yaml and 
-            the proposal generation readme for details. 
+            The validated list of DatasetConfig objects from the proposal config.
+        specimen_config:
+            The validated SpecimenConfig from the proposal config.
 
     Returns ---
         list[ImageTrack]
@@ -381,7 +372,7 @@ def identify_tracks(
             corresponding dataset blocks did not cover that specimen; use
             `validate_tracks` for a completeness report.
     """
-    df = _build_file_dataframe(files, datasets_config, specimen_id_config)
+    df = _build_file_dataframe(files, datasets_config, specimen_config)
 
     if df.empty:
         logger.warning("No files could be classified across any dataset block.")
@@ -404,7 +395,7 @@ def validate_tracks(
     Report on track completeness and any files not assigned to any track.
 
     A track is considered complete if it has frames, a tilt series, and a
-    tomogram. Each incomplete track entry lists exactly which stages are absent.
+    tomogram. Each incomplete track entry lists which stages are absent (in debug).
     """
     all_tracked: set[Path] = set()
     for track in tracks:

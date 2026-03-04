@@ -107,18 +107,9 @@ def empiar_proposal(
             case_sensitive=False, 
             help="Path to output proposal directory."
         )
-    ] = None, 
-    pattern_inference_delimiters: Annotated[
-        Optional[str], 
-        typer.Option(
-            "--pattern-inference-delimiters", 
-            "-pid", 
-            case_sensitive=False, 
-            help="Optional delimiters to use for frame pattern inference, separated by commas (e.g. '_', '-')."
-        )
     ] = None
 ):
-    generate_empiar_proposal(proposal_config_path, proposal_output_dir_path, pattern_inference_delimiters)
+    generate_empiar_proposal(proposal_config_path, proposal_output_dir_path)
 
 
 @ro_crate_ingest.command("empiar-to-roc")

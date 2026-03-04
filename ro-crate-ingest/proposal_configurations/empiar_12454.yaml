@@ -67,9 +67,9 @@ datasets:
       - "data/MDM-infected/bin4_rec"
 
     file_globs:
-      tomograms:
+      tomogram:
         - "**/*_fSIRT.mrc"
 
     protocol_titles:
-      tomograms:
+      tomogram:
         - "Tomogram reconstruction"
