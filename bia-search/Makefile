@@ -6,7 +6,7 @@ api.version:
 	@echo $(VERSION)
 
 api.push:
-	docker build ../ -f Dockerfile -t bia-integrator-search
+	docker build ../ -f Dockerfile --platform linux/amd64,linux/arm64 -t bia-integrator-search
 	docker image tag bia-integrator-search ghcr.io/bioimage-archive/bia-integrator-search:$(VERSION)
 	docker image push ghcr.io/bioimage-archive/bia-integrator-search:$(VERSION)
 

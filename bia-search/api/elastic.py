@@ -24,8 +24,12 @@ class Elastic:
                     "settings": {
                         "analysis": {
                             "analyzer": {
-                                "default": {"type": "standard"},
+                                "default": {"type": "whitespace"},
                                 "analyzerCaseInsensitive": {
+                                    "tokenizer": "whitespace",
+                                    "filter": ["lowercase"],
+                                },
+                                "analyzerStandard": {
                                     "tokenizer": "standard",
                                     "filter": ["lowercase"],
                                 },
@@ -73,7 +77,7 @@ class Elastic:
                             "keyword": {"type": "keyword", "doc_values": False},
                             "acknowledgement": {
                                 "type": "text",
-                                "analyzer": "analyzerCaseInsensitive",
+                                "analyzer": "analyzerStandard",
                             },
                             "author": {
                                 "type": "nested",

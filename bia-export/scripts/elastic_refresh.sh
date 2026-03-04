@@ -30,8 +30,12 @@ curl -k -X PUT "${ELASTIC_URL}/${ELASTIC_INDEX}" \
 		"settings": {
 			"analysis": {
 				"analyzer": {
-					"default": { "type": "standard" },
+					"default": { "type": "whitespace" },
 					"analyzerCaseInsensitive": {
+						"tokenizer": "whitespace",
+						"filter": ["lowercase"]
+					},
+					"analyzerStandard": {
 						"tokenizer": "standard",
 						"filter": ["lowercase"]
 					}
@@ -77,7 +81,7 @@ curl -k -X PUT "${ELASTIC_URL}/${ELASTIC_INDEX}" \
 				"keyword": {
 					"type": "keyword", "doc_values": "false"
 				},
-				"acknowledgement": { "type": "text", "analyzer": "analyzerCaseInsensitive" },
+				"acknowledgement": { "type": "text", "analyzer": "analyzerStandard" },
 				"author": {
 					"type": "nested",
 					"dynamic": false,
