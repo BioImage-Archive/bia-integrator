@@ -11,6 +11,9 @@ from ro_crate_ingest.biostudies_to_ro_crate.biostudies_conversion import (
 from ro_crate_ingest.empiar_to_ro_crate.empiar_proposal_conversion import (
     convert_empiar_proposal_to_ro_crate,
 )
+from ro_crate_ingest.empiar_to_ro_crate.empiar_proposal_generation import (
+    generate_empiar_proposal
+)
 from ro_crate_ingest.validator.validation import bia_roc_validation
 
 ro_crate_ingest = typer.Typer()
@@ -19,6 +22,17 @@ logging.basicConfig(
     level="NOTSET", format="%(message)s", datefmt="[%X]", handlers=[RichHandler()]
 )
 logger = logging.getLogger()
+
+
+@ro_crate_ingest.callback()
+def main(
+    verbose: Annotated[
+        bool,
+        typer.Option("--verbose", "-v", help="Enable debug logging.")
+    ] = False,
+):
+    if verbose:
+        logging.getLogger().setLevel(logging.DEBUG)
 
 
 @ro_crate_ingest.command("ingest")
@@ -76,8 +90,26 @@ def biostudies_to_ro_crate(
         ),
     ] = None,
 ):
-
     convert_biostudies_to_ro_crate(accession_id, crate_path)
+
+
+@ro_crate_ingest.command("generate-empiar-proposal")
+def empiar_proposal(
+    proposal_config_path: Annotated[
+        Path, 
+        typer.Argument(help="Path to the yaml proposal config file.")
+    ], 
+    proposal_output_dir_path: Annotated[
+        Optional[Path], 
+        typer.Option(
+            "--proposal-dir-path", 
+            "-p", 
+            case_sensitive=False, 
+            help="Path to output proposal directory."
+        )
+    ] = None
+):
+    generate_empiar_proposal(proposal_config_path, proposal_output_dir_path)
 
 
 @ro_crate_ingest.command("empiar-to-roc")
@@ -96,7 +128,6 @@ def empiar_to_ro_crate(
         ),
     ] = None,
 ):
-
     convert_empiar_proposal_to_ro_crate(proposal_path, crate_path)
 
 

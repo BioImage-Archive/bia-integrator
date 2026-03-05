@@ -1,0 +1,81 @@
+accession_id: "EMPIAR-SPECIMENPATTERNTEST"
+paper_doi: "https://doi.org/10.0000/test.0001"
+
+specimen_defaults:
+  biosample_title: "Test organism cells"
+  specimen_imaging_preparation_protocol_titles:
+    - "Grid preparation"
+    - "Cryo-FIB milling"
+
+specimens:
+  patterns:
+    - "tomo_(\\d{4})"
+
+biosamples:
+  - title: "Test organism cells"
+    organism_classification:
+      - common_name: "Test organism"
+        scientific_name: "Testus organismicus"
+        ncbi_id: "NCBI:txid000001"
+    biological_entity_description: "Test organism cells for cryo-ET."
+    growth_protocol_title: "Cell culture"
+
+specimen_imaging_preparation_protocols:
+  - title: "Grid preparation"
+    protocol_description: "Standard grid prep."
+  - title: "Cryo-FIB milling"
+    protocol_description: "Standard FIB milling."
+
+image_acquisition_protocols:
+  - title: "Cryo-electron tomography"
+    protocol_description: "Standard cryo-ET acquisition."
+    imaging_instrument_description: "Titan Krios 300 kV."
+    fbbi_id:
+      - "obo:FBbi_00000256"
+    imaging_method_name:
+      - "Cryo-electron tomography"
+
+protocols:
+  - title: "Cell culture"
+    protocol_description: "Standard cell culture."
+  - title: "Tilt series pre-processing"
+    protocol_description: "Motion correction and CTF estimation."
+  - title: "Tomogram reconstruction"
+    protocol_description: "Weighted back-projection."
+
+datasets:
+  - name: "Raw frames"
+    data_directories:
+      - "data/frames"
+
+    file_globs:
+      frames:
+        - "**/*.tif"
+
+    image_acquisition_protocol_title:
+      dataset:
+        - "Cryo-electron tomography"
+
+  - name: "Tilt series"
+    data_directories:
+      - "data/tilt_series"
+
+    file_globs:
+      tilt_series:
+        - "**/*.mrc"
+
+    protocol_titles:
+      tilt_series:
+        - "Tilt series pre-processing"
+
+  - name: "Tomograms"
+    data_directories:
+      - "data/tomograms"
+
+    file_globs:
+      tomogram:
+        - "**/*.mrc"
+
+    protocol_titles:
+      tomogram:
+        - "Tomogram reconstruction"
