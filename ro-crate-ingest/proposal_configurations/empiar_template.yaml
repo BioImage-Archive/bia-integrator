@@ -123,9 +123,9 @@ datasets:
       - "data/Data_Set..."
 
     file_globs:
-      tomograms:
+      tomogram:
         - "**/eg_tomo_rec_4bin_SART/*.mrc"
 
     protocol_titles:
-      tomograms:
+      tomogram:
         - "Tomogram reconstruction"
