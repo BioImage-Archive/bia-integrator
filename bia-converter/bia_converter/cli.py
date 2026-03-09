@@ -30,11 +30,11 @@ def convert(
     dry_run: Annotated[
         bool, typer.Option("--dry-run", "-dr", help="If this argument is specified, do not actually upload to s3")
     ] = False,
-    skip_scale_ratio_validation: Annotated[
+    strict_scale_ratio_validation: Annotated[
         bool,
         typer.Option(
-            "--skip-scale-ratio-validation",
-            help="Skip strict multiscale ratio validation when reading OME-Zarr metadata.",
+            "--strict-scale-ratio-validation",
+            help="Enforce strict multiscale ratio validation when reading OME-Zarr metadata.",
         ),
     ] = False,
 ):
@@ -43,8 +43,8 @@ def convert(
     api_client = get_api_client(api_target)
     image_rep = api_client.get_image_representation(image_rep_uuid)
     conversion_config_dict = json.loads(conversion_config)
-    if skip_scale_ratio_validation:
-        conversion_config_dict["skip_scale_ratio_validation"] = True
+    if strict_scale_ratio_validation:
+        conversion_config_dict["strict_scale_ratio_validation"] = True
 
     try:
         conversion_function = getattr(convert_module, conversion_function_name)
@@ -86,11 +86,11 @@ def create_thumbnail(
     dry_run: Annotated[
         bool, typer.Option("--dry-run", "-dr", help="If this argument is specified, do not actually upload to s3")
     ] = False,
-    skip_scale_ratio_validation: Annotated[
+    strict_scale_ratio_validation: Annotated[
         bool,
         typer.Option(
-            "--skip-scale-ratio-validation",
-            help="Skip strict multiscale ratio validation when reading OME-Zarr metadata.",
+            "--strict-scale-ratio-validation",
+            help="Enforce strict multiscale ratio validation when reading OME-Zarr metadata.",
         ),
     ] = False,
 ):
@@ -102,7 +102,7 @@ def create_thumbnail(
         api_client,
         image_rep,
         dry_run=dry_run,
-        skip_scale_ratio_validation=skip_scale_ratio_validation,
+        strict_scale_ratio_validation=strict_scale_ratio_validation,
     )
     if not dry_run:
         logger.info(f"Created thumbnail at {thumbnail_uri}")
@@ -117,11 +117,11 @@ def create_static_display(
     dry_run: Annotated[
         bool, typer.Option("--dry-run", "-dr", help="If this argument is specified, do not actually upload to s3")
     ] = False,
-    skip_scale_ratio_validation: Annotated[
+    strict_scale_ratio_validation: Annotated[
         bool,
         typer.Option(
-            "--skip-scale-ratio-validation",
-            help="Skip strict multiscale ratio validation when reading OME-Zarr metadata.",
+            "--strict-scale-ratio-validation",
+            help="Enforce strict multiscale ratio validation when reading OME-Zarr metadata.",
         ),
     ] = False,
 ):
@@ -133,7 +133,7 @@ def create_static_display(
         api_client,
         image_rep,
         dry_run=dry_run,
-        skip_scale_ratio_validation=skip_scale_ratio_validation,
+        strict_scale_ratio_validation=strict_scale_ratio_validation,
     )
     if not dry_run:
         logger.info(f"Created static display at {static_display_uri}")

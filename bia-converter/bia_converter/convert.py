@@ -77,12 +77,12 @@ def create_2d_image_and_upload_to_s3(
     dims: tuple, 
     dst_suffix: str, 
     dry_run: bool = False,
-    skip_scale_ratio_validation: bool = False,
+    strict_scale_ratio_validation: bool = False,
 ) -> tuple[str, int]:
     im = generate_padded_thumbnail_from_ngff_uri(
         ome_zarr_uri,
         dims,
-        skip_scale_ratio_validation=skip_scale_ratio_validation,
+        strict_scale_ratio_validation=strict_scale_ratio_validation,
     )
 
     with tempfile.NamedTemporaryFile(suffix=".png") as fh:
@@ -111,7 +111,7 @@ def create_thumbnail_from_interactive_display(
     api_client: PrivateApi,
     input_image_rep: ImageRepresentation, 
     dry_run: bool = False, 
-    skip_scale_ratio_validation: bool = False,
+    strict_scale_ratio_validation: bool = False,
 ) -> str:
     """Create a 2D thumbnail from an INTERACTIVE_DISPLAY rep"""
 
@@ -133,7 +133,7 @@ def create_thumbnail_from_interactive_display(
         dims,
         dst_suffix,
         dry_run=dry_run,
-        skip_scale_ratio_validation=skip_scale_ratio_validation,
+        strict_scale_ratio_validation=strict_scale_ratio_validation,
     )
 
     if not dry_run:
@@ -161,7 +161,7 @@ def create_static_display_from_interactive_display(
     api_client: PrivateApi,
     input_image_rep: ImageRepresentation, 
     dry_run: bool = False, 
-    skip_scale_ratio_validation: bool = False,
+    strict_scale_ratio_validation: bool = False,
 ) -> str:
     """Create a 2D static display from an INTERACTIVE_DISPLAY rep"""
 
@@ -182,7 +182,7 @@ def create_static_display_from_interactive_display(
         dims,
         dst_suffix,
         dry_run=dry_run,
-        skip_scale_ratio_validation=skip_scale_ratio_validation,
+        strict_scale_ratio_validation=strict_scale_ratio_validation,
     )
 
     if not dry_run:
@@ -318,13 +318,13 @@ def get_conversion_output_path(output_rep_uuid):
 
 
 def get_dimensions_dict_from_zarr(
-    ome_zarr_image_uri: str, skip_scale_ratio_validation: bool = False
+    ome_zarr_image_uri: str, strict_scale_ratio_validation: bool = False
 ):
     from .proxyimage import ome_zarr_image_from_ome_zarr_uri
 
     im = ome_zarr_image_from_ome_zarr_uri(
         ome_zarr_image_uri,
-        skip_scale_ratio_validation=skip_scale_ratio_validation,
+        strict_scale_ratio_validation=strict_scale_ratio_validation,
     )
     attr_map = {
         "sizeX": "size_x",
@@ -523,11 +523,11 @@ def convert_uploaded_by_submitter_to_interactive_display(
         ome_zarr_type = determine_ome_zarr_type(ome_zarr_uri)
         if ome_zarr_type == "hcs":
             ome_zarr_uri = find_multiscale_well_uri(ome_zarr_uri)
-        skip_scale_ratio_validation = bool(
-            conversion_config.get("skip_scale_ratio_validation", False)
+        strict_scale_ratio_validation = bool(
+            conversion_config.get("strict_scale_ratio_validation", False)
         )
         update_dict = get_dimensions_dict_from_zarr(
-            ome_zarr_uri, skip_scale_ratio_validation=skip_scale_ratio_validation
+            ome_zarr_uri, strict_scale_ratio_validation=strict_scale_ratio_validation
         )
         base_image_rep.__dict__.update(update_dict)
 
@@ -602,11 +602,11 @@ def convert_zipped_ome_zarr_archive(
     if not dry_run:
         ome_zarr_uri = create_vizarr_compatible_ome_zarr_uri(zarr_group_uri)
         base_image_rep.file_uri = [ome_zarr_uri]
-        skip_scale_ratio_validation = bool(
-            conversion_parameters.get("skip_scale_ratio_validation", False)
+        strict_scale_ratio_validation = bool(
+            conversion_parameters.get("strict_scale_ratio_validation", False)
         )
         update_dict = get_dimensions_dict_from_zarr(
-            ome_zarr_uri, skip_scale_ratio_validation=skip_scale_ratio_validation
+            ome_zarr_uri, strict_scale_ratio_validation=strict_scale_ratio_validation
         )
         base_image_rep.__dict__.update(update_dict)
 
