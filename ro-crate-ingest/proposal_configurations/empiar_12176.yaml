@@ -1,0 +1,127 @@
+accession_id: EMPIAR-12176
+paper_doi: https://doi.org/10.1073/pnas.2415233122
+
+specimen_defaults:
+  biosample_title: "Encephalitozoon intestinalis ATCC 50506"
+  specimen_imaging_preparation_protocol_titles:
+    - "Cryo-ET grid preparation"
+    - "Cryo-FIB milling and lamella preparation for cryo-ET"
+    - "Preparation and lamella site assignment"
+    - "Lamellae pre-cuts"
+    - "Lamellae pre-cleans"
+    - "Notch milling and final lamellae positioning"
+
+specimens:
+  patterns:
+    - "tomo_(\\d{4})"
+
+biosamples:
+  - title: "Encephalitozoon intestinalis ATCC 50506"
+    organism_classification:
+      - common_name: "Encephalitozoon intestinalis"
+        scientific_name: "Encephalitozoon intestinalis ATCC 50506"
+        ncbi_id: "NCBI:txid876142"
+    biological_entity_description: "Encephalitozoon intestinalis ATCC 50506 dormant spores."
+    growth_protocol_title: "Spore propagation and purification"
+
+specimen_imaging_preparation_protocols:
+  - title: "Cryo-ET grid preparation"
+    protocol_description: "..."
+  - title: "Cryo-FIB milling and lamella preparation for cryo-ET"
+    protocol_description: "..."
+  - title: "Preparation and lamella site assignment"
+    protocol_description: "..."
+  - title: "Lamellae pre-cuts"
+    protocol_description: "..."
+  - title: "Lamellae pre-cleans"
+    protocol_description: "..."
+  - title: "Notch milling and final lamellae positioning"
+    protocol_description: "..."
+
+image_acquisition_protocols:
+  - title: "Cryo-electron tomography"
+    protocol_description: "..."
+    imaging_instrument_description: "..."
+    fbbi_id:
+      - "obo:FBbi_00000256"
+    imaging_method_name:
+      - "Cryo-electron tomography"
+
+protocols:
+  - title: "Spore propagation and purification"
+    protocol_description: "..."
+  - title: "Dataset 1 pre-processing"
+    protocol_description: "..."
+  - title: "Dataset 2 pre-processing"
+    protocol_description: "..."
+  - title: "Tomogram reconstruction"
+    protocol_description: "..."
+
+datasets:
+  - name: "Raw frames from dataset 1 of microsporidian Encephalitozoon intestinalis"
+    data_directories:
+      - "data/Data_Set_1"
+
+    file_globs:
+      frames:
+        - "**/raw_frames/*.tif"
+
+    image_acquisition_protocol_title:
+      dataset:
+        - "Cryo-electron tomography"
+
+  - name: "Unaligned tilt stacks from dataset 1 of microsporidian Encephalitozoon intestinalis"
+    data_directories:
+      - "data/Data_Set_1"
+
+    file_globs:
+      tilt_series:
+        - "**/tilt_series/*.mrc"
+      aligned_tilt_series:
+        - "**/aligned_tilt_series/*.mrc"
+
+    protocol_titles:
+      aligned_tilt_series:
+        - "Dataset 1 pre-processing"
+
+  - name: "Reconstructed tomograms from dataset 1 of microsporidian Encephalitozoon intestinalis"
+    data_directories:
+      - "data/Data_Set_1"
+
+    file_globs:
+      tomograms:
+        - "**/tomo_rec_4bin_SART/*.mrc"
+
+    protocol_titles:
+      tomograms:
+        - "Tomogram reconstruction"
+
+  # - name: "dataset 2 of microsporidian Encephalitozoon intestinalis"
+  #   data_directories:
+  #     - "data/Data_Set_2"
+  #
+  #   specimen_id_patterns:
+  #     - "tomo_(\\d{4})"
+  #
+  #   patterns:
+  #     frames:
+  #       - "**/raw_frames/*.tif"
+  #     tilt_series:
+  #       - "**/tilt_series/*.mrc"
+  #       - "**/tilt_series/*.st"
+  #     aligned_tilt_series:
+  #       - "**/aligned_tilt_series/*.mrc"
+  #     tomograms:
+  #       - "**/tomo_rec_4bin_SART/*.mrc"
+  #
+  #   image_acquisition_protocol_title:
+  #     dataset:
+  #       - "Cryo-electron tomography"
+  #
+  #   protocol_titles:
+  #     tilt_series:
+  #       - "Dataset 2 pre-processing"
+  #     aligned_tilt_series:
+  #       - "Dataset 2 pre-processing"
+  #     tomograms:
+  #       - "Tomogram reconstruction"

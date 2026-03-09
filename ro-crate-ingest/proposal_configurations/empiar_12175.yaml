@@ -1,0 +1,77 @@
+accession_id: "EMPIAR-12175"
+paper_doi: "https://doi.org/10.1073/pnas.2415233122"
+
+specimen_defaults:
+  biosample_title: "Encephalitozoon hellem ATCC 50504"
+  specimen_imaging_preparation_protocol_titles:
+    - "Waffle grid preparation"
+    - "Cryo-FIB milling of waffled lamellae"
+
+specimens:
+  pattern_alias_mappings:
+    "(\\d{4})":
+      - "tomo_(\\d{4})"
+
+biosamples:
+  - title: "Encephalitozoon hellem ATCC 50504"
+    organism_classification:
+      - common_name: "Encephalitozoon hellem"
+        scientific_name: "Encephalitozoon hellem ATCC 50504" 
+        ncbi_id: "NCBI:txid907965"
+    biological_entity_description: "Purified dormant spores of Encephalitozoon hellem ATCC 50504 propagated in Vero cells."
+    growth_protocol_title: "Microsporidian spore propagation and purification"
+
+protocols:
+  - title: "Microsporidian spore propagation and purification"
+    protocol_description: "E. hellem spores were propagated in Vero cells (ATCC CCL-81) maintained in EMEM with 10% heat-inactivated FBS at 37°C with 5% CO2. At approximately 90% confluence, medium was replaced with EMEM supplemented with 3% FBS and parasites were added to a 25 cm2 flask. Medium was changed every 2 days. After 14 days post-infection, cells were detached by scraping, centrifuged at 1300 × g for 10 min, and resuspended in 5 mL distilled water. Spores were mechanically disrupted with a G27 needle, purified by centrifugation at 1800 × g for 30 min at 25°C through 100% Percoll, washed three times with PBS, and stored at 4°C. Concentration was measured by hemocytometer."
+
+  - title: "Tilt series pre-processing and alignment"
+    protocol_description: "Tilt images were pre-processed using MotionCor2 and protomo. Tilt series alignment was performed using either IMOD or AreTomo."
+
+  - title: "Tomogram reconstruction"
+    protocol_description: "Tomograms were reconstructed using either IMOD or AreTomo."
+
+specimen_imaging_preparation_protocols:
+  - title: "Waffle grid preparation"
+    protocol_description: "Quantifoil carbon 200 mesh grids were sputter-coated with approximately 25 nm carbon on the non-grid-bar side. Brass planchette hats were polished and coated with 1-hexadecene, and grids were plasma cleaned (80% O2, 20% H2, 30 s). A concentrated spore suspension was applied to the bottom waffle assembly on the grid-bar side, optionally with 2-methylpentane applied before closing, and the assembly was high-pressure frozen in a Wohlwend HPF Compact 01. The waffled grid was recovered by disassembling the planchette hats and clipped for transfer."
+
+  - title: "Cryo-FIB milling of waffled lamellae"
+    protocol_description: "Waffled grids were transferred to a Quorum PP3000T prep chamber on a FEI Helios NanoLab 650 cryo-FIB/SEM at NYSBC. Conductive platinum was sputter-coated onto the grid (60 s), and platinum GIS was deposited (4–7 s). Grid bar lines were milled to aid orientation. Pairs of trenches were milled at 45–90° from the grid plane at 0.79–9.3 nA to isolate slabs approximately 30 µm apart. With the grid in a tilted holder, lamellae were thinned sequentially: coarse milling at 0.43–2.5 nA to ~3 µm; intermediate milling at 0.23 nA to ~1.5 µm with ±1° stage tilt; fine milling at 80 pA CCS to ~0.5 µm with ±0.5° tilt; and final polishing at 80 pA CCS to 200 nm or less. A notch was milled into one side of each slab to reduce stress. Grids were sputter-coated with platinum after milling."
+
+image_acquisition_protocols:
+  - title: "Cryo-electron tomography"
+    protocol_description: "Tilt series were collected using Leginon on a TFS Titan Krios operating at 300 kV in counting mode on a Gatan K2 BioQuantum with a 20 eV energy filter slit. Data were acquired at a pixel size of 3.298 Å with a nominal defocus of −6 µm. Tilt series were collected bidirectionally from 0° to ±50° in 2° increments using a dose-symmetric scheme, with per-image dose of 1.13–1.74 e−/Å2 (scaled by cosine of tilt angle, yielding 15–23 frames per image) and a total dose of 68 e−/Å2 per tilt series."
+    imaging_instrument_description: "TFS Titan Krios cryo-TEM at 300 kV, equipped with a Gatan K2 BioQuantum direct electron detector and energy filter (20 eV slit width), at NYSBC."
+    fbbi_id:
+      - "obo:FBbi_00000256"
+    imaging_method_name:
+      - "Cryo-electron tomography"
+
+datasets:
+  - name: "Aligned tilt series from microsporidian Encephalitozoon hellem"
+    data_directories:
+      - "data/Data_Set_4"
+    
+    file_globs:
+      aligned_tilt_series:
+        - "**/tilt_series/*pxlsz3.29787.mrcs"
+    
+    image_acquisition_protocol_title:
+      dataset:
+        - "Cryo-electron tomography"
+    
+    protocol_titles:
+      aligned_tilt_series:
+        - "Tilt series pre-processing and alignment"
+    
+  - name: "Reconstructed tomograms from microsporidian Encephalitozoon hellem"
+    data_directories:
+      - "data/Data_Set_4"
+    
+    file_globs:
+      tomogram:
+        - "**/tomo_rec/*.mrc"
+    
+    protocol_titles:
+      tomogram:
+        - "Tomogram reconstruction"

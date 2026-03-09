@@ -1,0 +1,50 @@
+accession_id: "EMPIAR-11520"
+paper_doi: "https://doi.org/10.1038/s41594-024-01441-0"
+
+specimen_defaults:
+  biosample_title: "Mycoplasma pneumoniae M129 cells"
+  specimen_imaging_preparation_protocol_titles:
+    - "Chloramphenicol treatment and plunge-freezing"
+
+specimens:
+  patterns:
+    - "TS_(\\d{3})"
+
+biosamples:
+  - title: "Mycoplasma pneumoniae M129 cells"
+    organism_classification:
+      - common_name: "Mycoplasma pneumoniae"
+        scientific_name: "Mycoplasmoides pneumoniae"
+        ncbi_id: "NCBI:txid2104"
+    biological_entity_description: "Wild-type Mycoplasma pneumoniae strain M129 (ATCC 29342) cells grown on cryo-EM grids in the fast-growing phase, treated with chloramphenicol (0.2 mg/ml) for ~15 min prior to plunge-freezing to arrest translation."
+    growth_protocol_title: "M. pneumoniae cultivation"
+
+protocols:
+  - title: "M. pneumoniae cultivation"
+    protocol_description: "Wild-type M. pneumoniae strain M129 (ATCC 29342) were cultivated in cell culture flasks with modified Hayflick medium. For cryo-EM grid preparation, 200 mesh gold grids with holey Quantifoil support (R2/1) were glow discharged for 45 s and sterilised under UV irradiation in a laminar flow hood for 30 min before immersing in culture medium. After inoculation, M. pneumoniae cells were grown at 37°C for less than 20 hours to ensure the fast-growing phase."
+
+specimen_imaging_preparation_protocols:
+  - title: "Chloramphenicol treatment and plunge-freezing"
+    protocol_description: "Chloramphenicol (Sigma-Aldrich, C0378) was added to the cell culture in the fast-growing phase at a final concentration of 0.2 mg/ml and incubated for approximately 15 min. Grids with cells were quickly washed with PBS solution containing 10 nm protein A-conjugated gold beads (Aurion, Wageningen, Netherlands), blotted for 2 s from the back side, and plunged into a liquid ethane/propane mixture at liquid N2 temperature using a manual plunger."
+
+image_acquisition_protocols:
+  - title: "Cryo-electron tomography"
+    protocol_description: "Tilt-series data were collected on a Titan Krios G3i microscope operating at 300 kV, equipped with a Gatan energy filter and K3 camera, using SerialEM (version 3.9). Tilt series were acquired using a dose-symmetric scheme with a tilt range of −60° to +60° at 3° increments. Data collection settings: magnification ×64,000; pixel size 1.329 Å on sample; energy filter slit width 20 eV; K3 camera in non-correlated double sampling counting mode; target dose rate 20 e⁻ per pixel per second; 10 frames per tilt image; constant exposure time per tilt; total dose 137 e⁻/Å². Target defocus ranged from 1 to 3.25 μm across tilt series. In total, 139 tilt series were used for data processing and analysis."
+    imaging_instrument_description: "Titan Krios G3i cryo-TEM at 300 kV, equipped with a Gatan energy filter and K3 direct electron detector."
+    fbbi_id:
+      - "obo:FBbi_00000256"
+    imaging_method_name:
+      - "Cryo-electron tomography"
+
+datasets:
+  - name: "Unaligned multi-frame micrographs of tilt series of chloramphenicol treated Mycoplasma pneumoniae cells"
+    data_directories:
+      - "data/Cm_K3_data/frames"
+    
+    file_globs:
+      frames:
+        - "**/*.tif"
+    
+    image_acquisition_protocol_title:
+      dataset:
+        - "Cryo-electron tomography"
