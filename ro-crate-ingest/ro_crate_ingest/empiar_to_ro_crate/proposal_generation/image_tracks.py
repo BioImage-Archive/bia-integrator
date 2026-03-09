@@ -340,6 +340,12 @@ def _merge_tracks(df: pd.DataFrame) -> list[ImageTrack]:
             else:
                 track.denoised_tomogram = path
                 track.dataset_for[ImageType.DENOISED_TOMOGRAM] = dataset_name
+        
+        else:
+            logger.warning(
+                f"Specimen {sid}: unrecognised image type '{image_type}' for "
+                f"'{path}'; file will be skipped."
+            )
 
     for track in tracks.values():
         track.frames.sort()

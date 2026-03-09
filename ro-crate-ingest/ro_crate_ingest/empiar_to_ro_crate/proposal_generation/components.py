@@ -86,29 +86,16 @@ def _protocol_title_value(titles: list[str]) -> str | list:
     return [dq(t) for t in titles]
 
 
-def _iap_config(dataset_config: DatasetConfig) -> dict[str, list[str]]:
+def _parse_protocol_title_config(raw: dict[str, str | list[str]] | None) -> dict[str, list[str]]:
     """
-    Parse the image_acquisition_protocol_title block from a DatasetConfig.
+    Parse the image_acquisition_protocol_title or protocol_titles blocks from a DatasetConfig.
 
-    Returns a dict keyed by either 'dataset' or ImageType values, mapping to
+    Returns a dict keyed by either 'dataset' (only for IAP) or ImageType values, mapping to
     lists of protocol titles.
     """
-    iap_title = dataset_config.image_acquisition_protocol_title
-    if iap_title is None:
+    if raw is None:
         return {}
-    return {k: ([v] if isinstance(v, str) else list(v)) for k, v in iap_title.items()}
-
-
-def _protocol_titles_config(dataset_config: DatasetConfig) -> dict[str, list[str]]:
-    """
-    Parse the protocol_titles block from a DatasetConfig.
-
-    Returns a dict keyed by ImageType values, mapping to lists of titles.
-    """
-    return {
-        k: ([v] if isinstance(v, str) else list(v))
-        for k, v in dataset_config.protocol_titles.items()
-    }
+    return {k: ([v] if isinstance(v, str) else list(v)) for k, v in raw.items()}
 
 
 def _get_track_file(track: ImageTrack, image_type: ImageType) -> pathlib.Path | None:
@@ -259,8 +246,9 @@ def build_dataset_blocks(
     Multiple titles produce a list; a single title produces a plain string.
     """
     dataset_name = dataset_config.name
-    iap_titles = _iap_config(dataset_config)
-    protocol_titles = _protocol_titles_config(dataset_config)
+
+    iap_titles = _parse_protocol_title_config(dataset_config.image_acquisition_protocol_title)
+    protocol_titles = _parse_protocol_title_config(dataset_config.protocol_titles)
 
     assigned_images = [
         *build_frames_assigned_images(

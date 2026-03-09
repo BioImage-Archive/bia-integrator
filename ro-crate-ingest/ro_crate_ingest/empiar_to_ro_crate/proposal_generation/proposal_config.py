@@ -1,8 +1,7 @@
-from __future__ import annotations
-
 import re
 
 from pydantic import BaseModel, Field, model_validator
+from typing import Self
 
 from ro_crate_ingest.empiar_to_ro_crate.proposal_generation.image_tracks import ImageType
 
@@ -49,7 +48,7 @@ class SpecimenConfig(BaseModel):
     literal_alias_mappings: dict[str, list[str]] = Field(default_factory=dict)
 
     @model_validator(mode="after")
-    def validate_strategies(self) -> SpecimenConfig:
+    def validate_strategies(self) -> Self:
         active = sum([
             bool(self.patterns),
             bool(self.pattern_alias_mappings),
@@ -102,7 +101,7 @@ class SpecimenGroup(BaseModel):
     specimen_imaging_preparation_protocol_titles: list[str] = Field(default_factory=list)
 
     @model_validator(mode="after")
-    def validate_group(self) -> SpecimenGroup:
+    def validate_group(self) -> Self:
         has_ids = bool(self.specimen_ids)
         has_pattern = self.specimen_id_pattern is not None
 
@@ -152,7 +151,7 @@ class DatasetConfig(BaseModel):
     specimen_groups: list[SpecimenGroup] = Field(default_factory=list)
 
     @model_validator(mode="after")
-    def validate_keys(self) -> DatasetConfig:
+    def validate_keys(self) -> Self:
         if self.image_acquisition_protocol_title:
             bad_iap_keys = set(self.image_acquisition_protocol_title) - _VALID_IAP_KEYS
             if bad_iap_keys:
@@ -192,7 +191,7 @@ class ProposalConfig(BaseModel):
     protocols: list[dict] = Field(default_factory=list)
 
     @model_validator(mode="after")
-    def validate_dataset_names_unique(self) -> ProposalConfig:
+    def validate_dataset_names_unique(self) -> Self:
         names = [d.name for d in self.datasets]
         seen: set[str] = set()
         dupes = [n for n in names if n in seen or seen.add(n)] 

@@ -2,6 +2,8 @@
 
 In EMPIAR–RO-Crate, a proposal yaml file is used to direct the conversion — REMBI information is supplied, and datasets and their constituent images/annotations defined. The purpose of proposal generation is to streamline the creation of those proposal documents, which can be very long, and even when short, are time-consuming to construct. After the CLI, proposal generation starts at [`empiar_proposal_generation.py`](empiar_proposal_generation.py), and all subsequent generation-specific code code is found in [`proposal_generation`](./proposal_generation/). Here is a guide for configuring a proposal generation. 
 
+Note: Currently, proposal generation accommodates cryoET entries only. 
+
 ## Examples
 
 Example configuration files, along with a template, can be found in [`proposal_configurations`](../../proposal_configurations/), a couple of levels up from this readme. Note that the configuration, as with the proposals, starts with the `accession_id` and `paper_doi`.
@@ -14,7 +16,7 @@ In the configuration, we have blocks for the REMBIs:
 - `image_acquisition_protocols`
 - `protocols`
 
-The specification of information in these blocks is faily self-explanatory, given the templates and exmaples, and should be completed with reference to the entry and the associated paper. Specimen information is dealt with below.
+The specification of information in these blocks is fairly self-explanatory, given the templates and examples, and should be completed with reference to the entry and the associated paper. Specimen information is dealt with below.
 
 ## Specimens
 
