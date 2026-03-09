@@ -142,5 +142,10 @@ class BIA(DefinedNamespace):
     transformationMatrix: URIRef
     uri: URIRef
     website: URIRef
+    xIndex: URIRef
+    yIndex: URIRef
+    zIndex: URIRef
+    tIndex: URIRef
+    cIndex: URIRef
 
     _NS = Namespace("http://bia/")
