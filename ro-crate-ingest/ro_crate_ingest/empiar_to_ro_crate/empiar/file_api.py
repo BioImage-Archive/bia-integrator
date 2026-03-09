@@ -17,9 +17,10 @@ def get_files(accession_id: str) -> list[EMPIARFile]:
         "EMPIAR-STARFILETEST": "A test submission covering star file annotation, with tomograms, and other image dependencies.",
         "EMPIAR-IMAGELABELTEST": "A test submission covering file-to-image grouping strategies.", 
         "EMPIAR-SPECIMENTEST": "A test submission for one:many specimen:image assignment.",
-        "EMPIAR-SPECIMENPATTERNTEST": "Test submission for simple regex specimen patterns.",
+        "EMPIAR-SPECIMENPATTERNDATASETBYIMAGETEST": "Test submission for simple regex specimen patterns, datasets correspond to image types.",
+        "EMPIAR-SPECIMENPATTERNDATASETBYSPECIMENTEST": "Test submission for simple regex specimen patterns, datasets correspond to specimens.",
         "EMPIAR-SPECIMENALIASPATTERNSTEST": "Test submission for pattern alias mappings.",
-        "EMPIAR-SPECIMENALIASMAPPINGSTEST": "Test submission for literal alias mappings.",
+        "EMPIAR-SPECIMENLITERALMAPPINGSTEST": "Test submission for literal alias mappings.",
         "EMPIAR-SPECIMENGROUPTEST": "Test submission for specimen group overrides.",
         "EMPIAR-ENTRYWITHOUTFRAMESTEST": "Test submission for entries without raw frames.",
     }

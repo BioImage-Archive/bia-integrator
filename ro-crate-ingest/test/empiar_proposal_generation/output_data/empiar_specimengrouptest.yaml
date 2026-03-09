@@ -16,6 +16,13 @@ rembis:
           ncbi_id: "NCBI:txid000001"
       biological_entity_description: "Test organism cells under condition B."
       growth_protocol_title: "Cell culture"
+    - title: "Test organism cells, condition C"
+      organism_classification:
+        - common_name: "Test organism"
+          scientific_name: "Testus organismicus"
+          ncbi_id: "NCBI:txid000001"
+      biological_entity_description: "Test organism cells under condition C."
+      growth_protocol_title: "Cell culture"
   SpecimenImagingPreparationProtocol:
     - title: "Grid preparation"
       protocol_description: "Standard grid prep."
@@ -23,6 +30,8 @@ rembis:
       protocol_description: "Standard FIB milling."
     - title: "Alternative grid preparation"
       protocol_description: "Alternative grid prep for condition B."
+    - title: "Special grid preparation"
+      protocol_description: "Special grid prep for condition C."
   Specimen:
     - title: "Specimen_0001"
       biosample_title: "Test organism cells, condition A"
@@ -38,6 +47,10 @@ rembis:
       biosample_title: "Test organism cells, condition B"
       specimen_imaging_preparation_protocol_title:
         - "Alternative grid preparation"
+    - title: "Specimen_0004"
+      biosample_title: "Test organism cells, condition C"
+      specimen_imaging_preparation_protocol_title:
+        - "Special grid preparation"
   ImageAcquisitionProtocol:
     - title: "Cryo-electron tomography"
       protocol_description: "Standard cryo-ET acquisition."
@@ -65,6 +78,9 @@ datasets:
       - label_prefix: "Specimen_0003 frames"
         file_pattern: "frames/tomo_0003/tomo_0003_frame_{}_0.0.tif"
         specimen_title: "Specimen_0003"
+      - label_prefix: "Specimen_0004 frames"
+        file_pattern: "frames/tomo_0004/tomo_0004_frame_{}_0.0.tif"
+        specimen_title: "Specimen_0004"
     assigned_dataset_rembis:
       - image_acquisition_protocol_title: "Cryo-electron tomography"
   - title: "Tilt series"
@@ -84,6 +100,11 @@ datasets:
         input_label_prefix: "Specimen_0003 frames"
         input_file_pattern: "frames/tomo_0003/tomo_0003_frame_{}_0.0.tif"
         protocol_title: "Tilt series pre-processing"
+      - label: "Specimen_0004 tilt_series"
+        file_pattern: "tilt_series/tomo_0004.mrc"
+        input_label_prefix: "Specimen_0004 frames"
+        input_file_pattern: "frames/tomo_0004/tomo_0004_frame_{}_0.0.tif"
+        protocol_title: "Tilt series pre-processing"
   - title: "Tomograms"
     assigned_images:
       - label: "Specimen_0001 tomogram"
@@ -97,4 +118,8 @@ datasets:
       - label: "Specimen_0003 tomogram"
         file_pattern: "tomograms/tomo_0003_rec.mrc"
         input_label: "Specimen_0003 tilt_series"
+        protocol_title: "Tomogram reconstruction"
+      - label: "Specimen_0004 tomogram"
+        file_pattern: "tomograms/tomo_0004_rec.mrc"
+        input_label: "Specimen_0004 tilt_series"
         protocol_title: "Tomogram reconstruction"

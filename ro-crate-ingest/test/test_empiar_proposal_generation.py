@@ -72,9 +72,10 @@ def _assigned_image_by_label(dataset: dict, label: str) -> dict | None:
 @pytest.mark.parametrize(
     "accession_id",
     [
-        "EMPIAR-SPECIMENPATTERNTEST",
+        "EMPIAR-SPECIMENPATTERNDATASETBYIMAGETEST",
+        "EMPIAR-SPECIMENPATTERNDATASETBYSPECIMENTEST",
         "EMPIAR-SPECIMENALIASPATTERNSTEST",
-        "EMPIAR-SPECIMENALIASMAPPINGSTEST",
+        "EMPIAR-SPECIMENLITERALMAPPINGSTEST",
         "EMPIAR-SPECIMENGROUPTEST",
         "EMPIAR-ENTRYWITHOUTFRAMESTEST",
     ],
@@ -86,13 +87,14 @@ def test_proposal_matches_expected(accession_id: str, tmp_proposal_dir: Path):
     assert created_proposal == expected_proposal
 
 
-class TestSpecimenPattern:
+class TestSpecimenPatternDatasetByImage:
     """
-    Case 1: simple regex patterns — tomo_(\\d{4})
-    Accession-ID: EMPIAR-SPECIMENPATTERNTEST
+    Case 1a: simple regex patterns — tomo_(\\d{4}).
+    Datasets are split by image type (one dataset per image type).
+    Accession-ID: EMPIAR-SPECIMENPATTERNDATASETBYIMAGETEST
     """
 
-    accession_id = "EMPIAR-SPECIMENPATTERNTEST"
+    accession_id = "EMPIAR-SPECIMENPATTERNDATASETBYIMAGETEST"
 
     @pytest.fixture(autouse=True)
     def _proposal(self, tmp_proposal_dir):
@@ -150,6 +152,70 @@ class TestSpecimenPattern:
         assert ai.get("protocol_title") == "Tomogram reconstruction"
 
 
+class TestSpecimenPatternDatasetBySpecimen:
+    """
+    Case 1b: simple regex patterns — tomo_(\\d{4}).
+    Datasets are split by specimen (one dataset per specimen, containing
+    all image types for that specimen).
+    Accession-ID: EMPIAR-SPECIMENPATTERNDATASETBYSPECIMENTEST
+    """
+
+    accession_id = "EMPIAR-SPECIMENPATTERNDATASETBYSPECIMENTEST"
+
+    @pytest.fixture(autouse=True)
+    def _proposal(self, tmp_proposal_dir):
+        self.proposal = _invoke_generate(self.accession_id, tmp_proposal_dir)
+
+    def test_three_specimens_created(self):
+        specimens = _specimens_by_title(self.proposal)
+        assert len(specimens) == 3
+
+    def test_specimen_ids_extracted_correctly(self):
+        specimens = _specimens_by_title(self.proposal)
+        assert "Specimen_0001" in specimens
+        assert "Specimen_0002" in specimens
+        assert "Specimen_0003" in specimens
+
+    def test_three_dataset_blocks_produced(self):
+        assert len(self.proposal.get("datasets", [])) == 3
+
+    def test_each_dataset_block_named_for_specimen(self):
+        titles = {ds.get("title") for ds in self.proposal.get("datasets", [])}
+        assert titles == {"Specimen 0001", "Specimen 0002", "Specimen 0003"}
+
+    def test_each_dataset_contains_full_track(self):
+        """Each per-specimen dataset block contains frames, tilt series and tomogram."""
+        for n in ["0001", "0002", "0003"]:
+            ds = _dataset_by_title(self.proposal, f"Specimen {n}")
+            assert ds is not None
+            assert _assigned_image_by_label(ds, f"Specimen_{n} frames") is not None
+            assert _assigned_image_by_label(ds, f"Specimen_{n} tilt_series") is not None
+            assert _assigned_image_by_label(ds, f"Specimen_{n} tomogram") is not None
+
+    def test_tilt_series_linked_to_frames_within_dataset(self):
+        for n in ["0001", "0002", "0003"]:
+            ds = _dataset_by_title(self.proposal, f"Specimen {n}")
+            ai = _assigned_image_by_label(ds, f"Specimen_{n} tilt_series")
+            assert ai is not None
+            assert "input_label_prefix" in ai or "input_file_pattern" in ai
+
+    def test_tomogram_linked_to_tilt_series_within_dataset(self):
+        for n in ["0001", "0002", "0003"]:
+            ds = _dataset_by_title(self.proposal, f"Specimen {n}")
+            ai = _assigned_image_by_label(ds, f"Specimen_{n} tomogram")
+            assert ai is not None
+            assert ai.get("input_label") == f"Specimen_{n} tilt_series"
+
+    def test_iap_on_each_dataset_block(self):
+        for n in ["0001", "0002", "0003"]:
+            ds = _dataset_by_title(self.proposal, f"Specimen {n}")
+            rembis = ds.get("assigned_dataset_rembis", [])
+            assert any(
+                r.get("image_acquisition_protocol_title") == "Cryo-electron tomography"
+                for r in rembis
+            ), f"IAP missing from dataset block for Specimen {n}"
+
+
 class TestSpecimenAliasPatterns:
     """
     Case 2: pattern_alias_mappings — different formats, same underlying id.
@@ -190,13 +256,13 @@ class TestSpecimenAliasPatterns:
             assert tomo_ai.get("input_label") == f"Specimen_{n} tilt_series"
 
 
-class TestSpecimenAliasMappings:
+class TestSpecimenLiteralMappings:
     """
     Case 3: literal_alias_mappings — arbitrary glob-to-id lookup.
-    Accession-ID: EMPIAR-SPECIMENALIASMAPPINGSTEST
+    Accession-ID: EMPIAR-SPECIMENLITERALMAPPINGSTEST
     """
 
-    accession_id = "EMPIAR-SPECIMENALIASMAPPINGSTEST"
+    accession_id = "EMPIAR-SPECIMENLITERALMAPPINGSTEST"
 
     @pytest.fixture(autouse=True)
     def _proposal(self, tmp_proposal_dir):
@@ -232,8 +298,10 @@ class TestSpecimenAliasMappings:
 
 class TestSpecimenGroupOverride:
     """
-    specimen_groups on the tilt series dataset overrides biosample and prep
-    protocol for specimen_03 only; specimens 01 and 02 use global defaults.
+    specimen_groups exercises both override strategies:
+      - specimen_ids: "0003" → condition B (exact ID match)
+      - specimen_id_pattern: "000[4]" → condition C (pattern match)
+    Specimens 0001 and 0002 use global defaults (condition A).
     Accession-ID: EMPIAR-SPECIMENGROUPTEST
     """
 
@@ -243,23 +311,33 @@ class TestSpecimenGroupOverride:
     def _proposal(self, tmp_proposal_dir):
         self.proposal = _invoke_generate(self.accession_id, tmp_proposal_dir)
 
-    def test_three_specimens_created(self):
+    def test_four_specimens_created(self):
         specimens = _specimens_by_title(self.proposal)
-        assert len(specimens) == 3
+        assert len(specimens) == 4
 
     def test_default_specimens_have_condition_a_biosample(self):
         specimens = _specimens_by_title(self.proposal)
         for sid in ["Specimen_0001", "Specimen_0002"]:
             assert specimens[sid]["biosample_title"] == "Test organism cells, condition A"
 
-    def test_overridden_specimen_has_condition_b_biosample(self):
+    def test_specimen_ids_override_has_condition_b_biosample(self):
         specimens = _specimens_by_title(self.proposal)
         assert specimens["Specimen_0003"]["biosample_title"] == "Test organism cells, condition B"
 
-    def test_overridden_specimen_has_alternative_prep_protocol(self):
+    def test_specimen_pattern_override_has_condition_c_biosample(self):
+        specimens = _specimens_by_title(self.proposal)
+        assert specimens["Specimen_0004"]["biosample_title"] == "Test organism cells, condition C"
+
+    def test_specimen_ids_override_has_alternative_prep_protocol(self):
         specimens = _specimens_by_title(self.proposal)
         preps = specimens["Specimen_0003"]["specimen_imaging_preparation_protocol_title"]
         assert "Alternative grid preparation" in preps
+        assert "Grid preparation" not in preps
+
+    def test_specimen_pattern_override_has_special_prep_protocol(self):
+        specimens = _specimens_by_title(self.proposal)
+        preps = specimens["Specimen_0004"]["specimen_imaging_preparation_protocol_title"]
+        assert "Special grid preparation" in preps
         assert "Grid preparation" not in preps
 
     def test_default_specimens_have_standard_prep_protocols(self):

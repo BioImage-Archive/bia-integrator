@@ -1,9 +1,9 @@
 accession_id: "EMPIAR-SPECIMENGROUPTEST"
 paper_doi: "https://doi.org/10.0000/test.0004"
 
-# specimen_01 and specimen_02 use the global defaults.
-# specimen_03 belongs to a different biosample and has a different prep protocol,
-# specified via a specimen_groups block on the tilt series dataset.
+# specimen_0001 and specimen_0002 use the global defaults (condition A).
+# specimen_0003 is overridden via a specimen_ids group (condition B).
+# specimen_0004 is overridden via a specimen_id_pattern group (condition C).
 specimen_defaults:
   biosample_title: "Test organism cells, condition A"
   specimen_imaging_preparation_protocol_titles:
@@ -29,6 +29,13 @@ biosamples:
         ncbi_id: "NCBI:txid000001"
     biological_entity_description: "Test organism cells under condition B."
     growth_protocol_title: "Cell culture"
+  - title: "Test organism cells, condition C"
+    organism_classification:
+      - common_name: "Test organism"
+        scientific_name: "Testus organismicus"
+        ncbi_id: "NCBI:txid000001"
+    biological_entity_description: "Test organism cells under condition C."
+    growth_protocol_title: "Cell culture"
 
 specimen_imaging_preparation_protocols:
   - title: "Grid preparation"
@@ -37,6 +44,8 @@ specimen_imaging_preparation_protocols:
     protocol_description: "Standard FIB milling."
   - title: "Alternative grid preparation"
     protocol_description: "Alternative grid prep for condition B."
+  - title: "Special grid preparation"
+    protocol_description: "Special grid prep for condition C."
 
 image_acquisition_protocols:
   - title: "Cryo-electron tomography"
@@ -85,6 +94,10 @@ datasets:
         biosample_title: "Test organism cells, condition B"
         specimen_imaging_preparation_protocol_titles:
           - "Alternative grid preparation"
+      - specimen_id_pattern: "000[4]"
+        biosample_title: "Test organism cells, condition C"
+        specimen_imaging_preparation_protocol_titles:
+          - "Special grid preparation"
 
   - name: "Tomograms"
     data_directories:
