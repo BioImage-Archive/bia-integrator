@@ -44,7 +44,9 @@ settings = get_settings()
 
 def create_image_representation_object(
     api_client: PrivateApi,
-    image: Image, conversion_process_dict: dict, image_format: str
+    image: Image,
+    conversion_process_dict: dict,
+    image_format: str,
 ) -> ImageRepresentation:
     # Create the base image representation object. Cannot by itself create the file_uri or
     # size attributes correctly
@@ -66,17 +68,14 @@ def create_image_representation_object(
         ],
         total_size_in_bytes=0,
         file_uri=[],
-        image_viewer_setting = []
+        image_viewer_setting=[],
     )
 
     return image_rep
 
 
 def create_2d_image_and_upload_to_s3(
-    ome_zarr_uri: str, 
-    dims: tuple, 
-    dst_suffix: str, 
-    dry_run: bool = False
+    ome_zarr_uri: str, dims: tuple, dst_suffix: str, dry_run: bool = False
 ) -> tuple[str, int]:
     im = generate_padded_thumbnail_from_ngff_uri(ome_zarr_uri, dims)
 
@@ -86,12 +85,12 @@ def create_2d_image_and_upload_to_s3(
         s3_bucket_name = settings.s3_bucket_name
         s3_endpoint_url = settings.s3_endpoint_url
         file_uri = upload_to_s3(
-            UploadMode.COPY, 
-            fh.name, 
-            dst_suffix, 
-            s3_bucket_name, 
-            s3_endpoint_url, 
-            dry_run=dry_run
+            UploadMode.COPY,
+            fh.name,
+            dst_suffix,
+            s3_bucket_name,
+            s3_endpoint_url,
+            dry_run=dry_run,
         )
 
         if not dry_run:
@@ -104,8 +103,8 @@ def create_2d_image_and_upload_to_s3(
 
 def create_thumbnail_from_interactive_display(
     api_client: PrivateApi,
-    input_image_rep: ImageRepresentation, 
-    dry_run: bool = False, 
+    input_image_rep: ImageRepresentation,
+    dry_run: bool = False,
 ) -> str:
     """Create a 2D thumbnail from an INTERACTIVE_DISPLAY rep"""
 
@@ -119,8 +118,7 @@ def create_thumbnail_from_interactive_display(
     input_image = api_client.get_image(input_image_rep.representation_of_uuid)
 
     dst_suffix = create_s3_uri_suffix_for_2d_view_of_image_representation(
-        api_client,
-        input_image_rep, dims=dims, name="thumbnail"
+        api_client, input_image_rep, dims=dims, name="thumbnail"
     )
     file_uri, size_in_bytes = create_2d_image_and_upload_to_s3(
         ome_zarr_uri, dims, dst_suffix, dry_run=dry_run
@@ -149,8 +147,8 @@ def create_thumbnail_from_interactive_display(
 # TODO - should be able to merge these
 def create_static_display_from_interactive_display(
     api_client: PrivateApi,
-    input_image_rep: ImageRepresentation, 
-    dry_run: bool = False, 
+    input_image_rep: ImageRepresentation,
+    dry_run: bool = False,
 ) -> str:
     """Create a 2D static display from an INTERACTIVE_DISPLAY rep"""
 
@@ -386,6 +384,65 @@ def fetch_ome_zarr_zip_fileref_and_unzip(
     return unpacked_zarr_dirpath
 
 
+def find_file_references_with_explicit_indices(file_references):
+    """Build coordinate map from explicit z_index/t_index/c_index in FileReference metadata.
+
+    Looks for index values stored in additional_metadata under
+    'attributes_from_file_list'. Uses explicit indices if any of z_index,
+    t_index, or c_index is present on all FileReferences, defaulting the
+    others to 0.
+
+    Returns:
+        tuple: (list of matched FileReferences, dict mapping uuid to (t, c, z))
+        Returns ([], {}) if no FileReferences have any explicit index.
+    """
+
+    fileref_map = {}
+    selected_filerefs = []
+    for fileref in file_references:
+        attrs = attributes_by_name(fileref)
+        file_list_attrs = attrs.get("attributes_from_file_list", {})
+        z_index = file_list_attrs.get("z_index")
+        t_index = file_list_attrs.get("t_index")
+        c_index = file_list_attrs.get("c_index")
+        if z_index is None and t_index is None and c_index is None:
+            return [], {}
+        fileref_map[fileref.uuid] = (
+            int(t_index) if t_index is not None else 0,
+            int(c_index) if c_index is not None else 0,
+            int(z_index) if z_index is not None else 0,
+        )
+        selected_filerefs.append(fileref)
+
+    return selected_filerefs, fileref_map
+
+
+def _convert_with_explicit_indices(file_references, base_image_rep):
+    """Convert multi-plane image using explicit z/t/c indices from FileReference metadata."""
+
+    selected_filerefs, fileref_coords_map = find_file_references_with_explicit_indices(
+        file_references
+    )
+    if not selected_filerefs:
+        raise KeyError("No explicit indices found on file references")
+
+    extension = get_shared_extension(selected_filerefs)
+    bfconvert_pattern = fileref_map_to_bfconvert_pattern(fileref_coords_map, extension)
+    logger.info(f"Converting with explicit indices: {bfconvert_pattern}")
+
+    with tempfile.TemporaryDirectory() as tmpdirname:
+        conversion_input_fpath = stage_and_link_filerefs(
+            tmpdirname, selected_filerefs, fileref_coords_map, bfconvert_pattern
+        )
+
+        output_zarr_fpath = get_conversion_output_path(base_image_rep.uuid)
+        logger.info(f"Converting from {conversion_input_fpath} to {output_zarr_fpath}")
+        if not output_zarr_fpath.exists():
+            run_zarr_conversion(conversion_input_fpath, output_zarr_fpath)
+
+    return output_zarr_fpath
+
+
 def _convert_with_bioformats2raw_pattern(
     input_image_rep, file_references, base_image_rep
 ):
@@ -414,9 +471,9 @@ def _convert_with_bioformats2raw_pattern(
 
 def convert_uploaded_by_submitter_to_interactive_display(
     api_client: PrivateApi,
-    input_image_rep: ImageRepresentation, 
-    conversion_config: dict = {}, 
-    dry_run: bool = False, 
+    input_image_rep: ImageRepresentation,
+    conversion_config: dict = {},
+    dry_run: bool = False,
 ) -> ImageRepresentation:
     # Should convert an UPLOADED_BY_SUBMITTER rep, to an INTERACTIVE_DISPLAY rep
 
@@ -435,8 +492,7 @@ def convert_uploaded_by_submitter_to_interactive_display(
         "conversion_config": conversion_config,
     }
     base_image_rep = create_image_representation_object(
-        api_client,
-        image, conversion_process_dict, image_format=".ome.zarr"
+        api_client, image, conversion_process_dict, image_format=".ome.zarr"
     )
     logger.info(
         f"Created image representation for converted image with uuid: {base_image_rep.uuid}"
@@ -445,32 +501,41 @@ def convert_uploaded_by_submitter_to_interactive_display(
     # Get the file references we'll need
     file_references = get_all_file_references_for_image(api_client, image)
 
+    # Try conversion strategies in order: explicit indices, file_pattern, single file
     try:
-        output_zarr_fpath = _convert_with_bioformats2raw_pattern(
-            input_image_rep, file_references, base_image_rep
+        output_zarr_fpath = _convert_with_explicit_indices(
+            file_references, base_image_rep
         )
     except (KeyError, AssertionError) as e:
-        if len(file_references) == 1:
-            logger.info(
-                f"Failed to convert using pattern. As image has 1 file reference will attempt to convert from this file reference with file path: {file_references[0].file_path}."
+        logger.info(f"No explicit indices available, trying file_pattern: {e}")
+        try:
+            output_zarr_fpath = _convert_with_bioformats2raw_pattern(
+                input_image_rep, file_references, base_image_rep
             )
-            input_file_path = stage_fileref_and_get_fpath(file_references[0])
-            output_zarr_fpath = get_conversion_output_path(f"{base_image_rep.uuid}")
-            run_zarr_conversion(input_file_path, output_zarr_fpath)
-        else:
-            raise e
+        except (KeyError, AssertionError) as e:
+            if len(file_references) == 1:
+                logger.info(
+                    f"Failed to convert using pattern. As image has 1 file reference will attempt to convert from this file reference with file path: {file_references[0].file_path}."
+                )
+                input_file_path = stage_fileref_and_get_fpath(file_references[0])
+                output_zarr_fpath = get_conversion_output_path(f"{base_image_rep.uuid}")
+                run_zarr_conversion(input_file_path, output_zarr_fpath)
+            else:
+                raise e
 
     # Upload to S3
     s3_bucket_name = settings.s3_bucket_name
     s3_endpoint_url = settings.s3_endpoint_url
-    dst_suffix = create_s3_uri_suffix_for_image_representation(api_client, base_image_rep)
+    dst_suffix = create_s3_uri_suffix_for_image_representation(
+        api_client, base_image_rep
+    )
     zarr_group_uri = upload_to_s3(
-        UploadMode.SYNC, 
-        output_zarr_fpath, 
-        dst_suffix, 
-        s3_bucket_name, 
-        s3_endpoint_url, 
-        dry_run=dry_run
+        UploadMode.SYNC,
+        output_zarr_fpath,
+        dst_suffix,
+        s3_bucket_name,
+        s3_endpoint_url,
+        dry_run=dry_run,
     )
 
     # Set image_rep properties that we now know
@@ -490,10 +555,12 @@ def convert_uploaded_by_submitter_to_interactive_display(
         # Write back to API
         store_object_in_api_idempotent(api_client, base_image_rep)
     else:
-        output_path = Path(settings.cache_root_dirpath) / "image_rep/dry_run_image_rep.json"
+        output_path = (
+            Path(settings.cache_root_dirpath) / "image_rep/dry_run_image_rep.json"
+        )
         output_path.parent.mkdir(parents=True, exist_ok=True)
 
-        with open(output_path, 'w') as f:
+        with open(output_path, "w") as f:
             json.dump(base_image_rep.model_dump(), f, indent=2)
 
     return base_image_rep
@@ -501,9 +568,9 @@ def convert_uploaded_by_submitter_to_interactive_display(
 
 def convert_zipped_ome_zarr_archive(
     api_client: PrivateApi,
-    input_image_rep: ImageRepresentation, 
-    conversion_parameters: dict = {}, 
-    dry_run: bool = False, 
+    input_image_rep: ImageRepresentation,
+    conversion_parameters: dict = {},
+    dry_run: bool = False,
 ) -> ImageRepresentation:
     """Unzip an OME-ZARR zip archive image representation to an OME-ZARR"""
 
@@ -520,8 +587,7 @@ def convert_zipped_ome_zarr_archive(
 
     image = api_client.get_image(input_image_rep.representation_of_uuid)
     base_image_rep = create_image_representation_object(
-        api_client,
-        image, conversion_process_dict, image_format=".ome.zarr"
+        api_client, image, conversion_process_dict, image_format=".ome.zarr"
     )
     logger.info(
         f"Created image representation for converted image with uuid: {base_image_rep.uuid}"
@@ -537,17 +603,21 @@ def convert_zipped_ome_zarr_archive(
     )
 
     # Upload to S3
-    dst_suffix = create_s3_uri_suffix_for_image_representation(api_client, base_image_rep)
+    dst_suffix = create_s3_uri_suffix_for_image_representation(
+        api_client, base_image_rep
+    )
     s3_bucket_name = settings.s3_bucket_name
     s3_endpoint_url = settings.s3_endpoint_url
-    dst_suffix = create_s3_uri_suffix_for_image_representation(api_client, base_image_rep)
+    dst_suffix = create_s3_uri_suffix_for_image_representation(
+        api_client, base_image_rep
+    )
     zarr_group_uri = upload_to_s3(
-        UploadMode.SYNC, 
-        output_zarr_fpath, 
-        dst_suffix, 
-        s3_bucket_name, 
-        s3_endpoint_url, 
-        dry_run=dry_run
+        UploadMode.SYNC,
+        output_zarr_fpath,
+        dst_suffix,
+        s3_bucket_name,
+        s3_endpoint_url,
+        dry_run=dry_run,
     )
 
     # Set image_rep properties that we now know
@@ -565,7 +635,9 @@ def convert_zipped_ome_zarr_archive(
     return base_image_rep
 
 
-def update_recommended_vizarr_representation_for_image(api_client: PrivateApi, image_rep: ImageRepresentation):
+def update_recommended_vizarr_representation_for_image(
+    api_client: PrivateApi, image_rep: ImageRepresentation
+):
     """Update 'recommended_vizarr_representation' attr of underlying Image object"""
 
     attribute = Attribute.model_validate(
