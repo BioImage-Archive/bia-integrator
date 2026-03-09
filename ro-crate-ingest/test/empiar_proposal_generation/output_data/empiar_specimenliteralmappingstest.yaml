@@ -1,0 +1,92 @@
+accession_id: "EMPIAR-SPECIMENLITERALMAPPINGSTEST"
+paper_doi: "https://doi.org/10.0000/test.0003"
+rembis:
+  BioSample:
+    - title: "Test organism cells"
+      organism_classification:
+        - common_name: "Test organism"
+          scientific_name: "Testus organismicus"
+          ncbi_id: "NCBI:txid000001"
+      biological_entity_description: "Test organism cells for cryo-ET."
+      growth_protocol_title: "Cell culture"
+  SpecimenImagingPreparationProtocol:
+    - title: "Grid preparation"
+      protocol_description: "Standard grid prep."
+    - title: "Cryo-FIB milling"
+      protocol_description: "Standard FIB milling."
+  Specimen:
+    - title: "Specimen_specimen_01"
+      biosample_title: "Test organism cells"
+      specimen_imaging_preparation_protocol_title:
+        - "Grid preparation"
+        - "Cryo-FIB milling"
+    - title: "Specimen_specimen_02"
+      biosample_title: "Test organism cells"
+      specimen_imaging_preparation_protocol_title:
+        - "Grid preparation"
+        - "Cryo-FIB milling"
+    - title: "Specimen_specimen_03"
+      biosample_title: "Test organism cells"
+      specimen_imaging_preparation_protocol_title:
+        - "Grid preparation"
+        - "Cryo-FIB milling"
+  ImageAcquisitionProtocol:
+    - title: "Cryo-electron tomography"
+      protocol_description: "Standard cryo-ET acquisition."
+      imaging_instrument_description: "Titan Krios 300 kV."
+      fbbi_id:
+        - "obo:FBbi_00000256"
+      imaging_method_name:
+        - "Cryo-electron tomography"
+  Protocol:
+    - title: "Cell culture"
+      protocol_description: "Standard cell culture."
+    - title: "Tilt series pre-processing"
+      protocol_description: "Motion correction and CTF estimation."
+    - title: "Tomogram reconstruction"
+      protocol_description: "Weighted back-projection."
+datasets:
+  - title: "Raw frames"
+    assigned_images:
+      - label_prefix: "Specimen_specimen_01 frames"
+        file_pattern: "frames/20230101/raw_frames/TS_01_{}_0.0.tif"
+        specimen_title: "Specimen_specimen_01"
+      - label_prefix: "Specimen_specimen_02 frames"
+        file_pattern: "frames/20230102/raw_frames/TS_02_{}_0.0.tif"
+        specimen_title: "Specimen_specimen_02"
+      - label_prefix: "Specimen_specimen_03 frames"
+        file_pattern: "frames/20230103/raw_frames/TS_03_{}_0.0.tif"
+        specimen_title: "Specimen_specimen_03"
+    assigned_dataset_rembis:
+      - image_acquisition_protocol_title: "Cryo-electron tomography"
+  - title: "Tilt series"
+    assigned_images:
+      - label: "Specimen_specimen_01 tilt_series"
+        file_pattern: "tilt_series/TS_01.mrc"
+        input_label_prefix: "Specimen_specimen_01 frames"
+        input_file_pattern: "frames/20230101/raw_frames/TS_01_{}_0.0.tif"
+        protocol_title: "Tilt series pre-processing"
+      - label: "Specimen_specimen_02 tilt_series"
+        file_pattern: "tilt_series/TS_02.mrc"
+        input_label_prefix: "Specimen_specimen_02 frames"
+        input_file_pattern: "frames/20230102/raw_frames/TS_02_{}_0.0.tif"
+        protocol_title: "Tilt series pre-processing"
+      - label: "Specimen_specimen_03 tilt_series"
+        file_pattern: "tilt_series/TS_03.mrc"
+        input_label_prefix: "Specimen_specimen_03 frames"
+        input_file_pattern: "frames/20230103/raw_frames/TS_03_{}_0.0.tif"
+        protocol_title: "Tilt series pre-processing"
+  - title: "Tomograms"
+    assigned_images:
+      - label: "Specimen_specimen_01 tomogram"
+        file_pattern: "tomograms/spec1.mrc"
+        input_label: "Specimen_specimen_01 tilt_series"
+        protocol_title: "Tomogram reconstruction"
+      - label: "Specimen_specimen_02 tomogram"
+        file_pattern: "tomograms/spec2.mrc"
+        input_label: "Specimen_specimen_02 tilt_series"
+        protocol_title: "Tomogram reconstruction"
+      - label: "Specimen_specimen_03 tomogram"
+        file_pattern: "tomograms/spec3.mrc"
+        input_label: "Specimen_specimen_03 tilt_series"
+        protocol_title: "Tomogram reconstruction"
