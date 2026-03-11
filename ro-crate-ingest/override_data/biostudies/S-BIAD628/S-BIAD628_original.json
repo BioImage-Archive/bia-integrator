@@ -1,0 +1,471 @@
+{
+  "accno" : "S-BIAD628",
+  "attributes" : [ {
+    "name" : "REMBI_PageTab Conversion Script Version",
+    "value" : "1.0.0"
+  }, {
+    "name" : "Title",
+    "value" : "Volumetric light-sheet data of freely moving sea anemone"
+  }, {
+    "name" : "ReleaseDate",
+    "value" : "2023-03-02"
+  }, {
+    "name" : "AttachTo",
+    "value" : "BioImages"
+  } ],
+  "section" : {
+    "type" : "Study",
+    "attributes" : [ {
+      "name" : "Description",
+      "value" : "Several important questions in biology require non-invasive and three-dimensional imaging techniques with appropriate spatiotemporal resolution that permit live organisms to move in an unconstrained fashion over an extended field-of-view. While selective-plane illumination microscopy (SPIM) has emerged as a powerful method to observe live biological specimens at high spatio-temporal resolution, typical implementations often necessitate constraining sample mounting or lack the required volumetric speed. Here, we report on an open-top, dual-objective oblique plane microscope (OPM) capable of observing millimeter sized, freely moving animals at cellular resolution. We demonstrate the capabilities of our mesoscopic OPM (MesOPM) by imaging the behavioural dynamics of the sea anemone Nematostella vectensis over 1.56 × 1.56 × 0.25 mm at 1.5 × 2.8 × 5.3µm resolution and 0.5Hz volume rate."
+    }, {
+      "name" : "Keyword",
+      "value" : "oblique plane microscope (OPM)"
+    }, {
+      "name" : "Keyword",
+      "value" : "Nematostella vectensis"
+    }, {
+      "name" : "Acknowledgements",
+      "value" : "We would like to acknowledge support by the EMBL Heidelberg mechanical and electronic workshops, especially Alejandro Gil Ortiz, as well as Lars Hufnagel, Anniek Stokkermans and Sebastian Hambura for help and support. We are further grateful for useful advice from Adam Glaser during the initial phase of our project. We thank EMBL Heidelberg and Euro-BioImaging for the help with dataset conversion and deposition."
+    }, {
+      "name" : "Funding statement",
+      "value" : "This work was supported by funds from the European Molecular Biology Laboratory. I.K. receives funding from EU Horizon 2020 under grant agreement no. 101046203 (BY-COVID). B.Ö. was supported by the EOSC Future project, grant agreement number: 101017536. I.O was supported by UiT The Arctic University of Norway \"Tematiske satsinger\" (VirtualStain) no. 2061348 and Research Council of Norway, INTPART-International Partnerships for Excellent Education and Research no. 309802. K.S was supported by Marie Skłodowska Curie Cofund Actions MSCA-COFUND-FP no. 664726."
+    } ],
+    "links" : [ {
+      "url" : "https://zenodo.org/record/7147818"
+    }, {
+      "url" : "https://opticapublishing.figshare.com/articles/journal_contribution/Supplementary_document_for_An_oblique_plane_microscope_for_mesoscopic_imaging_of_freely_moving_organisms_with_cellular_resolution_-_6162562_pdf/21627050"
+    } ],
+    "subsections" : [ {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Kaushikaram Subramanian"
+      }, {
+        "name" : "Email",
+        "value" : "kaushikaram.subramanian@embl.de"
+      }, {
+        "name" : "Role",
+        "value" : "first author"
+      }, {
+        "name" : "affiliation",
+        "value" : "o1",
+        "reference" : true
+      } ]
+    }, {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Ida Opstad"
+      }, {
+        "name" : "Email",
+        "value" : "ida.opstad@embl.de"
+      }, {
+        "name" : "Role",
+        "value" : "submitter"
+      }, {
+        "name" : "ORCID",
+        "value" : "0000-0003-4462-4600"
+      }, {
+        "name" : "affiliation",
+        "value" : "o1",
+        "reference" : true
+      } ]
+    }, {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Rajwinder Singh"
+      }, {
+        "name" : "Role",
+        "value" : "Microscope development"
+      }, {
+        "name" : "affiliation",
+        "value" : "o1",
+        "reference" : true
+      } ]
+    }, {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Aissam Ikmi"
+      }, {
+        "name" : "Email",
+        "value" : "aissam.ikmi@embl.de"
+      }, {
+        "name" : "Role",
+        "value" : "principal investigator"
+      }, {
+        "name" : "affiliation",
+        "value" : "o1",
+        "reference" : true
+      } ]
+    }, {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Robert Prevedel"
+      }, {
+        "name" : "Email",
+        "value" : "prevedel@embl.de"
+      }, {
+        "name" : "Role",
+        "value" : "principal investigator"
+      }, {
+        "name" : "affiliation",
+        "value" : "o1",
+        "reference" : true
+      } ]
+    }, {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Isabel Kemmer"
+      }, {
+        "name" : "Email",
+        "value" : "isabel.kemmer@eurobioimaging.eu"
+      }, {
+        "name" : "Role",
+        "value" : "data steward"
+      }, {
+        "name" : "ORCID",
+        "value" : "0000-0002-8799-4671"
+      }, {
+        "name" : "affiliation",
+        "value" : "o2",
+        "reference" : true
+      } ]
+    }, {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Bugra Özdemir"
+      }, {
+        "name" : "Email",
+        "value" : "bugra.oezdemir@eurobioimaging.eu"
+      }, {
+        "name" : "Role",
+        "value" : "data conversion"
+      }, {
+        "name" : "ORCID",
+        "value" : "0000-0001-9823-0581"
+      }, {
+        "name" : "affiliation",
+        "value" : "o2",
+        "reference" : true
+      } ]
+    }, {
+      "accno" : "o1",
+      "type" : "organization",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "EMBL Heidelberg"
+      } ]
+    }, {
+      "accno" : "o2",
+      "type" : "organization",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Euro-BioImaging ERIC"
+      } ]
+    }, {
+      "type" : "Publication",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "An oblique plane microscope for mesoscopic imaging of freely moving organisms with cellular resolution"
+      }, {
+        "name" : "Year",
+        "value" : "2022"
+      }, {
+        "name" : "Authors",
+        "value" : "Singh R, Subramanian K, Power RM, Paix A, Gil A, Ikmi A, Prevedel R"
+      }, {
+        "name" : "DOI",
+        "value" : "https://doi.org/10.1364/OE.471845"
+      } ]
+    }, {
+      "type" : "Funding",
+      "attributes" : [ {
+        "name" : "Agency",
+        "value" : "Marie Skłodowska Curie Cofund Actions MSCA-COFUND-FP"
+      }, {
+        "name" : "grant_id",
+        "value" : "664726"
+      } ]
+    }, {
+      "type" : "Funding",
+      "attributes" : [ {
+        "name" : "Agency",
+        "value" : "UiT The Arctic University of Norway \"Tematiske satsinger\" (VirtualStain)"
+      }, {
+        "name" : "grant_id",
+        "value" : "2061348"
+      } ]
+    }, {
+      "type" : "Funding",
+      "attributes" : [ {
+        "name" : "Agency",
+        "value" : "Research Council of Norway, INTPART-International Partnerships for Excellent Education and Research"
+      }, {
+        "name" : "grant_id",
+        "value" : "309802"
+      } ]
+    }, {
+      "accno" : "Study Component-1",
+      "type" : "Study Component",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Live imaging of muscular organisation (circular & longitudinal muscle population)"
+      }, {
+        "name" : "Description",
+        "value" : "imaging of muscular structure of one-week old anesthetized Nematostella polyps expressing a fluorescently tagged Myosin Heavy Chain protein"
+      }, {
+        "name" : "File List",
+        "value" : "File_list_MHC.json"
+      } ],
+      "subsections" : [ {
+        "accno" : "Image Acquisition-1-1",
+        "type" : "Image Acquisition",
+        "attributes" : [ {
+          "name" : "Imaging Instrument",
+          "value" : "custom-built Oblique plane microscope (OPM; a variation of light-sheet microscopy); for details see https://doi.org/10.1364/OE.471845"
+        }, {
+          "name" : "Image Acquisition Parameters",
+          "value" : "\"The entire volume stack comprises 429 frames, 1.3 µm apart, 40 ms exposure time, 0.5 mW excitation power. Total acquisition time for volume: 21 sec\""
+        } ],
+        "subsections" : [ {
+          "accno" : "Imaging Method-1-1",
+          "type" : "Imaging Method",
+          "attributes" : [ {
+            "name" : "Ontology Value",
+            "value" : "SPIM"
+          }, {
+            "name" : "Ontology Name",
+            "value" : "FBBI"
+          }, {
+            "name" : "Ontology Term ID",
+            "value" : "FBbi:00000369"
+          } ]
+        } ]
+      }, {
+        "accno" : "Specimen-1-1",
+        "type" : "Specimen",
+        "attributes" : [ {
+          "name" : "Sample Preparation Protocol",
+          "value" : "imaging performed in large water droplets mounted in custom sample holder"
+        } ]
+      }, {
+        "accno" : "Biosample-1-1",
+        "type" : "Biosample",
+        "attributes" : [ {
+          "name" : "Biological entity",
+          "value" : "primary polyps; Myosin Heavy Chain protein"
+        }, {
+          "name" : "Description",
+          "value" : "one week old, anasthetized"
+        }, {
+          "name" : "Intrinsic variable",
+          "value" : "Mhc-mNG"
+        }, {
+          "name" : "Extrinsic variable",
+          "value" : "anasthetized"
+        }, {
+          "name" : "Experimental variable",
+          "value" : "3D volumetric imaging"
+        } ],
+        "subsections" : [ {
+          "accno" : "Organism-1-1",
+          "type" : "Organism",
+          "attributes" : [ {
+            "name" : "Scientific name",
+            "value" : "Nematostella vectensis"
+          }, {
+            "name" : "Common name",
+            "value" : "starlet sea anemone"
+          }, {
+            "name" : "NCBI taxon ID",
+            "value" : "NCBI:txid45351"
+          } ]
+        } ]
+      }, {
+        "accno" : "Image-Analysis-1-1",
+        "type" : "Image Analysis",
+        "attributes" : [ {
+          "name" : "Image Analysis Overview",
+          "value" : "The raw OPM images have been deskewed and the field-of-view cropped. The image dimensions on the deskewed image stacks are: X,Y = 0.488 µm, Z=1.306 µm. The image stacks were then converted to OME-ZARR for convenient visualization in 3D."
+        } ]
+      } ]
+    }, {
+      "accno" : "Study Component-2",
+      "type" : "Study Component",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Live imaging of cell junctions"
+      }, {
+        "name" : "Description",
+        "value" : "Imaging of cadherin to localize apical adherens junctions which visualizes cell-cell contacts in the body wall"
+      }, {
+        "name" : "File List",
+        "value" : "File_list_Cadherin.json"
+      } ],
+      "subsections" : [ {
+        "accno" : "Image Acquisition-2-1",
+        "type" : "Image Acquisition",
+        "attributes" : [ {
+          "name" : "Imaging Instrument",
+          "value" : "custom-built Oblique plane microscope (OPM; a variation of light-sheet microscopy); for details see https://doi.org/10.1364/OE.471845"
+        }, {
+          "name" : "Image Acquisition Parameters",
+          "value" : "laser power: 2 mW; 50 ms or 100 ms camera exposure time as indicated in the filenames; the entire imaging stack comprises 500 frames, 1.3 µm apart."
+        } ],
+        "subsections" : [ {
+          "accno" : "Imaging Method-2-1",
+          "type" : "Imaging Method",
+          "attributes" : [ {
+            "name" : "Ontology Value",
+            "value" : "SPIM"
+          }, {
+            "name" : "Ontology Name",
+            "value" : "FBBI"
+          }, {
+            "name" : "Ontology Term ID",
+            "value" : "FBbi:00000369"
+          } ]
+        } ]
+      }, {
+        "accno" : "Specimen-2-1",
+        "type" : "Specimen",
+        "attributes" : [ {
+          "name" : "Sample Preparation Protocol",
+          "value" : "To ensure the animals could move freely a custom-manufactured mount with a tapering wedge geometry was used (2 mm width, 12 mm length and a depth of 4mm), onto which a thin FEP foil was attached. The animals were placed into the resulting FEP groove which was filled with artificial sea water to provide a physiological environment."
+        } ]
+      }, {
+        "accno" : "Biosample-2-1",
+        "type" : "Biosample",
+        "attributes" : [ {
+          "name" : "Biological entity",
+          "value" : "primary polyps; cadherin; cell junction molecule;"
+        }, {
+          "name" : "Description",
+          "value" : "one week old, freely moving"
+        }, {
+          "name" : "Intrinsic variable",
+          "value" : "Cdh1-eGFP"
+        }, {
+          "name" : "Extrinsic variable",
+          "value" : "artificial seawater"
+        }, {
+          "name" : "Experimental variable",
+          "value" : "3D volumetric imaging"
+        } ],
+        "subsections" : [ {
+          "accno" : "Organism-2-1",
+          "type" : "Organism",
+          "attributes" : [ {
+            "name" : "Scientific name",
+            "value" : "Nematostella vectensis"
+          }, {
+            "name" : "Common name",
+            "value" : "starlet sea anemone"
+          }, {
+            "name" : "NCBI taxon ID",
+            "value" : "NCBI:txid45351"
+          } ]
+        } ]
+      }, {
+        "accno" : "Image-Analysis-2-1",
+        "type" : "Image Analysis",
+        "attributes" : [ {
+          "name" : "Image Analysis Overview",
+          "value" : "The raw OPM images have been deskewed and the field-of-view cropped. The image dimensions on the deskewed image stacks are: X,Y = 0.488 µm, Z=1.306 µm. The image stacks were then converted to OME-ZARR for convenient visualization in 3D."
+        } ]
+      } ]
+    }, {
+      "accno" : "Study Component-3",
+      "type" : "Study Component",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Time-lapse imaging of neurons"
+      }, {
+        "name" : "Description",
+        "value" : "Time series of Nematostella polyp undergoing body contraction along oral-aboral axis to capture the nerve net of the polyp during a peristalic wave"
+      }, {
+        "name" : "File List",
+        "value" : "File_list_Elavmb.json"
+      } ],
+      "subsections" : [ {
+        "accno" : "Image Acquisition-3-1",
+        "type" : "Image Acquisition",
+        "attributes" : [ {
+          "name" : "Imaging Instrument",
+          "value" : "custom-built Oblique plane microscope (OPM; a variation of light-sheet microscopy) including high-speed, large-sensor sCMOS camera (3200x3200 pixel, Kinetix sCMOS, Teledyne Photometrics), for details see https://doi.org/10.1364/OE.471845"
+        }, {
+          "name" : "Image Acquisition Parameters",
+          "value" : "Each volume is composed of 600 frames acquired at 300fps, yielding a volume every 2 seconds (0.5 Hz) ; total laser power: 2 mW; acquisition time 1 ms per plane."
+        } ],
+        "subsections" : [ {
+          "accno" : "Imaging Method-3-1",
+          "type" : "Imaging Method",
+          "attributes" : [ {
+            "name" : "Ontology Value",
+            "value" : "SPIM"
+          }, {
+            "name" : "Ontology Name",
+            "value" : "FBBI"
+          }, {
+            "name" : "Ontology Term ID",
+            "value" : "FBbi:00000369"
+          } ]
+        } ]
+      }, {
+        "accno" : "Specimen-3-1",
+        "type" : "Specimen",
+        "attributes" : [ {
+          "name" : "Sample Preparation Protocol",
+          "value" : "To ensure the animals could move freely a custom-manufactured mount with a tapering wedge geometry was used (2 mm width, 12 mm length and a depth of 4mm), onto which a thin FEP foil was attached. The animals were placed into the resulting FEP groove which was filled with artificial sea water to provide a physiological environment."
+        } ]
+      }, {
+        "accno" : "Biosample-3-1",
+        "type" : "Biosample",
+        "attributes" : [ {
+          "name" : "Biological entity",
+          "value" : "primary polyps; Neuronal population;"
+        }, {
+          "name" : "Description",
+          "value" : "one week old, freely moving"
+        }, {
+          "name" : "Intrinsic variable",
+          "value" : "Elav>mb-eGFP"
+        }, {
+          "name" : "Extrinsic variable",
+          "value" : "artificial seawater"
+        }, {
+          "name" : "Experimental variable",
+          "value" : "timelapse"
+        } ],
+        "subsections" : [ {
+          "accno" : "Organism-3-1",
+          "type" : "Organism",
+          "attributes" : [ {
+            "name" : "Scientific name",
+            "value" : "Nematostella vectensis"
+          }, {
+            "name" : "Common name",
+            "value" : "starlet sea anemone"
+          }, {
+            "name" : "NCBI taxon ID",
+            "value" : "NCBI:txid45351"
+          } ]
+        } ]
+      }, {
+        "accno" : "Image-Analysis-3-1",
+        "type" : "Image Analysis",
+        "attributes" : [ {
+          "name" : "Image Analysis Overview",
+          "value" : "The raw OPM images have been deskewed and the field-of-view cropped.The image dimensions on the deskewed image stacks are: X,Y = 0.488 µm, Z=1.306 µm. The image stacks were then converted to OME-ZARR for convenient visualization in 3D."
+        } ]
+      } ]
+    } ]
+  },
+  "type" : "submission"
+}

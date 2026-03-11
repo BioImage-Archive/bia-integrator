@@ -1,0 +1,392 @@
+{
+  "accno": "S-BIAD1388",
+  "attributes": [
+    {
+      "name": "Template",
+      "value": "BioImages.v4"
+    },
+    {
+      "name": "DOI",
+      "value": "10.6019/S-BIAD1388"
+    },
+    {
+      "name": "ReleaseDate",
+      "value": "2024-12-02"
+    },
+    {
+      "name": "AttachTo",
+      "value": "BioImages"
+    }
+  ],
+  "section": {
+    "type": "Study",
+    "attributes": [
+      {
+        "name": "Title",
+        "value": "Distinct tissue-niche localization and function of synovial tissue myeloid DC subsets in health, and in active and remission Rheumatoid Arthritis \n\n"
+      },
+      {
+        "name": "Description",
+        "value": "immunofluorescent staining in Synovial tissue  of  Healthy, active  Rheumatoid arthritis and and Rheumatoid arthritis in remission. \n"
+      },
+      {
+        "name": "Keywords",
+        "value": "CD68"
+      },
+      {
+        "name": "Keywords",
+        "value": "CLEC10A"
+      },
+      {
+        "name": "Keywords",
+        "value": "AXL"
+      },
+      {
+        "name": "Keywords",
+        "value": "CD1c"
+      },
+      {
+        "name": "Keywords",
+        "value": "LAMP3"
+      },
+      {
+        "name": "Keywords",
+        "value": "Synovial tissue "
+      },
+      {
+        "name": "Keywords",
+        "value": "Human"
+      },
+      {
+        "name": "License",
+        "value": "CC BY 4.0",
+        "valqual": [
+          {
+            "name": "URL",
+            "value": "https://creativecommons.org/licenses/by/4.0/legalcode"
+          }
+        ]
+      }
+    ],
+    "links": [
+      {
+        "url": "https://doi.org/10.1101/2024.07.17.600758"
+      }
+    ],
+    "subsections": [
+      {
+        "type": "author",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Aziza Elmesmari"
+          },
+          {
+            "name": "E-mail",
+            "value": "aziza.elmesmari@glasgow.ac.uk"
+          },
+          {
+            "name": "ORCID",
+            "value": "0000-0001-7755-6283"
+          },
+          {
+            "name": "affiliation",
+            "value": "o1",
+            "reference": true
+          }
+        ]
+      },
+      {
+        "accno": "o1",
+        "type": "organisation",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "University of Glasgow"
+          }
+        ]
+      },
+      {
+        "accno": "Biosample-1",
+        "type": "Biosample",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "Healthy synovial tissue"
+          },
+          {
+            "name": "Organism",
+            "value": "Homo sapiens (human)"
+          },
+          {
+            "name": "Biological entity",
+            "value": "Synovial tissue of Healthy donor"
+          }
+        ]
+      },
+      {
+        "accno": "Biosample-9",
+        "type": "Biosample",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "Synovial tissue of Active rheumatoid arthritis"
+          },
+          {
+            "name": "Organism",
+            "value": "Homo sapiens (human)"
+          },
+          {
+            "name": "Biological entity",
+            "value": "Synovial tissue of Active rheumatoid arthritis"
+          }
+        ]
+      },
+      {
+        "accno": "Biosample-10",
+        "type": "Biosample",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "Synovial tissue of rheumatoid arthritis in remission"
+          },
+          {
+            "name": "Organism",
+            "value": "Homo sapiens (human)"
+          },
+          {
+            "name": "Biological entity",
+            "value": "Synovial tissue of rheumatoid arthritis in remission"
+          }
+        ]
+      },
+      {
+        "accno": "Specimen-2",
+        "type": "Specimen",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "CD68 & CLEC10A"
+          },
+          {
+            "name": "Sample preparation protocol",
+            "value": "Formalin-fixed paraffin-embedded 5μm-thick synovial tissue sections were stained with antibodies directed against markers  CD68 (Red) or CLEC10A (Green) or in combination, or with appropriate isotope control antibodies following previously published protocol."
+          }
+        ]
+      },
+      {
+        "accno": "Specimen-11",
+        "type": "Specimen",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "CD1c & AXL"
+          },
+          {
+            "name": "Sample preparation protocol",
+            "value": "Formalin-fixed paraffin-embedded 5μm-thick synovial tissue sections were stained with antibodies directed against markers  AXL (Red) or CD1c (Green) or in combination, or with appropriate isotope control antibodies following previously published protocol."
+          }
+        ]
+      },
+      {
+        "accno": "Specimen-12",
+        "type": "Specimen",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "CD1c & LAMP3"
+          },
+          {
+            "name": "Sample preparation protocol",
+            "value": "Formalin-fixed paraffin-embedded 5μm-thick synovial tissue sections were stained with antibodies directed against markers  LAMP3 (Red) or CD1c (Green) or in combination, or with appropriate isotope control antibodies following previously published protocol."
+          }
+        ]
+      },
+      {
+        "accno": "Specimen-9",
+        "type": "Specimen",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "CosMx staining"
+          },
+          {
+            "name": "Sample preparation protocol",
+            "value": "We used the Nanostring CosMx Spatial Molecular Imaging platform to measure expression of 960 genes discriminating transcriptional profiles and spatial localization of 127,199 cells (69 fields-of-view (FOV)) in paraffin-embedded synovial biopsies from 3 active naive to treatment and 3 RA patients in sustained clinical and imaging remission (~11 FOV per donor). Slides were stained with DAPI, CD45, CD3, PanCK, CD298/b2m (membrane)"
+          }
+        ]
+      },
+      {
+        "accno": "Image acquisition-3",
+        "type": "Image acquisition",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "Confocal Microscopy "
+          },
+          {
+            "name": "Imaging instrument",
+            "value": "Zeiss LSM 880 confocal microscope, using either a water immersion LD C-Apochromat ×40/aperture1aperture1.3, or an oil immersion Plan-Apochromat ×63/1.4 objectives, and images acquired using Zen Black software (Zeiss). "
+          },
+          {
+            "name": "Image acquisition parameters",
+            "value": "CD68 (red) & CLEC10A ( Green)\nCD1c (Green) & LAMP3 (Red)\nCD1c (Green ) & AXL (Red)\n"
+          },
+          {
+            "name": "Imaging method",
+            "value": "confocal microscopy"
+          }
+        ]
+      },
+      {
+        "accno": "Image acquisition-10",
+        "type": "Image acquisition",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "CosMx"
+          },
+          {
+            "name": "Imaging instrument",
+            "value": "CosMx Spatial Molecular Imager"
+          },
+          {
+            "name": "Image acquisition parameters",
+            "value": "membrane 488nm\npanCK 532nm\nCD45 594nm \nCD3 647nm \nDAPI UV"
+          },
+          {
+            "name": "Imaging method",
+            "value": "single cell"
+          },
+          {
+            "name": "Imaging method",
+            "value": "spatial transcriptomic"
+          }
+        ]
+      },
+      {
+        "accno": "Study Component-4",
+        "type": "Study Component",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Synovium Tissues "
+          },
+          {
+            "name": "Description",
+            "value": "immunofluorescent staining in Synovial tissue  of  Healthy, active  Rheumatoid arthritis and and Rheumatoid arthritis in remission. "
+          },
+          {
+            "name": "File List",
+            "value": "Database.json"
+          }
+        ],
+        "subsections": [
+          {
+            "type": "Associations",
+            "attributes": [
+              {
+                "name": "Biosample",
+                "value": "Healthy synovial tissue"
+              },
+              {
+                "name": "Specimen",
+                "value": "CD68 & CLEC10A"
+              },
+              {
+                "name": "Image acquisition",
+                "value": "Confocal Microscopy "
+              }
+            ]
+          },
+          {
+            "type": "Associations",
+            "attributes": [
+              {
+                "name": "Biosample",
+                "value": "Synovial tissue of Active rheumatoid arthritis"
+              },
+              {
+                "name": "Specimen",
+                "value": "CD68 & CLEC10A"
+              },
+              {
+                "name": "Image acquisition",
+                "value": "Confocal Microscopy "
+              }
+            ]
+          },
+          {
+            "type": "Associations",
+            "attributes": [
+              {
+                "name": "Biosample",
+                "value": "Synovial tissue of rheumatoid arthritis in remission"
+              },
+              {
+                "name": "Specimen",
+                "value": "CD68 & CLEC10A"
+              },
+              {
+                "name": "Image acquisition",
+                "value": "Confocal Microscopy "
+              }
+            ]
+          },
+          {
+            "type": "Associations",
+            "attributes": [
+              {
+                "name": "Biosample",
+                "value": "Healthy synovial tissue"
+              },
+              {
+                "name": "Specimen",
+                "value": "CD1c & AXL"
+              },
+              {
+                "name": "Image acquisition",
+                "value": "Confocal Microscopy "
+              }
+            ]
+          },
+          {
+            "type": "Associations",
+            "attributes": [
+              {
+                "name": "Biosample",
+                "value": "Synovial tissue of Active rheumatoid arthritis"
+              },
+              {
+                "name": "Specimen",
+                "value": "CD1c & LAMP3"
+              },
+              {
+                "name": "Image acquisition",
+                "value": "Confocal Microscopy "
+              }
+            ]
+          },
+          {
+            "type": "Associations",
+            "attributes": [
+              {
+                "name": "Biosample",
+                "value": "Synovial tissue of Active rheumatoid arthritis"
+              },
+              {
+                "name": "Specimen",
+                "value": "CosMx staining"
+              },
+              {
+                "name": "Image acquisition",
+                "value": "CosMx"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "type": "submission"
+}

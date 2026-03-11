@@ -1,0 +1,107 @@
+{
+    "accno" : "S-BSST651",
+    "attributes" : [ {
+      "name" : "Template",
+      "value" : "Default"
+    }, {
+      "name" : "Title",
+      "value" : "A pipeline for making 31P NMR accessible for small- and large-scale lipidomics studies "
+    }, {
+      "name" : "ReleaseDate",
+      "value" : "2022-05-22"
+    }, {
+      "name" : "AttachTo",
+      "value" : "BioImages"
+    } ],
+    "section" : {
+      "type" : "Study",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "A pipeline for making 31P NMR accessible for small- and large-scale lipidomics studies "
+      }, {
+        "name" : "Description",
+        "value" : "Detailed molecular analysis is of increasing importance in research into the regulation of biochemical pathways, organismal growth and disease.  Lipidomics in particular is increasingly sought after as it provides insight into molecular species involved in energy storage, signalling and fundamental cellular structures.  This has led to the use of a range of tools and techniques to acquire lipidomics data. 31P NMR for lipidomics offers well-resolved head group/lipid class analysis, structural data that can be used to inform and strengthen interpretation of mass spectrometry data and part of structural determination a priori.  In the present study, we codify the use of 31P NMR for lipidomics studies to make the technique more accessible to new users and more useful for a wider range of questions.  The technique can be used in isolation (phospholipidomics) or as a part of determining lipid composition (lipidomics).  We describe the process from sample extraction to data processing and analysis.  This pipeline is important because it allows greater thoroughness in lipidomics studies and increases scope for answering scientific questions about lipid systems.    \n\nChemRxiv DOI: 10.26434/chemrxiv.14053976.v1\nAnal. Bioanal. Chem DOI: "
+      }, {
+        "name" : "Organism",
+        "value" : "Mus musculus (mouse)"
+      }, {
+        "name" : "Organism",
+        "value" : "Glycine max (soybean)"
+      }, {
+        "name" : "Annotation 1",
+        "value" : "NMR"
+      }, {
+        "name" : "Annotation 2",
+        "value" : "Lipidomics"
+      } ],
+      "files" : [ {
+        "path" : "Data.zip",
+        "size" : 479720254,
+        "attributes" : [ {
+          "name" : "Description",
+          "value" : "1D and 2D NMR data "
+        }, {
+          "name" : "Type",
+          "value" : "Bruker format"
+        } ],
+        "type" : "file"
+      } ],
+      "subsections" : [ {
+        "type" : "Author",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "Samuel Furse"
+        }, {
+          "name" : "E-mail",
+          "value" : "samuel@samuelfurse.com"
+        }, {
+          "name" : "ORCID",
+          "value" : "0000-0003-4267-2051"
+        }, {
+          "name" : "affiliation",
+          "value" : "o1",
+          "reference" : true
+        } ]
+      }, {
+        "type" : "Author",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "Huw Williams"
+        }, {
+          "name" : "E-mail",
+          "value" : "huw.williams@nottingham.ac.uk"
+        }, {
+          "name" : "ORCID",
+          "value" : "0000-0002-2623-6287"
+        }, {
+          "name" : "affiliation",
+          "value" : "o1",
+          "reference" : true
+        } ]
+      }, {
+        "type" : "Author",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "Albert Koulman"
+        }, {
+          "name" : "E-mail",
+          "value" : "ak675@medschl.cam.ac.uk"
+        }, {
+          "name" : "ORCID",
+          "value" : "0000-0001-9998-051X"
+        }, {
+          "name" : "affiliation",
+          "value" : "o1",
+          "reference" : true
+        } ]
+      }, {
+        "accno" : "o1",
+        "type" : "Organization",
+        "attributes" : [ {
+          "name" : "Name",
+          "value" : "European Bioinformatics Institute (EMBL-EBI)"
+        } ]
+      } ]
+    },
+    "type" : "submission"
+  }

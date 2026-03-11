@@ -1,0 +1,380 @@
+{
+  "accno": "S-BIAD1763",
+  "attributes": [
+    {
+      "name": "Template",
+      "value": "BioImages.v4"
+    },
+    {
+      "name": "DOI",
+      "value": "10.6019/S-BIAD1763"
+    },
+    {
+      "name": "ReleaseDate",
+      "value": "2025-04-03"
+    },
+    {
+      "name": "AttachTo",
+      "value": "BioImages"
+    }
+  ],
+  "section": {
+    "type": "Study",
+    "attributes": [
+      {
+        "name": "Title",
+        "value": "Stress granules in U2OS cells"
+      },
+      {
+        "name": "Description",
+        "value": "Image of stress granules in live U2OS cells (specifically, U2OS ∆∆G3BP1/2 cells stably expressing GFP-G3BP1), induced using 200mM sodium arsenite. This image is primarily intended for use as part of the worked example in the FlickerPrint documentation and is indicative of the types of images required for conducting flicker spectroscopy analysis using FlickerPrint.\nFor portability reasons, this image is slightly shorter (133 frames) than the recommended length for images used for analysis with FlickerPrint (1000 frames)."
+      },
+      {
+        "name": "Keywords",
+        "value": "Flicker Spectroscopy"
+      },
+      {
+        "name": "Keywords",
+        "value": "U2OS"
+      },
+      {
+        "name": "Keywords",
+        "value": "Stress Granules"
+      },
+      {
+        "name": "Acknowledgements",
+        "value": "We thank N. Kedersha, Harvard University (retired) for gifting the cell line imaged in this data."
+      },
+      {
+        "name": "License",
+        "value": "CC BY 4.0",
+        "valqual": [
+          {
+            "name": "URL",
+            "value": "https://creativecommons.org/licenses/by/4.0/legalcode"
+          }
+        ]
+      },
+      {
+        "name": "Funding statement",
+        "value": "S.N.G., H.K., T.A.W. and T.S. acknowledge funding from the Research Council of Norway (grant no. 335901). H.K. acknowledges funding from UKRI Engineering and Physical Sciences Research Council (grant no. EP/V034154/2). S.N.G. acknowledges support from the Trond Mohn Stiftelse (no. BFS2017TMT01) and The Royal Society, UK."
+      }
+    ],
+    "links": [
+      {
+        "url": "https://github.com/FlickerPrint/FlickerPrint",
+        "attributes": [
+          {
+            "name": "Description",
+            "value": "FlickerPrint codebase"
+          }
+        ]
+      },
+      {
+        "url": "https://flickerprint.github.io/FlickerPrint/",
+        "attributes": [
+          {
+            "name": "Description",
+            "value": "FlickerPrint documentation"
+          }
+        ]
+      },
+      {
+        "url": "http://dx.doi.org/10.1083/jcb.201508028",
+        "attributes": [
+          {
+            "name": "Description",
+            "value": "N. Kedersha et. al., J. Cell Biol., e201508028 (2016)"
+          }
+        ]
+      }
+    ],
+    "subsections": [
+      {
+        "type": "author",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Thomas A. Williamson"
+          },
+          {
+            "name": "E-mail",
+            "value": "thomas.williamson@ed.ac.uk"
+          },
+          {
+            "name": "Role",
+            "value": "first author"
+          },
+          {
+            "name": "ORCID",
+            "value": "0000-0003-0577-1130"
+          },
+          {
+            "name": "affiliation",
+            "value": "o1",
+            "reference": true
+          }
+        ]
+      },
+      {
+        "type": "author",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Thomas Stevenson"
+          },
+          {
+            "name": "E-mail",
+            "value": "Thomas.Stevenson@uib.no"
+          },
+          {
+            "name": "Role",
+            "value": "data acquisition"
+          },
+          {
+            "name": "ORCID",
+            "value": "0000-0003-4698-0844"
+          },
+          {
+            "name": "affiliation",
+            "value": "o2",
+            "reference": true
+          }
+        ]
+      },
+      {
+        "type": "author",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Sushma N. Grellscheid"
+          },
+          {
+            "name": "E-mail",
+            "value": "Sushma.Grellscheid@uib.no"
+          },
+          {
+            "name": "Role",
+            "value": "corresponding author"
+          },
+          {
+            "name": "ORCID",
+            "value": "0000-0001-6410-1749"
+          },
+          {
+            "name": "affiliation",
+            "value": "o2",
+            "reference": true
+          }
+        ]
+      },
+      {
+        "type": "author",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Halim Kusumaatmaja"
+          },
+          {
+            "name": "E-mail",
+            "value": "halim.kusumaatmaja@ed.ac.uk"
+          },
+          {
+            "name": "Role",
+            "value": "corresponding author"
+          },
+          {
+            "name": "ORCID",
+            "value": "0000-0002-3392-9479"
+          },
+          {
+            "name": "affiliation",
+            "value": "o1",
+            "reference": true
+          }
+        ]
+      },
+      {
+        "accno": "o1",
+        "type": "organisation",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "University of Edinburgh"
+          }
+        ]
+      },
+      {
+        "accno": "o2",
+        "type": "organisation",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "University of Bergen"
+          }
+        ]
+      },
+      {
+        "type": "Publication",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "FlickerPrint: An Analysis Package for Measuring Interfacial Tension and Bending Rigidity of Biomolecular Condensates and Vesicles at Scale"
+          },
+          {
+            "name": "Authors",
+            "value": "Thomas A. Williamson, Jack O. Law, Thomas Stevenson, Fynn Wolf, Carl Jones, Endre Tønnessen, Sushma N. Grellscheid, Halim Kusumaatmaja"
+          },
+          {
+            "name": "DOI",
+            "value": "0.1101/2025.03.24.645013"
+          },
+          {
+            "name": "Year",
+            "value": "2025"
+          }
+        ]
+      },
+      {
+        "type": "Funding",
+        "attributes": [
+          {
+            "name": "Agency",
+            "value": "Research Council of Norway"
+          },
+          {
+            "name": "grant_id",
+            "value": "335901"
+          }
+        ]
+      },
+      {
+        "type": "Funding",
+        "attributes": [
+          {
+            "name": "Agency",
+            "value": "UKRI Engineering and Physical Sciences Research Council"
+          },
+          {
+            "name": "grant_id",
+            "value": "EP/V034154/2"
+          }
+        ]
+      },
+      {
+        "type": "Funding",
+        "attributes": [
+          {
+            "name": "Agency",
+            "value": "Trond Mohn Stiftelse"
+          },
+          {
+            "name": "grant_id",
+            "value": "BFS2017TMT01"
+          }
+        ]
+      },
+      {
+        "type": "Funding",
+        "attributes": [
+          {
+            "name": "Agency",
+            "value": "The Royal Society, UK"
+          }
+        ]
+      },
+      {
+        "accno": "Biosample-1",
+        "type": "Biosample",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "Biosample"
+          },
+          {
+            "name": "Organism",
+            "value": "Homo sapiens (human)"
+          },
+          {
+            "name": "Biological entity",
+            "value": "U2OS human cells from the ΔΔ17-U2OS-EGFP-G3BP line. These cells were a gift from N. Kedersha, Harvard University (retired)."
+          }
+        ]
+      },
+      {
+        "accno": "Specimen-2",
+        "type": "Specimen",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "Specimen"
+          },
+          {
+            "name": "Sample preparation protocol",
+            "value": "U2OS ∆∆G3BP1/2 stably expressing GFP-G3BP1 were a gift from N Kedersha. U2OS cells were cultivated in Dulbecco’s modified Eagle’s medium (DMEM) (Sigma-Aldrich, no. D5671) containing 10% fetal bovine serum, 100 µg/ml penicillin/streptomycin at 37 ˚C, 5% CO2. For imaging, cells were passaged and cultivated in 35 mm glass-bottom dishes (Ibidi, cat. no. 81158) or 18-well glass-bottom slides (Ibidi, cat. no. 81817) and stress granule condensates were induced via incubation in 200 µM sodium arsenite. "
+          }
+        ]
+      },
+      {
+        "accno": "Image acquisition-3",
+        "type": "Image acquisition",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "Image acquisition"
+          },
+          {
+            "name": "Imaging instrument",
+            "value": "Andor Dragonfly 505"
+          },
+          {
+            "name": "Image acquisition parameters",
+            "value": "Images were collected using an Andor Dragonfly 505 spinning disk confocal microscope with a 100×1.49 numerical aperture (NA) CFI SR HPApo total internal reflection fluorescence oil immersion lens with a × 1.5 magnification objective (Nikon MRD01995) and a 60 × 1.40 NACFI apochromat Lambda oil immersion lens with a×2 magnification objective (NikonMRD71670) with a 1024-by-1024 pixel iXon 888 Life electron-multiplying charge-coupled device camera , with a read noise of <1."
+          },
+          {
+            "name": "Imaging method",
+            "value": "confocal microscopy"
+          }
+        ]
+      },
+      {
+        "accno": "Study Component-4",
+        "type": "Study Component",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Confocal image of stress granules in U2OS cells"
+          },
+          {
+            "name": "Description",
+            "value": "Confocal image of stress granules in U2OS cells"
+          },
+          {
+            "name": "File List",
+            "value": "Stress_Granules.json"
+          }
+        ],
+        "subsections": [
+          {
+            "type": "Associations",
+            "attributes": [
+              {
+                "name": "Biosample",
+                "value": "Biosample"
+              },
+              {
+                "name": "Specimen",
+                "value": "Specimen"
+              },
+              {
+                "name": "Image acquisition",
+                "value": "Image acquisition"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "type": "submission"
+}

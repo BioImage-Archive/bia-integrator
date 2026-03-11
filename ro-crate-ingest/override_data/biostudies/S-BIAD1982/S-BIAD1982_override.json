@@ -1,0 +1,850 @@
+{
+  "accno": "S-BIAD1982",
+  "attributes": [
+    {
+      "name": "Template",
+      "value": "BioImages.v4"
+    },
+    {
+      "name": "DOI",
+      "value": "10.6019/S-BIAD1982"
+    },
+    {
+      "name": "ReleaseDate",
+      "value": "2025-05-26"
+    },
+    {
+      "name": "AttachTo",
+      "value": "BioImages"
+    }
+  ],
+  "section": {
+    "type": "Study",
+    "attributes": [
+      {
+        "name": "Title",
+        "value": "High-speed 3D Imaging with 25-Camera Multifocus Microscope"
+      },
+      {
+        "name": "Description",
+        "value": "We here report an aberration-corrected 25-plane camera array Multifocus microscope (M25) for high-speed, high-resolution wide-field optical microscopy in three spatial dimensions (3D). We demonstrate live imaging of 25-plane 3D volumes of up to 180x180x50um at >100 volumes per second. 3D data is recorded simultaneously by an array of 25 small, sensitive, synchronized machine-vision cameras. M25 employs aberration-corrected Multifocus microscopy—an optical method where diﬀractive Fourier optics are used for multiplexing and refocusing light—with a simplified design for chromatic dispersion correction where a corrective diﬀractive gratings is placed on each camera in the array. This elegant architecture for chromatic correction will be applicable in a broad range of diﬀractive imaging applications. M25 is a powerful optical tool for high-speed 3D microscopy in that it allows both non-invasive, label-free bright-field and highly sensitive fluorescence microscopy. We showcase M25 capabilities in 3D particle tracking, bright-field, and fluorescence imaging in D. melanogaster, and locomotion and neural activity studies in C. elegans."
+      },
+      {
+        "name": "Keywords",
+        "value": "fluorescence microscopy"
+      },
+      {
+        "name": "Keywords",
+        "value": "high-speed imaging"
+      },
+      {
+        "name": "Keywords",
+        "value": "multifocus microscopy"
+      },
+      {
+        "name": "Keywords",
+        "value": "multi-camera"
+      },
+      {
+        "name": "Keywords",
+        "value": "C.elegans"
+      },
+      {
+        "name": "Keywords",
+        "value": "D.melanogaster"
+      },
+      {
+        "name": "Keywords",
+        "value": "neuroscience"
+      },
+      {
+        "name": "Acknowledgements",
+        "value": "We thank Grant Hartzog, Bill Sullivan, Needhi Bhalla, David States (UCSC) and Ben Abrams (UCSC Life Sciences Microscopy Center) and the MBL Central Microscopy Facility for their support and encouragement and for hosting our instruments. We thank Louie Kerr (MBL), Jim McIlvain (Zeiss), and the entire 2019 Neurobiology Course at the Marine Biological Laboratory in Woods Hole, MA, for their participation in this project. We thank the incomparable Nico Stuurman of Micro-Manager (UCSC) for helpful discussions in high-speed multi-camera synchronization. We thank Brian Thibeault and all the amazing staff at the UCSB Nanofabrication Facility for supporting and training our students in the nanofabrication of optical devices. We thank Mike Stadler (UC Berkeley) who generated the H2B-EGFP D.melanogaster line."
+      },
+      {
+        "name": "License",
+        "value": "CC BY 4.0",
+        "valqual": [
+          {
+            "name": "URL",
+            "value": "https://creativecommons.org/licenses/by/4.0/legalcode"
+          }
+        ]
+      },
+      {
+        "name": "Funding statement",
+        "value": "This instrument development was funded by SA startup funds at UCSC and NSF grant, UEI: VX-UFPE4MCZH5, Award Abstract 1828636, NSF MRI:Development of a Multifocus Structured Illumination Microscope"
+      }
+    ],
+    "links": [
+      {
+        "url": "https://www.biorxiv.org/content/10.1101/2024.09.23.614351v1.full.pdf",
+        "attributes": [
+          {
+            "name": "Description",
+            "value": "biorxiv"
+          }
+        ]
+      },
+      {
+        "url": "https://zenodo.org/records/8193188",
+        "attributes": [
+          {
+            "name": "Description",
+            "value": "M25 Acquisition Engine"
+          }
+        ]
+      },
+      {
+        "url": "https://zenodo.org/records/7314572",
+        "attributes": [
+          {
+            "name": "Description",
+            "value": "M25-Napari Plugin"
+          }
+        ]
+      }
+    ],
+    "subsections": [
+      {
+        "type": "author",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Eduardo Hirata-Miyasaki"
+          },
+          {
+            "name": "E-mail",
+            "value": "edhiratam@gmail.com"
+          },
+          {
+            "name": "Role",
+            "value": "first author"
+          },
+          {
+            "name": "ORCID",
+            "value": "0000-0002-1016-2447"
+          },
+          {
+            "name": "affiliation",
+            "value": "o1",
+            "reference": true
+          }
+        ]
+      },
+      {
+        "type": "author",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Antone Bajor"
+          },
+          {
+            "name": "Role",
+            "value": "software development"
+          },
+          {
+            "name": "affiliation",
+            "value": "o1",
+            "reference": true
+          }
+        ]
+      },
+      {
+        "type": "author",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Gustav Petterson"
+          },
+          {
+            "name": "Role",
+            "value": "investigator"
+          },
+          {
+            "name": "affiliation",
+            "value": "o2",
+            "reference": true
+          }
+        ]
+      },
+      {
+        "type": "author",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Maximilian Senftleben"
+          },
+          {
+            "name": "Role",
+            "value": "data analyst"
+          },
+          {
+            "name": "affiliation",
+            "value": "o2",
+            "reference": true
+          }
+        ]
+      },
+      {
+        "type": "author",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Kaitlyn Fouke"
+          },
+          {
+            "name": "Role",
+            "value": "investigator"
+          },
+          {
+            "name": "affiliation",
+            "value": "o3",
+            "reference": true
+          }
+        ]
+      },
+      {
+        "type": "author",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Thomas Graham"
+          },
+          {
+            "name": "Role",
+            "value": "investigator"
+          },
+          {
+            "name": "affiliation",
+            "value": "o4",
+            "reference": true
+          }
+        ]
+      },
+      {
+        "type": "author",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "John Demis"
+          },
+          {
+            "name": "Role",
+            "value": "investigator"
+          },
+          {
+            "name": "affiliation",
+            "value": "o5",
+            "reference": true
+          }
+        ]
+      },
+      {
+        "type": "author",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Jennifer Morgan"
+          },
+          {
+            "name": "Role",
+            "value": "investigator"
+          },
+          {
+            "name": "affiliation",
+            "value": "o3",
+            "reference": true
+          }
+        ]
+      },
+      {
+        "type": "author",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Gal Haspel"
+          },
+          {
+            "name": "Role",
+            "value": "investigator"
+          },
+          {
+            "name": "affiliation",
+            "value": "o6",
+            "reference": true
+          }
+        ]
+      },
+      {
+        "type": "author",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Sara Abrahamsson"
+          },
+          {
+            "name": "E-mail",
+            "value": "sara.abrahamsson@gmail.com"
+          },
+          {
+            "name": "Role",
+            "value": "principal investigator"
+          },
+          {
+            "name": "affiliation",
+            "value": "o1",
+            "reference": true
+          }
+        ]
+      },
+      {
+        "accno": "o1",
+        "type": "organisation",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "University of California, Santa Cruz"
+          }
+        ]
+      },
+      {
+        "accno": "o2",
+        "type": "organisation",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "KTH Royal Institute of Technology"
+          }
+        ]
+      },
+      {
+        "accno": "o3",
+        "type": "organisation",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Marine Biological Laboratory"
+          }
+        ]
+      },
+      {
+        "accno": "o4",
+        "type": "organisation",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "University of California, Berkeley"
+          }
+        ]
+      },
+      {
+        "accno": "o5",
+        "type": "organisation",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "University of California, Santa Barbara"
+          }
+        ]
+      },
+      {
+        "accno": "o6",
+        "type": "organisation",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "New Jersey Institute of Technology"
+          }
+        ]
+      },
+      {
+        "type": "Publication",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "High-speed 3D Imaging with 25-Camera Multifocus Microscope"
+          },
+          {
+            "name": "Authors",
+            "value": "Eduardo Hirata Miyasaki, Antone Bajor, Gustav M. Petterson, Maximilian L. Senftleben, Kaitlyn E. Fouke, Thomas G.W Graham, Demis D. John, Jennifer R. Morgan,  Gal Haspel, Sara Abrahamsson"
+          },
+          {
+            "name": "DOI",
+            "value": "10.1101/2024.09.23.614351"
+          }
+        ]
+      },
+      {
+        "type": "Funding",
+        "attributes": [
+          {
+            "name": "Agency",
+            "value": "NSF"
+          },
+          {
+            "name": "grant_id",
+            "value": "1828636"
+          }
+        ]
+      },
+      {
+        "type": "Funding",
+        "attributes": [
+          {
+            "name": "Agency",
+            "value": "UC Santa Cruz"
+          },
+          {
+            "name": "grant_id",
+            "value": "Startup Funds"
+          }
+        ]
+      },
+      {
+        "accno": "Biosample-1",
+        "type": "Biosample",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "Paneuronal C.elegans"
+          },
+          {
+            "name": "Organism",
+            "value": "Caenorhabditis elegans"
+          },
+          {
+            "name": "Biological entity",
+            "value": "C.elegans L1 larvae"
+          },
+          {
+            "name": "Intrinsic variable",
+            "value": "OH15265 of bright pan neuronal nuclear GCaMp6s: [rab-3::NLS::GCaMP6s + arrd-4:NLS:::GCaMP6s]"
+          }
+        ]
+      },
+      {
+        "accno": "Biosample-8",
+        "type": "Biosample",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "ZW495 C.elegans"
+          },
+          {
+            "name": "Organism",
+            "value": "Caenorhabditis elegans"
+          },
+          {
+            "name": "Description",
+            "value": "ZW495 body wall muscle GCaMP2: [myo-3p::GCamp2 + lin-15(+)]. Transgenic animals are GFP+ in body wall muscle.47"
+          },
+          {
+            "name": "Biological entity",
+            "value": "C.elegans larvae L1 stage"
+          },
+          {
+            "name": "Intrinsic variable",
+            "value": "ZW495 body wall muscle GCaMP2: [myo-3p::GCamp2 + lin-15(+)]. Transgenic animals are GFP+ in body wall muscle.47"
+          }
+        ]
+      },
+      {
+        "accno": "Biosample-13",
+        "type": "Biosample",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "H2B Drosophila"
+          },
+          {
+            "name": "Organism",
+            "value": "Drosophila melanogaster (fruit fly)"
+          },
+          {
+            "name": "Description",
+            "value": "Fly line with an H2B-EGFP transgene inserted on chromosome 3. Transgene is expressed ubiquitously under the control of a synthetic tubulin promoter."
+          },
+          {
+            "name": "Biological entity",
+            "value": "D.melanogaster larvae"
+          },
+          {
+            "name": "Intrinsic variable",
+            "value": "H2B-EGFP transgene inserted on chromosome 3"
+          }
+        ]
+      },
+      {
+        "accno": "Biosample-21",
+        "type": "Biosample",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "Beads"
+          },
+          {
+            "name": "Organism",
+            "value": "Beads"
+          },
+          {
+            "name": "Biological entity",
+            "value": "Fluorescent Beads"
+          }
+        ]
+      },
+      {
+        "accno": "Specimen-2",
+        "type": "Specimen",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "C.elegans strains"
+          },
+          {
+            "name": "Sample preparation protocol",
+            "value": "The C.elegans were mounted on 2% agarose pads with NGM buffer. A 2 µL suspension containing polystyrene beads (Polystyrene beads 0.1 µm, LB1, Millipore Sigma) with 0.1 µm in diameter at a concentration of approximately 2.5% by volume was added to the pads to partially slow movements following standard methods."
+          },
+          {
+            "name": "Growth protocol",
+            "value": "C. elegans strains under standard laboratory conditions on nematode growth medium (NGM) agar plates with OP-50-1 Escherichia coli bacterial lawn at room temperature 20-25°C"
+          }
+        ]
+      },
+      {
+        "accno": "Specimen-9",
+        "type": "Specimen",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "Bead sample 200nm"
+          },
+          {
+            "name": "Sample preparation protocol",
+            "value": "For the verification of spatial resolution, glass coverslips (Carl Zeiss Cover Glasses, High Performance, thickness 0.17 ± 5 µm) were treated with poly-L-lysine (Sigma Aldrich, P8920-100 ML) and coated with 200 nm fluorescent beads (FluoSpheres Carboxylate-Modified Microspheres, F8811, Invitrogen). After that, the coverslips were mounted with ProLong Gold Antifade Mountant (Invitrogen, P36930) and sealed with nail polish."
+          }
+        ]
+      },
+      {
+        "accno": "Specimen-10",
+        "type": "Specimen",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "Beads sample 1um"
+          },
+          {
+            "name": "Sample preparation protocol",
+            "value": "1 µm fluorescent beads (FluoSpheres Carboxylate-Modified Microspheres, F8823, Invitrogen) were suspended in deionized water and added onto a glass coverslip and sealed with nail polish. "
+          }
+        ]
+      },
+      {
+        "accno": "Specimen-15",
+        "type": "Specimen",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "Drosophila strain"
+          },
+          {
+            "name": "Sample preparation protocol",
+            "value": "Drosophila larvae collected from cages and mounted on a 2% agarose pad with 2 µl of 30 µm polystyrene beads diluted in water used as spacers to avoid compressing the organism between the coverslip and the pad"
+          }
+        ]
+      },
+      {
+        "accno": "Image acquisition-3",
+        "type": "Image acquisition",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "M25 UCSC"
+          },
+          {
+            "name": "Imaging instrument",
+            "value": "Custom microscope using a 25-camera array multifocus microscope (M25) built on a commercial microscope.\n"
+          },
+          {
+            "name": "Image acquisition parameters",
+            "value": "M25 UCSC"
+          },
+          {
+            "name": "Imaging method",
+            "value": "fluorescence microscopy"
+          },
+          {
+            "name": "Imaging method",
+            "value": "bright-field microscopy"
+          }
+        ]
+      },
+      {
+        "accno": "Image acquisition-16",
+        "type": "Image acquisition",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "M25 MBL"
+          },
+          {
+            "name": "Imaging instrument",
+            "value": "Custom microscope using a 25-camera array multifocus microscope (M25) built on a commercial microscope."
+          },
+          {
+            "name": "Image acquisition parameters",
+            "value": "M25 MBL"
+          },
+          {
+            "name": "Imaging method",
+            "value": "fluorescence microscopy"
+          },
+          {
+            "name": "Imaging method",
+            "value": "bright-field microscopy"
+          }
+        ]
+      },
+      {
+        "accno": "Study Component-11",
+        "type": "Study Component",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Figure 5"
+          },
+          {
+            "name": "Description",
+            "value": " Alternating activation of antagonistic muscles during locomotion in C. elegans expressing the fluorescent calcium indicator GCaMP"
+          },
+          {
+            "name": "File List",
+            "value": "M25/Figure_5.json"
+          }
+        ],
+        "subsections": [
+          {
+            "type": "Associations",
+            "attributes": [
+              {
+                "name": "Biosample",
+                "value": "ZW495 C.elegans"
+              },
+              {
+                "name": "Specimen",
+                "value": "C.elegans strains"
+              },
+              {
+                "name": "Image acquisition",
+                "value": "M25 MBL"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "accno": "Study Component-12",
+        "type": "Study Component",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Figure 4"
+          },
+          {
+            "name": "Description",
+            "value": "Live fluorescence and brightfield M25 imaging of the heart of transgenic Drosophila larva expressing EGFP-tagged histone H2B"
+          },
+          {
+            "name": "File List",
+            "value": "M25/Figure_4.json"
+          }
+        ],
+        "subsections": [
+          {
+            "type": "Associations",
+            "attributes": [
+              {
+                "name": "Biosample",
+                "value": "H2B Drosophila"
+              },
+              {
+                "name": "Specimen",
+                "value": "Drosophila strain"
+              },
+              {
+                "name": "Image acquisition",
+                "value": "M25 MBL"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "accno": "Study Component-14",
+        "type": "Study Component",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Figure 7"
+          },
+          {
+            "name": "Description",
+            "value": "Neural signaling imaging of C. elegans head"
+          },
+          {
+            "name": "File List",
+            "value": "M25/Figure_7.json"
+          }
+        ],
+        "subsections": [
+          {
+            "type": "Associations",
+            "attributes": [
+              {
+                "name": "Biosample",
+                "value": "Paneuronal C.elegans"
+              },
+              {
+                "name": "Specimen",
+                "value": "C.elegans strains"
+              },
+              {
+                "name": "Image acquisition",
+                "value": "M25 UCSC"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "accno": "Study Component-17",
+        "type": "Study Component",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Figure 6"
+          },
+          {
+            "name": "Description",
+            "value": "Rapid movement of panneuronal C.elegans L1 strain"
+          },
+          {
+            "name": "File List",
+            "value": "M25/Figure_6.json"
+          }
+        ],
+        "subsections": [
+          {
+            "type": "Associations",
+            "attributes": [
+              {
+                "name": "Biosample",
+                "value": "Paneuronal C.elegans"
+              },
+              {
+                "name": "Specimen",
+                "value": "C.elegans strains"
+              },
+              {
+                "name": "Image acquisition",
+                "value": "M25 MBL"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "accno": "Study Component-19",
+        "type": "Study Component",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Figure 1"
+          },
+          {
+            "name": "Description",
+            "value": "Partially immobilized live imaging of C.elegans larvae"
+          },
+          {
+            "name": "File List",
+            "value": "M25/Figure_1.json"
+          }
+        ],
+        "subsections": [
+          {
+            "type": "Associations",
+            "attributes": [
+              {
+                "name": "Biosample",
+                "value": "ZW495 C.elegans"
+              },
+              {
+                "name": "Specimen",
+                "value": "C.elegans strains"
+              },
+              {
+                "name": "Image acquisition",
+                "value": "M25 MBL"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "accno": "Study Component-22",
+        "type": "Study Component",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Figure 3"
+          },
+          {
+            "name": "Description",
+            "value": "Beads dancing and fiducials"
+          },
+          {
+            "name": "File List",
+            "value": "M25/Figure_3.json"
+          }
+        ],
+        "subsections": [
+          {
+            "type": "Associations",
+            "attributes": [
+              {
+                "name": "Biosample",
+                "value": "Beads"
+              },
+              {
+                "name": "Specimen",
+                "value": "Bead sample 200nm"
+              },
+              {
+                "name": "Image acquisition",
+                "value": "M25 UCSC"
+              }
+            ]
+          },
+          {
+            "type": "Associations",
+            "attributes": [
+              {
+                "name": "Biosample",
+                "value": "Beads"
+              },
+              {
+                "name": "Specimen",
+                "value": "Beads sample 1um"
+              },
+              {
+                "name": "Image acquisition",
+                "value": "M25 UCSC"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "type": "submission"
+}
