@@ -1,18 +1,17 @@
+import logging
+
 from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_api import (
     Attribute,
     Section,
     Submission,
 )
 
-from typing import Optional
-import logging
-
 logger = logging.getLogger("__main__." + __name__)
 
 
 def attributes_to_dict(
     attributes: list[Attribute],
-) -> dict[str, Optional[str | list[str]]]:
+) -> dict[str, str | list[str]]:
     attr_dict = {}
     for attr in attributes:
         normalised_key = attr.name.lower()
@@ -28,7 +27,7 @@ def attributes_to_dict(
 
 
 def find_sections_recursive(
-    section: Section, search_types: list[str], results: Optional[list[Section]] = None
+    section: Section, search_types: list[str], results: list[Section] | None = None
 ) -> list[Section]:
     """
     Find all sections of search_types within tree, starting at given section
@@ -83,11 +82,10 @@ def find_file_lists_in_submission(
     return find_file_lists_under_section(submission.section, [])
 
 
-
 def find_sections_with_filelists_recursive(
     section: Section,
-    results: Optional[list[Section]] = None,
-    ignore_types: Optional[list[str]] = None,
+    results: list[Section] | None = None,
+    ignore_types: list[str] | None = None,
 ) -> list[Section]:
     """
     Find all of the Sections with a File lists, recursively descending through the subsections.

@@ -1,15 +1,16 @@
 import logging
 from urllib.parse import quote
+
+from bia_shared_datamodels import ro_crate_models
+
+from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_api import (
+    Section,
+    Submission,
+)
 from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_parsing_utils import (
     attributes_to_dict,
     find_sections_recursive,
 )
-from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_api import (
-    Submission,
-    Section,
-)
-
-from bia_shared_datamodels import ro_crate_models
 
 logger = logging.getLogger("__main__." + __name__)
 

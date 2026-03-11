@@ -255,7 +255,27 @@
                     "@id": "combined_file_list.tsv"
                 }
             ],
-            "accessionId": "S-BIADTEST_COMPLEX_BIOSAMPLE"
+            "accessionId": "S-BIADTEST_COMPLEX_BIOSAMPLE",
+            "seeAlso": [
+                {
+                    "@id": "https://www.ebi.ac.uk/bioimage-archive/"
+                },
+                {
+                    "@id": "https://www.ebi.ac.uk/bioimage-archive/galleries/galleries.html"
+                }
+            ]
+        },
+        {
+            "@id": "https://www.ebi.ac.uk/bioimage-archive/galleries/galleries.html",
+            "@type": "bia:ExternalReference",
+            "description": "Pretty pictures",
+            "additionalType": null
+        },
+        {
+            "@id": "https://www.ebi.ac.uk/bioimage-archive/",
+            "@type": "bia:ExternalReference",
+            "description": "BIA website",
+            "additionalType": null
         },
         {
             "@id": "https://orcid.org/0009-0007-4223-1439",
@@ -394,6 +414,8 @@
                 }
             ],
             "associatedSpecimen": null,
+            "associatedCreationProcess": null,
+            "associatedSourceImage": [],
             "associatedImageAcquisitionProtocol": [
                 {
                     "@id": "#Image%20Acquisition-1"
@@ -403,9 +425,7 @@
             "associatedImageAnalysisMethod": [],
             "associatedImageCorrelationMethod": [],
             "associatedProtocol": [],
-            "hasPart": [],
-            "associatedCreationProcess": null,
-            "associatedSourceImage": []
+            "hasPart": []
         },
         {
             "@id": "#Study%20Component-2",
@@ -426,6 +446,8 @@
                 }
             ],
             "associatedSpecimen": null,
+            "associatedCreationProcess": null,
+            "associatedSourceImage": [],
             "associatedImageAcquisitionProtocol": [
                 {
                     "@id": "#Image%20Acquisition-1"
@@ -435,9 +457,7 @@
             "associatedImageAnalysisMethod": [],
             "associatedImageCorrelationMethod": [],
             "associatedProtocol": [],
-            "hasPart": [],
-            "associatedCreationProcess": null,
-            "associatedSourceImage": []
+            "hasPart": []
         },
         {
             "@id": "#Study%20Component-1",
@@ -461,6 +481,8 @@
                 }
             ],
             "associatedSpecimen": null,
+            "associatedCreationProcess": null,
+            "associatedSourceImage": [],
             "associatedImageAcquisitionProtocol": [
                 {
                     "@id": "#Image%20Acquisition-1"
@@ -470,9 +492,7 @@
             "associatedImageAnalysisMethod": [],
             "associatedImageCorrelationMethod": [],
             "associatedProtocol": [],
-            "hasPart": [],
-            "associatedCreationProcess": null,
-            "associatedSourceImage": []
+            "hasPart": []
         },
         {
             "@id": "#Image%20Acquisition-1",

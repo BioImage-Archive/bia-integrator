@@ -1,13 +1,16 @@
 import logging
 import re
+from collections.abc import Iterable
+from typing import Any
+
+from bia_shared_datamodels import ro_crate_models, semantic_models
+
+from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_api import (
+    Submission,
+)
 from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_parsing_utils import (
     attributes_to_dict,
 )
-from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_api import Submission
-
-from bia_shared_datamodels import ro_crate_models, semantic_models
-from collections.abc import Iterable
-from typing import Any
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -17,6 +20,7 @@ def get_study(
     contributors: list[ro_crate_models.Contributor],
     datasets: Iterable[ro_crate_models.Dataset],
     combined_file_list: ro_crate_models.FileList,
+    external_refernces: list[ro_crate_models.ExternalReference],
 ) -> ro_crate_models.Study:
     submission_attributes = attributes_to_dict(submission.attributes)
     study_attributes = attributes_to_dict(submission.section.attributes)
@@ -40,6 +44,7 @@ def get_study(
         "associationFileMetadata": (
             {"@id": combined_file_list.id} if combined_file_list else None
         ),
+        "seeAlso": [{"@id": external_ref.id} for external_ref in external_refernces],
         # TODO handle grants & funding statements
     }
 

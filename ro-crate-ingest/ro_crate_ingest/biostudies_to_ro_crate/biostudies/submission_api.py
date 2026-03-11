@@ -1,11 +1,11 @@
 import logging
 import pathlib
-from typing import Union, Optional
+from typing import Annotated
 
 import requests
-from pydantic import BaseModel, ConfigDict
-from ro_crate_ingest.settings import get_settings
+from pydantic import BaseModel, BeforeValidator, ConfigDict
 
+from ro_crate_ingest.settings import get_settings
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -20,6 +20,15 @@ FLIST_URI_TEMPLATE = (
 FILE_URI_TEMPLATE = "https://www.ebi.ac.uk/biostudies/files/{accession_id}/{relpath}"
 
 
+def flatten_lists_of_list(data) -> list:
+    if isinstance(data, list):
+        if isinstance(next(iter(data)), list):
+            return [element for sublist in data for element in sublist]
+        return data
+    else:
+        raise TypeError(f"Expecting a list of objects or lists")
+
+
 class AttributeDetail(BaseModel):
     name: str
     value: str
@@ -27,7 +36,7 @@ class AttributeDetail(BaseModel):
 
 class Attribute(BaseModel):
     name: str
-    value: Optional[str] = None
+    value: str | None = None
     reference: bool = False
     nmqual: list[AttributeDetail] = []
     valqual: list[AttributeDetail] = []
@@ -44,7 +53,7 @@ class File(BaseModel):
 
 
 class Link(BaseModel):
-    url: Optional[str] = None
+    url: str | None = None
     attributes: list[Attribute] = []
 
 
@@ -58,18 +67,18 @@ class Empty(BaseModel):
 
 class Section(BaseModel):
     type: str
-    accno: Optional[str] = ""
+    accno: str | None = None
     attributes: list[Attribute] = []
-    subsections: list[Union["Section", list["Section"]]] = []
-    links: list[Union[Link, list[Link], Empty]] = []
-    files: list[Union[File, list[File]]] = []
+    subsections: Annotated[list["Section"], BeforeValidator(flatten_lists_of_list)] = []
+    links: Annotated[list[Link | Empty], BeforeValidator(flatten_lists_of_list)] = []
+    files: Annotated[list[File], BeforeValidator(flatten_lists_of_list)] = []
 
 
 class Submission(BaseModel):
-    accno: Optional[str] = ""
+    accno: str | None = None
     section: Section
     attributes: list[Attribute]
-    files: Optional[list] = []
+    files: list | None = None
 
 
 def load_submission(accession_id: str) -> Submission:
