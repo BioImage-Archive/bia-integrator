@@ -260,7 +260,7 @@
             "@id": "https://www.proteinatlas.org/humanproteome/cell/cell+cycle+dependent",
             "@type": "bia:ExternalReference",
             "description": null,
-            "additionalType": null
+            "additionalType": "external link"
         },
         {
             "@id": "https://orcid.org/0000-0000-0111-0202",

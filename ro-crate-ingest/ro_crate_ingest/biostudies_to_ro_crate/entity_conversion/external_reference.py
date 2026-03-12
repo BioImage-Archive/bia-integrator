@@ -72,7 +72,7 @@ def get_external_references(
                 "@id": link,
                 "@type": "bia:ExternalReference",
                 "description": attributes.get("description"),
-                "addtionalType": link_type,
+                "additionalType": link_type,
             }
         ))
 
