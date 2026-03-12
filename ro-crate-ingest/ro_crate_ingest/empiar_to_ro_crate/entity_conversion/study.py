@@ -27,7 +27,7 @@ def get_study(
         "keyword": [],
         "contributor": [{"@id": c.id} for c in contributors],
         "hasPart": has_part_items, 
-        "relatedPublication": proposal.paper_doi or [], 
+        "relatedPublication": [proposal.paper_doi] if isinstance(proposal.paper_doi, str) else (proposal.paper_doi or []),
     }
 
     return ro_crate_models.Study(**study_dict)
