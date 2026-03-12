@@ -219,6 +219,13 @@ bia:associatedBiologicalEntity a owl:ObjectProperty ;
     rdfs:domain obo:IAO_0000030 ;
     rdfs:range bia:BioSample .
 
+bia:associatedImagingPreparationProtocol a owl:ObjectProperty ;
+    rdfs:label "associated imaging preparation protocol"@en ;
+    rdfs:comment 
+        """Used to indicate an ImageAcquisitionProtocol as a protocol that was followed in the process of creating all the specimens associated with the subject data."""@en ;
+    rdfs:domain obo:IAO_0000030 ;
+    rdfs:range bia:SpecimenImagingPreparationProtocol .
+
 bia:associatedImageAcquisitionProtocol a owl:ObjectProperty ;
     rdfs:label "associated image acquisition protocol"@en ;
     rdfs:comment 
