@@ -20,7 +20,7 @@ See [Post installation configuration section](#post-installation-configuration) 
 
 ### Running with uv
 
-The CLI entry points are also runnable with `uv`.
+The CLI entry points are also runnable with [uv](https://docs.astral.sh/uv/), which can be installed using instructions from the [official website](https://docs.astral.sh/uv/getting-started/installation/).
 
 From inside `bia-converter/`:
 
