@@ -36,7 +36,7 @@ class AttributeDetail(BaseModel):
 
 class Attribute(BaseModel):
     name: str
-    value: str | None = None
+    value: str = ""
     reference: bool = False
     nmqual: list[AttributeDetail] = []
     valqual: list[AttributeDetail] = []
@@ -66,8 +66,8 @@ class Empty(BaseModel):
 
 
 class Section(BaseModel):
-    type: str
-    accno: str | None = None
+    type: str = ""
+    accno: str = ""
     attributes: list[Attribute] = []
     subsections: Annotated[list["Section"], BeforeValidator(flatten_lists_of_list)] = []
     links: Annotated[list[Link | Empty], BeforeValidator(flatten_lists_of_list)] = []
