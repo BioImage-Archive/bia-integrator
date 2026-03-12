@@ -34,7 +34,7 @@ def get_study(
         "datePublished": submission_attributes["releasedate"],
         "description": study_attributes.get("description", None),
         "acknowledgement": study_attributes.get("acknowledgements", None),
-        "keyword": study_attributes.get("keywords", []),
+        "keyword": get_keywords(study_attributes.get("keywords", [])),
         "contributor": [{"@id": c.id} for c in contributors],
         "hasPart": has_part_ids,
         "associationFileMetadata": (
@@ -65,3 +65,12 @@ def get_license(study_attributes: dict[str, Any]) -> semantic_models.Licence:
     licence = re.sub(r"\.", "", temp)
     licence = licence.replace("-", "_")
     return semantic_models.Licence[licence]
+
+
+def get_keywords(keywords: str | list[str] | None) -> list:
+    if isinstance(keywords, list):
+        return keywords
+    elif isinstance(keywords, str):
+        return keywords.split(",")
+    else:
+        return []
