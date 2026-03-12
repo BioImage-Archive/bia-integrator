@@ -22,14 +22,22 @@ def get_image_acquisition_protocol_by_title(
     roc_object_dict = {}
     for section in sections:
         roc_object = get_image_acquisition_protocol(section)
+        if not roc_object:
+            continue
         roc_object_dict[roc_object.title] = roc_object
     return roc_object_dict
 
 
 def get_image_acquisition_protocol(
     section: Section,
-) -> ro_crate_models.ImageAcquisitionProtocol:
+) -> ro_crate_models.ImageAcquisitionProtocol | None:
     attr_dict = attributes_to_dict(section.attributes)
+
+    # 20260312. New ST allowed some empty sections for a few studies.
+    # Without a title, this section can't be associated to anything,
+    # so we skip creating because it won't appear in any dataset.
+    if not attr_dict.get("title", None):
+        return
 
     if "imaging method" not in attr_dict:
         imagingMethodName, fbbi_id = get_imaging_method_fbbi_from_subsection(section)

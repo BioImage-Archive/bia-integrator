@@ -24,14 +24,22 @@ def get_image_correlation_method_by_title(
     for section in sections:
         roc_object = get_image_correlation_method(section)
         # Note growth protocol title is from Specimen title, so matches association from biostudies.
+        if not roc_object:
+            continue
         roc_object_dict[roc_object.title] = roc_object
     return roc_object_dict
 
 
 def get_image_correlation_method(
     section: Section,
-) -> ro_crate_models.ImageCorrelationMethod:
+) -> ro_crate_models.ImageCorrelationMethod | None:
     attr_dict = attributes_to_dict(section.attributes)
+
+    # 20260312. New ST allowed some empty sections for a few studies.
+    # Without a title, this section can't be associated to anything,
+    # so we skip creating because it won't appear in any dataset.
+    if not attr_dict.get("title", None):
+        return
 
     model_dict = {
         "@id": f"#{quote(section.accno)}",
