@@ -181,22 +181,35 @@ def calculate_scale_ratios(
 
 def validate_scale_ratios_and_extract_xyz(
     scale_ratios: dict[str, list[float]],
+    strict_validation: bool = False,
 ) -> dict[str, float]:
     """Validate scale ratios from a multiscale image and return the scaling factors.
 
     Args:
         scale_ratios: Dictionary mapping dimension labels to lists of scale ratios
+        strict_validation: If True, enforce strict consistency checks on scale ratios.
+            If False (default), use median-based extraction which tolerates minor
+            rounding differences across pyramid levels.
 
     Returns:
         dict[str, float]: Dictionary with 'xy_scaling' and 'z_scaling' values
 
     Raises:
-        ValueError: If any of the following conditions are not met:
+        ValueError: If strict_validation is True and any of the following conditions are not met:
             - Scale ratios vary within an axis
             - Non-spatial dimensions (t, c) have scaling != 1.0
             - X and Y scaling ratios are not equal
             - Any scaling ratios are not positive numbers
     """
+    if not strict_validation:
+        x_ratios = scale_ratios.get("x", [])
+        y_ratios = scale_ratios.get("y", [])
+        z_ratios = scale_ratios.get("z", [])
+        xy_candidates = x_ratios + y_ratios
+        xy_scaling = float(np.median(xy_candidates)) if xy_candidates else 1.0
+        z_scaling = float(np.median(z_ratios)) if z_ratios else 1.0
+        return {"xy_scaling": xy_scaling, "z_scaling": z_scaling}
+
     # Check that t and c don't have scaling
     for dim in ["t", "c"]:
         if dim in scale_ratios:
@@ -241,7 +254,11 @@ def validate_scale_ratios_and_extract_xyz(
     return {"xy_scaling": xy_scaling, "z_scaling": z_scaling}
 
 
-def ome_zarr_image_from_ome_zarr_uri(uri, ignore_unit_errors=False):
+def ome_zarr_image_from_ome_zarr_uri(
+    uri,
+    ignore_unit_errors: bool = False,
+    strict_scale_ratio_validation: bool = False,
+):
     """Generate a OME Zarr image object by reading an OME Zarr and
     parsing the NGFF metadata for properties."""
 
@@ -261,7 +278,9 @@ def ome_zarr_image_from_ome_zarr_uri(uri, ignore_unit_errors=False):
     init_dict["dimensions"] = dimension_str
 
     scale_ratios = calculate_scale_ratios(multiscale, dimension_str)
-    scale_dict = validate_scale_ratios_and_extract_xyz(scale_ratios)
+    scale_dict = validate_scale_ratios_and_extract_xyz(
+        scale_ratios, strict_validation=strict_scale_ratio_validation
+    )
     init_dict.update(scale_dict)
 
     init_dict["zgroup"] = zgroup

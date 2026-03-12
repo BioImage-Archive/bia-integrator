@@ -76,9 +76,14 @@ def create_2d_image_and_upload_to_s3(
     ome_zarr_uri: str, 
     dims: tuple, 
     dst_suffix: str, 
-    dry_run: bool = False
+    dry_run: bool = False,
+    strict_scale_ratio_validation: bool = False,
 ) -> tuple[str, int]:
-    im = generate_padded_thumbnail_from_ngff_uri(ome_zarr_uri, dims)
+    im = generate_padded_thumbnail_from_ngff_uri(
+        ome_zarr_uri,
+        dims,
+        strict_scale_ratio_validation=strict_scale_ratio_validation,
+    )
 
     with tempfile.NamedTemporaryFile(suffix=".png") as fh:
         im.save(fh)
@@ -106,6 +111,7 @@ def create_thumbnail_from_interactive_display(
     api_client: PrivateApi,
     input_image_rep: ImageRepresentation, 
     dry_run: bool = False, 
+    strict_scale_ratio_validation: bool = False,
 ) -> str:
     """Create a 2D thumbnail from an INTERACTIVE_DISPLAY rep"""
 
@@ -123,7 +129,11 @@ def create_thumbnail_from_interactive_display(
         input_image_rep, dims=dims, name="thumbnail"
     )
     file_uri, size_in_bytes = create_2d_image_and_upload_to_s3(
-        ome_zarr_uri, dims, dst_suffix, dry_run=dry_run
+        ome_zarr_uri,
+        dims,
+        dst_suffix,
+        dry_run=dry_run,
+        strict_scale_ratio_validation=strict_scale_ratio_validation,
     )
 
     if not dry_run:
@@ -151,6 +161,7 @@ def create_static_display_from_interactive_display(
     api_client: PrivateApi,
     input_image_rep: ImageRepresentation, 
     dry_run: bool = False, 
+    strict_scale_ratio_validation: bool = False,
 ) -> str:
     """Create a 2D static display from an INTERACTIVE_DISPLAY rep"""
 
@@ -167,7 +178,11 @@ def create_static_display_from_interactive_display(
         api_client, input_image_rep, dims=dims, name="static_display"
     )
     file_uri, size_in_bytes = create_2d_image_and_upload_to_s3(
-        ome_zarr_uri, dims, dst_suffix, dry_run=dry_run
+        ome_zarr_uri,
+        dims,
+        dst_suffix,
+        dry_run=dry_run,
+        strict_scale_ratio_validation=strict_scale_ratio_validation,
     )
 
     if not dry_run:
@@ -302,10 +317,15 @@ def get_conversion_output_path(output_rep_uuid):
     return zarr_fpath
 
 
-def get_dimensions_dict_from_zarr(ome_zarr_image_uri):
+def get_dimensions_dict_from_zarr(
+    ome_zarr_image_uri: str, strict_scale_ratio_validation: bool = False
+):
     from .proxyimage import ome_zarr_image_from_ome_zarr_uri
 
-    im = ome_zarr_image_from_ome_zarr_uri(ome_zarr_image_uri)
+    im = ome_zarr_image_from_ome_zarr_uri(
+        ome_zarr_image_uri,
+        strict_scale_ratio_validation=strict_scale_ratio_validation,
+    )
     attr_map = {
         "sizeX": "size_x",
         "sizeY": "size_y",
@@ -369,15 +389,34 @@ def fetch_ome_zarr_zip_fileref_and_unzip(
     with zipfile.ZipFile(zip_path, "r") as zip_ref:
         zip_ref.extractall(temp_dir)
 
+    zarr_root = None
+
     # Zarr group root might be same as zip root
     if check_if_path_contains_zarr_group(temp_dir):
         zarr_root = temp_dir
 
-    # Zarr group might be inside a directory
+    # Zarr group might be inside a single top-level directory
     zip_contents = list(temp_dir.iterdir())
-    if len(zip_contents) == 1:
-        if check_if_path_contains_zarr_group(zip_contents[0]):
-            zarr_root = zip_contents[0]
+    if zarr_root is None and len(zip_contents) == 1:
+        candidate = zip_contents[0]
+        if candidate.is_dir() and check_if_path_contains_zarr_group(candidate):
+            zarr_root = candidate
+
+    # Some archives nest the zarr deeper than one directory. Search recursively.
+    if zarr_root is None:
+        candidate_dirs = sorted(
+            [p for p in temp_dir.rglob("*") if p.is_dir()],
+            key=lambda p: (len(p.parts), str(p)),
+        )
+        for candidate in candidate_dirs:
+            if check_if_path_contains_zarr_group(candidate):
+                zarr_root = candidate
+                break
+
+    if zarr_root is None:
+        raise ValueError(
+            f"Could not find a zarr group in extracted archive from {file_reference.file_path}"
+        )
 
     logging.info(f"Move {zarr_root} to {unpacked_zarr_dirpath}")
 
@@ -484,7 +523,12 @@ def convert_uploaded_by_submitter_to_interactive_display(
         ome_zarr_type = determine_ome_zarr_type(ome_zarr_uri)
         if ome_zarr_type == "hcs":
             ome_zarr_uri = find_multiscale_well_uri(ome_zarr_uri)
-        update_dict = get_dimensions_dict_from_zarr(ome_zarr_uri)
+        strict_scale_ratio_validation = bool(
+            conversion_config.get("strict_scale_ratio_validation", False)
+        )
+        update_dict = get_dimensions_dict_from_zarr(
+            ome_zarr_uri, strict_scale_ratio_validation=strict_scale_ratio_validation
+        )
         base_image_rep.__dict__.update(update_dict)
 
         # Write back to API
@@ -507,9 +551,11 @@ def convert_zipped_ome_zarr_archive(
 ) -> ImageRepresentation:
     """Unzip an OME-ZARR zip archive image representation to an OME-ZARR"""
 
-    if input_image_rep.image_format != ".ome.zarr.zip":
+    accepted_zip_formats = {".ome.zarr.zip", ".zarr.zip"}
+    if input_image_rep.image_format not in accepted_zip_formats:
         raise Exception(
-            f"Input image representation format {input_image_rep.image_format} is not an OME-ZARR zip archive. Expecting type '.ome.zarr.zip'"
+            f"Input image representation format {input_image_rep.image_format} is not a supported zipped zarr archive. "
+            f"Expecting one of: {sorted(accepted_zip_formats)}"
         )
 
     conversion_process_dict = {
@@ -556,7 +602,12 @@ def convert_zipped_ome_zarr_archive(
     if not dry_run:
         ome_zarr_uri = create_vizarr_compatible_ome_zarr_uri(zarr_group_uri)
         base_image_rep.file_uri = [ome_zarr_uri]
-        update_dict = get_dimensions_dict_from_zarr(ome_zarr_uri)
+        strict_scale_ratio_validation = bool(
+            conversion_parameters.get("strict_scale_ratio_validation", False)
+        )
+        update_dict = get_dimensions_dict_from_zarr(
+            ome_zarr_uri, strict_scale_ratio_validation=strict_scale_ratio_validation
+        )
         base_image_rep.__dict__.update(update_dict)
 
         # Write back to API
