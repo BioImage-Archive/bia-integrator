@@ -227,6 +227,8 @@ class Licence(str, Enum):
 
     CC_BY_NC_ND_40 = "https://creativecommons.org/licenses/by-nc-nd/4.0/"
 
+    MIT = "https://opensource.org/license/MIT"
+
 
 #######################################################################################################
 # Subgraph 2: Contributors & their affiliations
