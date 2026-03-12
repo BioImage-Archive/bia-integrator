@@ -1,0 +1,219 @@
+{
+    "accno": "S-BIAD15",
+    "attributes": [
+        {
+            "name": "Title",
+            "value": "Meiotic cellular rejuvenation is coupled to nuclear remodeling in budding yeast"
+        },
+        {
+            "name": "ReleaseDate",
+            "value": "2020-02-14"
+        },
+        {
+            "name": "RootPath",
+            "value": "S-IMDR0067"
+        },
+        {
+            "name": "AttachTo",
+            "value": "BioImages"
+        }
+    ],
+    "section": {
+        "type": "Study",
+        "attributes": [
+            {
+                "name": "Title",
+                "value": "Meiotic cellular rejuvenation is coupled to nuclear remodeling in budding yeast"
+            },
+            {
+                "name": "Release date",
+                "value": "2019-12-10"
+            },
+            {
+                "name": "Description",
+                "value": "Production of healthy gametes in meiosis relies on the quality control and proper distribution of both nuclear and cytoplasmic contents. Meiotic differentiation naturally eliminates age-induced cellular damage by an unknown mechanism. Using time-lapse fluorescence microscopy in budding yeast, we found that nuclear senescence factors - including protein aggregates, extrachromosomal ribosomal DNA circles, and abnormal nucleolar material - are sequestered away from chromosomes during meiosis II and subsequently eliminated. A similar sequestration and elimination process occurs for the core subunits of the nuclear pore complex in both young and aged cells. Nuclear envelope remodeling drives the formation of a membranous compartment containing the sequestered material. Importantly, de novo generation of plasma membrane is required for the sequestration event, preventing the inheritance of long-lived nucleoporins and senescence factors into the newly formed gametes. Our study uncovers a new mechanism of nuclear quality control and provides insight into its function in meiotic cellular rejuvenation."
+            },
+            {
+                "name": "Study type",
+                "value": "time-lapse imaging",
+                "valqual": [
+                    {
+                        "name": "Ontology",
+                        "value": "OMIT"
+                    },
+                    {
+                        "name": "TermId",
+                        "value": "OMIT_0027490"
+                    }
+                ]
+            },
+            {
+                "name": "Organism",
+                "value": "Saccharomyces cerevisiae",
+                "valqual": [
+                    {
+                        "name": "Ontology",
+                        "value": "NCBITaxon"
+                    },
+                    {
+                        "name": "TermId",
+                        "value": "4932"
+                    }
+                ]
+            },
+            {
+                "name": "Keyword",
+                "value": "meiosis"
+            },
+            {
+                "name": "Keyword",
+                "value": "nuclear pore complex"
+            },
+            {
+                "name": "Keyword",
+                "value": "nucleoporin"
+            },
+            {
+                "name": "Keyword",
+                "value": "nuclear senescence factor"
+            },
+            {
+                "name": "Keyword",
+                "value": "time-lapse fluorescence microscopy"
+            },
+            {
+                "name": "License",
+                "value": "CC-BY 4.0"
+            },
+            {
+                "name": "Number of experiments",
+                "value": "1"
+            }
+        ],
+        "subsections": [
+            {
+                "type": "Publication",
+                "attributes": [
+                    {
+                        "name": "Title",
+                        "value": "Meiotic cellular rejuvenation is coupled to nuclear remodeling in budding yeast"
+                    },
+                    {
+                        "name": "Authors",
+                        "value": "King GA, Goodman JS, Schick JG, Chetlapalli K, Jorgens DM, McDonald KL, Ünal E"
+                    },
+                    {
+                        "name": "DOI",
+                        "value": "https://doi.org/10.7554/eLife.47156"
+                    },
+                    {
+                        "name": "PMC ID",
+                        "value": "PMC6711709"
+                    }
+                ]
+            },
+            {
+                "type": "Author",
+                "attributes": [
+                    {
+                        "name": "Name",
+                        "value": "Elçin Ünal"
+                    },
+                    {
+                        "name": "Email",
+                        "value": "elcin@berkeley.edu"
+                    },
+                    {
+                        "name": "Role",
+                        "value": "submitter"
+                    },
+                    {
+                        "name": "ORCID",
+                        "value": "0000-0002-6768-609X"
+                    },
+                    {
+                        "name": "affiliation",
+                        "value": "o1",
+                        "reference": true
+                    }
+                ]
+            },
+            {
+                "type": "Organization",
+                "attributes": [
+                    {
+                        "name": "Name",
+                        "value": "622 Barker Hall, UC-Berkeley, Berkeley, CA, 94720"
+                    }
+                ]
+            },
+            {
+                "type": "Experiment",
+                "attributes": [
+                    {
+                        "name": "Sample type",
+                        "value": "cell"
+                    },
+                    {
+                        "name": "Description",
+                        "value": "Time-lapse and fixed cell fluorescence microscopy or transmission electron microscopy images depicting budding yeast cells progressing through meiosis. The goal of this study was to characterize nuclear remodeling during budding yeast meiosis, with a focus on determining how various nuclear senescence factors are eliminated."
+                    },
+                    {
+                        "name": "Experiment size",
+                        "value": "Average Image Dimension (XYZCT):XYZCT"
+                    },
+                    {
+                        "name": "Imaging Method",
+                        "value": "fluorescence microscopy",
+                        "valqual": [
+                            {
+                                "name": "Ontology",
+                                "value": "Fbbi"
+                            },
+                            {
+                                "name": "TermId",
+                                "value": "FBbi_00000246"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Imaging Method",
+                        "value": "transmission electron microscopy",
+                        "valqual": [
+                            {
+                                "name": "Ontology",
+                                "value": "Fbbi"
+                            },
+                            {
+                                "name": "TermId",
+                                "value": "FBbi_00000258"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Imaging Method",
+                        "value": "bright-field microscopy"
+                    },
+                    {
+                        "name": "File List",
+                        "value": "file_list.json"
+                    }
+                ]
+            },
+            {
+                "type": "Supplementary Data",
+                "attributes": [
+                    {
+                        "name": "Description",
+                        "value": "Supplementary files for archival"
+                    },
+                    {
+                        "name": "File List",
+                        "value": "file_list_other.json"
+                    }
+                ]
+            }
+        ]
+    },
+    "type": "submission"
+}

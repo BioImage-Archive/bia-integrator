@@ -1,0 +1,235 @@
+{
+  "accno" : "S-BIAD1500",
+  "attributes" : [ {
+    "name" : "Template",
+    "value" : "BioImages.v4"
+  }, {
+    "name" : "DOI",
+    "value" : "10.6019/S-BIAD1500"
+  }, {
+    "name" : "ReleaseDate",
+    "value" : "2024-12-03"
+  }, {
+    "name" : "AttachTo",
+    "value" : "BioImages"
+  } ],
+  "section" : {
+    "type" : "Study",
+    "attributes" : [ {
+      "name" : "Title",
+      "value" : "Cell-autonomous timing drives the vertebrate segmentation clock’s wave pattern"
+    }, {
+      "name" : "Description",
+      "value" : "Rhythmic and sequential segmentation of the growing vertebrate body relies on the segmentation 20 clock, a multi-cellular oscillating genetic network. The clock is visible as tissue-level kinematic waves of gene expression that travel through the presomitic mesoderm (PSM) and arrest at the position of each forming segment. Here we test how this hallmark wave pattern is driven by culturing single maturing PSM cells. We compare their cell-autonomous oscillatory and arrest dynamics to those we observe in the embryo at cellular resolution, finding similarity in the relative 25 slowing of oscillations and arrest in concert with differentiation. This shows that cell-extrinsic signals are not required by the cells to instruct the developmental program underlying the wave pattern. We show that a cell-autonomous timing activity initiates during cell exit from the tailbud, then runs down in the anterior-ward cell flow in the PSM, thereby using elapsed time to provide\npositional information to the clock. Exogenous FGF lengthens the duration of the cell-intrinsic timer, indicating extrinsic factors in the embryo may regulate the segmentation clock via the timer. In sum, our work suggests that a noisy cell-autonomous, intrinsic timer drives the slowing and arrest of oscillations underlying the wave pattern, while extrinsic factors in the embryo tune this timer’s duration and precision. This is a new insight into the balance of cell-intrinsic and -extrinsic 5 mechanisms driving tissue patterning in development."
+    }, {
+      "name" : "Keywords",
+      "value" : "segmentation clock, oscillations, cell autonomy"
+    }, {
+      "name" : "License",
+      "value" : "CC0",
+      "valqual" : [ {
+        "name" : "URL",
+        "value" : "https://creativecommons.org/publicdomain/zero/1.0/legalcode"
+      } ]
+    } ],
+    "subsections" : [ {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Laurel Rohde"
+      }, {
+        "name" : "E-mail",
+        "value" : "laurel.rohde@epfl.ch"
+      }, {
+        "name" : "ORCID",
+        "value" : "0000-0002-4329-9116"
+      }, {
+        "name" : "affiliation",
+        "value" : "o1",
+        "reference" : true
+      } ]
+    }, {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Arianne Bercowsky-Rama"
+      }, {
+        "name" : "ORCID",
+        "value" : "0000-0003-3806-853X"
+      }, {
+        "name" : "affiliation",
+        "value" : "o1",
+        "reference" : true
+      } ]
+    }, {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Guillaume Valentin"
+      }, {
+        "name" : "ORCID",
+        "value" : "0000-0003-4596-6282"
+      }, {
+        "name" : "affiliation",
+        "value" : "o1",
+        "reference" : true
+      } ]
+    }, {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Sundar Ram Naganathan"
+      }, {
+        "name" : "ORCID",
+        "value" : "0000-0001-5106-8687"
+      }, {
+        "name" : "affiliation",
+        "value" : "o1",
+        "reference" : true
+      } ]
+    }, {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Ravi A. Desai"
+      }, {
+        "name" : "ORCID",
+        "value" : "0000-0002-4217-3351"
+      }, {
+        "name" : "affiliation",
+        "value" : "o1",
+        "reference" : true
+      } ]
+    }, {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Petr Strnad"
+      }, {
+        "name" : "ORCID",
+        "value" : "0000-0002-2515-0385"
+      }, {
+        "name" : "affiliation",
+        "value" : "o1",
+        "reference" : true
+      } ]
+    }, {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Daniele Soroldoni"
+      }, {
+        "name" : "affiliation",
+        "value" : "o1",
+        "reference" : true
+      } ]
+    }, {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Andrew C. Oates"
+      }, {
+        "name" : "E-mail",
+        "value" : "andrew.oates@epfl.ch"
+      }, {
+        "name" : "ORCID",
+        "value" : "0000-0002-3015-3978"
+      }, {
+        "name" : "affiliation",
+        "value" : "o1",
+        "reference" : true
+      } ]
+    }, {
+      "accno" : "o1",
+      "type" : "organisation",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "École Polytechnique Fédérale de Lausanne"
+      } ]
+    }, {
+      "type" : "Publication",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Cell-autonomous timing drives the vertebrate segmentation clock’s wave pattern"
+      }, {
+        "name" : "Authors",
+        "value" : "Laurel A. Rohde, Arianne Bercowsky-Rama, Guillaume Valentin, Sundar Ram Naganathan, Ravi A. Desai, Petr Strnad, Daniele Soroldoni, and Andrew C. Oates"
+      }, {
+        "name" : "DOI",
+        "value" : "https://doi.org/10.7554/eLife.93764"
+      }, {
+        "name" : "Year",
+        "value" : "2024"
+      }]
+    }, {
+      "accno" : "Biosample-1",
+      "type" : "Biosample",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Cell-autonomous timing drives the vertebrate segmentation clock’s wave pattern"
+      }, {
+        "name" : "Organism",
+        "value" : "Danio rerio (zebrafish)"
+      }, {
+        "name" : "Description",
+        "value" : "Rhythmic and sequential segmentation of the growing vertebrate body relies on the segmentation clock, a multi-cellular oscillating genetic network. The clock is visible as tissue-level kinematic waves of gene expression that travel through the presomitic mesoderm (PSM) and arrest at the position of each forming segment. Here we test how this hallmark wave pattern is driven by culturing single maturing PSM cells. We compare their cell-autonomous oscillatory and arrest dynamics to those we observe in the embryo at cellular resolution, finding similarity in the relative slowing of oscillations and arrest in concert with differentiation. This shows that cell-extrinsic signals are not required by the cells to instruct the developmental program underlying the wave pattern. We show that a cell-autonomous timing activity initiates during cell exit from the tailbud, then runs down in the anterior-ward cell flow in the PSM, thereby using elapsed time to provide\npositional information to the clock. Exogenous FGF lengthens the duration of the cell-intrinsic timer, indicating extrinsic factors in the embryo may regulate the segmentation clock via the timer. In sum, our work suggests that a noisy cell-autonomous, intrinsic timer drives the slowing and arrest of oscillations underlying the wave pattern, while extrinsic factors in the embryo tune this timer’s duration and precision. This is a new insight into the balance of cell-intrinsic and -extrinsic 5 mechanisms driving tissue patterning in development."
+      }, {
+        "name" : "Biological entity",
+        "value" : "Zebrafish"
+      } ]
+    }, {
+      "accno" : "Specimen-2",
+      "type" : "Specimen",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Cell-autonomous timing drives the vertebrate segmentation clock’s wave pattern"
+      }, {
+        "name" : "Sample preparation protocol",
+        "value" : "free-growing zebrafish embryo (in vivo) & dissociated single zebrafish PSM cells"
+      } ]
+    }, {
+      "accno" : "Image acquisition-3",
+      "type" : "Image acquisition",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "Cell-autonomous timing drives the vertebrate segmentation clock’s wave pattern"
+      }, {
+        "name" : "Imaging instrument",
+        "value" : "light-sheet & widefield microscopy"
+      }, {
+        "name" : "Image acquisition parameters",
+        "value" : "see metadata"
+      }, {
+        "name" : "Imaging method",
+        "value" : "fluorescence microscopy"
+      } ]
+    }, {
+      "accno" : "Study Component-5",
+      "type" : "Study Component",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Cell-autonomous timing drives the vertebrate segmentation clock’s wave pattern"
+      }, {
+        "name" : "Description",
+        "value" : "Rhythmic and sequential segmentation of the growing vertebrate body relies on the segmentation 20 clock, a multi-cellular oscillating genetic network. The clock is visible as tissue-level kinematic waves of gene expression that travel through the presomitic mesoderm (PSM) and arrest at the position of each forming segment. Here we test how this hallmark wave pattern is driven by culturing single maturing PSM cells. We compare their cell-autonomous oscillatory and arrest dynamics to those we observe in the embryo at cellular resolution, finding similarity in the relative 25 slowing of oscillations and arrest in concert with differentiation. This shows that cell-extrinsic signals are not required by the cells to instruct the developmental program underlying the wave pattern. We show that a cell-autonomous timing activity initiates during cell exit from the tailbud, then runs down in the anterior-ward cell flow in the PSM, thereby using elapsed time to provide positional information to the clock. Exogenous FGF lengthens the duration of the cell-intrinsic timer, indicating extrinsic factors in the embryo may regulate the segmentation clock via the timer. In sum, our work suggests that a noisy cell-autonomous, intrinsic timer drives the slowing and arrest of oscillations underlying the wave pattern, while extrinsic factors in the embryo tune this timer’s duration and precision. This is a new insight into the balance of cell-intrinsic and -extrinsic 5 mechanisms driving tissue patterning in development."
+      }, {
+        "name" : "File List",
+        "value" : "FileList.json"
+      } ],
+      "subsections" : [ {
+        "type" : "Associations",
+        "attributes" : [ {
+          "name" : "Biosample",
+          "value" : "Cell-autonomous timing drives the vertebrate segmentation clock’s wave pattern"
+        }, {
+          "name" : "Specimen",
+          "value" : "Cell-autonomous timing drives the vertebrate segmentation clock’s wave pattern"
+        }, {
+          "name" : "Image acquisition",
+          "value" : "Cell-autonomous timing drives the vertebrate segmentation clock’s wave pattern"
+        } ]
+      } ]
+    } ]
+  },
+  "type" : "submission"
+}

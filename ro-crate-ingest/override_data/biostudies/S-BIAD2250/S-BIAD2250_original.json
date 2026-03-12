@@ -1,0 +1,305 @@
+{
+"accno": "S-BIAD2250",
+"attributes": [
+{
+"name": "Template",
+"value": "BioImages.v5"
+},
+{
+"name": "Title",
+"value": "Canonical Wnt signaling and the regulation of divergent mesenchymal Fgf8 expression in axolotl limb development and regeneration"
+},
+{
+"name": "DOI",
+"value": "10.6019/S-BIAD2250"
+},
+{
+"name": "ReleaseDate",
+"value": "2025-08-28"
+},
+{
+"name": "AttachTo",
+"value": "BioImages"
+}
+],
+"section": {
+"accno": "study-0-uf8r",
+"type": "Study",
+"attributes": [
+{
+"name": "Title",
+"value": "Canonical Wnt signaling and the regulation of divergent mesenchymal Fgf8 expression in axolotl limb development and regeneration"
+},
+{
+"name": "ReleaseDate",
+"value": "2025-08-28"
+},
+{
+"name": "Description",
+"value": "The expression of fibroblast growth factors (Fgf) ligands in a specialized epithelial compartment, the Apical Ectodermal Ridge (AER), is a conserved feature of limb development across vertebrate species. In vertebrates, Fgf 4, 8, 9, and 17 are all expressed in the AER. An exception to this paradigm is the salamander (axolotl) developing and regenerating limb, where key Fgf ligands are expressed in the mesenchyme. The mesenchymal expression of Amex.Fgf8 in axolotl has been suggested to be critical for regeneration. To date, there is little knowledge regarding what controls Amex.Fgf8 expression in the axolotl limb mesenchyme. A large body of mouse and chick studies have defined a set of transcription factors and canonical Wnt signaling as the main regulators of epidermal Fgf8 expression in these organisms. In this study, we address the hypothesis that alterations to one or more of these components during evolution has resulted in mesenchymal Amex.Fgf8 expression in the axolotl. To sensitively quantify gene expression with spatial precision, we combined optical clearing of whole-mount axolotl limb tissue with single molecule fluorescent in situ hybridization and a semiautomated quantification pipeline. Several candidate upstream components were found expressed in the axolotl ectoderm, indicating that they are not direct regulators of Amex.Fgf8 expression. We found that Amex.Wnt3a is expressed in axolotl limb epidermis, similar to chicken and mouse. However, unlike in amniotes, Wnt target genes are activated preferentially in limb mesenchyme rather than in epidermis. Inhibition and activation of Wnt signaling results in downregulation and upregulation of mesenchymal Amex.Fgf8 expression, respectively. These results implicate a shift in tissue responsiveness to canonical Wnt signaling from epidermis to mesenchyme as one step contributing to the unique mesenchymal Amex.Fgf8 expression seen in the axolotl."
+},
+{
+"name": "Keywords",
+"value": "Axolotl"
+},
+{
+"name": "Keywords",
+"value": "Fgf8"
+},
+{
+"name": "Keywords",
+"value": "WNT"
+},
+{
+"name": "License",
+"value": "CC BY 4.0",
+"valqual": [
+{
+"name": "URL",
+"value": "https://creativecommons.org/licenses/by/4.0/legalcode"
+}
+]
+}
+],
+"subsections": [
+{
+"accno": "publ-1-xzat",
+"type": "Publication",
+"attributes": [
+{
+"name": "Pubmed ID",
+"value": "35587651"
+},
+{
+"name": "Title",
+"value": "Canonical Wnt signaling and the regulation of divergent mesenchymal Fgf8 expression in axolotl limb development and regeneration."
+},
+{
+"name": "Authors",
+"value": "Glotzer GL, Tardivo P, Tanaka EM."
+},
+{
+"name": "DOI",
+"value": "10.7554/elife.79762"
+},
+{
+"name": "Year",
+"value": "2022"
+}
+]
+},
+{
+"accno": "fund-3-2qm1",
+"type": "Funding",
+"attributes": [
+{
+"name": "Agency",
+"value": "Marshallplan-Jubiläumsstiftung"
+},
+{
+"name": "grant_id",
+"value": "1062 1304 14 24 2020"
+}
+]
+},
+{
+"type": "Funding",
+"attributes": [
+{
+"name": "Agency",
+"value": "H2020 European Research Council"
+},
+{
+"name": "grant_id",
+"value": "1062 1304 14 24 2020"
+}
+]
+},
+{
+"type": "Funding",
+"attributes": [
+{
+"name": "Agency",
+"value": "Austrian Science Fund"
+},
+{
+"name": "grant_id",
+"value": "I4846"
+}
+]
+},
+{
+"accno": "bios-4-n4g9",
+"type": "Biosample",
+"attributes": [
+{
+"name": "Title",
+"value": "All raw data"
+},
+{
+"name": "Organism",
+"value": "ambystoma mexicanum"
+},
+{
+"name": "Biological entity",
+"value": "axolotl limb buds and blastemas. "
+}
+]
+},
+{
+"accno": "spec-5-rjip",
+"type": "Specimen",
+"attributes": [
+{
+"name": "Title",
+"value": "All specimens. See manuscript for details."
+},
+{
+"name": "Sample preparation protocol",
+"value": "All samples:\n. Samples were fixed in 4% Paraformaldehyde PFA at 4°C overnight (14–17 hr) and then dehydrated progressively in a series of methanol–phosphate-buffered saline (PBS): 25–75%, 50–50%, 75–25%, and 100% methanol, each step on ice for at least 30 min. Samples were stored until usage at −20°C in 100% methanol. Prior to staining, limbs were rehydrated in progressively in 25–75%, 50–50%, 75–25%, and 100–0% PBS–methanol.\nWhole mount samples:\nLimbs were stained using the whole-mount HCR protocol from Choi et al., 2018 with the following modifications. DAPI (4,6-diamidino-2-phenylindole Sigma, #D9542) was added with the hairpins at the amplification step. After washing in 5× Saline-Sodium Citrate Tween (0.1%) buffer (SSCT), samples were washed for 2 × 30’ in PBS and then cleared overnight incubating at room temperature in Ce3D solution.\n\nSection samples:\nter fixation, dehydration, and rehydration, limbs were incubated overnight at 4°C in 30% sucrose/PBS, transferred to OCT compound (Science Service), frozen on dry ice, and sectioned using a cryostat to a thickness of 12 µm. HCR staining was performed according to the Choi et al., 2018 protocol for samples on a section. Sections were mounted using Abberior liquid antifade mounting media"
+}
+]
+},
+{
+"accno": "imag-6-1fg0",
+"type": "Image acquisition",
+"attributes": [
+{
+"name": "Title",
+"value": "Lightsheet(whole mount samples), airy-scan(sections samples)"
+},
+{
+"name": "Imaging instrument",
+"value": "Z1 light sheet, Airyscan confocal"
+},
+{
+"name": "Image acquisition parameters",
+"value": "Whole-mount imaging was performed using a Z1 lightsheet microscope equipped with a ×20 detection clearing objective (×20/1.53: Clr Plan-Neofluar ×20/1.0 Corr DIC; nd = 1.53, WD = 6.4 mm) and ×10/0.2 illumination objectives. The detection objective was set to match the RI of the clearing media (1.501) prior to imaging. HCR signal was excited using the 647 and 561 nm excitation wavelength lasers, while 488 nm illumination was used to detect autofluorescence. DAPI was illuminated with the 405 nm laser.\n\nSlides were imaged with a Zeiss microscope LSM 980 (inverted Axio Observer with Airyscan) using a ×20/0.8 plan-apochromat air objective and the MPLX SR-4Y mode. Raw images were Airyscan processed and stitched using standard parameters in Zen software."
+},
+{
+"name": "Imaging method",
+"value": "SPIM"
+},
+{
+"name": "Imaging method",
+"value": "array-scan confocal microscopy"
+}
+]
+},
+{
+"accno": "stud-10-kzfz",
+"type": "Study Component",
+"attributes": [
+{
+"name": "Name",
+"value": "All imaging raw data"
+},
+{
+"name": "Description",
+"value": "imaging raw data for PMID: 35587651"
+},
+{
+"name": "File List",
+"value": "data_upload_PMC9154742-2.json"
+}
+],
+"subsections": [
+{
+"accno": "asso-11-fi2h",
+"type": "Associations",
+"attributes": [
+{
+"name": "Biosample",
+"value": "All raw data"
+},
+{
+"name": "Specimen",
+"value": "All specimens"
+},
+{
+"name": "Image acquisition",
+"value": "Lightsheet(whole mount samples), airy-scan(sections samples)"
+}
+]
+}
+]
+},
+{
+"accno": "author-1",
+"type": "Author",
+"attributes": [
+{
+"name": "Name",
+"value": "Pietro Tardivo"
+},
+{
+"name": "E-mail",
+"value": "pietro.tardivo@imba.oeaw.ac.at"
+},
+{
+"name": "ORCID",
+"value": "0000-0001-7878-5272"
+},
+{
+"name": "affiliation",
+"value": "o1",
+"reference": true
+},
+{
+"name": "affiliation",
+"value": "o2",
+"reference": true
+},
+{
+"name": "affiliation",
+"value": "o3",
+"reference": true
+}
+]
+},
+{
+"accno": "o1",
+"type": "organisation",
+"attributes": [
+{
+"name": "Name",
+"value": "Institute of Molecular Biotechnology"
+},
+{
+"name": "RORID",
+"value": "https://ror.org/01zqrxf85"
+}
+]
+},
+{
+"accno": "o2",
+"type": "organisation",
+"attributes": [
+{
+"name": "Name",
+"value": "Research Institute of Molecular Pathology"
+},
+{
+"name": "RORID",
+"value": "https://ror.org/02c5jsm26"
+}
+]
+},
+{
+"accno": "o3",
+"type": "organisation",
+"attributes": [
+{
+"name": "Name",
+"value": "Vienna Biocenter"
+},
+{
+"name": "RORID",
+"value": "https://ror.org/04khwmr87"
+}
+]
+}
+]
+},
+"type": "submission"
+}
