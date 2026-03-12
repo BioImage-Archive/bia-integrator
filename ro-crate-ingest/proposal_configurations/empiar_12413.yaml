@@ -1,0 +1,74 @@
+accession_id: "EMPIAR-12413"
+paper_doi: "https://doi.org/10.1038/s41467-025-57493-3"
+
+specimen_defaults:
+  biosample_title: "E. coli C43(DE3) cells"
+  specimen_imaging_preparation_protocol_titles:
+    - "High-pressure freezing (waffle method)"
+    - "Cryo-FIB lamella fabrication"
+
+specimens:
+  patterns:
+    - "TIR(\\d{3})"
+
+biosamples:
+  - title: "E. coli C43(DE3) cells"
+    organism_classification:
+      - common_name: "E. coli"
+        scientific_name: "Escherichia coli"
+        ncbi_id: "NCBI:txid562"
+    biological_entity_description: "E. coli C43(DE3) transformed with plasmids encoding a plasmid immunity system, grown to mid-exponential phase and induced with D-lactose and L-arabinose prior to vitrification."
+    growth_protocol_title: "E. coli culture and induction"
+
+specimen_imaging_preparation_protocols:
+  - title: "High-pressure freezing (waffle method)"
+    protocol_description: "Bacteria were concentrated by centrifugation at 1000 × g in 10% (v/v) glycerol in LB, then vitrified by high-pressure freezing using a Leica EM Ice. Grids were assembled using the waffle method: polished and lecithin-coated 3 mm planchettes, a glow-discharged 200 mesh Cu grid, and 5–10 µl of bacterial suspension. Frozen waffles were disassembled under liquid nitrogen and grids clipped into Autogrids for storage."
+  - title: "Cryo-FIB lamella fabrication"
+    protocol_description: "Grids were loaded onto an Arctis dual-beam FIB/SEM (Thermo Fisher Scientific). Ice contamination was removed by xenon plasma FIB milling. Grids were sputter-coated with platinum and additionally coated by GIS. Trenches were milled at 60 nA, 30 kV and material below lamella sites removed at multiple angles. Automated milling was performed with AutoTEM Cryo 2.4 at 30 kV using three rough milling steps at 4.0, 1.0 and 0.3 nA, followed by polishing at 30 and 10 pA to a target thickness of ~200 nm."
+
+image_acquisition_protocols:
+  - title: "Cryo-electron tomography"
+    protocol_description: "Tilt series were collected on a Titan Krios G4 (Thermo Fisher Scientific) with a Falcon 4i camera and Selectris X energy filter using Tomo5. Low-dose tiled overviews were collected at 20° to correct for lamella pre-tilt. Tilt series were acquired dose-symmetrically in electron counting mode at 64,000× magnification (1.90 Å/px), from 20° starting tilt over a ±51° range with 3° increments, at a dose of 5 e⁻/Å² per image. Target defocus ranged from 3–5 µm in 0.5 µm increments. Data were collected in EER format using multi-shot beam shift acquisition."
+    imaging_instrument_description: "Titan Krios G4 300 kV with Falcon 4i camera and Selectris X energy filter."
+    fbbi_id:
+      - "obo:FBbi_00000256"
+    imaging_method_name:
+      - "Cryo-electron tomography"
+
+protocols:
+  - title: "E. coli culture and induction"
+    protocol_description: "E. coli C43(DE3) carrying plasmids was grown overnight at 37 °C in LB supplemented with ampicillin (100 µg/ml), spectinomycin (50 µg/ml) and tetracycline (25 µg/ml). Starter culture was used to inoculate fresh antibiotic-supplemented LB at OD600 0.1, grown to OD600 0.6, then induced with 0.2% (w/v) D-lactose and 0.2% (w/v) L-arabinose at 16 °C overnight."
+  - title: "Tilt series pre-processing"
+    protocol_description: "Tilt images with low contrast or contamination were manually excluded. Warp (v1.0.9) was used for gain correction, CTF estimation, motion correction (frame group size 10) and tilt series stack generation."
+  - title: "Tomogram reconstruction"
+    protocol_description: "Tomograms were reconstructed with AreTomo (v1.2.5) using SART at binning factor 8 and Z-height of 386 pixels (15.2 Å/px), then flipped with IMOD (v4.11.1)."
+  - title: "Tomogram filtering"
+    protocol_description: "Tomograms were processed with IsoNet for machine learning-based missing wedge compensation. A model was trained on 13 selected E. coli tomograms using a cube size of 32 and crop size of 128 without masking, then applied to all tomograms."
+
+datasets:
+  - name: ".eer format tilt-series"
+    data_directories:
+      - "data/raw_data/eer"
+      - "data/processed_data/reconstructed_tomograms"
+    
+    file_globs:
+      frames:
+        - "**/*.eer"
+      tilt_series:
+        - "**/alignment_files/*/*.st"
+      tomogram:
+        - "**/SART/*.mrc"
+      denoised_tomogram:
+        - "**/isonet/*.mrc"
+
+    image_acquisition_protocol_title:
+      frames:
+        - "Cryo-electron tomography"
+
+    protocol_titles:
+      tilt_series:
+        - "Tilt series pre-processing"
+      tomogram:
+        - "Tomogram reconstruction"
+      denoised_tomogram:
+        - "Tomogram filtering"

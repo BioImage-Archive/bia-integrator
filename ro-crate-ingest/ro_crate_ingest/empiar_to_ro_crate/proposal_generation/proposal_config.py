@@ -179,7 +179,7 @@ class DatasetConfig(BaseModel):
 
 class ProposalConfig(BaseModel):
     accession_id: str
-    paper_doi: str | None = None
+    paper_doi: str | list[str] | None = None
     pattern_inference_delimiters: list[str] = Field(default_factory=lambda: ["_", "."])
     specimens: SpecimenConfig = Field(default_factory=SpecimenConfig)
     specimen_defaults: SpecimenDefaults | None = None

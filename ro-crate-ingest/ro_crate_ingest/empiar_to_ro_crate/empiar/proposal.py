@@ -192,7 +192,7 @@ class Dataset(ClosedBaseModel):
 
 class Proposal(ClosedBaseModel):
     accession_id: str = Field()
-    paper_doi: str = Field()
+    paper_doi: str | list[str] = Field()
     rembis: RembiByType = Field()
     dataset_rembis: DatasetRembiByType | None = Field(None)
     datasets: list[Dataset] = Field()

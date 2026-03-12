@@ -1,0 +1,188 @@
+accession_id: "EMPIAR-12250"
+paper_doi: "https://doi.org/10.1016/j.cell.2024.09.025"
+
+specimen_defaults:
+  biosample_title: "Thalassiosira pseudonana wildtype"
+  specimen_imaging_preparation_protocol_titles:
+    - "Grid preparation and cryo-FIB milling"
+
+specimens:
+  patterns:
+    - "(Munster)_session/frames/Position_(\\d+)_(\\d)_\\d{3}"
+    - "(Munster)_session/frames/Position_(\\d+)_\\d{3}"
+    - "(Munster)_session/cryocare/cryocare_.*?_Position_(\\d+)_(\\d)\\."
+    - "(Munster)_session/cryocare/cryocare_.*?_Position_(\\d+)\\."
+    - "(Basel)_session/frames/Position_(\\d+)_(\\d)_\\d{3}"
+    - "(Basel)_session/frames/Position_(\\d+)_\\d{3}"
+    - "(Basel)_session/cryocare/cryocare_.*?_Position_(\\d+)_(\\d)\\."
+    - "(Basel)_session/cryocare/cryocare_.*?_Position_(\\d+)\\."
+    - "(Zurich)_session/frames/.*?_tomo_(\\d+)"
+    - "(Zurich)_session/cryocare/cryocare_.*?_tomo_(\\d+)"
+    - "(WT)__tomo_(\\d+)"
+    - "(WT)_Position_(\\d+)"
+
+biosamples:
+  - title: "Thalassiosira pseudonana wildtype"
+    organism_classification:
+      - common_name: "Centric diatom Thalassiosira pseudonana"
+        scientific_name: "Thalassiosira pseudonana"
+        ncbi_id: "NCBI:txid35128"
+    biological_entity_description: "Wildtype T. pseudonana cells (strain CCAP1085/12, equivalent to CCMP1335) grown axenically in artificial seawater with F/2 Guillard F solution."
+    growth_protocol_title: "T. pseudonana wildtype cell culture"
+  - title: "Thalassiosira pseudonana shell4 KO::rbcS-mEGFP"
+    organism_classification:
+      - common_name: "Centric diatom Thalassiosira pseudonana"
+        scientific_name: "Thalassiosira pseudonana"
+        ncbi_id: "NCBI:txid35128"
+    biological_entity_description: "T. pseudonana shell4 KO::rbcS-mEGFP mutant cells grown under 1% CO2 with Na2CO3 supplementation."
+    growth_protocol_title: "T. pseudonana shell4 KO::rbcS-mEGFP cell culture"
+
+specimen_imaging_preparation_protocols:
+  - title: "Grid preparation and cryo-FIB milling"
+    protocol_description: "Cells were sedimented at 800 xg for 5 min. 4 μL of cell suspension was applied to 200-mesh R2/1 carbon-film covered copper grids (Quantifoil Micro Tools), blotted, and plunge-frozen using a Vitrobot Mark IV (Thermo Fisher Scientific). EM grids were clipped into Autogrid supports and loaded into an Aquilos 2 FIB-SEM instrument (Thermo Fisher Scientific), where they were thinned with a Gallium ion beam."
+
+image_acquisition_protocols:
+  - title: "Cryo-electron tomography (M1)"
+    protocol_description: "Tilt-series acquired on a 300 kV Titan Krios G4i microscope (Thermo Fisher Scientific) equipped with a Selectris X post-column energy filter and a Falcon 4 direct electron detector, using SerialEM 3.8 or Tomo5. Dose-symmetric tilt scheme with 2° steps, 60 tilts per series. Images recorded in counting mode (EER) with ten frames per second. Target defocus −2 to −5 μm; total dose ~120 e⁻/Å²; pixel size 2.42 Å."
+    imaging_instrument_description: "Titan Krios G4i 300 kV, Selectris X energy filter, Falcon 4 direct electron detector"
+    fbbi_id:
+      - "obo:FBbi_00000256"
+    imaging_method_name:
+      - "Cryo-electron tomography"
+  - title: "Cryo-electron tomography (M2)"
+    protocol_description: "Tilt-series acquired on a 300 kV Titan Krios G3i microscope (Thermo Fisher Scientific) equipped with a BioQuantum post-column energy filter (Gatan) and a K3 direct electron detector (Gatan), using SerialEM 3.8 or Tomo5. Dose-symmetric tilt scheme with 2° steps, 60 tilts per series. Images recorded in counting mode with ten frames per second. Target defocus −2 to −5 μm; total dose ~120 e⁻/Å²; pixel size 2.143 or 2.685 Å."
+    imaging_instrument_description: "Titan Krios G3i 300 kV, BioQuantum energy filter, K3 direct electron detector"
+    fbbi_id:
+      - "obo:FBbi_00000256"
+    imaging_method_name:
+      - "Cryo-electron tomography"
+  - title: "Cryo-electron tomography (M3)"
+    protocol_description: "Tilt-series acquired on a 300 kV Titan Krios G4 microscope equipped with a monochromator, a Selectris X energy filter, and a Falcon 4 camera, using SerialEM 3.8 or Tomo5. Dose-symmetric tilt scheme with 2° steps, 60 tilts per series. Images recorded in counting mode (EER) with ten frames per second. Target defocus −2 to −5 μm; total dose ~120 e⁻/Å²; pixel size 2.38 Å."
+    imaging_instrument_description: "Titan Krios G4 300 kV with monochromator, Selectris X energy filter, Falcon 4 direct electron detector"
+    fbbi_id:
+      - "obo:FBbi_00000256"
+    imaging_method_name:
+      - "Cryo-electron tomography"
+
+protocols:
+  - title: "T. pseudonana wildtype cell culture"
+    protocol_description: "Wildtype T. pseudonana (CCAP1085/12) cells were axenically maintained in artificial seawater (32 g L⁻¹, Instant Ocean SS15-10) supplemented with half-strength F/2 Guillard F solution at 20°C under continuous illumination of ~50 μmol photons m⁻² s⁻¹ at ambient CO2. Exponentially growing cultures were used; once pre-cultures reached 2–4 × 10⁶ cells mL⁻¹, cells were harvested by centrifugation at 3000 xg for 10 min and resuspended at 3 × 10⁵ cells mL⁻¹ in 10 mL fresh media. Cultures were grown in 6-well plates, swirled twice daily, in growth chambers with water-saturated 0.04% CO2 or 1% CO2."
+  - title: "T. pseudonana shell4 KO::rbcS-mEGFP cell culture"
+    protocol_description: "T. pseudonana shell4 KO::rbcS-mEGFP mutant cells were maintained under 1% CO2 in artificial seawater (32 g L⁻¹, Instant Ocean SS15-10) supplemented with half-strength F/2 Guillard F solution and 5 mM Na2CO3 at 20°C under continuous illumination of ~50 μmol photons m⁻² s⁻¹. Exponentially growing cultures were used; once pre-cultures reached 2–4 × 10⁶ cells mL⁻¹, cells were harvested by centrifugation at 3000 xg for 10 min and resuspended at 3 × 10⁵ cells mL⁻¹ in 10 mL fresh media."
+  - title: "Tilt series processing and tomogram reconstruction"
+    protocol_description: "TOMOMAN MATLAB scripts (v0.6.9) were used to preprocess tilt series data. Raw frames were aligned using MotionCor2 (v1.5.0), followed by dose-weighting of the tilt series and manual removal of bad tilts. The resulting tilt series (binned 4×) were aligned in IMOD (v4.11) using patch tracking and reconstructed by weighted back projection. Cryo-CARE (v0.2.1) was applied to reconstructed tomogram pairs from odd and even raw frames to enhance contrast and remove noise."
+
+datasets:
+  - name: "Raw frames of T. pseudonana PyShell4 WT tilt series"
+    data_directories:
+      - "data/T_pseudonana_WT/frames"
+    
+    file_globs:
+      frames:
+        - "**/*.tif"
+    
+    image_acquisition_protocol_title:
+      dataset:
+        - "Cryo-electron tomography (M2)"
+  
+  - name: "cryo-CARE denoised bin4 tomograms of T. pseudonana PyShell4 WT"
+    data_directories:
+      - "data/T_pseudonana_WT/cryocare"
+    
+    file_globs:
+      tomogram:
+        - "**/*.rec"
+    
+    protocol_titles:
+      tomogram:
+        - "Tilt series processing and tomogram reconstruction"
+
+  - name: "Raw frames of T. pseudonana PyShell4 KO tilt series - Zurich session"
+    data_directories:
+      - "data/T_pseudonana_Shell4_KO/Zurich_session/frames"
+    
+    file_globs:
+      frames:
+        - "**/*.tif"
+    
+    image_acquisition_protocol_title:
+      dataset:
+        - "Cryo-electron tomography (M2)"
+    
+    specimen_groups:
+      - specimen_id_pattern: "^(?!WT)"
+        biosample_title: "Thalassiosira pseudonana shell4 KO::rbcS-mEGFP"
+        specimen_imaging_preparation_protocol_titles:
+          - "Grid preparation and cryo-FIB milling"
+    
+  - name: "cryo-CARE denoised bin4 tomograms of T. pseudonana PyShell4 KO - Zurich session"
+    data_directories:
+      - "data/T_pseudonana_Shell4_KO/Zurich_session/cryocare"
+    
+    file_globs:
+      tomogram:
+        - "**/*.rec"
+    
+    protocol_titles:
+      tomogram:
+        - "Tilt series processing and tomogram reconstruction"
+    
+  - name: "Raw frames of T. pseudonana PyShell4 KO tilt series - Munster session"
+    data_directories:
+      - "data/T_pseudonana_Shell4_KO/Munster_session/frames"
+    
+    file_globs:
+      frames:
+        - "**/*.eer"
+    
+    image_acquisition_protocol_title:
+      dataset:
+        - "Cryo-electron tomography (M3)"
+    
+    specimen_groups:
+      - specimen_id_pattern: "^(?!WT)"
+        biosample_title: "Thalassiosira pseudonana shell4 KO::rbcS-mEGFP"
+        specimen_imaging_preparation_protocol_titles:
+          - "Grid preparation and cryo-FIB milling"
+
+  - name: "cryo-CARE denoised bin4 tomograms of T. pseudonana PyShell4 KO - Munster session"
+    data_directories:
+      - "data/T_pseudonana_Shell4_KO/Munster_session/cryocare"
+    
+    file_globs:
+      tomogram:
+        - "**/*.rec"
+    
+    protocol_titles:
+      tomogram:
+        - "Tilt series processing and tomogram reconstruction"
+  
+  - name: "Raw frames of T. pseudonana PyShell4 KO tilt series - Basel session"
+    data_directories:
+      - "data/T_pseudonana_Shell4_KO/Basel_session/frames"
+    
+    file_globs:
+      frames:
+        - "**/*.eer"
+
+    image_acquisition_protocol_title:
+      dataset:
+        - "Cryo-electron tomography (M1)"
+    
+    specimen_groups:
+      - specimen_id_pattern: "^(?!WT)"
+        biosample_title: "Thalassiosira pseudonana shell4 KO::rbcS-mEGFP"
+        specimen_imaging_preparation_protocol_titles:
+          - "Grid preparation and cryo-FIB milling"
+    
+  - name: "cryo-CARE denoised bin4 tomograms of T. pseudonana PyShell4 KO - Basel session"
+    data_directories:
+      - "data/T_pseudonana_Shell4_KO/Basel_session/cryocare"
+    
+    file_globs:
+      tomogram:
+        - "**/*.rec"
+    
+    protocol_titles:
+      tomogram:
+        - "Tilt series processing and tomogram reconstruction"

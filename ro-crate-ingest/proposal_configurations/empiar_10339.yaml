@@ -52,7 +52,7 @@ datasets:
     file_globs:
       tilt_series:
         - "G*_tilt/*.mrc.bz2"
-      tomograms:
+      tomogram:
         - "G*_tomo/*rec.bz2"
     
     image_acquisition_protocol_title:
@@ -60,7 +60,7 @@ datasets:
         - "Cryo-electron tomography"
     
     protocol_titles:
-      tomograms:
+      tomogram:
         - "Tomogram reconstruction"
     
     specimen_groups:

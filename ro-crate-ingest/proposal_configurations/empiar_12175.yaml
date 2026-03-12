@@ -1,5 +1,7 @@
 accession_id: "EMPIAR-12175"
-paper_doi: "https://doi.org/10.1073/pnas.2415233122"
+paper_doi: 
+  - "https://doi.org/10.1073/pnas.2415233122"
+  - "https://doi.org/10.1038/s41467-022-29501-3"
 
 specimen_defaults:
   biosample_title: "Encephalitozoon hellem ATCC 50504"

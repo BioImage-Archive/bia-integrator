@@ -1,0 +1,79 @@
+accession_id: "EMPIAR-12258"
+paper_doi: "https://doi.org/10.1038/s42003-024-07147-9"
+
+specimen_defaults:
+  biosample_title: "COS-7 cells, uninfected control"
+  specimen_imaging_preparation_protocol_titles:
+     - "Control cell vitrification"
+
+specimens:
+  pattern_alias_mappings:
+    "(\\d{2})":
+      - "tomo(\\d{2})"
+      - "tomo(\\d{1})"
+
+biosamples:
+  - title: "COS-7 cells, uninfected control"
+    organism_classification:
+      - common_name: "Grivet monkey"
+        scientific_name: "Chlorocebus aethiops"
+        ncbi_id: "NCBI:txid9534"
+    biological_entity_description: "Uninfected COS-7 cells."
+    growth_protocol_title: "Cell culture"
+
+specimen_imaging_preparation_protocols:
+  - title: "Control cell vitrification"
+    protocol_description: "COS-7 cells were grown on 200 mesh holey carbon Au R2/1
+      Quantifoil grids sterilized with UV for 20 min and pre-incubated in fetal bovine
+      serum for 15 min. Cells were washed with PBS and vitrified using a Vitrobot Mark
+      IV following the same procedure as for infected samples, without addition of
+      virus."
+
+image_acquisition_protocols:
+  - title: "Cryo-electron tomography"
+    protocol_description: "Tilt series were collected on a ThermoFisher Titan Krios
+      operating at 300 kV using a post-GIF Gatan K2 (Bioquantum 967) direct electron
+      detector in zero-loss imaging mode (energy-selecting slit width 20 eV). Data were
+      collected with SerialEM using a dose-symmetric tilt scheme over ±52° (2°
+      increment) or ±60° (3° increment), with a total electron exposure of 50 e−/Å².
+      Images were recorded as movies of 4 frames in counting mode at 26,000x
+      magnification (pixel size 5.534 Å) with defocus values of −2.5 to −5.5 µm."
+    imaging_instrument_description: "ThermoFisher Titan Krios, 300 kV, post-GIF Gatan
+      K2 direct electron detector (Bioquantum 967)"
+    fbbi_id:
+      - "obo:FBbi_00000256"
+    imaging_method_name:
+      - "Cryo-electron tomography"
+
+protocols:
+  - title: "Cell culture"
+    protocol_description: "COS-7 cells were cultured in Dulbecco's modified Eagle's
+      medium supplemented with 10% fetal bovine serum at 37 °C and 5% CO2."
+  - title: "Tilt series pre-processing"
+    protocol_description: "Frames were aligned using MotionCor2. Tilt series were
+      aligned in IMOD using patch tracking or fiducial marker-based alignment and
+      binned three times."
+  - title: "Tomogram reconstruction and processing"
+    protocol_description: "Tomograms were reconstructed by weighted back-projection
+      with a SIRT-like filter as implemented in IMOD. Tomograms were denoised using the Topaz unet-3d-10a model."
+
+datasets:
+  - name: "Cryo electron tomography of non-infected, control cos-7 cells"
+    data_directories:
+      - "data"
+  
+    file_globs:
+      tilt_series:
+        - "**/Tilt_series/*.mrc"
+      tomogram:
+        - "**/Reconstruction/*.mrc"
+    
+    image_acquisition_protocol_title:
+      tilt_series:
+        - "Cryo-electron tomography"
+    
+    protocol_titles:
+      tilt_series:
+        - "Tilt series pre-processing"
+      tomogram:
+        - "Tomogram reconstruction and processing"

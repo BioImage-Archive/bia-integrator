@@ -1,0 +1,81 @@
+accession_id: "EMPIAR-12266"
+paper_doi: "https://doi.org/10.1038/s42003-024-07147-9"
+
+specimen_defaults:
+  biosample_title: "COS-7 cells infected with rhinovirus 2"
+  specimen_imaging_preparation_protocol_titles:
+     - "Enterovirus infection and vitrification"
+
+specimens:
+  patterns:
+    - "(\\d{6})_.*?_tomo(\\d{2})"
+    - "(\\d{6})_.*?_tomo(\\d{1})"
+
+biosamples:
+  - title: "COS-7 cells infected with rhinovirus 2"
+    organism_classification:
+      - common_name: "Grivet monkey"
+        scientific_name: "Chlorocebus aethiops"
+        ncbi_id: "NCBI:txid9534"
+    biological_entity_description: "COS-7 cells infected with rhinovirus 2."
+    growth_protocol_title: "Cell culture"
+
+specimen_imaging_preparation_protocols:
+  - title: "Enterovirus infection and vitrification"
+    protocol_description: "COS-7 cells were grown on 200 mesh holey carbon Au R2/1
+      Quantifoil grids sterilized with UV for 20 min and pre-incubated in fetal bovine
+      serum for 15 min. Cells were washed twice with PBS and infected with approximately
+      5e10 rhinovirus 2 particles in 5 µL PBS per well for 5 min at 37 °C and 5% CO2.
+      The virus suspension was removed, fresh DMEM was added, and cells were incubated
+      at 37 °C and 5% CO2 until the desired time point. Cells were washed three times
+      with PBS preheated to 37 °C and vitrified using a Vitrobot Mark IV at 7, 20, 30,
+      and 60 min post-infection."
+
+image_acquisition_protocols:
+  - title: "Cryo-electron tomography"
+    protocol_description: "Tilt series were collected on a ThermoFisher Titan Krios
+      operating at 300 kV using a post-GIF Gatan K2 (Bioquantum 967) direct electron
+      detector in zero-loss imaging mode (energy-selecting slit width 20 eV). Data were
+      collected with SerialEM using a dose-symmetric tilt scheme over ±52° (2°
+      increment) or ±60° (3° increment), with a total electron exposure of 50 e−/Å².
+      Images were recorded as movies of 4 frames in counting mode at 26,000x
+      magnification (pixel size 5.534 Å) with defocus values of −2.5 to −5.5 µm."
+    imaging_instrument_description: "ThermoFisher Titan Krios, 300 kV, post-GIF Gatan
+      K2 direct electron detector (Bioquantum 967)"
+    fbbi_id:
+      - "obo:FBbi_00000256"
+    imaging_method_name:
+      - "Cryo-electron tomography"
+
+protocols:
+  - title: "Cell culture"
+    protocol_description: "COS-7 cells were cultured in Dulbecco's modified Eagle's
+      medium supplemented with 10% fetal bovine serum at 37 °C and 5% CO2."
+  - title: "Tilt series pre-processing"
+    protocol_description: "Frames were aligned using MotionCor2. Tilt series were
+      aligned in IMOD using patch tracking or fiducial marker-based alignment and
+      binned three times."
+  - title: "Tomogram reconstruction and processing"
+    protocol_description: "Tomograms were reconstructed by weighted back-projection
+     with a SIRT-like filter as implemented in IMOD. Tomograms were denoised using the Topaz unet-3d-10a model."
+
+datasets:
+  - name: "Cryo electron tomography of Rhinovirus 2-infected cells"
+    data_directories:
+      - "data"
+  
+    file_globs:
+      tilt_series:
+        - "**/Tilt_series/*.mrc"
+      tomogram:
+        - "**/Reconstruction/*.mrc"
+    
+    image_acquisition_protocol_title:
+      tilt_series:
+        - "Cryo-electron tomography"
+    
+    protocol_titles:
+      tilt_series:
+        - "Tilt series pre-processing"
+      tomogram:
+        - "Tomogram reconstruction and processing"
