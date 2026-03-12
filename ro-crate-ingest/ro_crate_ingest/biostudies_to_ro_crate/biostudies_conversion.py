@@ -1,34 +1,37 @@
+import logging
+from pathlib import Path
+from typing import Optional
+
+from bia_shared_datamodels.package_specific_uuid_creation.shared import (
+    create_study_uuid,
+)
+from bia_shared_datamodels.ro_crate_models import ROCrateCreativeWork
+
 from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_api import (
     load_submission,
 )
 from ro_crate_ingest.biostudies_to_ro_crate.entity_conversion import (
-    contributor,
-    study,
     affiliation,
-    dataset,
-    image_acquisition_protocol,
-    specimen_imaging_preparation_protocol,
-    bio_sample,
     annotation_method,
+    bio_sample,
+    contributor,
+    dataset,
+    external_reference,
+    file_list,
+    image_acquisition_protocol,
     image_analysis_method,
     image_correlation_method,
-    protocol_from_growth_protocol,
-    file_list,
-    protocol,
     pagetab_file,
-)
-from pathlib import Path
-import logging
-from typing import Optional
-from bia_shared_datamodels.package_specific_uuid_creation.shared import (
-    create_study_uuid,
+    protocol,
+    protocol_from_growth_protocol,
+    specimen_imaging_preparation_protocol,
+    study,
 )
 from ro_crate_ingest.ro_crate_defaults import (
+    create_ro_crate_folder,
     get_default_context,
     write_ro_crate_metadata,
-    create_ro_crate_folder,
 )
-from bia_shared_datamodels.ro_crate_models import ROCrateCreativeWork
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -137,11 +140,15 @@ def convert_biostudies_to_ro_crate(
     )
     graph += roc_contributors
 
+    roc_external_references = external_reference.get_external_references(submission)
+    graph += roc_external_references
+
     roc_study = study.get_study(
         submission,
         roc_contributors,
         roc_datasets.values(),
         combined_file_list,
+        roc_external_references
     )
     graph.append(roc_study)
 

@@ -255,7 +255,8 @@
                     "@id": "#Tomograms%20data/tomograms/"
                 }
             ],
-            "accessionId": "EMPIAR-IMAGELABELTEST"
+            "accessionId": "EMPIAR-IMAGELABELTEST",
+            "seeAlso": []
         },
         {
             "@id": "#c0",

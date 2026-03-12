@@ -8,6 +8,7 @@ from bia_shared_datamodels.linked_data.ontology_terms import (
     SCHEMA,
     DARWINCORE,
 )
+from rdflib import RDFS
 from bia_shared_datamodels.linked_data.pydantic_ld.FieldContext import FieldContext
 from bia_shared_datamodels.linked_data.pydantic_ld.LDModel import ObjectReference
 from bia_shared_datamodels.linked_data.pydantic_ld.ROCrateModel import ROCrateModel
@@ -45,6 +46,7 @@ class Study(ROCrateModel):
         FieldContext(SCHEMA.hasPart, is_id_field=True),
     ] = Field()
     accessionId: Annotated[str, FieldContext(SCHEMA.identifier)] = Field()
+    seeAlso: Annotated[list[ObjectReference], FieldContext(RDFS.seeAlso)] = Field(default_factory=list)
 
     model_config = ConfigDict(model_type=BIA.Study)
 
@@ -117,9 +119,11 @@ class FundingBody(ROCrateModel):
 
 
 class ExternalReference(ROCrateModel):
-    link: Annotated[AnyUrl, FieldContext(SCHEMA.url)] = Field()
-    linkDescription: Annotated[Optional[str], FieldContext(SCHEMA.description)] = Field(
+    description: Annotated[Optional[str], FieldContext(SCHEMA.description)] = Field(
         default=None
+    )
+    additionalType: Annotated[Optional[str], FieldContext(SCHEMA.additionalType)] = (
+        Field(default=None)
     )
 
     model_config = ConfigDict(model_type=BIA.ExternalReference)
@@ -307,12 +311,12 @@ class BioSample(ROCrateModel):
 
 
 class Taxon(ROCrateModel):
-    commonName: Annotated[Optional[str], FieldContext(DARWINCORE.vernacularName)] = Field(
-        default=None
+    commonName: Annotated[Optional[str], FieldContext(DARWINCORE.vernacularName)] = (
+        Field(default=None)
     )
-    scientificName: Annotated[Optional[str], FieldContext(DARWINCORE.scientificName)] = Field(
-        default=None
-    )
+    scientificName: Annotated[
+        Optional[str], FieldContext(DARWINCORE.scientificName)
+    ] = Field(default=None)
 
     model_config = ConfigDict(model_type=BIA.Taxon)
 

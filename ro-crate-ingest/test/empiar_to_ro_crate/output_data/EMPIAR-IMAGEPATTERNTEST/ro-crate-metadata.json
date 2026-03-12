@@ -249,7 +249,8 @@
                     "@id": "#Cryo%20Serial%20FIB/SEM%20of%20HeLa%20cells%20data/HeLa/"
                 }
             ],
-            "accessionId": "EMPIAR-IMAGEPATTERNTEST"
+            "accessionId": "EMPIAR-IMAGEPATTERNTEST",
+            "seeAlso": []
         },
         {
             "@id": "#c0",

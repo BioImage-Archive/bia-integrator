@@ -249,7 +249,18 @@
                     "@id": "combined_file_list.tsv"
                 }
             ],
-            "accessionId": "S-BIADTEST_PROTOCOL_STUDY"
+            "accessionId": "S-BIADTEST_PROTOCOL_STUDY",
+            "seeAlso": [
+                {
+                    "@id": "https://www.proteinatlas.org/humanproteome/cell/cell+cycle+dependent"
+                }
+            ]
+        },
+        {
+            "@id": "https://www.proteinatlas.org/humanproteome/cell/cell+cycle+dependent",
+            "@type": "bia:ExternalReference",
+            "description": null,
+            "additionalType": "external link"
         },
         {
             "@id": "https://orcid.org/0000-0000-0111-0202",
@@ -396,6 +407,8 @@
             "associatedBiologicalEntity": [],
             "associatedSpecimenImagingPreparationProtocol": [],
             "associatedSpecimen": null,
+            "associatedCreationProcess": null,
+            "associatedSourceImage": [],
             "associatedImageAcquisitionProtocol": [],
             "associatedAnnotationMethod": [],
             "associatedImageAnalysisMethod": [],
@@ -414,9 +427,7 @@
                     "@id": "#experimentB%20%3A%20data%20analysis%20protocol"
                 }
             ],
-            "hasPart": [],
-            "associatedCreationProcess": null,
-            "associatedSourceImage": []
+            "hasPart": []
         },
         {
             "@id": "#experimentB%20%3A%20data%20analysis%20protocol",

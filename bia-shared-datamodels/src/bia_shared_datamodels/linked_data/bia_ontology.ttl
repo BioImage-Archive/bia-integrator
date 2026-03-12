@@ -175,25 +175,9 @@ bia:ExternalReference a owl:Class ;
 
 
 # Properties
-
-# could we re-use schema:link ?
-bia:link a owl:DatatypeProperty ;
-    rdfs:label "link"@en ;
-    rdfs:comment "A URL linking to the refered resource."@en ;
-    rdfs:domain bia:ExternalReference ;
-    rdfs:range  xsd:string .
-
-bia:linkType  a owl:DatatypeProperty ;
-    rdfs:label "link type"@en ;
-    rdfs:comment "Classifies the link by website domain and/or use-case, which is useful for display purposes and faceting search."@en ;
-    rdfs:domain bia:ExternalReference ;
-    rdfs:range xsd:string .
-
-bia:linkDescription a owl:DatatypeProperty ;
-    rdfs:label "link type"@en ;
-    rdfs:comment """Describes the object of the bia:link property and it's relation to the subject of an bia:seeAlso which link to the ExternalReference."""@en ;
-    rdfs:domain bia:ExternalReference ;
-    rdfs:range rdf:langString .
+# use schema:description for a description of the link and it's relation to the submission.
+# use schema:additionalType for classification of the link by website domain and/or use-case
+# the ID should be the url of the link.
 
 ## Dataset
 

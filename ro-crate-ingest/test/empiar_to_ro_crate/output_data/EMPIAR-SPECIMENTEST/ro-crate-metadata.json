@@ -249,7 +249,8 @@
                     "@id": "#Movie%20stacks%20data/frames/"
                 }
             ],
-            "accessionId": "EMPIAR-SPECIMENTEST"
+            "accessionId": "EMPIAR-SPECIMENTEST",
+            "seeAlso": []
         },
         {
             "@id": "#c0",

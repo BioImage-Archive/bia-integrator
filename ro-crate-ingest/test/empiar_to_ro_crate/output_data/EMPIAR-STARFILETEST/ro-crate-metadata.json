@@ -264,7 +264,8 @@
                     "@id": "#Reconstructed%20tomograms%20for%20dataset%202%20%28220330%29%20data/220330/tomograms/"
                 }
             ],
-            "accessionId": "EMPIAR-STARFILETEST"
+            "accessionId": "EMPIAR-STARFILETEST",
+            "seeAlso": []
         },
         {
             "@id": "https://orcid.org/9999-0001-2222-3333",

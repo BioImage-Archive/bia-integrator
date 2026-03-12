@@ -12,6 +12,7 @@ class SCHEMA(DefinedNamespace):
 
     # Properties
     address: URIRef
+    additionalType: URIRef
     affiliation: URIRef
     author: URIRef
     datePublished: URIRef
