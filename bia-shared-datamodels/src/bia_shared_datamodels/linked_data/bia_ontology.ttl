@@ -219,52 +219,38 @@ bia:associatedBiologicalEntity a owl:ObjectProperty ;
     rdfs:domain obo:IAO_0000030 ;
     rdfs:range bia:BioSample .
 
-bia:associatedImagingPreparationProtocol a owl:ObjectProperty ;
-    rdfs:label "associated imaging preparation protocol"@en ;
-    rdfs:comment 
-        """Used to indicate an ImageAcquisitionProtocol as a protocol that was followed in the process of creating all the specimens associated with the subject data."""@en ;
-    rdfs:domain obo:IAO_0000030 ;
-    rdfs:range bia:SpecimenImagingPreparationProtocol .
-
 bia:associatedImageAcquisitionProtocol a owl:ObjectProperty ;
     rdfs:label "associated image acquisition protocol"@en ;
     rdfs:comment 
-        """Used to indicate an ImageAcquisitionProtocol as a protocol that was followed in the process of creating all the Images or Annotation Data associated with the subject data."""@en ;
+        """Used to indicate an ImageAcquisitionProtocol as a protocol that was followed in the process of creating (at least some of) the Images or Annotation Data associated with the subject data."""@en ;
     rdfs:domain obo:IAO_0000030 ;
     rdfs:range bia:ImageAcquisitionProtocol .
 
 bia:associatedProtocol a owl:ObjectProperty ;
     rdfs:label "associated protocol"@en ;
     rdfs:comment 
-        """Used to indicate a Protocol that was followed in the process of creating all the Images or Annotation Data associated with the subject data."""@en ;
+        """Used to indicate a Protocol that was followed in the process of creating (at least some of) the Images or Annotation Data associated with the subject data."""@en ;
     rdfs:domain obo:IAO_0000030 ;
     rdfs:range bia:Protocol .
 
 bia:associatedAnnotationMethod a owl:ObjectProperty ;
     rdfs:label "associated protocol"@en ;
     rdfs:comment 
-        """Used to indicate an Annotation Method as a protocol that was followed in the process of creating all the Images or Annotation Data associated with the subject data."""@en;
+        """Used to indicate an Annotation Method as a protocol that was followed in the process of creating (at least some of) the Images or Annotation Data associated with the subject data."""@en;
     rdfs:domain obo:IAO_0000030 ;
     rdfs:range bia:AnnotationMethod .
 
 bia:associatedSourceImage a owl:ObjectProperty ;
     rdfs:label "associated source image"@en ;
-    rdfs:comment """Used to indicate an Image as a source of data for a process that created all the Images or Annotation Data associated with the subject data."""@en ;
+    rdfs:comment """Used to indicate an Image as a source of data for a process that created (at least some of) the Images or Annotation Data associated with the subject data."""@en ;
     rdfs:domain obo:IAO_0000030 ;
     rdfs:range bia:Image .
 
 bia:associatedCreationProcess a owl:ObjectProperty ;
     rdfs:label "associated creation process"@en ;
-    rdfs:comment """Used to indicate a CreationProcess as the process that resulted in the creation of all the Images or Annotation Data associated with the subject data."""@en ;
+    rdfs:comment """Used to indicate a CreationProcess as the process that resulted in the creation of (at least some of) the Images or Annotation Data associated with the subject data."""@en ;
     rdfs:domain obo:IAO_0000030 ;
     rdfs:range bia:CreationProcess .
-
-bia:associationFileMetadata a owl:ObjectProperty;
-    rdfs:label "association file metadata"@en ;
-    rdfs:comment 
-    """A file, typically of a tabular format, which contains information about files in the dataset."""@en; 
-    rdfs:domain bia:Dataset ;
-    rdfs:range schema:MediaObject .
 
 ## Images, Image Representations
 
