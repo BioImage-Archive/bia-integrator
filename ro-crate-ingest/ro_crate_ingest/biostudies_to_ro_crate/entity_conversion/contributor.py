@@ -60,8 +60,9 @@ def get_contributor(
 def get_contributor_id(
     attributes_dict: dict, contributor_bnode_int: int
 ) -> tuple[str, int]:
-    if "orcid" in attributes_dict:
-        id: str = attributes_dict["orcid"]
+    orcid = attributes_dict.get("orcid")
+    if orcid:
+        id: str = orcid
         if not id.startswith("https://orcid.org/"):
             id = f"https://orcid.org/{id}"
     else:
