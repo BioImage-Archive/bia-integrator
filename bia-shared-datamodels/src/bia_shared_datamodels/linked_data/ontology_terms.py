@@ -15,6 +15,7 @@ class SCHEMA(DefinedNamespace):
     additionalType: URIRef
     affiliation: URIRef
     author: URIRef
+    citation: URIRef
     datePublished: URIRef
     description: URIRef
     email: URIRef

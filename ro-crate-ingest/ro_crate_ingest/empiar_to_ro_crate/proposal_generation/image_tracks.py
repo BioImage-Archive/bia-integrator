@@ -208,12 +208,15 @@ def _build_file_dataframe(
             lambda p: _extract_specimen_id(p, specimen_config)
         )
 
-        unmatched_ids = subset["specimen_id"].isna().sum()
-        if unmatched_ids:
+        unmatched_mask = subset["specimen_id"].isna()
+        if unmatched_mask.any():
+            unmatched_paths = subset.loc[unmatched_mask, "path"].tolist()
             logger.warning(
-                f"Dataset '{dataset_name}': {unmatched_ids} file(s) could not "
+                f"Dataset '{dataset_name}': {len(unmatched_paths)} file(s) could not "
                 "be assigned a specimen ID and will be skipped."
             )
+            logger.debug("Files not assigned specimen ID: \n" 
+                + "\n".join(f"  {p}" for p in unmatched_paths))
         subset = subset.dropna(subset=["specimen_id"])
 
         subset["image_type"] = subset["path"].apply(
@@ -407,12 +410,12 @@ def validate_tracks(
     for track in tracks:
         all_tracked.update(track.frames)
         all_tracked.update(track.extra_files)
-        for attr in ("tilt_series", "aligned_tilt_series", "tomogram"):
+        for attr in ("tilt_series", "aligned_tilt_series", "tomogram", "denoised_tomogram"):
             val = getattr(track, attr)
             if val is not None:
                 all_tracked.add(val)
 
-    all_paths = {Path(f.path) for f in files}
+    all_paths = {Path(f.path).relative_to("data/") for f in files}
     orphaned = sorted(all_paths - all_tracked)
 
     incomplete: list[dict] = []

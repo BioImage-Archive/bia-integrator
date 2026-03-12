@@ -91,6 +91,7 @@ def convert_empiar_proposal_to_ro_crate(proposal_path: Path, crate_path: Path | 
 
     roc_study = study.get_study(
         accession_id=accession_id,
+        proposal=proposal, 
         empiar_api_entry=empiar_api_entry,
         contributors=roc_contributors,
         datasets=roc_dataset_title_map.values(),

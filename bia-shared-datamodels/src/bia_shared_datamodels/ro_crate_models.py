@@ -47,6 +47,7 @@ class Study(ROCrateModel):
     ] = Field()
     accessionId: Annotated[str, FieldContext(SCHEMA.identifier)] = Field()
     seeAlso: Annotated[list[ObjectReference], FieldContext(RDFS.seeAlso)] = Field(default_factory=list)
+    relatedPublication: Annotated[list[str], FieldContext(SCHEMA.citation)] = Field(default_factory=list)
 
     model_config = ConfigDict(model_type=BIA.Study)
 

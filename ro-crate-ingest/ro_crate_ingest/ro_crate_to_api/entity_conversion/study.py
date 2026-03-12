@@ -63,7 +63,7 @@ def convert_study(
                 value={"uuid_unique_input": ro_crate_study.accessionId},
             ).model_dump()
         ],
-        "related_publication": [],
+        "related_publication": ro_crate_study.relatedPublication,
         "grant": [],
         "funding_statement": None,
     }
