@@ -39,6 +39,9 @@ def get_image_correlation_method(
     # Without a title, this section can't be associated to anything,
     # so we skip creating because it won't appear in any dataset.
     if not attr_dict.get("title", None):
+        logger.debug(
+            f"Skipping Image Correlation Method section with no title in submission {submission.accno}"
+        )
         return
 
     model_dict = {

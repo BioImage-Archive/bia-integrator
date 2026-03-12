@@ -37,6 +37,9 @@ def get_image_analysis_method(
     # Without a title, this section can't be associated to anything,
     # so we skip creating because it won't appear in any dataset.
     if not attr_dict.get("title", None):
+        logger.debug(
+            f"Skipping Image Analysis Method section with no title in submission {submission.accno}"
+        )
         return
 
     model_dict = {
