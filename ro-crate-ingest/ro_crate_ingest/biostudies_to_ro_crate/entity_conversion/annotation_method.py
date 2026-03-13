@@ -4,6 +4,7 @@ from urllib.parse import quote
 from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_parsing_utils import (
     attributes_to_dict,
     find_sections_recursive,
+    filter_section_by_attribute_key,
 )
 from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_api import (
     Submission,
@@ -18,7 +19,10 @@ logger = logging.getLogger("__main__." + __name__)
 def get_annotation_method_by_title(
     submission: Submission,
 ) -> dict[str, ro_crate_models.AnnotationMethod]:
-    sections = find_sections_recursive(submission.section, ["Annotations"], [])
+    sections = filter_section_by_attribute_key(
+        find_sections_recursive(submission.section, ["Annotations"], []),
+        ["Title"],
+    )
 
     roc_object_dict = {}
     for section in sections:

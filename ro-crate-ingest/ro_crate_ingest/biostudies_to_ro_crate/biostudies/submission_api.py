@@ -66,7 +66,7 @@ class Empty(BaseModel):
 
 
 class Section(BaseModel):
-    type: str
+    type: str = ""
     accno: str | None = None
     attributes: list[Attribute] = []
     subsections: Annotated[list["Section"], BeforeValidator(flatten_lists_of_list)] = []

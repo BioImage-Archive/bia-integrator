@@ -3,6 +3,7 @@ from urllib.parse import quote
 from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_parsing_utils import (
     attributes_to_dict,
     find_sections_recursive,
+    filter_section_by_attribute_key,
 )
 from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_api import (
     Submission,
@@ -41,8 +42,15 @@ def get_taxons_bio_samples_and_association_map(
             end-to-end input-output.
     """
 
-    biosample_sections = find_sections_recursive(submission.section, ["Biosample"], [])
-
+    unfiltered_biosample_sections = find_sections_recursive(
+        submission.section, ["Biosample"], []
+    )
+    biosample_sections = filter_section_by_attribute_key(
+        unfiltered_biosample_sections,
+        [
+            "Title",
+        ],
+    )
     biosample_specimen_map = get_growth_protocols_for_biosample(
         submission, roc_growth_protocols
     )
@@ -71,9 +79,9 @@ def get_taxons_bio_samples_and_association_map(
                 association_mapping[bio_sample.title] = {}
 
             if growth_protocol:
-                association_mapping[bio_sample.title][growth_protocol.title] = (
-                    bio_sample.id
-                )
+                association_mapping[bio_sample.title][
+                    growth_protocol.title
+                ] = bio_sample.id
             else:
                 association_mapping[bio_sample.title][None] = bio_sample.id
 
