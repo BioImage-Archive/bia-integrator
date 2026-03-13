@@ -15,7 +15,9 @@ class ClosedBaseModel(BaseModel):
 class SpecimenProposal(ClosedBaseModel):
     title: str = Field()
     biosample_title: str = Field()
-    specimen_imaging_preparation_protocol_title: str | list = Field()
+    specimen_imaging_preparation_protocol_title: Annotated[
+        list[str], BeforeValidator(string_to_list)
+    ] = Field(default_factory=list)
 
 
 class Taxon(ClosedBaseModel):
@@ -192,7 +194,9 @@ class Dataset(ClosedBaseModel):
 
 class Proposal(ClosedBaseModel):
     accession_id: str = Field()
-    paper_doi: str | list[str] | None = Field(None)
+    paper_doi: Annotated[list[str], BeforeValidator(string_to_list)] = Field(
+        default_factory=list
+    )
     rembis: RembiByType = Field()
     dataset_rembis: DatasetRembiByType | None = Field(None)
     datasets: list[Dataset] = Field(default_factory=list)

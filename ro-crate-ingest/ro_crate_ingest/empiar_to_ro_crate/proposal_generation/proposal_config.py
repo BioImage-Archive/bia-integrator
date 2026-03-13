@@ -1,13 +1,19 @@
 import re
 
-from pydantic import BaseModel, Field, model_validator
-from typing import Self
+from pydantic import BaseModel, Field, BeforeValidator, model_validator
+from typing import Annotated, Self
 
 from ro_crate_ingest.empiar_to_ro_crate.proposal_generation.image_tracks import ImageType
 
 
 _VALID_IMAGE_TYPE_KEYS: frozenset[str] = frozenset(t.value for t in ImageType)
 _VALID_IAP_KEYS: frozenset[str] = _VALID_IMAGE_TYPE_KEYS | {"dataset"}
+
+
+def _string_to_list(value):
+    if isinstance(value, str):
+        return [value]
+    return value
 
 
 def _validate_regex(pattern: str, location: str) -> None:
@@ -144,7 +150,7 @@ class DatasetConfig(BaseModel):
     """
 
     name: str
-    data_directories: str | list[str]
+    data_directories: Annotated[list[str], BeforeValidator(_string_to_list)]
     file_globs: dict[str, str | list[str]] = Field(default_factory=dict)
     image_acquisition_protocol_title: dict[str, str | list[str]] | None = None
     protocol_titles: dict[str, str | list[str]] = Field(default_factory=dict)
@@ -179,7 +185,9 @@ class DatasetConfig(BaseModel):
 
 class ProposalConfig(BaseModel):
     accession_id: str
-    paper_doi: str | list[str] | None = None
+    paper_doi: Annotated[list[str], BeforeValidator(_string_to_list)] = Field(
+        default_factory=list
+    )
     pattern_inference_delimiters: list[str] = Field(default_factory=lambda: ["_", "."])
     specimens: SpecimenConfig = Field(default_factory=SpecimenConfig)
     specimen_defaults: SpecimenDefaults | None = None

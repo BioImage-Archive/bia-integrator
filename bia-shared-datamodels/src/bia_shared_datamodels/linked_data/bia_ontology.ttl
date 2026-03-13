@@ -62,6 +62,7 @@ bia:seeAlso a owl:ObjectProperty ;
 bia:relatedPublication a owl:ObjectProperty ;
     rdfs:label "related publication"@en ;
     rdfs:comment """A publication that is of some relevance to the subject."""@en ;
+    rdfs:subPropertyOf schema:citation ;
     rdfs:range bia:Publication .
 
 bia:fundingStatement a owl:DatatypeProperty ;

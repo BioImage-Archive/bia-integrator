@@ -1,5 +1,5 @@
 accession_id: "EMPIAR-SPECIMENGROUPTEST"
-paper_doi: "https://doi.org/10.0000/test.0004"
+paper_doi: ["https://doi.org/10.0000/test.0004"]
 rembis:
   BioSample:
     - title: "Test organism cells, condition A"

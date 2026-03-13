@@ -15,7 +15,6 @@ class SCHEMA(DefinedNamespace):
     additionalType: URIRef
     affiliation: URIRef
     author: URIRef
-    citation: URIRef
     datePublished: URIRef
     description: URIRef
     email: URIRef
@@ -130,6 +129,7 @@ class BIA(DefinedNamespace):
     inputImage: URIRef
     intrinsicVariableDescription: URIRef
     protocol: URIRef
+    relatedPublication: URIRef
     resultOf: URIRef
     role: URIRef
     sampleOf: URIRef

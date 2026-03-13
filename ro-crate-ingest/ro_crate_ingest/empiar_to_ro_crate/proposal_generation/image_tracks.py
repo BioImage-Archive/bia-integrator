@@ -189,8 +189,6 @@ def _build_file_dataframe(
         dataset_name = dataset_config.name
 
         data_dirs = dataset_config.data_directories
-        if isinstance(data_dirs, str):
-            data_dirs = [data_dirs]
 
         dir_mask = pd.Series(False, index=base_df.index)
         for data_dir in data_dirs:
