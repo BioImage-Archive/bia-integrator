@@ -174,6 +174,9 @@
                 "@id": "schema:description"
             },
             "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+            "relatedPublication": {
+                "@id": "bia:relatedPublication"
+            },
             "resultOf": {
                 "@id": "bia:resultOf"
             },
@@ -254,7 +257,8 @@
                 {
                     "@id": "https://www.proteinatlas.org/humanproteome/cell/cell+cycle+dependent"
                 }
-            ]
+            ],
+            "relatedPublication": []
         },
         {
             "@id": "https://www.proteinatlas.org/humanproteome/cell/cell+cycle+dependent",

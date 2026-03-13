@@ -1,5 +1,5 @@
 accession_id: "EMPIAR-SPECIMENPATTERNDATASETBYSPECIMENTEST"
-paper_doi: "https://doi.org/10.0000/test.0006"
+paper_doi: ["https://doi.org/10.0000/test.0006"]
 rembis:
   BioSample:
     - title: "Test organism cells"

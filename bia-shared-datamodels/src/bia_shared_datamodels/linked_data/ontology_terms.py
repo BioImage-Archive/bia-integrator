@@ -129,6 +129,7 @@ class BIA(DefinedNamespace):
     inputImage: URIRef
     intrinsicVariableDescription: URIRef
     protocol: URIRef
+    relatedPublication: URIRef
     resultOf: URIRef
     role: URIRef
     sampleOf: URIRef
