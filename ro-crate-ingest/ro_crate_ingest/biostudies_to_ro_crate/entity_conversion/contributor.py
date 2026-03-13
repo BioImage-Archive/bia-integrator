@@ -80,11 +80,9 @@ def sanitise_contributor_email(email: Optional[str]):
 
 
 def get_roles(attributes_dict: dict):
-    roles = attributes_dict.get("role", [])
+    roles = attributes_dict.get("role") or []
 
-    if roles is None:
-        roles = []
-    elif isinstance(roles, str):
+    if isinstance(roles, str):
         roles = [role.strip(" ") for role in roles.split(",")]
 
     return roles
