@@ -80,14 +80,10 @@ def sanitise_contributor_email(email: Optional[str]):
 
 
 def get_roles(attributes_dict: dict):
-    roles = []
-    if "role" in attributes_dict:
-        if isinstance(attributes_dict["role"], list):
-            roles = attributes_dict["role"]
-        else:
-            roles = [
-                role.strip(" ") for role in attributes_dict.get("role", "").split(",")
-            ]
+    roles = attributes_dict.get("role") or []
+
+    if isinstance(roles, str):
+        roles = [role.strip(" ") for role in roles.split(",")]
 
     return roles
 
