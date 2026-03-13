@@ -54,6 +54,24 @@ def find_sections_recursive(
     return results
 
 
+def filter_section_by_attribute_key(
+    sections: list[Section],
+    required_attr_keys: list[str],
+) -> list[Section]:
+
+    filtered_sections = []
+    required_keys_as_set = set([k.lower() for k in required_attr_keys])
+    for section in sections:
+        attr_dict = attributes_to_dict(section.attributes)
+        if all([attr_dict.get(k) for k in required_keys_as_set]):
+            filtered_sections.append(section)
+        else:
+            logger.warning(
+                f"Skipping Section of type {section.type} with accno {section.accno} as it's attribute dict does not have valid entries for one or more of {required_keys_as_set}"
+            )
+    return filtered_sections
+
+
 def find_file_lists_under_section(
     section: Section,
     flists: list[str],
