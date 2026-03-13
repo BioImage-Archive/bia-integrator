@@ -10,6 +10,7 @@ from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_api import (
 from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_parsing_utils import (
     attributes_to_dict,
     find_sections_recursive,
+    filter_section_by_attribute_key,
 )
 
 logger = logging.getLogger("__main__." + __name__)
@@ -18,8 +19,15 @@ logger = logging.getLogger("__main__." + __name__)
 def get_image_correlation_method_by_title(
     submission: Submission,
 ) -> dict[str, ro_crate_models.ImageCorrelationMethod]:
-    sections = find_sections_recursive(submission.section, ["Image correlation"], [])
-
+    unfiltered_sections = find_sections_recursive(
+        submission.section, ["Image correlation"], []
+    )
+    sections = filter_section_by_attribute_key(
+        unfiltered_sections,
+        [
+            "Title",
+        ],
+    )
     roc_object_dict = {}
     for section in sections:
         roc_object = get_image_correlation_method(section)

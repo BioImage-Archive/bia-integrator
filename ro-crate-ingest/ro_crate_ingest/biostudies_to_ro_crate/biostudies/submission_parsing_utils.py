@@ -14,15 +14,20 @@ def attributes_to_dict(
 ) -> dict[str, str | list[str]]:
     attr_dict = {}
     for attr in attributes:
-        normalised_key = attr.name.lower()
-        if normalised_key in attr_dict:
-            if not isinstance(attr_dict[normalised_key], list):
-                attr_dict[normalised_key] = [
-                    attr_dict[normalised_key],
-                ]
-            attr_dict[normalised_key].append(attr.value)
+        if not attr.value:
+            logger.warning(
+                f"Skipping attribute {attr.name} from attribute dict, as it has no value!"
+            )
         else:
-            attr_dict[normalised_key] = attr.value
+            normalised_key = attr.name.lower()
+            if normalised_key in attr_dict:
+                if not isinstance(attr_dict[normalised_key], list):
+                    attr_dict[normalised_key] = [
+                        attr_dict[normalised_key],
+                    ]
+                attr_dict[normalised_key].append(attr.value)
+            else:
+                attr_dict[normalised_key] = attr.value
     return attr_dict
 
 
