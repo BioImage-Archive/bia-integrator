@@ -185,6 +185,9 @@
     "scientificName": {
       "@id": "http://rs.tdwg.org/dwc/terms/scientificName"
     },
+    "seeAlso": {
+      "@id": "rdfs:seeAlso"
+    },
     "signalChannelInformation": {
       "@id": "bia:signalChannelInformation"
     },
