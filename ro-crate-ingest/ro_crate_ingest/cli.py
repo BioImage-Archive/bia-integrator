@@ -14,6 +14,9 @@ from ro_crate_ingest.empiar_to_ro_crate.empiar_proposal_conversion import (
 from ro_crate_ingest.empiar_to_ro_crate.empiar_proposal_generation import (
     generate_empiar_proposal
 )
+from ro_crate_ingest.minimal_ro_crate.minimal_ro_crate_creation import (
+    make_minimal_ro_crate
+)
 from ro_crate_ingest.validator.validation import bia_roc_validation
 
 ro_crate_ingest = typer.Typer()
@@ -129,6 +132,27 @@ def empiar_to_ro_crate(
     ] = None,
 ):
     convert_empiar_proposal_to_ro_crate(proposal_path, crate_path)
+
+
+@ro_crate_ingest.command("minimal-roc")
+def minimal_ro_crate(
+    accession_id: Annotated[
+        str,
+        typer.Argument(
+            help="Acccession id (e.g. S-BIADXXXX or S-BSSTXXXX) of the submission"
+        ),
+    ],
+    crate_path: Annotated[
+        Optional[Path],
+        typer.Option(
+            "--crate-path",
+            "-c",
+            case_sensitive=False,
+            help="Path to output the ro-crate document",
+        ),
+    ] = None,
+):
+    make_minimal_ro_crate(accession_id, crate_path)
 
 
 @ro_crate_ingest.command("validate")

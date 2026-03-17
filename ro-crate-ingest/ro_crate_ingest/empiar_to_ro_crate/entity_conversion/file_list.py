@@ -30,33 +30,44 @@ class PatternMatch:
 
 def create_file_list(
     output_ro_crate_path: Path,
-    yaml_file: dict,
     empiar_api_entry: Entry,
     datasets_map: dict[str, ro_crate_models.Dataset],
+    yaml_file: dict | None = None,
+    accession_id: str | None = None,
 ) -> list[
     ro_crate_models.FileList | ro_crate_models.TableSchema | ro_crate_models.Column
 ]:
     """
     Unlike biostudies, all EMPIAR file lists have the same schema.
 
-    Note will create a separate list for 'unassigned' files that do not match any dataset if there are any. 
-    This is saved as unassigned_files.json in the RO-Crate directory (but not referenced as part of the RO-Crate).
+    If part of the proposal-based route:
+        will create a separate list for 'unassigned' files that do not match any dataset if there are any. 
+        This is saved as unassigned_files.json in the RO-Crate directory (but not referenced as part of the RO-Crate).
+    But if part of minimal route, unassigned files are not separated, and dealt with later. 
+
+    And note: if proposal-based, a yaml_file proposal is expected, and if minimal, the accession_id must be supplied. 
     """
+    if yaml_file is None and accession_id is None:
+        raise ValueError("Either yaml_file or accession_id must be provided")
 
     columns = get_column_list()
     schema = get_schema(columns)
 
-    file_df = create_base_dataframe_from_file_paths(yaml_file)
+    file_df = create_base_dataframe_from_file_paths(yaml_file["accession_id"] if yaml_file else accession_id)
 
-    path_pattern_objects = get_file_patterns_matches_and_objects(
-        yaml_file, empiar_api_entry, datasets_map
-    )
+    if yaml_file:
+        path_pattern_objects = get_file_patterns_matches_and_objects(
+            yaml_file, empiar_api_entry, datasets_map
+        )
 
-    file_list_df = expand_dataframe_metadata(path_pattern_objects, file_df)
+        file_list_df = expand_dataframe_metadata(path_pattern_objects, file_df)
 
-    file_list_df = separate_and_report_unassigned_files(
-        file_list_df, output_ro_crate_path
-    )
+        file_list_df = separate_and_report_unassigned_files(
+            file_list_df, output_ro_crate_path
+        )
+    elif accession_id:
+        file_list_df = expand_dataframe_metadata([], file_df)
+        file_list_df = assign_datasets_in_minimal_rocrate(file_list_df, empiar_api_entry, datasets_map)
     
     ro_crate_objects: list = [schema]
     ro_crate_objects.extend(columns)
@@ -69,8 +80,53 @@ def create_file_list(
     return ro_crate_objects
 
 
-def create_base_dataframe_from_file_paths(yaml_file):
-    files: list[EMPIARFile] = get_files(yaml_file["accession_id"])
+# TODO: can refactor in proposal-based route to use this function where appropriate
+def _rate_dataset_specificity(data_directories: list[str]) -> int:
+    """
+    Return a specificity score for a dataset, defined as the maximum
+    number of '/' separators across its data_directories. Used to break ties
+    when multiple dataset blocks claim the same file: the deeper directory wins.
+    """
+    return max((d.count("/") for d in data_directories), default=0)
+
+
+def _find_dataset_for_file(
+    file_path: str, 
+    imageset_to_dataset_id: dict[str, str]
+) -> Optional[str]:
+    matching_datasets = [
+        (dataset_id, dir_name) for dir_name, dataset_id in imageset_to_dataset_id.items() if dir_name in file_path
+    ]
+    if not matching_datasets:
+        return None
+    return max(
+        matching_datasets,
+        key=lambda x: _rate_dataset_specificity([x[1]])
+    )[0]
+
+
+def assign_datasets_in_minimal_rocrate(
+    file_list_df: pd.DataFrame, 
+    empiar_api_entry: Entry, 
+    datasets_map: dict[str, ro_crate_models.Dataset]
+) -> pd.DataFrame:
+    """
+    In the minimal ro-crate route, we don't have a yaml proposal to guide the assignment of files to datasets. 
+
+    This function will look for dataset directory names in the file paths, and assign files to datasets accordingly. 
+    If a file path contains multiple dataset directory names, the most specific (longest) match will be used. 
+    If no dataset directory names are found in the file path, the dataset will be left unassigned (NaN).
+    """
+    imageset_to_dataset_id = {
+        imageset.directory: dataset.id for imageset in empiar_api_entry.imagesets for dataset in datasets_map.values() if dataset.name == imageset.name
+    }
+    file_list_df["dataset"] = file_list_df["file_path"].apply(_find_dataset_for_file, args=(imageset_to_dataset_id,))
+
+    return file_list_df
+
+
+def create_base_dataframe_from_file_paths(accession_id: str):
+    files: list[EMPIARFile] = get_files(accession_id)
     file_df: pd.DataFrame = pd.DataFrame(
         files,
     ).map(lambda x: x[1])

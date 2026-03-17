@@ -6,10 +6,10 @@ from ro_crate_ingest.empiar_to_ro_crate.empiar.proposal import Proposal
 
 def get_study(
     accession_id: str,
-    proposal: Proposal, 
     empiar_api_entry: Entry,
     contributors: list[ro_crate_models.Contributor],
-    datasets: Iterable[ro_crate_models.Dataset],
+    datasets: Iterable[ro_crate_models.Dataset], 
+    proposal: Proposal | None = None, 
 ) -> ro_crate_models.Study:
 
     has_part_items = [{"@id": "file_list.tsv"}] 
@@ -27,7 +27,7 @@ def get_study(
         "keyword": [],
         "contributor": [{"@id": c.id} for c in contributors],
         "hasPart": has_part_items, 
-        "relatedPublication": proposal.paper_doi,
+        "relatedPublication": proposal.paper_doi if proposal else [],
     }
 
     return ro_crate_models.Study(**study_dict)
