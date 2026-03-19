@@ -696,3 +696,28 @@ bia:sourceImagePath a owl:AnnotationProperty ;
 bia:sourceImageName a owl:AnnotationProperty ;
     rdfs:label "source image path"@en ;
     rdfs:comment "In a file list, this is the set of image names of that were used as an input to creating another Image. This property should be used over bia:sourceImagePath if there are images are composed of more than one file. In this case the image names should be unique."@en .
+
+bia:xIndex a owl:DatatypeProperty ;
+    rdfs:label "x index"@en ;
+    rdfs:comment "The x position index of a file within an image array."@en ;
+    rdfs:range xsd:integer .
+
+bia:yIndex a owl:DatatypeProperty ;
+    rdfs:label "y index"@en ;
+    rdfs:comment "The y position index of a file within an image array."@en ;
+    rdfs:range xsd:integer .
+
+bia:zIndex a owl:DatatypeProperty ;
+    rdfs:label "z index"@en ;
+    rdfs:comment "The z position index of a file within an image array."@en ;
+    rdfs:range xsd:integer .
+
+bia:tIndex a owl:DatatypeProperty ;
+    rdfs:label "t index"@en ;
+    rdfs:comment "The time position index of a file within an image array."@en ;
+    rdfs:range xsd:integer .
+
+bia:cIndex a owl:DatatypeProperty ;
+    rdfs:label "c index"@en ;
+    rdfs:comment "The channel position index of a file within an image array."@en ;
+    rdfs:range xsd:integer .
