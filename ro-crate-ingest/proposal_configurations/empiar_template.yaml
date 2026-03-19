@@ -1,0 +1,131 @@
+accession_id: EMPIAR-XXXXX
+paper_doi: doi
+
+# ---------------------------------------------------------------------------
+# Global defaults for specimen metadata.
+# Applied to every specimen unless overridden at dataset or group level.
+# ---------------------------------------------------------------------------
+specimen_defaults:
+  biosample_title: "example biosample title"
+  specimen_imaging_preparation_protocol_titles:
+    - "sipp 1"
+    - "sipp 2"
+    - "sipp 3"
+
+# ---------------------------------------------------------------------------
+# Specimen setup - 
+# see proposal generation readme for more details on which setup of the three 
+# below is applicable.
+# ---------------------------------------------------------------------------
+specimens:
+  # single regex pattern — list for when mutiple patterns are neeed, 
+  # but each specimen still has one pattern
+  patterns: 
+    - "tomo_(\\d{4})"
+  
+  # where more than one regex pattern is needed to link one specimen
+  pattern_alias_mappings:
+    "(\\d{4})":  # canonical identifier 
+      - "(\\d{4})"           # "0001" -> "0001"
+      - "tomo_(\\d{4})"      # "tomo_0001" -> "0001"
+      - "specimen_(\\d{2})"  # "specimen_12" -> "0012"
+      - "(\\d{2})"           # "12" -> "0012"
+  
+  # where there is no algorithmic link between all or some of a specimen's images, 
+  # globs link to a canonical identifier
+  literal_alias_mappings: 
+    # e.g. from EMPIAR-12049
+    "centrosome_01": ["**/20190429/**/TS_05*", "**/cent1.mrc"]
+    "centrosome_02": ["**/20200309/**/TS_002*", "**/cent2.mrc"]
+    "centrosome_03": ["**/20200724/**/TS_004*", "**/cent3.mrc"]
+    "centrosome_04": ["**/20200724/**/TS_009*", "**/cent4.mrc"]
+    "centrosome_05": ["**/20200725/**/TS_006*", "**/cent5.mrc"]
+    "centrosome_06": ["**/20210216/**/TS_006*", "**/cent6.mrc"]
+    "centrosome_07": ["**/20210216/**/TS_009*", "**/cent7.mrc"]
+    "centrosome_08": ["**/20210216/**/TS_011*", "**/cent8.mrc"]
+    "centrosome_09": ["**/20210216/**/TS_003*", "**/cent9.mrc"]
+    "centrosome_10": ["**/20210710/**/TS_001*", "**/cent10.mrc"]
+    "centrosome_11": ["**/20210710/**/TS_006*", "**/cent11.mrc"]
+    "centrosome_12": ["**/20210710/**/TS_002*", "**/cent12.mrc"]
+
+# ---------------------------------------------------------------------------
+# REMBI objects (provided separately; referenced by title in specimens)
+# ---------------------------------------------------------------------------
+biosamples:
+  - title: "example biosample title"
+    organism_classification:
+      - common_name: "common biosample"
+        scientific_name: "scientific biosample"
+        ncbi_id: "NCBI:txid------"
+    biological_entity_description: "Description of biosample"
+    growth_protocol_title: "A protocol specifically for growth of the biosample"
+
+specimen_imaging_preparation_protocols:
+  - title: "sipp 1"
+    protocol_description: "..."
+  - title: "sipp 2"
+    protocol_description: "..."
+  - title: "sipp 3"
+
+image_acquisition_protocols:
+  - title: "eg_Cryo-electron tomography"
+    protocol_description: "..."
+    imaging_instrument_description: "..."
+    fbbi_id:
+      - "obo:FBbi_00000256"
+    imaging_method_name:
+      - "eg_Cryo-electron tomography"
+
+# Protocol REMBI objects for this entry.
+# Referenced by title in dataset-level protocol_titles blocks below.
+protocols:
+  - title: "A protocol specifically for growth of the biosample"
+    protocol_description: "..."
+  - title: "Dataset pre-processing"
+    protocol_description: "..."
+  - title: "Tomogram reconstruction"
+    protocol_description: "..."
+
+# ---------------------------------------------------------------------------
+# Datasets: file glob rules to identify tracks from the filesystem
+# ---------------------------------------------------------------------------
+datasets:
+  - name: "Raw frames from dataset of ..."
+    data_directories:
+      - "data/Data_Set..."
+
+    file_globs:
+      frames:
+        - "**/eg_raw_frames/*.tif"
+
+    # IAP at dataset level — applies to the dataset block as a whole.
+    # Use image-type keys instead of 'dataset' to restrict to specific types.
+    image_acquisition_protocol_title:
+      dataset:
+        - "Cryo-electron tomography"
+
+  - name: "Unaligned tilt stacks from dataset of ..."
+    data_directories:
+      - "data/Data_Set..."
+
+    file_globs:
+      tilt_series:
+        - "**/eg_tilt_series/*.mrc.st"
+      aligned_tilt_series:
+        - "**/eg_aligned_tilt_series/*.mrc"
+
+    protocol_titles:
+      aligned_tilt_series:
+        - "Dataset  pre-processing"
+
+  - name: "Reconstructed tomograms from dataset of..."
+    data_directories:
+      - "data/Data_Set..."
+
+    file_globs:
+      tomogram:
+        - "**/eg_tomo_rec_4bin_SART/*.mrc"
+
+    protocol_titles:
+      tomogram:
+        - "Tomogram reconstruction"

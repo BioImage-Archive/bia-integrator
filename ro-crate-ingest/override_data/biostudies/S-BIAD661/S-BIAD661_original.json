@@ -1,0 +1,213 @@
+{
+	"accno": "S-BIAD661",
+	"attributes": [
+		{
+			"name": "Template",
+			"value": "BioImages.v4"
+		},
+		{
+			"name": "ReleaseDate",
+			"value": "2023-03-17"
+		},
+		{
+			"name": "AttachTo",
+			"value": "BioImages"
+		}
+	],
+	"section": {
+		"type": "Study",
+		"attributes": [
+			{
+				"name": "Title",
+				"value": "FAM3C/ILEI protein is elevated in psoriatic lesions and triggers psoriasiform hyperproliferation in mice"
+			},
+			{
+				"name": "Description",
+				"value": "FAM3C/ILEI is an important cytokine for tumor progression and metastasis. However, its involvement in inflammation remains elusive. Here, we show that ILEI protein is highly expressed in psoriatic lesions. Inducible keratinocyte-specific ILEI overexpression in mice (K5-ILEIind) recapitulates many aspects of psoriasis following TPA challenge, primarily manifested by impaired epidermal differentiation and increased neutrophil recruitment. Mechanistically, ILEI triggers Erk and Akt signaling, which then activate STAT3 via Ser727 phosphorylation. Keratinocyte-specific ILEI deletion ameliorates TPA-induced skin inflammation. A transcriptomic ILEI signature obtained from the K5-ILEIind model shows enrichment in several signaling pathways also found in psoriasis and identifies urokinase as a targetable enzyme to counteract ILEI activity. Pharmacological inhibition of urokinase in TPA-induced K5-ILEIind mice results in significant improvement of psoriasiform symptoms by reducing ILEI secretion. The ILEI signature distinguishes psoriasis from healthy skin with uPA ranking among the top “separator” genes. Our study identifies ILEI as a key driver in psoriasis, indicates the relevance of ILEI-regulated genes for disease manifestation and shows the clinical impact of ILEI and urokinase as novel potential therapeutic targets in psoriasis."
+			},
+			{
+				"name": "Keywords",
+				"value": "data source file, FAM3C/ILEI, psoriasis"
+			},
+			{
+				"name": "Acknowledgements",
+				"value": "not applicable"
+			},
+			{
+				"name": "License",
+				"value": "CC0"
+			},
+			{
+				"name": "Funding statement",
+				"value": "Fellinger Krebsforschung"
+			}
+		],
+		"subsections": [
+			{
+				"type": "author",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "Agnes Csiszar"
+					},
+					{
+						"name": "E-mail",
+						"value": "agnes.csiszar@meduniwien.ac.at"
+					},
+					{
+						"name": "Role",
+						"value": "corresponding author"
+					},
+					{
+						"name": "ORCID",
+						"value": "0000-0001-7911-3427"
+					},
+					{
+						"name": "affiliation",
+						"value": "o1",
+						"reference": true
+					}
+				]
+			},
+			{
+				"accno": "o1",
+				"type": "organisation",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "Medical University of Vienna"
+					}
+				]
+			},
+			{
+				"type": "Publication",
+				"attributes": [
+					{
+						"name": "Pubmed ID",
+						"value": "pending"
+					}
+				]
+			},
+			{
+				"accno": "Biosample-1",
+				"type": "Biosample",
+				"attributes": [
+					{
+						"name": "Title",
+						"value": "FAM3C/ILEI protein is elevated in psoriatic lesions and triggers psoriasiform hyperproliferation in mice"
+					},
+					{
+						"name": "Organism",
+						"value": "Mus musculus (mouse)"
+					},
+					{
+						"name": "Description",
+						"value": "FAM3C/ILEI is an important cytokine for tumor progression and metastasis. However, its involvement in inflammation remains elusive. Here, we show that ILEI protein is highly expressed in psoriatic lesions. Inducible keratinocyte-specific ILEI overexpression in mice (K5-ILEIind) recapitulates many aspects of psoriasis following TPA challenge, primarily manifested by impaired epidermal differentiation and increased neutrophil recruitment. Mechanistically, ILEI triggers Erk and Akt signaling, which then activate STAT3 via Ser727 phosphorylation. Keratinocyte-specific ILEI deletion ameliorates TPA-induced skin inflammation. A transcriptomic ILEI signature obtained from the K5-ILEIind model shows enrichment in several signaling pathways also found in psoriasis and identifies urokinase as a targetable enzyme to counteract ILEI activity. Pharmacological inhibition of urokinase in TPA-induced K5-ILEIind mice results in significant improvement of psoriasiform symptoms by reducing ILEI secretion. The ILEI signature distinguishes psoriasis from healthy skin with uPA ranking among the top “separator” genes. Our study identifies ILEI as a key driver in psoriasis, indicates the relevance of ILEI-regulated genes for disease manifestation and shows the clinical impact of ILEI and urokinase as novel potential therapeutic targets in psoriasis."
+					},
+					{
+						"name": "Biological entity",
+						"value": "human and mouse skin"
+					}
+				]
+			},
+			{
+				"accno": "Specimen-2",
+				"type": "Specimen",
+				"attributes": [
+					{
+						"name": "Title",
+						"value": "FAM3C/ILEI protein is elevated in psoriatic lesions and triggers psoriasiform hyperproliferation in mice"
+					},
+					{
+						"name": "Sample preparation protocol",
+						"value": "diverse:\nFFPE tissue blocks->thin sections->H&E/IHC/IF\nPFA fixed cells->IF\nskin protein extracts/keratinocyte lysates or conditioned media/bone marrow protein extracts->Western blotting->chemiluminescence with digital capturing"
+					}
+				]
+			},
+			{
+				"accno": "Image acquisition-3",
+				"type": "Image acquisition",
+				"attributes": [
+					{
+						"name": "Title",
+						"value": "data source file"
+					},
+					{
+						"name": "Imaging instrument",
+						"value": "diverse, fluorescent and bright field microscopic images and Western blots"
+					},
+					{
+						"name": "Image acquisition parameters",
+						"value": "diverse"
+					},
+					{
+						"name": "Imaging method",
+						"value": "FLIP"
+					}
+				]
+			},
+			{
+				"accno": "Image correlation-4",
+				"type": "Image correlation",
+				"attributes": [
+					{
+						"name": "Title",
+						"value": "FAM3C/ILEI protein is elevated in psoriatic lesions and triggers psoriasiform hyperproliferation in mice"
+					}
+				]
+			},
+			{
+				"accno": "Image analysis-5",
+				"type": "Image analysis",
+				"attributes": [
+					{
+						"name": "Title",
+						"value": "FAM3C/ILEI protein is elevated in psoriatic lesions and triggers psoriasiform hyperproliferation in mice"
+					},
+					{
+						"name": "Image analysis overview",
+						"value": "diverse, part of the materials methods of the publication"
+					}
+				]
+			},
+			{
+				"accno": "Study Component-6",
+				"type": "Study Component",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "FAM3C/ILEI protein is elevated in psoriatic lesions and triggers psoriasiform hyperproliferation in mice"
+					},
+					{
+						"name": "Description",
+						"value": "files contain microscopic images of TPA treated mouse skin of different genotypes after H&E staining, diverse IHCs and immunofluorescent stainings"
+					},
+					{
+						"name": "File List",
+						"value": "study composition EMM-2022-16758.json"
+					}
+				],
+				"subsections": [
+					{
+						"type": "Associations",
+						"attributes": [
+							{
+								"name": "Biosample",
+								"value": "FAM3C/ILEI protein is elevated in psoriatic lesions and triggers psoriasiform hyperproliferation in mice"
+							},
+							{
+								"name": "Specimen",
+								"value": "FAM3C/ILEI protein is elevated in psoriatic lesions and triggers psoriasiform hyperproliferation in mice"
+							},
+							{
+								"name": "Image acquisition",
+								"value": "data source file"
+							}
+						]
+					}
+				]
+			}
+		]
+	},
+	"type": "submission"
+}

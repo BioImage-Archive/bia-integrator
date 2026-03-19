@@ -62,6 +62,7 @@ bia:seeAlso a owl:ObjectProperty ;
 bia:relatedPublication a owl:ObjectProperty ;
     rdfs:label "related publication"@en ;
     rdfs:comment """A publication that is of some relevance to the subject."""@en ;
+    rdfs:subPropertyOf schema:citation ;
     rdfs:range bia:Publication .
 
 bia:fundingStatement a owl:DatatypeProperty ;
@@ -175,25 +176,9 @@ bia:ExternalReference a owl:Class ;
 
 
 # Properties
-
-# could we re-use schema:link ?
-bia:link a owl:DatatypeProperty ;
-    rdfs:label "link"@en ;
-    rdfs:comment "A URL linking to the refered resource."@en ;
-    rdfs:domain bia:ExternalReference ;
-    rdfs:range  xsd:string .
-
-bia:linkType  a owl:DatatypeProperty ;
-    rdfs:label "link type"@en ;
-    rdfs:comment "Classifies the link by website domain and/or use-case, which is useful for display purposes and faceting search."@en ;
-    rdfs:domain bia:ExternalReference ;
-    rdfs:range xsd:string .
-
-bia:linkDescription a owl:DatatypeProperty ;
-    rdfs:label "link type"@en ;
-    rdfs:comment """Describes the object of the bia:link property and it's relation to the subject of an bia:seeAlso which link to the ExternalReference."""@en ;
-    rdfs:domain bia:ExternalReference ;
-    rdfs:range rdf:langString .
+# use schema:description for a description of the link and it's relation to the submission.
+# use schema:additionalType for classification of the link by website domain and/or use-case
+# the ID should be the url of the link.
 
 ## Dataset
 
@@ -245,42 +230,35 @@ bia:associatedImagingPreparationProtocol a owl:ObjectProperty ;
 bia:associatedImageAcquisitionProtocol a owl:ObjectProperty ;
     rdfs:label "associated image acquisition protocol"@en ;
     rdfs:comment 
-        """Used to indicate an ImageAcquisitionProtocol as a protocol that was followed in the process of creating all the Images or Annotation Data associated with the subject data."""@en ;
+        """Used to indicate an ImageAcquisitionProtocol as a protocol that was followed in the process of creating (at least some of) the Images or Annotation Data associated with the subject data."""@en ;
     rdfs:domain obo:IAO_0000030 ;
     rdfs:range bia:ImageAcquisitionProtocol .
 
 bia:associatedProtocol a owl:ObjectProperty ;
     rdfs:label "associated protocol"@en ;
     rdfs:comment 
-        """Used to indicate a Protocol that was followed in the process of creating all the Images or Annotation Data associated with the subject data."""@en ;
+        """Used to indicate a Protocol that was followed in the process of creating (at least some of) the Images or Annotation Data associated with the subject data."""@en ;
     rdfs:domain obo:IAO_0000030 ;
     rdfs:range bia:Protocol .
 
 bia:associatedAnnotationMethod a owl:ObjectProperty ;
     rdfs:label "associated protocol"@en ;
     rdfs:comment 
-        """Used to indicate an Annotation Method as a protocol that was followed in the process of creating all the Images or Annotation Data associated with the subject data."""@en;
+        """Used to indicate an Annotation Method as a protocol that was followed in the process of creating (at least some of) the Images or Annotation Data associated with the subject data."""@en;
     rdfs:domain obo:IAO_0000030 ;
     rdfs:range bia:AnnotationMethod .
 
 bia:associatedSourceImage a owl:ObjectProperty ;
     rdfs:label "associated source image"@en ;
-    rdfs:comment """Used to indicate an Image as a source of data for a process that created all the Images or Annotation Data associated with the subject data."""@en ;
+    rdfs:comment """Used to indicate an Image as a source of data for a process that created (at least some of) the Images or Annotation Data associated with the subject data."""@en ;
     rdfs:domain obo:IAO_0000030 ;
     rdfs:range bia:Image .
 
 bia:associatedCreationProcess a owl:ObjectProperty ;
     rdfs:label "associated creation process"@en ;
-    rdfs:comment """Used to indicate a CreationProcess as the process that resulted in the creation of all the Images or Annotation Data associated with the subject data."""@en ;
+    rdfs:comment """Used to indicate a CreationProcess as the process that resulted in the creation of (at least some of) the Images or Annotation Data associated with the subject data."""@en ;
     rdfs:domain obo:IAO_0000030 ;
     rdfs:range bia:CreationProcess .
-
-bia:associationFileMetadata a owl:ObjectProperty;
-    rdfs:label "association file metadata"@en ;
-    rdfs:comment 
-    """A file, typically of a tabular format, which contains information about files in the dataset."""@en; 
-    rdfs:domain bia:Dataset ;
-    rdfs:range schema:MediaObject .
 
 ## Images, Image Representations
 
@@ -484,12 +462,6 @@ bia:Taxon a owl:Class ;
 
 # Properties
 
-bia:organismClassification a owl:ObjectProperty ;
-    rdfs:label "organism classifcation"@en ;
-    rdfs:comment "The classification of th ebiological matter."@en ;
-    rdfs:range bia:Taxon ;
-    rdfs:domain bia:BioSample .
-
 bia:biologicalEntityDescription a owl:DatatypeProperty ;
     rdfs:label "biological entity description"@en ;
     rdfs:comment "A short description of the biological entity."@en ;
@@ -513,18 +485,6 @@ bia:intrinsicVariableDescription a owl:DatatypeProperty ;
     rdfs:comment "Intrinsic (e.g. genetic) alteration."@en ;
     rdfs:range rdf:langString ;
     rdfs:domain bia:BioSample .
-
-bia:commonName a owl:DatatypeProperty ;
-    rdfs:label "common name"@en ;
-    rdfs:comment "Name used to refer to the species that can vary by locallity."@en ;
-    rdfs:range rdf:langString ;
-    rdfs:domain bia:Taxon .
-
-bia:scientificName a owl:DatatypeProperty ;
-    rdfs:label "scientific name"@en ;
-    rdfs:comment "Unique name used by the scientific community to identify species."@en ;
-    rdfs:range rdf:langString ;
-    rdfs:domain bia:Taxon .
 
 bia:ncbiId a owl:DatatypeProperty ;
     rdfs:label "ncbi id"@en ;

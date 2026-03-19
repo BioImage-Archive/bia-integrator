@@ -101,6 +101,19 @@ should be used when the images being referred to have a `label` field, while the
 
 can be used if the images referred to have a `label_prefix` field. Note that string values, not lists, are assumed in this case; in the unlikely situation of more than one many:many file:object mapping being referred to as an input image, a manually created list of `input_label` will be necessary. 
 
+*On generating YAML proposals*
+
+There is a proposal generator command:
+
+    poetry run ro-crate-ingest generate-empiar-proposal <path/to/generator_config.yaml> 
+
+with option:
+
+    --proposal-dir-path [-p]
+
+to specify where to put the generated output proposal (default is `ro-crate-ingest/generated_proposals`).
+
+There is more information on proposal generation configuration in the specific [readme](./ro_crate_ingest/empiar_to_ro_crate/readme_empiar_proposal_configuration.md).
 
 ## Validator
 

@@ -32,6 +32,9 @@
             "associatedBiologicalEntity": {
                 "@id": "bia:associatedBiologicalEntity"
             },
+            "associatedCreationProcess": {
+                "@id": "bia:associatedCreationProcess"
+            },
             "associatedImageAcquisitionProtocol": {
                 "@id": "bia:associatedImageAcquisitionProtocol"
             },
@@ -44,14 +47,14 @@
             "associatedProtocol": {
                 "@id": "bia:associatedProtocol"
             },
+            "associatedSourceImage": {
+                "@id": "bia:associatedSourceImage"
+            },
             "associatedSpecimen": {
                 "@id": "bia:associatedSubject"
             },
             "associatedSpecimenImagingPreparationProtocol": {
                 "@id": "bia:associatedImagingPreparationProtocol"
-            },
-            "associationFileMetadata": {
-                "@id": "bia:associationFileMetadata"
             },
             "authorNames": {
                 "@id": "bia:authorNames"
@@ -79,7 +82,7 @@
                 "@id": "csvw:name"
             },
             "commonName": {
-                "@id": "bia:commonName"
+                "@id": "http://rs.tdwg.org/dwc/terms/vernacularName"
             },
             "contactEmail": {
                 "@id": "schema:email"
@@ -159,7 +162,7 @@
                 "@id": "schema:name"
             },
             "organismClassification": {
-                "@id": "bia:organismClassification"
+                "@id": "schema:taxonomicRange"
             },
             "propertyUrl": {
                 "@id": "csvw:propertyUrl"
@@ -171,6 +174,9 @@
                 "@id": "schema:description"
             },
             "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+            "relatedPublication": {
+                "@id": "bia:relatedPublication"
+            },
             "resultOf": {
                 "@id": "bia:resultOf"
             },
@@ -179,7 +185,10 @@
             },
             "schema": "http://schema.org/",
             "scientificName": {
-                "@id": "bia:scientificName"
+                "@id": "http://rs.tdwg.org/dwc/terms/scientificName"
+            },
+            "seeAlso": {
+                "@id": "rdfs:seeAlso"
             },
             "signalChannelInformation": {
                 "@id": "bia:signalChannelInformation"
@@ -261,7 +270,11 @@
                     "@id": "#Reconstructed%20tomograms%20for%20dataset%202%20%28220330%29%20data/220330/tomograms/"
                 }
             ],
-            "accessionId": "EMPIAR-STARFILETEST"
+            "accessionId": "EMPIAR-STARFILETEST",
+            "seeAlso": [],
+            "relatedPublication": [
+                "https://doi.org/10.1038/s41592-023-02053-0"
+            ]
         },
         {
             "@id": "https://orcid.org/9999-0001-2222-3333",
@@ -405,6 +418,8 @@
             "associatedBiologicalEntity": [],
             "associatedSpecimenImagingPreparationProtocol": [],
             "associatedSpecimen": null,
+            "associatedCreationProcess": null,
+            "associatedSourceImage": [],
             "associatedImageAcquisitionProtocol": [],
             "associatedAnnotationMethod": [
                 {
@@ -418,9 +433,7 @@
                     "@id": "#Tomogram%20reconstruction%20and%20sub-tomogram%20averaging"
                 }
             ],
-            "hasPart": [],
-            "associatedCreationProcess": null,
-            "associatedSourceImage": []
+            "hasPart": []
         },
         {
             "@id": "#Tilt%20series%20and%20alignment%20information%20for%20dataset%202%20%28220330%29%20data/220330/alignment/",
@@ -433,6 +446,8 @@
             "associatedBiologicalEntity": [],
             "associatedSpecimenImagingPreparationProtocol": [],
             "associatedSpecimen": null,
+            "associatedCreationProcess": null,
+            "associatedSourceImage": [],
             "associatedImageAcquisitionProtocol": [],
             "associatedAnnotationMethod": [],
             "associatedImageAnalysisMethod": [
@@ -442,9 +457,7 @@
             ],
             "associatedImageCorrelationMethod": [],
             "associatedProtocol": [],
-            "hasPart": [],
-            "associatedCreationProcess": null,
-            "associatedSourceImage": []
+            "hasPart": []
         },
         {
             "@id": "#Unaligned%20multi-frame%20micrographs%20for%20dataset%202%20%28220330%29%20data/220330/data/",
@@ -465,6 +478,8 @@
                 }
             ],
             "associatedSpecimen": null,
+            "associatedCreationProcess": null,
+            "associatedSourceImage": [],
             "associatedImageAcquisitionProtocol": [
                 {
                     "@id": "#Cryo-electron%20tomography"
@@ -474,9 +489,7 @@
             "associatedImageAnalysisMethod": [],
             "associatedImageCorrelationMethod": [],
             "associatedProtocol": [],
-            "hasPart": [],
-            "associatedCreationProcess": null,
-            "associatedSourceImage": []
+            "hasPart": []
         },
         {
             "@id": "#Reconstructed%20tomograms%20for%20dataset%201%20%28211206%29%20data/211206/tomograms/",
@@ -489,6 +502,8 @@
             "associatedBiologicalEntity": [],
             "associatedSpecimenImagingPreparationProtocol": [],
             "associatedSpecimen": null,
+            "associatedCreationProcess": null,
+            "associatedSourceImage": [],
             "associatedImageAcquisitionProtocol": [],
             "associatedAnnotationMethod": [
                 {
@@ -506,9 +521,7 @@
                     "@id": "#Tomogram%20reconstruction%20and%20sub-tomogram%20averaging"
                 }
             ],
-            "hasPart": [],
-            "associatedCreationProcess": null,
-            "associatedSourceImage": []
+            "hasPart": []
         },
         {
             "@id": "#Tilt%20series%20and%20alignment%20information%20for%20dataset%201%20%28211206%29%20data/211206/alignment/",
@@ -521,6 +534,8 @@
             "associatedBiologicalEntity": [],
             "associatedSpecimenImagingPreparationProtocol": [],
             "associatedSpecimen": null,
+            "associatedCreationProcess": null,
+            "associatedSourceImage": [],
             "associatedImageAcquisitionProtocol": [],
             "associatedAnnotationMethod": [],
             "associatedImageAnalysisMethod": [
@@ -530,9 +545,7 @@
             ],
             "associatedImageCorrelationMethod": [],
             "associatedProtocol": [],
-            "hasPart": [],
-            "associatedCreationProcess": null,
-            "associatedSourceImage": []
+            "hasPart": []
         },
         {
             "@id": "#Unaligned%20multi-frame%20micrographs%20for%20dataset%201%20%28211206%29%20data/211206/data/",
@@ -553,6 +566,8 @@
                 }
             ],
             "associatedSpecimen": null,
+            "associatedCreationProcess": null,
+            "associatedSourceImage": [],
             "associatedImageAcquisitionProtocol": [
                 {
                     "@id": "#Cryo-electron%20tomography"
@@ -562,9 +577,7 @@
             "associatedImageAnalysisMethod": [],
             "associatedImageCorrelationMethod": [],
             "associatedProtocol": [],
-            "hasPart": [],
-            "associatedCreationProcess": null,
-            "associatedSourceImage": []
+            "hasPart": []
         },
         {
             "@id": "#Tomogram%20reconstruction%20and%20sub-tomogram%20averaging",

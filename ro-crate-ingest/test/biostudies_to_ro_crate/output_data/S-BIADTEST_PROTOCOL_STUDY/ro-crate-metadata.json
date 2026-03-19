@@ -32,6 +32,9 @@
             "associatedBiologicalEntity": {
                 "@id": "bia:associatedBiologicalEntity"
             },
+            "associatedCreationProcess": {
+                "@id": "bia:associatedCreationProcess"
+            },
             "associatedImageAcquisitionProtocol": {
                 "@id": "bia:associatedImageAcquisitionProtocol"
             },
@@ -44,14 +47,14 @@
             "associatedProtocol": {
                 "@id": "bia:associatedProtocol"
             },
+            "associatedSourceImage": {
+                "@id": "bia:associatedSourceImage"
+            },
             "associatedSpecimen": {
                 "@id": "bia:associatedSubject"
             },
             "associatedSpecimenImagingPreparationProtocol": {
                 "@id": "bia:associatedImagingPreparationProtocol"
-            },
-            "associationFileMetadata": {
-                "@id": "bia:associationFileMetadata"
             },
             "authorNames": {
                 "@id": "bia:authorNames"
@@ -79,7 +82,7 @@
                 "@id": "csvw:name"
             },
             "commonName": {
-                "@id": "bia:commonName"
+                "@id": "http://rs.tdwg.org/dwc/terms/vernacularName"
             },
             "contactEmail": {
                 "@id": "schema:email"
@@ -159,7 +162,7 @@
                 "@id": "schema:name"
             },
             "organismClassification": {
-                "@id": "bia:organismClassification"
+                "@id": "schema:taxonomicRange"
             },
             "propertyUrl": {
                 "@id": "csvw:propertyUrl"
@@ -171,6 +174,9 @@
                 "@id": "schema:description"
             },
             "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+            "relatedPublication": {
+                "@id": "bia:relatedPublication"
+            },
             "resultOf": {
                 "@id": "bia:resultOf"
             },
@@ -179,7 +185,10 @@
             },
             "schema": "http://schema.org/",
             "scientificName": {
-                "@id": "bia:scientificName"
+                "@id": "http://rs.tdwg.org/dwc/terms/scientificName"
+            },
+            "seeAlso": {
+                "@id": "rdfs:seeAlso"
             },
             "signalChannelInformation": {
                 "@id": "bia:signalChannelInformation"
@@ -246,7 +255,19 @@
                     "@id": "combined_file_list.tsv"
                 }
             ],
-            "accessionId": "S-BIADTEST_PROTOCOL_STUDY"
+            "accessionId": "S-BIADTEST_PROTOCOL_STUDY",
+            "seeAlso": [
+                {
+                    "@id": "https://www.proteinatlas.org/humanproteome/cell/cell+cycle+dependent"
+                }
+            ],
+            "relatedPublication": []
+        },
+        {
+            "@id": "https://www.proteinatlas.org/humanproteome/cell/cell+cycle+dependent",
+            "@type": "bia:ExternalReference",
+            "description": null,
+            "additionalType": "external link"
         },
         {
             "@id": "https://orcid.org/0000-0000-0111-0202",
@@ -393,6 +414,8 @@
             "associatedBiologicalEntity": [],
             "associatedSpecimenImagingPreparationProtocol": [],
             "associatedSpecimen": null,
+            "associatedCreationProcess": null,
+            "associatedSourceImage": [],
             "associatedImageAcquisitionProtocol": [],
             "associatedAnnotationMethod": [],
             "associatedImageAnalysisMethod": [],
@@ -411,9 +434,7 @@
                     "@id": "#experimentB%20%3A%20data%20analysis%20protocol"
                 }
             ],
-            "hasPart": [],
-            "associatedCreationProcess": null,
-            "associatedSourceImage": []
+            "hasPart": []
         },
         {
             "@id": "#experimentB%20%3A%20data%20analysis%20protocol",

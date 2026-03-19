@@ -1,0 +1,476 @@
+{
+  "accno": "S-BIAD2324",
+  "attributes": [
+    {
+      "name": "Template",
+      "value": "BioImages.v5"
+    },
+    {
+      "name": "Title",
+      "value": "Photon Absorption Remote Sensing Virtual Histopathology: A Preliminary Exploration of Diagnostic Equivalence to Gold-Standard H&E Staining in Skin Cancer Excisional Biopsies"
+    },
+    {
+      "name": "DOI",
+      "value": "10.6019/S-BIAD2324"
+    },
+    {
+      "name": "ReleaseDate",
+      "value": "2025-10-01"
+    },
+    {
+      "name": "AttachTo",
+      "value": "BioImages"
+    }
+  ],
+  "section": {
+    "accno": "study-0-z636",
+    "type": "Study",
+    "attributes": [
+      {
+        "name": "Title",
+        "value": "Photon Absorption Remote Sensing Virtual Histopathology: A Preliminary Exploration of Diagnostic Equivalence to Gold-Standard H&E Staining in Skin Cancer Excisional Biopsies"
+      },
+      {
+        "name": "ReleaseDate",
+        "value": "2025-10-01"
+      },
+      {
+        "name": "Description",
+        "value": "Photon Absorption Remote Sensing (PARS) enables label-free imaging of subcellular morphology by observing biomolecule specific absorption interactions. Coupled with deep-learning, PARS produces label-free virtual Hematoxylin and Eosin (H&E) stained images in unprocessed tissues. \nThis set of example of PARS virtual H&E images is from a clinical study available at \nhttps://doi.org/10.48550/arXiv.2504.18737.\n\nThe purpose of this study is to evaluate the diagnostic performance of these PARS-derived virtual H&E images in benign and malignant excisional skin biopsies, including Squamous (SCC), Basal (BCC) Cell Carcinoma, and normal skin. Sixteen unstained formalin-fixed paraffin-embedded skin excisions were PARS imaged, virtually H&E stained, then chemically stained and imaged at 40x. Seven fellowship trained dermatopathologists assessed all 32 images in a masked randomized fashion. A subset of 3 PARS and 3 chemical H&E (BCC, SCC, and benign) are presented here."
+      },
+      {
+        "name": "Keywords",
+        "value": "PARS"
+      },
+      {
+        "name": "Keywords",
+        "value": "absorption microscopy"
+      },
+      {
+        "name": "Keywords",
+        "value": "virtual histology"
+      },
+      {
+        "name": "License",
+        "value": "CC BY 4.0",
+        "valqual": [
+          {
+            "name": "URL",
+            "value": "https://creativecommons.org/licenses/by/4.0/legalcode"
+          }
+        ]
+      },
+      {
+        "name": "Funding statement",
+        "value": "This research was funded by: Natural Sciences and Engineering Research Council of Canada (DGECR-2019-00143, RGPIN2019-06134, DH-2023-00371); Canada Foundation for Innovation (JELF #38000); University of Waterloo Startup funds; Centre for Bioengineering and Biotechnology (CBB Seed fund); illumiSonics Inc (SRA #083181); New frontiers in research fund – exploration (NFRFE-2019-01012); The Canadian Institutes of Health Research (CIHR PJT 185984)."
+      }
+    ],
+    "links": [
+      {
+        "url": "https://arxiv.org/abs/2504.18737",
+        "attributes": [
+          {
+            "name": "Description",
+            "value": "Pre-print paper"
+          }
+        ]
+      }
+    ],
+    "subsections": [
+      {
+        "accno": "publ-1-srmh",
+        "type": "Publication",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "Photon Absorption Remote Sensing Virtual Histopathology: Diagnostic Equivalence to Gold-Standard H&E Staining in Skin Cancer Excisional Biopsies"
+          },
+          {
+            "name": "Authors",
+            "value": "Benjamin R. Ecclestone, James E. D. Tweel, Marie Abi Daoud, Hager Gaouda, Deepak Dinakaran, Michael P. Wallace, Ally Khan Somani, Gilbert Bigras, John R. Mackey, Parsin Haji Reza"
+          },
+          {
+            "name": "DOI",
+            "value": "https://doi.org/10.48550/arXiv.2504.18737"
+          }
+        ]
+      },
+      {
+        "accno": "fund-3-cqb7",
+        "type": "Funding",
+        "attributes": [
+          {
+            "name": "Agency",
+            "value": "NSERC"
+          },
+          {
+            "name": "grant_id",
+            "value": "DGECR-2019-00143, RGPIN2019-06134, DH-2023-00371"
+          }
+        ]
+      },
+      {
+        "type": "Funding",
+        "attributes": [
+          {
+            "name": "Agency",
+            "value": "CFI"
+          },
+          {
+            "name": "grant_id",
+            "value": "JELF #38000"
+          }
+        ]
+      },
+      {
+        "type": "Funding",
+        "attributes": [
+          {
+            "name": "Agency",
+            "value": "University of Waterloo "
+          },
+          {
+            "name": "grant_id"
+          }
+        ]
+      },
+      {
+        "type": "Funding",
+        "attributes": [
+          {
+            "name": "Agency",
+            "value": "Centre for Bioengineering and Biotechnology "
+          },
+          {
+            "name": "grant_id"
+          }
+        ]
+      },
+      {
+        "type": "Funding",
+        "attributes": [
+          {
+            "name": "Agency",
+            "value": "illumiSonics Inc "
+          },
+          {
+            "name": "grant_id",
+            "value": "SRA #083181"
+          }
+        ]
+      },
+      {
+        "type": "Funding",
+        "attributes": [
+          {
+            "name": "Agency",
+            "value": "New frontiers in research fund – exploration "
+          },
+          {
+            "name": "grant_id",
+            "value": "NFRFE-2019-01012"
+          }
+        ]
+      },
+      {
+        "type": "Funding",
+        "attributes": [
+          {
+            "name": "Agency",
+            "value": "The Canadian Institutes of Health Research "
+          },
+          {
+            "name": "grant_id",
+            "value": "CIHR PJT 185984"
+          }
+        ]
+      },
+      {
+        "accno": "bios-4-q3bo",
+        "type": "Biosample",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "Skin Tissue Samples"
+          },
+          {
+            "name": "Organism",
+            "value": "Homo sapiens (human)"
+          },
+          {
+            "name": "Biological entity",
+            "value": "Adult Human "
+          }
+        ]
+      },
+      {
+        "accno": "spec-5-pcjv",
+        "type": "Specimen",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "Squamous Cell Carcinoma"
+          },
+          {
+            "name": "Sample preparation protocol",
+            "value": "Skin lesions were surgically excised from patients and immediately fixed in 10% neutral buffered formalin for 24 hours. After fixation, a histotechnician prepared thin sectioned histopathology slides using a standard tissue processing and embedding workflow.6 Specimens were dehydrated through graded ethanol rinses, cleared with xylene baths to remove ethanol and residual fats, and embedded into paraffin wax to form formalin-fixed paraffin-embedded (FFPE) tissue blocks. The FFPE blocks were sectioned with a microtome, into ~4-5 μm translucent tissue sections, which were mounted on glass microscope slides and briefly heated to 60 °C to ensure adhesion and surface uniformity."
+          }
+        ]
+      },
+      {
+        "accno": "spec-1-u61d-removable",
+        "type": "Specimen",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "Basal Cell Carcinoma"
+          },
+          {
+            "name": "Sample preparation protocol",
+            "value": "Skin lesions were surgically excised from patients and immediately fixed in 10% neutral buffered formalin for 24 hours. After fixation, a histotechnician prepared thin sectioned histopathology slides using a standard tissue processing and embedding workflow.6 Specimens were dehydrated through graded ethanol rinses, cleared with xylene baths to remove ethanol and residual fats, and embedded into paraffin wax to form formalin-fixed paraffin-embedded (FFPE) tissue blocks. The FFPE blocks were sectioned with a microtome, into ~4-5 μm translucent tissue sections, which were mounted on glass microscope slides and briefly heated to 60 °C to ensure adhesion and surface uniformity."
+          }
+        ]
+      },
+      {
+        "accno": "spec-3-ywja-removable",
+        "type": "Specimen",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "Non-Malignant/Benign"
+          },
+          {
+            "name": "Sample preparation protocol",
+            "value": "Skin lesions were surgically excised from patients and immediately fixed in 10% neutral buffered formalin for 24 hours. After fixation, a histotechnician prepared thin sectioned histopathology slides using a standard tissue processing and embedding workflow.6 Specimens were dehydrated through graded ethanol rinses, cleared with xylene baths to remove ethanol and residual fats, and embedded into paraffin wax to form formalin-fixed paraffin-embedded (FFPE) tissue blocks. The FFPE blocks were sectioned with a microtome, into ~4-5 μm translucent tissue sections, which were mounted on glass microscope slides and briefly heated to 60 °C to ensure adhesion and surface uniformity."
+          }
+        ]
+      },
+      {
+        "accno": "imag-6-029l",
+        "type": "Image acquisition",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "PARS Virtual H&E"
+          },
+          {
+            "name": "Imaging instrument",
+            "value": "Custom PARS Microscope (described arXiv:2504.18737v1)"
+          },
+          {
+            "name": "Image acquisition parameters",
+            "value": "Label-free PARS images were acquired from the unstained tissue sections using a custom-built transmission mode PARS microscope system. Detailed descriptions of the optical system, and imaging protocol are provided in a recent report by Tweel et al.13 In brief, PARS imaging was performed using a 50 kHz 400 ps 266 nm UV laser (Wedge XF 266, RPMC; Bright Solutions, Pavia, Italy) to excite biomolecules. Following each excitation, three main features were measured representing the major absorption and scattering properties: radiative (fluorescence) emission, non-radiative heating (thermal/pressure effects), and local scattering. \nTo quantify the radiative signal intensity, emitted Stokes shifted photons were spectrally isolated and measured with an avalanche photodiode (APD130A2; Thorlabs, Newton, NJ, USA). The radiative intensity value was recorded as the peak emission amplitude. To measure the scattering and non-radiative relaxation effects, a 405 nm continuous-wave probe beam was co-aligned with the excitation (OBIS-LS405; Coherent, Santa Clara, CA, USA). Non-radiative (photothermal, and photoacoustic) signals were measured by observing heat and pressure induced modulations in the transmitted probe beam intensity following excitation. The time-resolved non-radiative modulation was measured by integrating the modulation to determine a percentage change in probe transmission. Scattering signals were recorded by measuring the 405 nm probe transmission intensity prior to excitation (APD130A2; Thorlabs, Newton, NJ, USA).\nThe three optical contrasts from each excitation event then correspond to one co-registered pixel in the final image. To form images, three-axis mechanical stages moved the sample across the objective lenses in a raster (“s”-shaped) scanning pattern. Pixels or excitation events were spaced 250 nm apart achieving 40× digital imaging magnification. Matching optical resolution was provided using a 0.42 numerical aperture (NA) UV objective lens (NPAL-50-UV-YSTF; OptoSigma, Santa Ana, CA, USA) to focus both excitation and detection beams, while optical signals (probe light and radiative photons) were collected using a 0.7 NA objective lens (278-806-3; Mitutoyo, Aurora, IL, USA). \nWhole slide images were formed by discretizing the ROI into 500 × 500 μm sections which were independently scanned using the highlighted method. At each section, an autofocusing operation was performed prior to scanning. Section data was then contrast matched and stitched together forming a single whole-slide image, using the pipeline outlined in by Tweel et al.13 The result was a complete whole-slide image based on native tissue absorption characteristics without the need for exogenous labels.\n"
+          },
+          {
+            "name": "Imaging method",
+            "value": "microscopy"
+          },
+          {
+            "name": "Imaging method",
+            "value": "PARS"
+          }
+        ],
+        "subsections": [
+          [
+            {
+              "accno": "imag-6-029l-1-removable",
+              "type": "Table",
+              "attributes": [
+                {
+                  "name": "Column 1"
+                }
+              ]
+            }
+          ]
+        ]
+      },
+      {
+        "accno": "imag-2-k1ua-removable",
+        "type": "Image acquisition",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "Chemical H&E Image"
+          },
+          {
+            "name": "Imaging instrument",
+            "value": "Morpholens 1,Morphle Digital Pathology"
+          },
+          {
+            "name": "Image acquisition parameters",
+            "value": "Tissues samples underwent standard chemical H&E staining using standard histopathology protocols. Stained slides were digitized at 40× magnification using a transmission brightfield slide scanner (Morpholens 1; Morphle Digital Pathology, New York, NY, USA). This produced high-resolution images of the chemically stained tissue to serve as ground truth for both training and validation."
+          },
+          {
+            "name": "Imaging method",
+            "value": "bright-field microscopy"
+          }
+        ]
+      },
+      {
+        "accno": "stud-10-uwoo",
+        "type": "Study Component",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Whole Slide Image Pair Dataset"
+          },
+          {
+            "name": "Description",
+            "value": "Matched chemical H&E and PARS virtual stain of non-malignant/benign, BCC, and SCC human skin tissues "
+          },
+          {
+            "name": "File List",
+            "value": "Skin_Clinical_Samples.json"
+          }
+        ],
+        "subsections": [
+          {
+            "accno": "asso-11-c6dx",
+            "type": "Associations",
+            "attributes": [
+              {
+                "name": "Biosample",
+                "value": "Skin Tissue Samples"
+              },
+              {
+                "name": "Specimen",
+                "value": "Non-Malignant/Benign"
+              },
+              {
+                "name": "Image acquisition",
+                "value": "PARS Virtual H&E"
+              }
+            ]
+          },
+          {
+            "type": "Associations",
+            "attributes": [
+              {
+                "name": "Biosample",
+                "value": "Skin Tissue Samples"
+              },
+              {
+                "name": "Specimen",
+                "value": "Non-Malignant/Benign"
+              },
+              {
+                "name": "Image acquisition",
+                "value": "Chemical H&E Image"
+              }
+            ]
+          },
+          {
+            "type": "Associations",
+            "attributes": [
+              {
+                "name": "Biosample",
+                "value": "Skin Tissue Samples"
+              },
+              {
+                "name": "Specimen",
+                "value": "Basal Cell Carcinoma"
+              },
+              {
+                "name": "Image acquisition",
+                "value": "PARS Virtual H&E"
+              }
+            ]
+          },
+          {
+            "type": "Associations",
+            "attributes": [
+              {
+                "name": "Biosample",
+                "value": "Skin Tissue Samples"
+              },
+              {
+                "name": "Specimen",
+                "value": "Basal Cell Carcinoma"
+              },
+              {
+                "name": "Image acquisition",
+                "value": "Chemical H&E Image"
+              }
+            ]
+          },
+          {
+            "type": "Associations",
+            "attributes": [
+              {
+                "name": "Biosample",
+                "value": "Skin Tissue Samples"
+              },
+              {
+                "name": "Specimen",
+                "value": "Squamous Cell Carcinoma"
+              },
+              {
+                "name": "Image acquisition",
+                "value": "PARS Virtual H&E"
+              }
+            ]
+          },
+          {
+            "type": "Associations",
+            "attributes": [
+              {
+                "name": "Biosample",
+                "value": "Skin Tissue Samples"
+              },
+              {
+                "name": "Specimen",
+                "value": "Squamous Cell Carcinoma"
+              },
+              {
+                "name": "Image acquisition",
+                "value": "Chemical H&E Image"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "accno": "author-1",
+        "type": "Author",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Benjamin Ecclestone"
+          },
+          {
+            "name": "E-mail",
+            "value": "becclest@uwaterloo.ca"
+          },
+          {
+            "name": "ORCID",
+            "value": "0000-0003-1726-8161"
+          },
+          {
+            "name": "Role",
+            "value": "first author"
+          },
+          {
+            "name": "affiliation",
+            "value": "o1",
+            "reference": true
+          }
+        ]
+      },
+      {
+        "accno": "o1",
+        "type": "organisation",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "University of Waterloo"
+          },
+          {
+            "name": "RORID",
+            "value": "https://ror.org/01aff2v68"
+          }
+        ]
+      }
+    ]
+  },
+  "type": "submission"
+}

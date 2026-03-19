@@ -1,0 +1,87 @@
+accession_id: "EMPIAR-SPECIMENALIASPATTERNSTEST"
+paper_doi: "https://doi.org/10.0000/test.0002"
+
+specimen_defaults:
+  biosample_title: "Test organism cells"
+  specimen_imaging_preparation_protocol_titles:
+    - "Grid preparation"
+    - "Cryo-FIB milling"
+
+# Case 2: the same numeric specimen id appears with different formatting
+# across datasets — tomo_0001 in frames, 0001 in tilt series, ts_001 in
+# tomograms. All normalise to the canonical 4-digit padded form.
+specimens:
+  pattern_alias_mappings:
+    "(\\d{4})":
+      - "tomo_(\\d{4})"
+      - "(\\d{4})"
+      - "ts_(\\d{3})"
+
+biosamples:
+  - title: "Test organism cells"
+    organism_classification:
+      - common_name: "Test organism"
+        scientific_name: "Testus organismicus"
+        ncbi_id: "NCBI:txid000001"
+    biological_entity_description: "Test organism cells for cryo-ET."
+    growth_protocol_title: "Cell culture"
+
+specimen_imaging_preparation_protocols:
+  - title: "Grid preparation"
+    protocol_description: "Standard grid prep."
+  - title: "Cryo-FIB milling"
+    protocol_description: "Standard FIB milling."
+
+image_acquisition_protocols:
+  - title: "Cryo-electron tomography"
+    protocol_description: "Standard cryo-ET acquisition."
+    imaging_instrument_description: "Titan Krios 300 kV."
+    fbbi_id:
+      - "obo:FBbi_00000256"
+    imaging_method_name:
+      - "Cryo-electron tomography"
+
+protocols:
+  - title: "Cell culture"
+    protocol_description: "Standard cell culture."
+  - title: "Tilt series pre-processing"
+    protocol_description: "Motion correction and CTF estimation."
+  - title: "Tomogram reconstruction"
+    protocol_description: "Weighted back-projection."
+
+datasets:
+  - name: "Raw frames"
+    data_directories:
+      - "data/frames"
+
+    file_globs:
+      frames:
+        - "**/tomo_*/*.tif"
+
+    image_acquisition_protocol_title:
+      dataset:
+        - "Cryo-electron tomography"
+
+  - name: "Tilt series"
+    data_directories:
+      - "data/tilt_series"
+
+    file_globs:
+      tilt_series:
+        - "**/*.mrc"
+
+    protocol_titles:
+      tilt_series:
+        - "Tilt series pre-processing"
+
+  - name: "Tomograms"
+    data_directories:
+      - "data/tomograms"
+
+    file_globs:
+      tomogram:
+        - "**/ts_*/*.mrc"
+
+    protocol_titles:
+      tomogram:
+        - "Tomogram reconstruction"

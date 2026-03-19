@@ -1,0 +1,83 @@
+accession_id: "EMPIAR-12049"
+paper_doi: "https://doi.org/10.1016/j.devcel.2024.12.002"
+
+specimen_defaults:
+  biosample_title: "C. elegans embryonic cells expressing GFP::SPD-5 and H2B::mCherry" 
+  specimen_imaging_preparation_protocol_titles:
+    - "Embryo dissociation and plunge freezing"
+    - "Cryo-fluorescence microscopy"
+    - "Cryo-FIB milling"
+
+specimens:
+  literal_alias_mappings:
+    "centrosome_01": ["**/20190429/**/TS_05*", "**/cent1.mrc"]
+    "centrosome_02": ["**/20200309/**/TS_002*", "**/cent2.mrc"]
+    "centrosome_03": ["**/20200724/**/TS_004*", "**/cent3.mrc"]
+    "centrosome_04": ["**/20200724/**/TS_009*", "**/cent4.mrc"]
+    "centrosome_05": ["**/20200725/**/TS_006*", "**/cent5.mrc"]
+    "centrosome_06": ["**/20210216/**/TS_006*", "**/cent6.mrc"]
+    "centrosome_07": ["**/20210216/**/TS_009*", "**/cent7.mrc"]
+    "centrosome_08": ["**/20210216/**/TS_011*", "**/cent8.mrc"]
+    "centrosome_09": ["**/20210216/**/TS_003*", "**/cent9.mrc"]
+    "centrosome_10": ["**/20210710/**/TS_001*", "**/cent10.mrc"]
+    "centrosome_11": ["**/20210710/**/TS_006*", "**/cent11.mrc"]
+    "centrosome_12": ["**/20210710/**/TS_002*", "**/cent12.mrc"]
+
+biosamples:
+  - title: "C. elegans embryonic cells expressing GFP::SPD-5 and H2B::mCherry"  
+    organism_classification:
+      - common_name: "C. elegans"
+        scientific_name: "Caenorhabditis elegans"
+        ncbi_id: "NCBI:txid6239"
+    biological_entity_description: "Dissociated embryonic cells from gravid adult C. elegans expressing GFP::SPD-5 and H2B::mCherry."  
+    growth_protocol_title: "C. elegans maintenance and embryo collection"
+
+protocols:
+  - title: "C. elegans maintenance and embryo collection"
+    protocol_description: "C. elegans worms expressing GFP::SPD-5 and H2B::mCherry were maintained at 22°C on NGM plates seeded with OP50 bacteria until reaching the gravid adult stage. For each preparation, at least four 100 mm petri dishes were grown until bacteria was almost fully consumed. Plates were washed with M9 media supplemented with 0.1% PEG 3350 and passed through a 40 μm cell strainer to remove bacteria, eggs, and larvae. Gravid mothers retained on the strainer were washed into 1.5 ml Eppendorf tubes and washed three times by centrifugation at 600 RCF for 6 min at 22°C. Embryos were enriched by bleaching: worms were incubated with bleaching solution (750 μl H2O, 600 μl 5 M NaOH, 450 μl 5% bleach) at 1400 RPM on a thermomixer at 22°C for 13 min, centrifuged at 600 RCF for 6 min, and resuspended in M9 with 0.1% PEG. The M9 medium was replaced with L-15 medium without phenol red, supplemented with 50 U/ml penicillin-streptomycin, 10% FBS, and sucrose to 340 mOsm, by three rounds of centrifugation at 600 RCF for 6 min at 22°C."
+  - title: "Tomogram reconstruction"
+    protocol_description: "Motion correction and CTF estimation were carried out in Warp 1.0.9 from raw movie frames. Tilt-series alignment was performed using patch tracking in eTomo within the IMOD package. Final tomogram reconstruction was carried out in Warp at a voxel size of 13.4 Å/pixel (4x binning). For centrosome matrix segmentation, tomograms were denoised using cryoCARE 0.2.1 and deconvolved in Warp. A lamella mask generated using TOM toolbox in MATLAB was applied. For tomograms with strong intensity gradients due to curtaining, filtering with kernel size 10 was applied to the denoised tomograms using TOM toolbox, and the filtered tomogram was subtracted as a background correction."
+
+specimen_imaging_preparation_protocols:
+  - title: "Embryo dissociation and plunge freezing"
+    protocol_description: "Embryos in modified L-15 medium were treated with 4 mg/ml chitinase for 15 min with rocking, followed by two rounds of centrifugation at 300 RCF for 3 min at 22°C. After the final centrifugation, cells were separated by aspiration through a 200 μl pipette tip for 10 min. Accutase solution was added (25 μl) and incubated at room temperature for 10 min with gentle shaking, followed by a further 10 min of pipetting. Cells were filtered sequentially through 20 μm and 10 μm cell strainers to remove large clumps, and checked by light microscopy to confirm clusters were smaller than 20 μm. Plunge freezing was performed within one hour of dissociation. Quantifoil Holey SiO2 R 1/4 Au 200 mesh grids were glow discharged on both sides for 45 s at 0.37 mBar and 15 mA. Using a Leica EM GP2 at 22°C and 70% humidity, 4 μl of cell suspension was applied to the front of the grid and 2 μl of supplemented L-15 to the back; grids were blotted from the back for 3 s and plunged into liquid ethane at -185°C."
+  - title: "Cryo-fluorescence microscopy"
+    protocol_description: "Grids were clipped into Autogrid cartridges modified for shallow-angle FIB milling and transferred to a Leica cryo-confocal microscope based on the Leica TCS SP8, equipped with a cryo-stage. Grid overviews were acquired in epifluorescence mode with a 50x NA 0.9 air objective and montaged using the Mosaic stitching module in Leica Application Suite X 3.5.5 to generate a map for region-of-interest identification. Mitotic cells were selected for higher-detail confocal imaging (1056 × 1056 pixels, 182.65 × 182.65 μm; 4x line averaging; 200 Hz mirror speed; pinhole 91.95 μm; 55 × 0.37 μm z-steps over 20.11 μm). The 488 nm and 552 nm lasers were set to 50% power, with detection at 492–540 nm and 596–719 nm respectively. Interphase cells were targeted for FIB milling without detailed cryo-FM imaging."
+  - title: "Cryo-FIB milling"
+    protocol_description: "Cryo-FIB milling was carried out on a Thermo Fisher Scientific Aquilos 1 dual-beam microscope. Prior to milling, scanning electron microscopy overviews were manually overlaid with the cryo-fluorescence microscopy montage and confocal Z-projections (generated in Fiji 2.9.0) to define grid squares and lamella positions for cells of interest identified by cryo-FM. Grids were coated with organometallic platinum via the Gas Injection System for 10 s, then sputter-coated with metallic platinum at 10 Pa, 1 kV, and 10 mA for 20 s. Milling was carried out at a 20° stage tilt using a shuttle with a 45° pretilt at 30 kV. 300 nm micro-expansion joints were milled on both sides of each target lamella to reduce stress. Sequential milling was performed at 1 nA, 500 pA, and 300 pA at distances of 5 μm, 3 μm, and 1 μm from the lamella target, respectively, followed by fine milling at 100 pA. Milling was performed either fully manually or with automated rough milling using SerialFIB. Completed grids were sputter-coated for 3 s at 10 Pa, 1 kV, and 10 mA."
+
+image_acquisition_protocols:
+  - title: "Cryo-electron tomography"
+    protocol_description: "Tilt-series data were collected on a Thermo Fisher Scientific Titan Krios operating at 300 kV, equipped with a field-emission gun, a Gatan Quantum post-column energy filter in zero-loss mode, a Gatan K2 Summit direct electron detector, and a Volta phase plate preconditioned for 6 min prior to acquisition. Grid maps were collected at 233 nm/pixel and lamella maps at 2.2 nm/pixel, and overlaid with the cryo-fluorescence microscopy montage and projected confocal stacks to guide tilt-series targeting. Dose-fractionated tilt series were acquired using SerialEM with a tilt range of -60° to +60° at 2° increments in a dose-symmetric scheme, with the sample pre-tilted to compensate for the FIB milling angle. A pixel size of 3.37 Å/pixel, defocus range of 2.5–4.5 μm, and total electron dose of 120 e⁻/Å² were applied. In total, 12 tomograms of centrosomes were analysed."
+    imaging_instrument_description: "Thermo Fisher Scientific Titan Krios cryo-TEM at 300 kV, equipped with a field-emission gun, Gatan Quantum post-column energy filter (zero-loss mode), Gatan K2 Summit direct electron detector, and Volta phase plate."
+    fbbi_id:
+      - "obo:FBbi_00000256"
+    imaging_method_name:
+      - "Cryo-electron tomography"
+
+datasets:
+  - name: "Unaligned multi-frame micrographs of C. elegans centrosomes"
+    data_directories:
+      - "data/frames"
+
+    file_globs:
+      frames:
+        - "**/*.tif"
+      tilt_series:
+        - "**/processing/*.st"
+
+    image_acquisition_protocol_title:
+      dataset:
+        - "Cryo-electron tomography"
+
+  - name: "Raw reconstructed tomograms of C. elegans centrosomes"
+    data_directories:
+      - "data/rawTomos"
+
+    file_globs:
+      tomogram:
+        - "*.mrc"
+
+    protocol_titles:
+      tomogram:
+        - "Tomogram reconstruction"

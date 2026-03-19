@@ -1,0 +1,201 @@
+{
+	"accno": "S-BIAD662",
+	"attributes": [
+		{
+			"name": "Template",
+			"value": "BioImages.v4"
+		},
+		{
+			"name": "ReleaseDate",
+			"value": "2023-03-30"
+		},
+		{
+			"name": "AttachTo",
+			"value": "BioImages"
+		}
+	],
+	"section": {
+		"type": "Study",
+		"attributes": [
+			{
+				"name": "Title",
+				"value": "Inducible overexpression of a FAM3C/ILEI transgene has pleiotropic effects with shortened life span, liver fibrosis and anemia in mice"
+			},
+			{
+				"name": "Description",
+				"value": "FAM3C/ILEI is an important factor in epithelial-to-mesenchymal transition (EMT) induction, tumor progression and metastasis. Overexpressed in many cancers, elevated ILEI levels and secretion correlate with poor patient survival. Although ILEI’s causative role in invasive tumor growth and metastasis has been demonstrated in several cellular tumor models, there are no available transgenic mice to study these effects in the context of a complex organism. Here, we describe the generation and initial characterization of a Tet-ON inducible Fam3c/ILEI transgenic mouse strain. We find that ubiquitous induction of ILEI overexpression (R26-ILEIind) at weaning age leads to a shortened lifespan, reduced body weight and microcytic hypochromic anemia. The anemia was reversible at a young age within a week upon withdrawal of ILEI induction. Vav1-driven overexpression of the ILEIind transgene in all hematopoietic cells (Vav-ILEIind) did not render mice anemic or lower overall fitness, demonstrating that no intrinsic mechanisms of erythroid development were dysregulated by ILEI and that hematopoietic ILEI hyperfunction did not contribute to death. Reduced serum iron levels of R26-ILEIind mice were indicative for a malfunction in iron uptake or homeostasis. Accordingly, the liver, the main organ of iron metabolism, was severely affected in moribund ILEI overexpressing mice: increased alanine transaminase and aspartate aminotransferase levels indicated liver dysfunction, the liver was reduced in size, showed increased apoptosis, reduced cellular iron content, and had a fibrotic phenotype. These data indicate that high ILEI expression in the liver might reduce hepatoprotection and induce liver fibrosis, which leads to liver dysfunction, disturbed iron metabolism and eventually to death. Overall, we show here that the novel Tet-ON inducible Fam3c/ILEI transgenic mouse strain allows tissue specific timely controlled overexpression of ILEI and thus, will serve as a versatile tool to model the effect of elevated ILEI expression in diverse tissue entities and disease conditions, including cancer."
+			},
+			{
+				"name": "Keywords",
+				"value": "FAM3C, ILEI Tet-ON, anemia, liver fibrosis"
+			},
+			{
+				"name": "Acknowledgements",
+				"value": "no"
+			},
+			{
+				"name": "License",
+				"value": "CC0"
+			}
+		],
+		"subsections": [
+			{
+				"type": "author",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "Agnes Csiszar"
+					},
+					{
+						"name": "E-mail",
+						"value": "agnes.csiszar@meduniwien.ac.at"
+					},
+					{
+						"name": "Role",
+						"value": "corresponding author"
+					},
+					{
+						"name": "ORCID",
+						"value": "0000-0001-7911-3427"
+					},
+					{
+						"name": "affiliation",
+						"value": "o1",
+						"reference": true
+					}
+				]
+			},
+			{
+				"accno": "o1",
+				"type": "organisation",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "Medical University of Vienna"
+					}
+				]
+			},
+			{
+				"type": "Publication",
+				"attributes": [
+					{
+						"name": "Pubmed ID",
+						"value": "in revision"
+					}
+				]
+			},
+			{
+				"accno": "Biosample-1",
+				"type": "Biosample",
+				"attributes": [
+					{
+						"name": "Title",
+						"value": "Inducible overexpression of a FAM3C/ILEI transgene has pleiotropic effects with shortened life span, liver fibrosis and anemia in mice"
+					},
+					{
+						"name": "Organism",
+						"value": "Mus musculus (mouse)"
+					},
+					{
+						"name": "Biological entity",
+						"value": "blood, liver"
+					}
+				]
+			},
+			{
+				"accno": "Specimen-2",
+				"type": "Specimen",
+				"attributes": [
+					{
+						"name": "Title",
+						"value": "Inducible overexpression of a FAM3C/ILEI transgene has pleiotropic effects with shortened life span, liver fibrosis and anemia in mice"
+					},
+					{
+						"name": "Sample preparation protocol",
+						"value": "longitudinal analysis of blood parameters by weekly blood sampling from mice via tail vein puncture; dissection and formalin fixation of the liver followed by the generation of FFPE histoblocks, generation of thin sections, H&E and IHC analysis"
+					}
+				]
+			},
+			{
+				"accno": "Image acquisition-3",
+				"type": "Image acquisition",
+				"attributes": [
+					{
+						"name": "Title",
+						"value": "Inducible overexpression of a FAM3C/ILEI transgene has pleiotropic effects with shortened life span, liver fibrosis and anemia in mice"
+					},
+					{
+						"name": "Imaging instrument",
+						"value": "bright-field histological microscope; 3D Mirax slidescanner"
+					},
+					{
+						"name": "Image acquisition parameters",
+						"value": "scans at 40x magnification on demand with extended focus"
+					},
+					{
+						"name": "Imaging method",
+						"value": "FLIP"
+					}
+				]
+			},
+			{
+				"accno": "Image correlation-4",
+				"type": "Image correlation",
+				"attributes": [
+					{
+						"name": "Title",
+						"value": "Inducible overexpression of a FAM3C/ILEI transgene has pleiotropic effects with shortened life span, liver fibrosis and anemia in mice"
+					}
+				]
+			},
+			{
+				"accno": "Image analysis-5",
+				"type": "Image analysis",
+				"attributes": [
+					{
+						"name": "Title",
+						"value": "Inducible overexpression of a FAM3C/ILEI transgene has pleiotropic effects with shortened life span, liver fibrosis and anemia in mice"
+					}
+				]
+			},
+			{
+				"accno": "Study Component-6",
+				"type": "Study Component",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "Inducible overexpression of a FAM3C/ILEI transgene has pleiotropic effects with shortened life span, liver fibrosis and anemia in mice"
+					},
+					{
+						"name": "Description",
+						"value": "diverse IHC stainings on livers of moribund R26-ILEIind dox induced transgenic mice and control littermates, and analysis of several blood parameters related to liver function and anemia in these mice"
+					},
+					{
+						"name": "File List",
+						"value": "study composition PONE.json"
+					}
+				],
+				"subsections": [
+					{
+						"type": "Associations",
+						"attributes": [
+							{
+								"name": "Biosample",
+								"value": "Inducible overexpression of a FAM3C/ILEI transgene has pleiotropic effects with shortened life span, liver fibrosis and anemia in mice"
+							},
+							{
+								"name": "Specimen",
+								"value": "Inducible overexpression of a FAM3C/ILEI transgene has pleiotropic effects with shortened life span, liver fibrosis and anemia in mice"
+							},
+							{
+								"name": "Image acquisition",
+								"value": "Inducible overexpression of a FAM3C/ILEI transgene has pleiotropic effects with shortened life span, liver fibrosis and anemia in mice"
+							}
+						]
+					}
+				]
+			}
+		]
+	},
+	"type": "submission"
+}

@@ -15,13 +15,19 @@ app = FastAPI(
     debug=False,
     root_path=settings.fastapi_root_path,
     extra={"event_loop_specific": {}},
-    redoc_url=None
+    redoc_url=None,
 )
+
 
 @app.get("/redoc", include_in_schema=False)
 async def redoc_html():
+    openapi_url_path = (
+        f"{app.openapi_url}"
+        if settings.fastapi_root_path == ""
+        else "/search/openapi.json"
+    )
     return get_redoc_html(
-        openapi_url=app.openapi_url,
+        openapi_url=f"{openapi_url_path}",
         title=app.title + " - ReDoc",
         redoc_js_url="https://unpkg.com/redoc@2/bundles/redoc.standalone.js",
     )
@@ -77,5 +83,5 @@ async def get_elastic() -> Elastic:
 from api.website import router as website_router
 from api.search import router as search_router
 
-app.include_router(search_router)
-app.include_router(website_router)
+app.include_router(search_router, prefix="/v1")
+app.include_router(website_router, prefix="/v1")

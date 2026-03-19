@@ -1,13 +1,16 @@
 import logging
 import re
+from collections.abc import Iterable
+from typing import Any
+
+from bia_shared_datamodels import ro_crate_models, semantic_models
+
+from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_api import (
+    Submission,
+)
 from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_parsing_utils import (
     attributes_to_dict,
 )
-from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_api import Submission
-
-from bia_shared_datamodels import ro_crate_models, semantic_models
-from collections.abc import Iterable
-from typing import Any
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -17,6 +20,7 @@ def get_study(
     contributors: list[ro_crate_models.Contributor],
     datasets: Iterable[ro_crate_models.Dataset],
     combined_file_list: ro_crate_models.FileList,
+    external_refernces: list[ro_crate_models.ExternalReference],
 ) -> ro_crate_models.Study:
     submission_attributes = attributes_to_dict(submission.attributes)
     study_attributes = attributes_to_dict(submission.section.attributes)
@@ -34,12 +38,13 @@ def get_study(
         "datePublished": submission_attributes["releasedate"],
         "description": study_attributes.get("description", None),
         "acknowledgement": study_attributes.get("acknowledgements", None),
-        "keyword": study_attributes.get("keywords", []),
+        "keyword": get_keywords(study_attributes.get("keywords", [])),
         "contributor": [{"@id": c.id} for c in contributors],
         "hasPart": has_part_ids,
         "associationFileMetadata": (
             {"@id": combined_file_list.id} if combined_file_list else None
         ),
+        "seeAlso": [{"@id": external_ref.id} for external_ref in external_refernces],
         # TODO handle grants & funding statements
     }
 
@@ -65,3 +70,12 @@ def get_license(study_attributes: dict[str, Any]) -> semantic_models.Licence:
     licence = re.sub(r"\.", "", temp)
     licence = licence.replace("-", "_")
     return semantic_models.Licence[licence]
+
+
+def get_keywords(keywords: str | list[str] | None) -> list:
+    if isinstance(keywords, list):
+        return keywords
+    elif isinstance(keywords, str):
+        return keywords.split(",")
+    else:
+        return []

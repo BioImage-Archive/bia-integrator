@@ -60,8 +60,9 @@ def get_contributor(
 def get_contributor_id(
     attributes_dict: dict, contributor_bnode_int: int
 ) -> tuple[str, int]:
-    if "orcid" in attributes_dict:
-        id: str = attributes_dict["orcid"]
+    orcid = attributes_dict.get("orcid")
+    if orcid:
+        id: str = orcid
         if not id.startswith("https://orcid.org/"):
             id = f"https://orcid.org/{id}"
     else:
@@ -79,14 +80,10 @@ def sanitise_contributor_email(email: Optional[str]):
 
 
 def get_roles(attributes_dict: dict):
-    roles = []
-    if "role" in attributes_dict:
-        if isinstance(attributes_dict["role"], list):
-            roles = attributes_dict["role"]
-        else:
-            roles = [
-                role.strip(" ") for role in attributes_dict.get("role", "").split(",")
-            ]
+    roles = attributes_dict.get("role") or []
+
+    if isinstance(roles, str):
+        roles = [role.strip(" ") for role in roles.split(",")]
 
     return roles
 

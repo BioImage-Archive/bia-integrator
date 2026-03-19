@@ -1,0 +1,466 @@
+{
+	"accno": "S-BSST592",
+	"attributes": [
+		{
+			"name": "Template",
+			"value": "Default"
+		},
+		{
+			"name": "Title",
+			"value": "LC3 and p62 immunostaining in colonic epithelial cells"
+		},
+		{
+			"name": "ReleaseDate",
+			"value": "2021-02-15"
+		},
+		{
+			"name": "AttachTo",
+			"value": "BioImages"
+		}
+	],
+	"section": {
+		"type": "Study",
+		"attributes": [
+			{
+				"name": "Title",
+				"value": "LC3 and p62 immunostaining in colonic epithelial cells"
+			},
+			{
+				"name": "Description",
+				"value": "LC3 and p62 immunostaining in colonic epithelial cells"
+			},
+			{
+				"name": "Organism",
+				"value": "Mus musculus (mouse)"
+			},
+			{
+				"name": "Gnotobiote experiments",
+				"value": "mice colonic epitherial -cell"
+			}
+		],
+		"files": [
+			{
+				"path": "WT1-1.tif",
+				"size": 26542618,
+				"attributes": [
+					{
+						"name": "Description",
+						"value": "LC3 and p62 "
+					},
+					{
+						"name": "Type",
+						"value": "WT#1-1"
+					}
+				],
+				"type": "file"
+			},
+			{
+				"path": "WT1-2.tif",
+				"size": 26542616,
+				"attributes": [
+					{
+						"name": "Description",
+						"value": "LC3 and p62 "
+					},
+					{
+						"name": "Type",
+						"value": "WT#1-2"
+					}
+				],
+				"type": "file"
+			},
+			{
+				"path": "WT1-3.tif",
+				"size": 26542628,
+				"attributes": [
+					{
+						"name": "Description",
+						"value": "LC3 and p62 "
+					},
+					{
+						"name": "Type",
+						"value": "WT#1-3"
+					}
+				],
+				"type": "file"
+			},
+			{
+				"path": "WT2-1.tif",
+				"size": 26542634,
+				"attributes": [
+					{
+						"name": "Description",
+						"value": "LC3 and p62 "
+					},
+					{
+						"name": "Type",
+						"value": "WT#2-1"
+					}
+				],
+				"type": "file"
+			},
+			{
+				"path": "WT2-2.tif",
+				"size": 26542624,
+				"attributes": [
+					{
+						"name": "Description",
+						"value": "LC3 and p62 "
+					},
+					{
+						"name": "Type",
+						"value": "WT#2-2"
+					}
+				],
+				"type": "file"
+			},
+			{
+				"path": "WT2-3.tif",
+				"size": 26542670,
+				"attributes": [
+					{
+						"name": "Description",
+						"value": "LC3 and p62 "
+					},
+					{
+						"name": "Type",
+						"value": "WT#2-3"
+					}
+				],
+				"type": "file"
+			},
+			{
+				"path": "WT2-4.tif",
+				"size": 26542572,
+				"attributes": [
+					{
+						"name": "Description",
+						"value": "LC3 and p62 "
+					},
+					{
+						"name": "Type",
+						"value": "WT#2-4"
+					}
+				],
+				"type": "file"
+			},
+			{
+				"path": "WT3-1.tif",
+				"size": 26542758,
+				"attributes": [
+					{
+						"name": "Description",
+						"value": "LC3 and p62 "
+					},
+					{
+						"name": "Type",
+						"value": "WT#3-1"
+					}
+				],
+				"type": "file"
+			},
+			{
+				"path": "WT3-2.tif",
+				"size": 26542712,
+				"attributes": [
+					{
+						"name": "Description",
+						"value": "LC3 and p62 "
+					},
+					{
+						"name": "Type",
+						"value": "WT#3-2"
+					}
+				],
+				"type": "file"
+			},
+			{
+				"path": "WT3-3.tif",
+				"size": 26542754,
+				"attributes": [
+					{
+						"name": "Description",
+						"value": "LC3 and p62 "
+					},
+					{
+						"name": "Type",
+						"value": "WT#3-3"
+					}
+				],
+				"type": "file"
+			},
+			{
+				"path": "WT4-1.tif",
+				"size": 26542712,
+				"attributes": [
+					{
+						"name": "Description",
+						"value": "LC3 and p62 "
+					},
+					{
+						"name": "Type",
+						"value": "WT#4-1"
+					}
+				],
+				"type": "file"
+			},
+			{
+				"path": "WT4-2.tif",
+				"size": 26542706,
+				"attributes": [
+					{
+						"name": "Description",
+						"value": "LC3 and p62 "
+					},
+					{
+						"name": "Type",
+						"value": "WT#4-2"
+					}
+				],
+				"type": "file"
+			},
+			{
+				"path": "WT4-3.tif",
+				"size": 26542712,
+				"attributes": [
+					{
+						"name": "Description",
+						"value": "LC3 and p62 "
+					},
+					{
+						"name": "Type",
+						"value": "WT#4-3"
+					}
+				],
+				"type": "file"
+			},
+			{
+				"path": "WT5-1.tif",
+				"size": 26542708,
+				"attributes": [
+					{
+						"name": "Description",
+						"value": "LC3 and p62 "
+					},
+					{
+						"name": "Type",
+						"value": "WT#5-1"
+					}
+				],
+				"type": "file"
+			},
+			{
+				"path": "WT5-2.tif",
+				"size": 26542758,
+				"attributes": [
+					{
+						"name": "Description",
+						"value": "LC3 and p62 "
+					},
+					{
+						"name": "Type",
+						"value": "WT#5-2"
+					}
+				],
+				"type": "file"
+			},
+			{
+				"path": "WT5-3.tif",
+				"size": 26542712,
+				"attributes": [
+					{
+						"name": "Description",
+						"value": "LC3 and p62 "
+					},
+					{
+						"name": "Type",
+						"value": "WT#5-3"
+					}
+				],
+				"type": "file"
+			},
+			{
+				"path": "WT6-1.tif",
+				"size": 26542612,
+				"attributes": [
+					{
+						"name": "Description",
+						"value": "LC3 and p62 "
+					},
+					{
+						"name": "Type",
+						"value": "WT#6-1"
+					}
+				],
+				"type": "file"
+			},
+			{
+				"path": "WT6-2.tif",
+				"size": 26542622,
+				"attributes": [
+					{
+						"name": "Description",
+						"value": "LC3 and p62 "
+					},
+					{
+						"name": "Type",
+						"value": "WT#6-2"
+					}
+				],
+				"type": "file"
+			},
+			{
+				"path": "WT6-3.tif",
+				"size": 26542622,
+				"attributes": [
+					{
+						"name": "Description",
+						"value": "LC3 and p62 "
+					},
+					{
+						"name": "Type",
+						"value": "WT#6-3"
+					}
+				],
+				"type": "file"
+			},
+			{
+				"path": "WT7-1.tif",
+				"size": 26542624,
+				"attributes": [
+					{
+						"name": "Description",
+						"value": "LC3 and p62 "
+					},
+					{
+						"name": "Type",
+						"value": "WT#7-1"
+					}
+				],
+				"type": "file"
+			},
+			{
+				"path": "WT7-2.tif",
+				"size": 26542630,
+				"attributes": [
+					{
+						"name": "Description",
+						"value": "LC3 and p62 "
+					},
+					{
+						"name": "Type",
+						"value": "WT#7-2"
+					}
+				],
+				"type": "file"
+			},
+			{
+				"path": "WT7-3.tif",
+				"size": 26542622,
+				"attributes": [
+					{
+						"name": "Description",
+						"value": "LC3 and p62 "
+					},
+					{
+						"name": "Type",
+						"value": "WT#7-3"
+					}
+				],
+				"type": "file"
+			},
+			{
+				"path": "WT7-4.tif",
+				"size": 26542640,
+				"attributes": [
+					{
+						"name": "Description",
+						"value": "LC3 and p62 "
+					},
+					{
+						"name": "Type",
+						"value": "WT#7-4"
+					}
+				],
+				"type": "file"
+			},
+			{
+				"path": "WT8-1.tif",
+				"size": 26542616,
+				"attributes": [
+					{
+						"name": "Description",
+						"value": "LC3 and p62 "
+					},
+					{
+						"name": "Type",
+						"value": "WT#8-1"
+					}
+				],
+				"type": "file"
+			},
+			{
+				"path": "WT8-2.tif",
+				"size": 26542626,
+				"attributes": [
+					{
+						"name": "Description",
+						"value": "LC3 and p62 "
+					},
+					{
+						"name": "Type",
+						"value": "WT#8-2"
+					}
+				],
+				"type": "file"
+			},
+			{
+				"path": "WT8-3.tif",
+				"size": 26542624,
+				"attributes": [
+					{
+						"name": "Description",
+						"value": "LC3 and p62 "
+					},
+					{
+						"name": "Type",
+						"value": "WT#8-3"
+					}
+				],
+				"type": "file"
+			}
+		],
+		"links": [],
+		"subsections": [
+			{
+				"type": "Author",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "Atsuo Nakamura"
+					},
+					{
+						"name": "E-mail",
+						"value": "a-nakamura@meito.co.jp"
+					},
+					{
+						"name": "affiliation",
+						"value": "o1",
+						"reference": true
+					}
+				]
+			},
+			{
+				"accno": "o1",
+				"type": "Organization",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "Whitehead Institute for Biomedical Research"
+					}
+				]
+			}
+		]
+	},
+	"type": "submission"
+}

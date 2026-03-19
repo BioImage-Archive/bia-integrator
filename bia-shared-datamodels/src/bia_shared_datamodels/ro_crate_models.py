@@ -6,7 +6,9 @@ from bia_shared_datamodels.linked_data.ontology_terms import (
     CSVW,
     DUBLINCORE,
     SCHEMA,
+    DARWINCORE,
 )
+from rdflib import RDFS
 from bia_shared_datamodels.linked_data.pydantic_ld.FieldContext import FieldContext
 from bia_shared_datamodels.linked_data.pydantic_ld.LDModel import ObjectReference
 from bia_shared_datamodels.linked_data.pydantic_ld.ROCrateModel import ROCrateModel
@@ -44,6 +46,8 @@ class Study(ROCrateModel):
         FieldContext(SCHEMA.hasPart, is_id_field=True),
     ] = Field()
     accessionId: Annotated[str, FieldContext(SCHEMA.identifier)] = Field()
+    seeAlso: Annotated[list[ObjectReference], FieldContext(RDFS.seeAlso)] = Field(default_factory=list)
+    relatedPublication: Annotated[list[str], FieldContext(BIA.relatedPublication)] = Field(default_factory=list)
 
     model_config = ConfigDict(model_type=BIA.Study)
 
@@ -116,9 +120,11 @@ class FundingBody(ROCrateModel):
 
 
 class ExternalReference(ROCrateModel):
-    link: Annotated[AnyUrl, FieldContext(SCHEMA.url)] = Field()
-    linkDescription: Annotated[Optional[str], FieldContext(SCHEMA.description)] = Field(
+    description: Annotated[Optional[str], FieldContext(SCHEMA.description)] = Field(
         default=None
+    )
+    additionalType: Annotated[Optional[str], FieldContext(SCHEMA.additionalType)] = (
+        Field(default=None)
     )
 
     model_config = ConfigDict(model_type=BIA.ExternalReference)
@@ -296,7 +302,7 @@ class BioSample(ROCrateModel):
         list[str], FieldContext(BIA.intrinsicVariableDescription)
     ] = Field(default_factory=list)
     organismClassification: Annotated[
-        list[ObjectReference], FieldContext(BIA.organismClassification)
+        list[ObjectReference], FieldContext(SCHEMA.taxonomicRange)
     ] = Field(default_factory=list)
     growthProtocol: Annotated[
         Optional[ObjectReference], FieldContext(BIA.growthProtocol, is_id_field=True)
@@ -306,12 +312,12 @@ class BioSample(ROCrateModel):
 
 
 class Taxon(ROCrateModel):
-    commonName: Annotated[Optional[str], FieldContext(BIA.commonName)] = Field(
-        default=None
+    commonName: Annotated[Optional[str], FieldContext(DARWINCORE.vernacularName)] = (
+        Field(default=None)
     )
-    scientificName: Annotated[Optional[str], FieldContext(BIA.scientificName)] = Field(
-        default=None
-    )
+    scientificName: Annotated[
+        Optional[str], FieldContext(DARWINCORE.scientificName)
+    ] = Field(default=None)
 
     model_config = ConfigDict(model_type=BIA.Taxon)
 

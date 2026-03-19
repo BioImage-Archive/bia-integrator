@@ -3,7 +3,7 @@ from fastapi.testclient import TestClient
 
 def test_fts(api_client: TestClient):
     rsp = api_client.get(
-        f"/search/fts", params={"query": "ZFTA_RELA HEK293T Puncta Studies"}
+        f"search/fts", params={"query": "ZFTA_RELA HEK293T Puncta Studies"}
     )
     assert rsp.status_code == 200
 
@@ -12,7 +12,7 @@ def test_fts(api_client: TestClient):
 
 
 def test_fts_facet_discovery_organism(api_client: TestClient):
-    rsp = api_client.get(f"/search/fts", params={"query": "with"})
+    rsp = api_client.get(f"search/fts", params={"query": "with"})
     assert rsp.status_code == 200
 
     body = rsp.json()
@@ -38,7 +38,7 @@ def test_fts_facet_discovery_organism(api_client: TestClient):
 
 
 def test_fts_facet_discovery_release_date(api_client: TestClient):
-    rsp = api_client.get(f"/search/fts", params={"query": "with"})
+    rsp = api_client.get(f"search/fts", params={"query": "with"})
     assert rsp.status_code == 200
 
     body = rsp.json()
@@ -50,8 +50,22 @@ def test_fts_facet_discovery_release_date(api_client: TestClient):
     ]["release_date"]["buckets"]
 
 
+def test_fts_facet_has_converted_image(api_client: TestClient):
+    rsp = api_client.get(f"search/fts", params={"has.thumbnail": "true"})
+    assert rsp.status_code == 200
+
+    body = rsp.json()
+    assert body["hits"]["total"]["value"] == 4
+
+    rsp = api_client.get(f"search/fts", params={"has.thumbnail": "false"})
+    assert rsp.status_code == 200
+
+    body = rsp.json()
+    assert body["hits"]["total"]["value"] == 1
+
+
 def test_fts_facet_discovery_imaging_method(api_client: TestClient):
-    rsp = api_client.get(f"/search/fts", params={"query": "with"})
+    rsp = api_client.get(f"search/fts", params={"query": "with"})
     assert rsp.status_code == 200
 
     body = rsp.json()
@@ -60,7 +74,7 @@ def test_fts_facet_discovery_imaging_method(api_client: TestClient):
 
 def test_fts_use_facet_organism(api_client: TestClient):
     rsp = api_client.get(
-        f"/search/fts",
+        f"search/fts",
         params={"query": "with", "facet.organism": ["Homo sapiens", "Mus musculus"]},
     )
     assert rsp.status_code == 200
@@ -70,7 +84,7 @@ def test_fts_use_facet_organism(api_client: TestClient):
 
 
 def test_fts_no_query(api_client: TestClient):
-    rsp = api_client.get(f"/search/fts")
+    rsp = api_client.get(f"search/fts")
     assert rsp.status_code == 200
     body = rsp.json()
     facet_homo_sapiens = next(
@@ -80,7 +94,7 @@ def test_fts_no_query(api_client: TestClient):
     )["doc_count"]
     assert len(body["hits"]["hits"]) == 5
 
-    rsp = api_client.get(f"/search/fts", params={"facet.organism": ["Homo sapiens"]})
+    rsp = api_client.get(f"search/fts", params={"facet.organism": ["Homo sapiens"]})
     assert rsp.status_code == 200
     body = rsp.json()
     assert len(body["hits"]["hits"]) == facet_homo_sapiens
@@ -88,7 +102,7 @@ def test_fts_no_query(api_client: TestClient):
 
 def test_fts_use_facet_year(api_client: TestClient):
     rsp = api_client.get(
-        f"/search/fts",
+        f"search/fts",
         params={"query": "with", "facet.year": ["2024"]},
     )
     assert rsp.status_code == 200
@@ -98,7 +112,7 @@ def test_fts_use_facet_year(api_client: TestClient):
 
 def test_fts_use_facet_imaging_method(api_client: TestClient):
     rsp = api_client.get(
-        f"/search/fts",
+        f"search/fts",
         params={"query": "with", "imaging_method": ["confocal microscopy"]},
     )
     assert rsp.status_code == 200
@@ -108,7 +122,7 @@ def test_fts_use_facet_imaging_method(api_client: TestClient):
 
 def test_fts_author_search(api_client: TestClient):
     rsp = api_client.get(
-        f"/search/fts",
+        f"search/fts",
         params={"query": "amir"},
     )
     assert rsp.status_code == 200
@@ -116,8 +130,16 @@ def test_fts_author_search(api_client: TestClient):
     assert len(body["hits"]["hits"]) == 1
 
     rsp = api_client.get(
-        f"/search/fts",
-        params={"query": "Max Planck"},
+        f"search/fts",
+        params={"query": "0000-0003-3862-8349"},
+    )
+    assert rsp.status_code == 200
+    body = rsp.json()
+    assert len(body["hits"]["hits"]) == 2
+
+    rsp = api_client.get(
+        f"search/fts",
+        params={"query": "Max Planck Institute of Biophysics"},
     )
     assert rsp.status_code == 200
     body = rsp.json()
@@ -126,7 +148,7 @@ def test_fts_author_search(api_client: TestClient):
 
 def test_get(api_client: TestClient):
     doc_uuid = "87089e93-1775-45b9-8695-190630681c3b"
-    rsp = api_client.get(f"/website/doc", params={"uuid": doc_uuid})
+    rsp = api_client.get(f"website/doc", params={"uuid": doc_uuid})
     assert rsp.status_code == 200
 
     body = rsp.json()
@@ -136,7 +158,7 @@ def test_get(api_client: TestClient):
 
 def test_fts_search_study_by_dataset_uuid(api_client: TestClient):
     dataset_uuid = "a227a231-b041-4d92-ae0f-4f72e3dca66c"
-    rsp = api_client.get(f"/search/fts", params={"query": dataset_uuid})
+    rsp = api_client.get(f"search/fts", params={"query": dataset_uuid})
     assert rsp.status_code == 200
 
     body = rsp.json()
@@ -150,7 +172,7 @@ def test_fts_search_study_by_dataset_uuid(api_client: TestClient):
 
 def test_fts_image(api_client: TestClient):
     rsp = api_client.get(
-        f"/search/fts/image", params={"query": "445cb17b-95dc-47a3-9efc-b7a1a066bb51"}
+        f"search/fts/image", params={"query": "445cb17b-95dc-47a3-9efc-b7a1a066bb51"}
     )
     assert rsp.status_code == 200
 
@@ -164,7 +186,7 @@ def test_fts_image(api_client: TestClient):
 
 def test_fts_paging(api_client: TestClient):
     rsp = api_client.get(
-        f"/search/fts",
+        f"search/fts",
         params={"query": "with", "pagination.page": 1, "pagination.page_size": 1},
     )
     assert rsp.status_code == 200
@@ -174,7 +196,7 @@ def test_fts_paging(api_client: TestClient):
     assert page_1["pagination"]["page_size"] == 1
 
     rsp = api_client.get(
-        f"/search/fts",
+        f"search/fts",
         params={"query": "with", "pagination.page": 2, "pagination.page_size": 1},
     )
     assert rsp.status_code == 200
@@ -184,7 +206,7 @@ def test_fts_paging(api_client: TestClient):
     assert page_2["pagination"]["page_size"] == 1
 
     rsp = api_client.get(
-        f"/search/fts",
+        f"search/fts",
         params={"query": "with", "pagination.page": 1, "pagination.page_size": 2},
     )
     assert rsp.status_code == 200
@@ -198,7 +220,7 @@ def test_fts_paging(api_client: TestClient):
 
 def test_fts_highlight(api_client: TestClient):
     rsp = api_client.get(
-        f"/search/fts",
+        f"search/fts",
         params={"query": "amir"},
     )
     assert rsp.status_code == 200

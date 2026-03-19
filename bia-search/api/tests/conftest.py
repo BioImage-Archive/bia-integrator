@@ -7,7 +7,7 @@ from fastapi.testclient import TestClient
 
 
 test_settings = Settings()
-TEST_SERVER_BASE_URL = "http://localhost.com/v2"
+TEST_SERVER_BASE_URL = "http://localhost.com/v1"
 
 
 @pytest.fixture(scope="session")
@@ -76,6 +76,5 @@ def get_client():
 def api_client():
     client = get_client
     with get_client() as client:
-
         yield client
         client.close()

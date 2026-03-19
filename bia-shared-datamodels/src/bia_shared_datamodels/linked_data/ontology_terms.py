@@ -12,6 +12,7 @@ class SCHEMA(DefinedNamespace):
 
     # Properties
     address: URIRef
+    additionalType: URIRef
     affiliation: URIRef
     author: URIRef
     datePublished: URIRef
@@ -24,6 +25,7 @@ class SCHEMA(DefinedNamespace):
     license: URIRef
     memberOf: URIRef
     name: URIRef
+    taxonomicRange: URIRef
     url: URIRef
 
     _NS = Namespace("http://schema.org/")
@@ -113,7 +115,6 @@ class BIA(DefinedNamespace):
     biologicalEntityDescription: URIRef
     channelBiologicalEntity: URIRef
     channelContentDescription: URIRef
-    commonName: URIRef
     experimentalVariableDescription: URIRef
     extrinsicVariableDescription: URIRef
     fbbiId: URIRef
@@ -127,12 +128,11 @@ class BIA(DefinedNamespace):
     imagingPreparationProtocol: URIRef
     inputImage: URIRef
     intrinsicVariableDescription: URIRef
-    organismClassification: URIRef
     protocol: URIRef
+    relatedPublication: URIRef
     resultOf: URIRef
     role: URIRef
     sampleOf: URIRef
-    scientificName: URIRef
     signalChannelInformation: URIRef
     signalContrastMechanismDescription: URIRef
     sizeInBytes: URIRef

@@ -1,0 +1,436 @@
+{
+	"accno": "S-BIAD1419",
+	"attributes": [
+		{
+			"name": "Template",
+			"value": "BioImages.v4"
+		},
+		{
+			"name": "DOI",
+			"value": "10.6019/S-BIAD1419"
+		},
+		{
+			"name": "ReleaseDate",
+			"value": "2024-10-15"
+		},
+		{
+			"name": "AttachTo",
+			"value": "BioImages"
+		}
+	],
+	"section": {
+		"type": "Study",
+		"attributes": [
+			{
+				"name": "Title",
+				"value": "Longitudinal autophagy profiling of the mammalian brain reveals sustained mitophagy throughout healthy aging"
+			},
+			{
+				"name": "Description",
+				"value": "Associated with Rappe et al. (2024) Longitudinal autophagy profiling of the mammalian brain reveals sustained mitophagy throughout healthy aging. EMBO Journal\nhttps://www.embopress.org/doi/full/10.1038/s44318-024-00241-y\n\nRaw data image files and source data spreadsheets. "
+			},
+			{
+				"name": "Keywords",
+				"value": "Aging "
+			},
+			{
+				"name": "Keywords",
+				"value": "Autophagy"
+			},
+			{
+				"name": "Keywords",
+				"value": "Brain"
+			},
+			{
+				"name": "Keywords",
+				"value": "Mitochondria"
+			},
+			{
+				"name": "Keywords",
+				"value": "Mitophagy"
+			},
+			{
+				"name": "Keywords",
+				"value": "Neuroscience"
+			},
+			{
+				"name": "Acknowledgements",
+				"value": "Research in the T.G.M. laboratory is supported by the Academy of Finland (TGM: 310814), the Novo Nordisk Foundation/Novo Nordisk Fonden, the Sigrid Jusélius Foundation (TGM: 8045), the Päivikki and Sakari Sohlberg Foundation, Sydäntutkimussäätiö and the University of Helsinki. TGM is a Scholar of the FENS-Kavli Network of Excellence. AR is supported by a four-year scholarship from the Doctoral Program for Brain and Mind (University of Helsinki) and the Instrumentarium Science Foundation. We thank our colleagues at the FIMM-HCA for high content imaging and bioimage analysis, and for excellent technical support from colleagues at the HiLIFE Electron Microscopy Unit (both platforms are supported by HiLIFE, University of Helsinki, Biocenter Finland and Euro-Bioimaging ERIC - Finnish Advanced Microscopy Node). We are also grateful to our colleagues in the HiLIFE Laboratory Animal Centre Core Facility, University of Helsinki, for outstanding animal care and welfare monitoring. We further thank K.M. Mattinen and J. Salomaa for technical support at the initial phases of the project. We are grateful to Drs. M. Liljeström, K. Vonderstein, and E. Fazeli at the Biomedicum Imaging Unit (Biocenter Finland and HiLIFE supported infrastructure) for their outstanding expertise and guidance in microscopy and image analysis, and to Dr. A. Prescott (University of Dundee) and Dr. F. Singh (University of Iceland, IS) for invaluable discussions. We thank Dr. A. Pawluk (Life Science Editors) for her editorial feedback and input. We are grateful to Professor Ian Ganley (MRC Protein Phosphorylation and Ubiquitylation Unit, University of Dundee, Scotland) for informative discussions and the generous gift of ARPE19 reporter cells."
+			},
+			{
+				"name": "License",
+				"value": "CC BY 4.0",
+				"valqual": [
+					{
+						"name": "URL",
+						"value": "https://creativecommons.org/licenses/by/4.0/legalcode"
+					}
+				]
+			}
+		],
+		"links": [
+			{
+				"url": "10.5281/zenodo.13304393",
+				"attributes": [
+					{
+						"name": "Description",
+						"value": "Link to Zenodo database, as referenced in manuscript."
+					},
+					{
+						"name": "Type",
+						"value": "doi"
+					}
+				]
+			}
+		],
+		"subsections": [
+			{
+				"type": "author",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "Anna Rappe"
+					},
+					{
+						"name": "E-mail",
+						"value": "anna.rappe@helsinki.fi"
+					},
+					{
+						"name": "Role",
+						"value": "first author"
+					},
+					{
+						"name": "ORCID",
+						"value": "0000-0002-9061-7383"
+					},
+					{
+						"name": "affiliation",
+						"value": "o1",
+						"reference": true
+					}
+				]
+			},
+			{
+				"type": "author",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "Helena Vihinen"
+					},
+					{
+						"name": "E-mail",
+						"value": "helena.vihinen@helsinki.fi"
+					},
+					{
+						"name": "Role",
+						"value": "data analyst"
+					},
+					{
+						"name": "ORCID",
+						"value": "0000-0003-3862-9237"
+					},
+					{
+						"name": "affiliation",
+						"value": "o2",
+						"reference": true
+					}
+				]
+			},
+			{
+				"type": "author",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "Fumi Suomi"
+					},
+					{
+						"name": "E-mail",
+						"value": "fumi.suomi@helsinki.fi"
+					},
+					{
+						"name": "Role",
+						"value": "data acquisition"
+					},
+					{
+						"name": "ORCID",
+						"value": "0000-0001-8883-3338"
+					},
+					{
+						"name": "affiliation",
+						"value": "o1",
+						"reference": true
+					}
+				]
+			},
+			{
+				"type": "author",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "Antti Hassinen"
+					},
+					{
+						"name": "E-mail",
+						"value": "antti.hassinen@helsinki.fi"
+					},
+					{
+						"name": "Role",
+						"value": "data analyst"
+					},
+					{
+						"name": "ORCID",
+						"value": "0000-0001-9491-2868"
+					},
+					{
+						"name": "affiliation",
+						"value": "o3",
+						"reference": true
+					}
+				]
+			},
+			{
+				"type": "author",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "Homa Ehsan"
+					},
+					{
+						"name": "E-mail",
+						"value": "homa.ehsan@helsinki.fi"
+					},
+					{
+						"name": "Role",
+						"value": "data acquisition"
+					},
+					{
+						"name": "ORCID",
+						"value": "0000-0001-5252-4015"
+					},
+					{
+						"name": "affiliation",
+						"value": "o1",
+						"reference": true
+					}
+				]
+			},
+			{
+				"type": "author",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "Eija Jokitalo"
+					},
+					{
+						"name": "E-mail",
+						"value": "eija.jokitalo@helsinki.fi"
+					},
+					{
+						"name": "Role",
+						"value": "principal investigator"
+					},
+					{
+						"name": "ORCID",
+						"value": "0000-0002-4159-6934"
+					},
+					{
+						"name": "affiliation",
+						"value": "o2",
+						"reference": true
+					}
+				]
+			},
+			{
+				"type": "author",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "Thomas McWilliams"
+					},
+					{
+						"name": "E-mail",
+						"value": "thomas.mcwilliams@helsinki.fi"
+					},
+					{
+						"name": "Role",
+						"value": "corresponding author"
+					},
+					{
+						"name": "ORCID",
+						"value": "0000-0002-9570-4152"
+					},
+					{
+						"name": "affiliation",
+						"value": "o1",
+						"reference": true
+					}
+				]
+			},
+			{
+				"accno": "o1",
+				"type": "organisation",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "University of Helsinki"
+					}
+				]
+			},
+			{
+				"accno": "o2",
+				"type": "organisation",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "HiLIFE – Elämäntieteiden Instituutti"
+					}
+				]
+			},
+			{
+				"accno": "o3",
+				"type": "organisation",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "Institute for Molecular Medicine Finland"
+					}
+				]
+			},
+			{
+				"type": "Publication",
+				"attributes": [
+					{
+						"name": "Pubmed ID",
+						"value": "39367235"
+					},
+					{
+						"name": "Title",
+						"value": "Longitudinal autophagy profiling of the mammalian brain reveals sustained mitophagy throughout healthy aging."
+					},
+					{
+						"name": "Authors",
+						"value": "Rappe A, Vihinen HA, Suomi F, Hassinen AJ, Ehsan H, Jokitalo ES, McWilliams TG."
+					},
+					{
+						"name": "DOI",
+						"value": "https://doi.org/10.1038/s44318-024-00241-y"
+					},
+					{
+						"name": "Year",
+						"value": "2024"
+					}
+				]
+			},
+			{
+				"accno": "Biosample-1",
+				"type": "Biosample",
+				"attributes": [
+					{
+						"name": "Title",
+						"value": "Reporter models mito-QC and auto-QC"
+					},
+					{
+						"name": "Organism",
+						"value": "Mus musculus (mouse)"
+					},
+					{
+						"name": "Biological entity",
+						"value": "Mouse brain tissue sections (in vivo analysis, main article) and cultured cells (mouse embryonic fibroblasts, mouse adult lung fibroblasts, Human ARPE-19; in vitro analysis, EV1)."
+					}
+				]
+			},
+			{
+				"accno": "Specimen-2",
+				"type": "Specimen",
+				"attributes": [
+					{
+						"name": "Title",
+						"value": "Brain tissues"
+					},
+					{
+						"name": "Sample preparation protocol",
+						"value": "Animals\nAll mice were maintained and housed according to ethically approved guidelines and welfare endpoints approved by the Office for Animal Experimentation of Finland. The mitophagy (mito-QC) reporter mouse model used in this study was generated and used as previously described (McWilliams et al, 2016, 2018a, 2018b; Lee et al, 2018; McWilliams et al, 2019; Alsina et al, 2020; Singh et al, 2021; Mito et al, 2022; Long et al, 2022) and maintained on the C57BL6 RccHsd background. Autophagy reporter mice (mCherry-GFP-Map1lc3b, referred to as auto-QC) were generated identically to mito-QC using targeted transgenesis by TaconicArtemis GmbH. Homozygous reporter animals were used in all analyses, and genotypes were confirmed by standard end-point PCR. Both female and male animals were analyzed in the study; the exact n numbers, refer to individual biological subjects which are specified in all figure legends. Four age categories are specified for mito-QC mice (3, 6, 15, and 19–26 months) and five age categories for auto-QC mice (3, 7, 11, 16, and 18–25 months). Aging categories were selected according to (Flurkey et al, 2007) the Jackson Laboratories (JAX) criteria on aging mice.\nTissue processing and immunohistochemistry\nTissues were rapidly collected following euthanasia and processed by overnight immersion in freshly prepared and filtered fixative: 3.7% paraformaldehyde (Sigma, P6148), 200 mM HEPES, pH = 7.00. The following day, fixed tissues were washed extensively (at least three times) in DPBS and subjected to density-dependent cryoprotection by immersion in 30% (w/v) sucrose solution containing 0.04% sodium azide. Samples were stored at 4 °C in sucrose solution until further processing. Free-floating brain sections in both axial and para-sagittal orientations were acquired at a thickness of 40 μm using a Leica SM2010R sledge microtome equipped with a temperature-controlled freezing stage and constant water supply (Physitemp, CA, USA). Free-floating mito-QC or auto-QC sections were either counterstained with the nuclear dye Hoechst 33342 (Life Technologies) or immunostained with antibodies where appropriate. For labeling of subcellular structures in vivo, mito-QC and auto-QC tissue sections were processed as previously described (McWilliams et al, 2016, 2018a, 2019) using the following antibodies: rabbit anti-calbindin D28K (1:5000; Swant; Catalog #CB38); rat anti-LAMP1 (1:1000; Santa Cruz Biotechnology; Catalog #19992); rabbit anti-tyrosine hydroxylase (1:2000; Millipore; Catalog #AB152), rabbit anti-TRIM46 (1:600; Synaptic Systems; Catalog #377005)); and rabbit anti-IBA1 (1:1000; Wako; Catalog #019-19741); rat anti-LAMP2 (1:200; DSHB; Catalog #ABL-93); rabbit anti-LAMP2 (1:200; Abcam; Catalog # AB18528); goat IgG Cathepsin D (1:200; R&D Systems; Catalog #AF1029); goat IgG Cathepsin B (1:200; R&D Systems; Catalog #AF965); rabbit anti-TMEM55B (1:750; Proteintech; Catalog #23992-1-AP); rabbit anti-GFAP (1:1000; DAKO; Catalog #Z0334) guinea pig anti-parvalbumin (1:1000; Synaptic systems; Catalog #195004). An additional step of streptavidin-biotin immunostaining was added for Cathepsin B and D. Secondary antibodies (1:500; Pacific Blue or Far Red) were purchased from Life Technologies; Donkey anti-rat 405 (1:500) was purchased from Abcam; Donkey anti-goat Biotin (1:200) was purchased from Jackson Immunoresearch and Streptavidin conjugate 633 (1:200) from Thermo Fisher Scientific. Tissue sections were mounted using Vectashield H-1000 (Vector Laboratories) on Leica SurgiPath X-tra Adhesive slides, Deckgläser Precision Cover Glasses (Marienfeld GmbH, DE) and sealed with transparent and rapid-drying nail polish before storage at 4 °C.\nTransmission electron microscopy and quantitation\nAdult brain tissues were rapidly harvested, and <1 mm parasagittal cerebellar tissue sections were collected and immersion fixed in 4% PFAn in 0.1 M phosphate buffer (PB), pH 7.4, for 45 min. Following fixation, 300 µm parasagittal cerebellar tissue sections were acquired using a Leica VT1200/S 1v5 RevH vibratome immersed in 0.1 M PB. Vibratome sections were immediately fixed with 2% PFA and 2% glutaraldehyde (EM-grade) in 0.1 M sodium cacodylate buffer (NaCac), pH 7.4, supplemented with 2 mM CaCl2 for 2 h at 4 °C. After 2 h, the fixative was exchanged for 0.1 M NaCac buffer supplemented with 2 mM CaCl2, and the sections were stored at 4 °C until further processing. The vibratome sections were washed with 0.1 M NaCac buffer and postfixed with 1% osmium tetroxide in the same buffer for 1 h on ice, dehydrated through a series of ethanol and acetone solutions, and gradually embedded into epoxy resin (hard, TAAB 812, Aldermaston, UK). After polymerization of the epoxy resin at 60 °C for 18 h, a pyramid was trimmed, and a 500-nm-thick histological section was stained with toluidine blue to identify and verify cerebellar cortex regions containing PC profiles. Correlating with the light microscopy image from the histological section, the pyramid was downsized for electron microscopy, and 60 nm ultrathin sections were cut using an ultramicrotome (Leica EM Ultracut UC7, Leica Mikrosysteme GmbH, Austria), collected on Pioloform-coated single slot grids and poststained with uranyl acetate and lead citrate. A Hitachi transmission electron microscope (HT7800, Hitachi High-Technologies, Tokyo, Japan) operated at 100 kV and equipped with a bottom-mounted Rio9 CMOS camera (Gatan Inc., Pleasanton, CA) was used for image acquisition. For quantitation, two images from the dendritic aspect and two images from the axonal aspect of the PC somata were acquired at a nominal magnification of 6000× from a total of 12 PCs per sample using systematic random sampling. Lysosomes were detected and area quantified based on ultrastructural features of contrast, morphology and presence of lipid droplets. For unbiased analysis, the detection of lysosomes and measurement of areas were performed on anonymized micrographs using MIB software (Belevich et al, 2016)."
+					}
+				]
+			},
+			{
+				"accno": "Image acquisition-3",
+				"type": "Image acquisition",
+				"attributes": [
+					{
+						"name": "Title",
+						"value": "Confocal imaging and electron microscopy"
+					},
+					{
+						"name": "Imaging instrument",
+						"value": "ANDOR Dragonfly 505 High-Speed Spinning Disk Confocal Microscope with SRRF Stream SuperResolution, equipped with a Zyla sCMOS camera (Oxford Instruments, UK), and Plan Apochromat VC X60 objective (NA 1.2, water) with PerfectFocus System."
+					},
+					{
+						"name": "Image acquisition parameters",
+						"value": "Tissue confocal microscopy\nConfocal photomicrographs (tile scans, z-stacks, and conventional images) were obtained by uniform random sampling using an ANDOR Dragonfly 505 High-Speed Spinning Disk Confocal Microscope with SRRF Stream SuperResolution, equipped with a Zyla sCMOS camera (Oxford Instruments, UK), and Plan Apochromat VC X60 objective (NA 1.2, water) with PerfectFocus System. Low-resolution tile scans were imaged using a 10× objective (NA 0.3, air) or 40× objective (NA 1.15, water). Representative images for lysosomal validation staining were imaged using a 100× objective (NA 1.49, oil). High-resolution representative images were deconvolved using the associated IMARIS Fusion software. For representative images, photomicrographs were digitally altered within linear parameters, with minimal adjustments to levels and linear contrast applied to all images.\n\nTransmission electron microscopy and quantitation\nA Hitachi transmission electron microscope (HT7800, Hitachi High-Technologies, Tokyo, Japan) operated at 100 kV and equipped with a bottom-mounted Rio9 CMOS camera (Gatan Inc., Pleasanton, CA) was used for image acquisition."
+					},
+					{
+						"name": "Imaging method",
+						"value": "confocal microscopy"
+					},
+					{
+						"name": "Imaging method",
+						"value": "transmission electron microscopy (TEM)"
+					}
+				]
+			},
+			{
+				"accno": "Image analysis-5",
+				"type": "Image analysis",
+				"attributes": [
+					{
+						"name": "Title",
+						"value": "Image analysis and quantitation of mitophagy in vivo; Transmission electron microscopy and quantitation"
+					},
+					{
+						"name": "Image analysis overview",
+						"value": "Image analysis and quantitation of mitophagy in vivo\nQuantification of mitophagy and macroautophagy in vivo was conducted on at least 5 images per sample for cell type-specific analysis and at least 10 images per sample for unstained tissues. Single plane images were used for quantitation. Quantification was conducted using open source CellProfiler software (version 4.2.1) to threshold and segment mCherry-only positive mitolysosomes and autolysosomes. Briefly, the GFP signal was segmented out after thresholding and subtracted from the mCherry channel to ensure that only mCherry-positive puncta were detected for quantitation. For cell type-specific quantitation, an additional cell-segmentation step was added. For this purpose, the machine learning software Ilastik was used to segment the cells, after which images were fed into CellProfiler for further segmentation, surface hole filling and quantitation. Due to the nature of the auto-QC reporter GFP signal, PCs were segmented using Ilastik, while mito-QC PC somata were segmented manually using FIJI ImageJ 1.53 (64-bit). IMARIS BitPlane was used to generate 3D isosurface renders of PCs, dopaminergic neurons and the AIS in vivo.\n\nTransmission electron microscopy and quantitation\nFor quantitation, two images from the dendritic aspect and two images from the axonal aspect of the PC somata were acquired at a nominal magnification of 6000× from a total of 12 PCs per sample using systematic random sampling. Lysosomes were detected and area quantified based on ultrastructural features of contrast, morphology and presence of lipid droplets. For unbiased analysis, the detection of lysosomes and measurement of areas were performed on anonymized micrographs using MIB software (Belevich et al, 2016)."
+					}
+				]
+			},
+			{
+				"accno": "Study Component-4",
+				"type": "Study Component",
+				"attributes": [
+					{
+						"name": "Name",
+						"value": "Microscopy image files"
+					},
+					{
+						"name": "Description",
+						"value": "Native microscopy image files"
+					},
+					{
+						"name": "File List",
+						"value": "Rappe_2024_EMBOJ_file_list_biostudies.json"
+					}
+				],
+				"subsections": [
+					{
+						"type": "Associations",
+						"attributes": [
+							{
+								"name": "Biosample",
+								"value": "Reporter models mito-QC and auto-QC"
+							},
+							{
+								"name": "Specimen",
+								"value": "Brain tissues"
+							},
+							{
+								"name": "Image acquisition",
+								"value": "Confocal imaging and electron microscopy"
+							}
+						]
+					}
+				]
+			}
+		]
+	},
+	"type": "submission"
+}

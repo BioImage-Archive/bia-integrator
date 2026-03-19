@@ -3,6 +3,7 @@ from urllib.parse import quote
 from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_parsing_utils import (
     attributes_to_dict,
     find_sections_recursive,
+    filter_section_by_attribute_key,
 )
 from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_api import (
     Submission,
@@ -19,7 +20,13 @@ def get_growth_protocol_by_title(
     submission: Submission,
     study_uuid: str,
 ) -> dict[str, ro_crate_models.Protocol]:
-    sections = find_sections_recursive(submission.section, ["Specimen"], [])
+    unfiltered_sections = find_sections_recursive(submission.section, ["Specimen"], [])
+    sections = filter_section_by_attribute_key(
+        unfiltered_sections,
+        [
+            "Title",
+        ],
+    )
 
     roc_object_dict = {}
     for section in sections:

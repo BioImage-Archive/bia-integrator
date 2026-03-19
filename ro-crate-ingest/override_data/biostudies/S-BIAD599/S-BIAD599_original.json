@@ -1,0 +1,343 @@
+{
+  "accno" : "S-BIAD599",
+  "attributes" : [ {
+    "name" : "Title",
+    "value" : "An image-based data-driven analysis of cellular architecture in a developing tissue"
+  }, {
+    "name" : "ReleaseDate",
+    "value" : "2022-12-13"
+  }, {
+    "name" : "RootPath",
+    "value" : "idr0079"
+  }, {
+    "name" : "AttachTo",
+    "value" : "BioImages"
+  } ],
+  "section" : {
+    "type" : "Study",
+    "attributes" : [ {
+      "name" : "Description",
+      "value" : "A data-driven analysis of cell morphology and intracellular organization in the developing zebrafish posterior lateral line primordium, a model tissue for the study of self-organized morphogenesis. 3D image stacks were acquired using AiryScan FAST-mode confocal fluorescence microscopy. Automated single-cell segmentation and point cloud-based morphometry were developed to extract numerical features representing cell morphology and intracellular protein distributions. Machine learning was used with the extracted numerical features to perform data integration across experiments and context-guided data visualization. The resulting data was analyzed to discover biologically meaningful patterns at the cell and tissue scale."
+    }, {
+      "name" : "License",
+      "value" : "CC BY 4.0"
+    }, {
+      "name" : "Keyword",
+      "value" : "zebrafish"
+    }, {
+      "name" : "Keyword",
+      "value" : "machine learning"
+    }, {
+      "name" : "Keyword",
+      "value" : "segmentation"
+    }, {
+      "name" : "Keyword",
+      "value" : "organogenesis"
+    }, {
+      "name" : "Acknowledgements",
+      "value" : "We thank Sabine Görgens and Andreas Kunze for their support with fish and lab maintenance, respectively. We thank the EMBL Advanced Light Microscopy Facility (ALMF) and the UZH Center for Microscopy and Image Analysis (ZMB) for maintenance of and assistance with microscopes. We thank Alejandra Guzman Herrera for generating the Act2b:mKate2-Rab11a line. We thank Francesca Peri and Stefano De Renzis for kindly providing temporary lab space. We thank Christian Tischer and Marvin Albert for helpful discussion on image analysis and numerical computation. We thank Stefano De Renzis, Daniel Krueger, Marvin Albert and Andrew Kennard for critical reading of the manuscript. JH and EG were supported by the EMBL International PhD Programme (EIPP), M.W. was supported by an EMBO Long-Term Fellowship and the EMBL Interdisciplinary Postdoc (EIPOD) Program under Marie Curie COFUNDII Actions. The Gilmour lab was supported by the European Molecular Biology Laboratory (EMBL), the University of Zurich (UZH) and Swiss National Science Funds Grant 31003A_176235."
+    }, {
+      "name" : "Funding statement",
+      "value" : "Jonas Hartmann: European Molecular Biology Laboratory (International PhD Programme). Elisa Gallo: European Molecular Biology Laboratory (International PhD Programme). Mie Wong: European Molecular Biology Organization (ALTF 205-2015) and H2020 Marie Skłodowska-Curie Actions (COFUNDII - EMBL Interdisciplinary Post-doc (EIPOD) Program). Darren Gilmour: European Molecular Biology Laboratory, Schweizerischer Nationalfonds zur Förderung der Wissenschaftlichen Forschung (31003A_176235) and University of Zurich. The funders had no role in study design, data collection and interpretation, or the decision to submit the work for publication."
+    } ],
+    "links" : [ {
+      "url" : "https://idr.openmicroscopy.org/webclient/?show=project-1105",
+      "attributes" : [ {
+        "name" : "Type",
+        "value" : "Image Data Resource"
+      } ]
+    } ],
+    "subsections" : [ {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Jonas Hartmann"
+      }, {
+        "name" : "Email",
+        "value" : "jonas.m.hartmann@protonmail.com"
+      }, {
+        "name" : "Role",
+        "value" : "Conceptualization, Data curation, Software, Formal analysis, Validation, Investigation, Visualization, Methodology, Writing - original draft, Writing - review and editing"
+      }, {
+        "name" : "ORCID",
+        "value" : "https://orcid.org/0000-0002-5600-8285"
+      }, {
+        "name" : "affiliation",
+        "value" : "o1",
+        "reference" : true
+      } ]
+    }, {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Mie Wong"
+      }, {
+        "name" : "Email"
+      }, {
+        "name" : "Role",
+        "value" : "Investigation, Writing - review and editing"
+      }, {
+        "name" : "ORCID"
+      }, {
+        "name" : "affiliation",
+        "value" : "o3",
+        "reference" : true
+      } ]
+    }, {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Elisa Gallo"
+      }, {
+        "name" : "Email"
+      }, {
+        "name" : "Role",
+        "value" : "Investigation, Writing - review and editing"
+      }, {
+        "name" : "ORCID",
+        "value" : "https://orcid.org/0000-0003-2203-6787"
+      }, {
+        "name" : "affiliation",
+        "value" : "o2",
+        "reference" : true
+      } ]
+    }, {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Darren Gilmour"
+      }, {
+        "name" : "Email",
+        "value" : "darren.gilmour@imls.uzh.ch"
+      }, {
+        "name" : "Role",
+        "value" : "Conceptualization, Resources, Supervision, Funding acquisition, Project administration, Writing - review and editing"
+      }, {
+        "name" : "ORCID",
+        "value" : "https://orcid.org/0000-0001-7613-090X"
+      }, {
+        "name" : "affiliation",
+        "value" : "o3",
+        "reference" : true
+      } ]
+    }, {
+      "type" : "author",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Teresa Zulueta-Coarasa"
+      }, {
+        "name" : "Email",
+        "value" : "teresaz@ebi.ac.uk"
+      }, {
+        "name" : "Role",
+        "value" : "data curation, submitter"
+      }, {
+        "name" : "ORCID",
+        "value" : "0000-0002-0456-6912"
+      }, {
+        "name" : "affiliation",
+        "value" : "o4",
+        "reference" : true
+      } ]
+    }, {
+      "accno" : "o1",
+      "type" : "organization",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Cell Biology and Biophysics Unit, European Molecular Biology Laboratory (EMBL), Heidelberg, Germany"
+      } ]
+    }, {
+      "accno" : "o2",
+      "type" : "organization",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Cell Biology and Biophysics Unit, European Molecular Biology Laboratory (EMBL), Heidelberg, GermanyInstitute of Molecular Life Sciences, University of Zurich (UZH)  Zurich, Switzerland - Collaboration for joint PhD degree between EMBL and Heidelberg University, Faculty of Biosciences, Heidelberg, Germany"
+      } ]
+    }, {
+      "accno" : "o3",
+      "type" : "organization",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "Institute of Molecular Life Sciences, University of Zurich (UZH), Zurich, Switzerland"
+      } ]
+    }, {
+      "accno" : "o4",
+      "type" : "organization",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "European Bioinformatics Institute"
+      } ]
+    }, {
+      "type" : "Publication",
+      "attributes" : [ {
+        "name" : "Title",
+        "value" : "An image-based data-driven analysis of cellular architecture in a developing tissue"
+      }, {
+        "name" : "Year",
+        "value" : "2020"
+      }, {
+        "name" : "DOI",
+        "value" : "https://doi.org/10.7554/eLife.55913"
+      }, {
+        "name" : "PMC ID",
+        "value" : "PMC7274788"
+      } ]
+    }, {
+      "accno" : "Study Component-1",
+      "type" : "Study Component",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "3D confocal images of live embryos and corresponding cell segmentations"
+      }, {
+        "name" : "Description",
+        "value" : "3D confocal live imaging of the zebrafish posterior lateral line primordium labeled with the membrane marker cldnB:lyn-EGFP for segmentation and optionally with one of several additional labels."
+      }, {
+        "name" : "File List",
+        "value" : "bia_file_list_idr0079_1.json"
+      } ],
+      "subsections" : [ {
+        "accno" : "Image Acquisition-1-1",
+        "type" : "Image Acquisition",
+        "attributes" : [ {
+          "name" : "Imaging Instrument",
+          "value" : "Zeiss LSM880 with AiryScan technology (Carl Zeiss AG, Oberkochen, Germany)"
+        }, {
+          "name" : "Image Acquisition Parameters",
+          "value" : "High-resolution 3D stacks (voxel size: 0.099 μm in xy, 0.225 μm in z) were acquired with a 40 × 1.2 NA water objective with Immersol W immersion fluid (Carl Zeiss, Oberkochen, Germany). Imaging in AiryScan FAST mode (Huff, 2016) with a piezo stage for z-motion and bi-directional scanning allowed acquisition times for an entire volume to be lowered to approximately 20 s (40 s for dual-color stacks using line switching). Deconvolution was performed using the LSM880's built-in 3D AiryScan deconvolution with 'auto' settings. Note that optimal image quality could only be achieved by adjustment of the stage to ensure that the cover glass is exactly normal to the excitation beam. For each dish we imaged, we used 633 nm reflected light and line scanning to get a live view of the cover glass interface, which allowed us to manually adjust the pitch of the stage to be completely horizontal. This process was repeated for both zx and zy line scans."
+        } ],
+        "subsections" : [ {
+          "accno" : "Imaging Method-1-1",
+          "type" : "Imaging Method",
+          "attributes" : [ {
+            "name" : "Ontology Value",
+            "value" : "array-scan confocal microscopy"
+          }, {
+            "name" : "Ontology Name",
+            "value" : "FBbi"
+          }, {
+            "name" : "Ontology Term ID",
+            "value" : "FBbi:00000393"
+          } ]
+        } ]
+      }, {
+        "accno" : "Specimen-1-1",
+        "type" : "Specimen",
+        "attributes" : [ {
+          "name" : "Sample Preparation Protocol",
+          "value" : "Embryos were manually dechorionated with forceps at 30-34hpf and anaesthetized with 0.01% Tricaine (Sigma-Aldrich, St. Louis, US-MO), then transferred into 1% peqGOLD Low Melt Agarose (Peqlab, Erlangen, Germany) in E3 containing 0.01% Tricaine and immediately deposited onto a MatTek Glass Bottom Microwell Dish (35 mm Petri dish, 10 mm microwell, 0.16–0.19 mm coverglass) (MatTek Corporation, Ashland, US-MA). No more than 10 embryos were mounted in a single dish. A weighted needle tool was used to gently arrange the embryos such that they rest flatly with their lateral side directly on the glass slide. After solidification of the agarose, E3 containing 0.01% Tricaine was added to the dish. Embryos were imaged at 32-36hpf, when the pLLP was located above the posterior half of the embryo's yolk extension."
+        }, {
+          "name" : "Growth Protocol",
+          "value" : "Zebrafish (Danio rerio, RRID:ZFIN_ZDB-GENO-060919-1) were grown, maintained and bred according to standard procedures described previously (Westerfield, 2000). All experiments were performed on embryos younger than 3dpf, as is stipulated by the EMBL internal policy 65 (IP65) and European Union Directive 2010/63/EU. Live embryos were kept in E3 buffer at 27–30°C. For experiments, pigmentation of embryos was prevented by treating them with 0.002% N-phenylthiourea (PTU) (Sigma-Aldrich, St. Louis, US-MO) starting at 25hpf. For mounting and during live imaging, embryos were anaesthetized using 0.01% Tricaine (Sigma-Aldrich, St. Louis, US-MO)."
+        } ]
+      }, {
+        "accno" : "Biosample-1-1",
+        "type" : "Biosample",
+        "attributes" : [ {
+          "name" : "Biological entity",
+          "value" : "Posterior lateral line primordium"
+        }, {
+          "name" : "Experimental variable",
+          "value" : "Fluorescent Labels"
+        } ],
+        "subsections" : [ {
+          "accno" : "Organism-1-1",
+          "type" : "Organism",
+          "attributes" : [ {
+            "name" : "Scientific name",
+            "value" : "Danio rerio"
+          }, {
+            "name" : "Common name",
+            "value" : "Zebrafish"
+          }, {
+            "name" : "NCBI taxon ID",
+            "value" : "NCBI:txid7955"
+          } ]
+        } ]
+      }, {
+        "accno" : "Image-Analysis-1-1",
+        "type" : "Image Analysis",
+        "attributes" : [ {
+          "name" : "Image Analysis Overview",
+          "value" : "Image preprocessing: Following AiryScan 3D deconvolution with 'auto' settings on the LSM880, images were converted to 8bit TIFF files using a custom macro for the Fiji distribution (Schindelin et al., 2012) of ImageJ 1.52 g (Schneider et al., 2012). The minimum and maximum values determining the intensity range prior to 8bit conversion were selected manually such that intensity clipping is avoided. Care was taken to apply the same values to all samples of a given marker to ensure consistency. Samples with the cxcr4b:NLS-tdTomato nuclear label exhibited a degree of bleed-through into the lyn-EGFP membrane label channel. To prevent this from interfering with single-cell segmentation, we employed a linear unmixing scheme in which the contribution of NLS-tdTomato (C, the contaminant image) is removed from the green channel (M, mixed image), resulting in the cleaned membrane channel (U, unmixed image). Our approach assumes that the signal in M is composed according to Equation 1, implying that U can be retrieved by subtraction of an appropriate contamination term (Equation 2). (1) M=U+a∙C. (2) U=M−a∙C. To compute the optimal bleed-through factor a we minimized a custom loss function (Equation 3), which is essentially simply the Pearson Correlation Coefficient (PCC) of the contaminant image C and the cleaned image U given a particular candidate factor ai. To ensure that unreasonably high values of a are punished, we centered the values of the cleaned image onto their mean and converted the result to absolute values, causing overly unmixed regions to start correlating with C again.(3) loss=PCC(C,∣∣M−ai∙C−mean(M−ai∙C)∣∣) We found that this approach robustly removes NLS-tdTomato bleed-through, producing unmixed images that could be segmented successfully. Single-Cell segmentation: 3D single-cell segmentation was performed on membrane-labeled stacks acquired, deconvolved and preprocessed as detailed in the sections above. The pipeline for segmentation consists of the following steps, applied sequentially: 1 - 3D median smoothing with a cuboid 3 × 3×3 vxl structural element to reduce shot noise. 2 - 3D Gaussian smoothing with σ = 3 pxl to further reduce noise and smoothen structures. 3 - Thresholding to retrieve a binary mask of foreground objects (i.e. the membranes). To automatically determine the appropriate threshold, we use a custom function inspired by a semi-manual approach for spot detection (Raj et al., 2008). Starting from the most frequent value in the image histogram as a base threshold, we iteratively scan a limited range of positive offsets (usually 0 to 10 in steps of 1, for slightly lower-quality images 0 to 40 in steps of 2) and count the number of connected components in the inverse of the binary mask resultant from applying each threshold. This roughly represents the number of cell bodies in the stack that are fully enclosed in cell membranes at a given threshold. We consider the threshold producing the largest number the best option and use it to generate the final membrane mask. 4 - Removal of disconnected components by morphological hole filling. 5 - Labeling of connected components on the inverted membrane mask. This ideally yields one connected component per cell, i.e. the cytoplasm. 6 - Removal of connected components smaller than 1'000 voxels (artifacts) and re-labeling of connected components larger than 1'000'000 voxels as background objects. 7 - Watershed expansion using the labeled connected components as seeds and the smoothed input image as topography (with additional 3D Gaussian smoothing on top of steps 1 and 2, with σ = 3 pxl). The background objects surrounding the primordium are also expanded. 8 - Assignment of the zero label to background objects and removal of any objects disconnected from the primordium by retaining only the single largest foreground object. We manually optimized the parameters of this pipeline for our data by inspecting the output during an extensive set of test runs. Finally, we also manually double-checked all segmentations and discarded rare cases where more than approx. 10% of cells in a stack had been missed or exhibited under- or oversegmentation."
+        } ]
+      } ]
+    }, {
+      "accno" : "Study Component-2",
+      "type" : "Study Component",
+      "attributes" : [ {
+        "name" : "Name",
+        "value" : "3D confocal images of fixed embryos and corresponding cell segmentations"
+      }, {
+        "name" : "Description",
+        "value" : "3D confocal imaging of fixed samples of the zebrafish posterior lateral line primordium labeled with the membrane marker cldnB:lyn-EGFP and stained for pea3 mRNA using single molecule Fluorescence In-Situ Hybridization (smFISH)."
+      }, {
+        "name" : "File List",
+        "value" : "bia_file_list_idr0079_2.json"
+      } ],
+      "subsections" : [ {
+        "accno" : "Image Acquisition-2-1",
+        "type" : "Image Acquisition",
+        "attributes" : [ {
+          "name" : "Imaging Instrument",
+          "value" : "Zeiss LSM880 with AiryScan technology (Carl Zeiss AG, Oberkochen, Germany)"
+        }, {
+          "name" : "Image Acquisition Parameters",
+          "value" : "Imaging was performed with a 63 × 1.4 NA oil immersion objective on the LSM880 in FAST mode with 488 nm and 639 nm excitation lasers. Stacks were acquired using 8x averaging with 0.187 μm z-spacing and a pixel size of 0.085 μm, then deconvolved with the built-in 3D AiryScan deconvolution on 'auto' settings."
+        } ],
+        "subsections" : [ {
+          "accno" : "Imaging Method-2-1",
+          "type" : "Imaging Method",
+          "attributes" : [ {
+            "name" : "Ontology Value",
+            "value" : "array-scan confocal microscopy"
+          }, {
+            "name" : "Ontology Name",
+            "value" : "FBbi"
+          }, {
+            "name" : "Ontology Term ID",
+            "value" : "FBbi:00000393"
+          } ]
+        } ]
+      }, {
+        "accno" : "Specimen-2-1",
+        "type" : "Specimen",
+        "attributes" : [ {
+          "name" : "Sample Preparation Protocol",
+          "value" : "Single molecule Fluorescence In-Situ Hybridization (smFISH) was performed according to standard protocols (Durdu et al., 2014; Raj et al., 2008) using previously published Quasar 670-conjugated Stellaris smFISH probes (LGC, Biosearch Technologies, Hoddesdon, UK) designed to target pea3 mRNA, listed below. Briefly, embryos were fixed overnight in 4% PFA in PBS-T (PBS with 0.1% Neonate-20) at 4°C, then rinsed three times in PBS-T and subsequently permeabilized with 100% methanol overnight at −20°C. Embryos were rehydrated with a methanol series (75%, 50%, 25% Methanol in PBS-T, 5 min per step) and rinsed three times with PBS-T. The yolk was manually removed using forceps. Next, samples were pre-incubated with hybridization buffer (0.1 g/ml deyxtrane sulfate, 0.02 g/ml RNase-free BSA, 1 mg/ml E. coli tRNA, 10% formamide, 5x SSC, 0.1% Neonate-20 in ddH2O) at 30°C for 30 min and subsequently hybridized with pea3 probe solution (0.1 μM in hybridization buffer) at 30°C overnight in the dark. After probe removal, embryos were stained with DAPI (1:1000) in washing buffer (10% formamide, 5x SSC, 0.1% Neonate-20 in ddH2O) for 15 min at 30°C and finally kept in washing buffer for 45 min at 30°C. Stained embryos were mounted on glass slides using VECTASHIELD HardSet Antifade Mounting Medium (Vector Laboratories, Burlingame, US-CA) and imaged immediately to prevent loss of signal due to photobleaching."
+        }, {
+          "name" : "Growth Protocol",
+          "value" : "Zebrafish (Danio rerio, RRID:ZFIN_ZDB-GENO-060919-1) were grown, maintained and bred according to standard procedures described previously (Westerfield, 2000). All experiments were performed on embryos younger than 3dpf, as is stipulated by the EMBL internal policy 65 (IP65) and European Union Directive 2010/63/EU. Live embryos were kept in E3 buffer at 27–30°C. For experiments, pigmentation of embryos was prevented by treating them with 0.002% N-phenylthiourea (PTU) (Sigma-Aldrich, St. Louis, US-MO) starting at 25hpf."
+        } ]
+      }, {
+        "accno" : "Biosample-2-1",
+        "type" : "Biosample",
+        "attributes" : [ {
+          "name" : "Biological entity",
+          "value" : "Posterior lateral line primordium"
+        } ],
+        "subsections" : [ {
+          "accno" : "Organism-2-1",
+          "type" : "Organism",
+          "attributes" : [ {
+            "name" : "Scientific name",
+            "value" : "Danio rerio"
+          }, {
+            "name" : "Common name",
+            "value" : "Zebrafish"
+          }, {
+            "name" : "NCBI taxon ID",
+            "value" : "NCBI:txid7955"
+          } ]
+        } ]
+      }, {
+        "accno" : "Image-Analysis-2-1",
+        "type" : "Image Analysis",
+        "attributes" : [ {
+          "name" : "Image Analysis Overview",
+          "value" : "Image preprocessing: Following AiryScan 3D deconvolution with 'auto' settings on the LSM880, images were converted to 8bit TIFF files using a custom macro for the Fiji distribution (Schindelin et al., 2012) of ImageJ 1.52 g (Schneider et al., 2012). The minimum and maximum values determining the intensity range prior to 8bit conversion were selected manually such that intensity clipping is avoided. Care was taken to apply the same values to all samples of a given marker to ensure consistency. Single-Cell segmentation: 3D single-cell segmentation was performed on membrane-labeled stacks acquired, deconvolved and preprocessed as detailed in the sections above. The pipeline for segmentation consists of the following steps, applied sequentially: 1 - 3D median smoothing with a cuboid 3 × 3×3 vxl structural element to reduce shot noise. 2 - 3D Gaussian smoothing with σ = 3 pxl to further reduce noise and smoothen structures. 3 - Thresholding to retrieve a binary mask of foreground objects (i.e. the membranes). To automatically determine the appropriate threshold, we use a custom function inspired by a semi-manual approach for spot detection (Raj et al., 2008). Starting from the most frequent value in the image histogram as a base threshold, we iteratively scan a limited range of positive offsets (usually 0 to 10 in steps of 1, for slightly lower-quality images 0 to 40 in steps of 2) and count the number of connected components in the inverse of the binary mask resultant from applying each threshold. This roughly represents the number of cell bodies in the stack that are fully enclosed in cell membranes at a given threshold. We consider the threshold producing the largest number the best option and use it to generate the final membrane mask. 4 - Removal of disconnected components by morphological hole filling. 5 - Labeling of connected components on the inverted membrane mask. This ideally yields one connected component per cell, i.e. the cytoplasm. 6 - Removal of connected components smaller than 1'000 voxels (artifacts) and re-labeling of connected components larger than 1'000'000 voxels as background objects. 7 - Watershed expansion using the labeled connected components as seeds and the smoothed input image as topography (with additional 3D Gaussian smoothing on top of steps 1 and 2, with σ = 3 pxl). The background objects surrounding the primordium are also expanded. 8 - Assignment of the zero label to background objects and removal of any objects disconnected from the primordium by retaining only the single largest foreground object. We manually optimized the parameters of this pipeline for our data by inspecting the output during an extensive set of test runs. Finally, we also manually double-checked all segmentations and discarded rare cases where more than approx. 10% of cells in a stack had been missed or exhibited under- or oversegmentation."
+        } ]
+      } ]
+    } ]
+  },
+  "type" : "submission"
+}
