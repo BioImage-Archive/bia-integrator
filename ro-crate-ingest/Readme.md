@@ -115,6 +115,14 @@ to specify where to put the generated output proposal (default is `ro-crate-inge
 
 There is more information on proposal generation configuration in the specific [readme](./ro_crate_ingest/empiar_to_ro_crate/readme_empiar_proposal_configuration.md).
 
+## Minimal RO-Crate
+
+Where minimal is "does not require a proposal file" — this command can be used to create an RO-Crate with minimal parts:
+
+    poetry run ro-crate-ingest minimal-roc <ACCESSION-ID> -c /Path/to/output/RO-Crate/dir
+
+where `-c`, or its long form `--crate-path`, is optional. Default is `ro-crate-ingest/accession-id/`. 
+
 ## Validator
 
 To run:
