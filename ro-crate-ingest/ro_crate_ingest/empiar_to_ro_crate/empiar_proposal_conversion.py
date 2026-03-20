@@ -82,7 +82,7 @@ def convert_empiar_proposal_to_ro_crate(proposal_path: Path, crate_path: Path | 
     graph += roc_dataset_title_map.values()
 
     roc_file_lists_objects = file_list.create_file_list(
-        ro_crate_dir, empiar_api_entry, roc_dataset_title_map, yaml_file
+        ro_crate_dir, empiar_api_entry, roc_dataset_title_map, yaml_file=yaml_file,
     )
     graph += roc_file_lists_objects
 

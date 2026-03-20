@@ -26,7 +26,8 @@ def make_minimal_ro_crate(
     crate_path: Path | None = None
 ):
     if accession_id.startswith(("S-BIAD", "S-BSST")):
-        convert_biostudies_to_ro_crate(accession_id)
+        convert_biostudies_to_ro_crate(accession_id, crate_path)
+        return
     elif accession_id.startswith("EMPIAR"):
         empiar_api_entry = load_empiar_entry(accession_id)
     else:
