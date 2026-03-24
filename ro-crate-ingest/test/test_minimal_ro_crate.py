@@ -23,7 +23,6 @@ def test_minimal_ro_crate(accession_id: str, tmp_bia_data_dir: Path):
     result = runner.invoke(
         ro_crate_ingest, ["minimal-roc", accession_id, "-c", tmp_bia_data_dir]
     )
-
     assert result.exit_code == 0
 
     expected_metadata = get_expected_ro_crate_metadata(
@@ -52,3 +51,8 @@ def test_minimal_ro_crate(accession_id: str, tmp_bia_data_dir: Path):
             expected_tsv = pd.read_csv(expected_file, sep="\t")
             created_tsv = pd.read_csv(created_file_path, sep="\t")
             pd.testing.assert_frame_equal(expected_tsv, created_tsv)
+
+    validation_result = runner.invoke(
+        ro_crate_ingest, ["validate", str(tmp_bia_data_dir / accession_id)]
+    )
+    assert validation_result.exit_code == 0

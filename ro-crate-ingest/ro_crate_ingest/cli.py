@@ -139,7 +139,7 @@ def minimal_ro_crate(
     accession_id: Annotated[
         str,
         typer.Argument(
-            help="Acccession id (e.g. S-BIADXXXX or S-BSSTXXXX) of the submission"
+            help="Acccession id (e.g. S-BIADXXXX, S-BSSTXXXX, or EMPIAR-XXXXX) of the submission"
         ),
     ],
     crate_path: Annotated[
