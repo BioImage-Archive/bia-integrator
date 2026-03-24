@@ -52,7 +52,7 @@ class ImageTrack(BaseModel):
 
 def _extract_specimen_id(
     file_path: Path,
-    specimen_config: "SpecimenConfig",
+    specimen_config: SpecimenConfig,
 ) -> str | None:
     """
     Extract specimen ID using one of three methods:
@@ -156,8 +156,8 @@ def _rate_dataset_specificity(data_directories: list[str]) -> int:
 
 def _build_file_dataframe(
     files: list[EMPIARFile],
-    datasets_config: "list[DatasetConfig]",
-    specimen_config: "SpecimenConfig",
+    datasets_config: list[DatasetConfig],
+    specimen_config: SpecimenConfig,
 ) -> pd.DataFrame:
     """
     Builds a one-row-per-file DataFrame covering all datasets.
@@ -357,8 +357,8 @@ def _merge_tracks(df: pd.DataFrame) -> list[ImageTrack]:
 
 def identify_tracks(
     files: list[EMPIARFile],
-    datasets_config: "list[DatasetConfig]",
-    specimen_config: "SpecimenConfig",
+    datasets_config: list[DatasetConfig],
+    specimen_config: SpecimenConfig,
 ) -> list[ImageTrack]:
     """
     Build one ImageTrack per specimen by processing all dataset config blocks

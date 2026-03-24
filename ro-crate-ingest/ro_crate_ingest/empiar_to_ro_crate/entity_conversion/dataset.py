@@ -9,13 +9,19 @@ logger = logging.getLogger("__main__." + __name__)
 
 
 def get_datasets_by_imageset_title(
-    yaml_file: dict,
     empiar_api_entry: Entry,
+    yaml_file: dict | None = None,
 ) -> dict[str, ro_crate_models.Dataset]:
 
     imageset_by_name = {
         imageset.name: imageset for imageset in empiar_api_entry.imagesets
     }
+
+    if yaml_file is None:
+        return {
+            title: get_minimal_dataset(imageset) 
+            for title, imageset in imageset_by_name.items()
+        }
 
     yaml_list_of_datasets = yaml_file.get("datasets", [])
     yaml_list_of_specimens = yaml_file.get("rembis", {}).get("Specimen", [])
@@ -30,6 +36,25 @@ def get_datasets_by_imageset_title(
         )
 
     return datasets
+
+
+def get_minimal_dataset(
+    imageset: Imageset, 
+) -> ro_crate_models.Dataset:
+    """
+    Return a minimal dataset, when the calling function is part of the minimal ro-crate route, 
+    and as such there is no yaml proposal file to further populate the dataset. 
+    """
+    
+    id = f"#{quote(f'{imageset.name} {imageset.directory}/')}"
+
+    model_dict = {
+        "@id": id,
+        "@type": ["Dataset", "bia:Dataset"],
+        "name": imageset.name,
+        "description": imageset.details,
+    }
+    return ro_crate_models.Dataset(**model_dict)
 
 
 def get_dataset(

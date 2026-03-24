@@ -28,6 +28,8 @@ def empiar_entry_from_accession_id(accession_id: str) -> Entry:
     empiar_uri = f"https://www.ebi.ac.uk/empiar/api/entry/{accession_no}"
 
     r = requests.get(empiar_uri)
+    r.raise_for_status()
+    
     raw_data = json.loads(r.content)
 
     accession_obj = raw_data[accession_id]

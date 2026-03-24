@@ -76,13 +76,13 @@ def convert_empiar_proposal_to_ro_crate(proposal_path: Path, crate_path: Path | 
     graph += roc_protocol
 
     roc_dataset_title_map = dataset.get_datasets_by_imageset_title(
-        yaml_file=yaml_file,
         empiar_api_entry=empiar_api_entry,
+        yaml_file=yaml_file,
     )
     graph += roc_dataset_title_map.values()
 
     roc_file_lists_objects = file_list.create_file_list(
-        ro_crate_dir, yaml_file, empiar_api_entry, roc_dataset_title_map
+        ro_crate_dir, empiar_api_entry, roc_dataset_title_map, yaml_file=yaml_file,
     )
     graph += roc_file_lists_objects
 
@@ -91,10 +91,10 @@ def convert_empiar_proposal_to_ro_crate(proposal_path: Path, crate_path: Path | 
 
     roc_study = study.get_study(
         accession_id=accession_id,
-        proposal=proposal, 
         empiar_api_entry=empiar_api_entry,
         contributors=roc_contributors,
         datasets=roc_dataset_title_map.values(),
+        proposal=proposal, 
     )
     graph.append(roc_study)
 
