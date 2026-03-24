@@ -1,5 +1,4 @@
 import logging
-from typing import Optional
 from email_validator import validate_email
 from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_parsing_utils import (
     attributes_to_dict,
@@ -72,8 +71,9 @@ def get_contributor_id(
     return id, contributor_bnode_int
 
 
-def sanitise_contributor_email(email: Optional[str]):
+def sanitise_contributor_email(email: str | None):
     if email is not None:
+        email = email.strip().strip("<>")
         email_info = validate_email(email, check_deliverability=False)
         email = email_info.normalized
     return email
