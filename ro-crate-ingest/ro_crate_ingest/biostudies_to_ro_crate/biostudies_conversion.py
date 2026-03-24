@@ -122,7 +122,7 @@ def convert_biostudies_to_ro_crate(
     if submission.section.files and len(submission.section.files) > 0:
         # create a default dataset for the files that are part of the pagetab, rather than referenced via filelist
         default_dataset = pagetab_file.create_root_dataset_for_submission(
-            submission.section
+            submission
         )
         graph.append(default_dataset)
 
