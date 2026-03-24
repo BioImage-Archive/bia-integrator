@@ -36,7 +36,7 @@ def get_study(
         "name": study_title_from_submission(submission),
         "license": get_license(study_attributes),
         "datePublished": submission_attributes["releasedate"],
-        "description": study_attributes.get("description", None),
+        "description": study_attributes.get("description") or study_attributes.get("abstract"),
         "acknowledgement": study_attributes.get("acknowledgements", None),
         "keyword": get_keywords(study_attributes.get("keywords", [])),
         "contributor": [{"@id": c.id} for c in contributors],
