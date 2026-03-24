@@ -3,7 +3,7 @@ from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_parsing_utils 
     attributes_to_dict,
 )
 from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_api import (
-    Section,
+    Submission,
     File,
 )
 from bia_shared_datamodels import ro_crate_models
@@ -20,17 +20,20 @@ from ro_crate_ingest.save_utils import write_filelist
 logger = logging.getLogger("__main__." + __name__)
 
 
-def create_root_dataset_for_submission(root_section: Section):
+def create_root_dataset_for_submission(submission: Submission):
     section_name = "Default template. No Study Components"
     id = f"#{quote(section_name)}"
 
-    root_attributes = attributes_to_dict(root_section.attributes)
+    # Use more specific section fields, fall back to base fields
+    root_attributes = attributes_to_dict(submission.attributes)
+    base_section_attributes = attributes_to_dict(submission.section.attributes)
 
     model_dict = {
         "@id": id,
         "@type": ["Dataset", "bia:Dataset"],
-        "name": root_attributes["title"],
-        "description": root_attributes["description"],
+        "name": base_section_attributes.get("title") or root_attributes["title"],
+        "description": base_section_attributes.get("description")
+        or root_attributes["description"],
         "hasPart": [],
         "associationFileMetadata": None,
     }
