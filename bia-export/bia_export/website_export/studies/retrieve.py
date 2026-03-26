@@ -167,29 +167,16 @@ def retrieve_dataset_images(
             if image.submission_dataset_uuid == dataset_uuid
         ]
     else:
-        api_images = get_all_api_results(
-            dataset_uuid, api_client.get_image_linking_dataset, page_size_setting=500
+        api_images = api_client.get_image_linking_dataset(
+            uuid=dataset_uuid, page_size=5
         )
 
     images_with_file_size = []
     if len(api_images) > 0:
         for image in api_images:
-            if len(image.original_file_reference_uuid) == 0:
-                total_size_in_bytes = None
-                file_path = None
-            else:
-                file_reference = api_client.get_file_reference(
-                    str(image.original_file_reference_uuid[0])
-                )
-                total_size_in_bytes = (
-                    file_reference.size_in_bytes
-                    if file_reference and file_reference.size_in_bytes != 0
-                    else None
-                )
-                file_path = file_reference.file_path if file_reference else None
             image_dict = image.model_dump() | {
-                "total_size_in_bytes": total_size_in_bytes,
-                "file_path": file_path
+                "total_size_in_bytes": None,
+                "file_path": None,
             }
             images_with_file_size.append(Image(**image_dict))
 

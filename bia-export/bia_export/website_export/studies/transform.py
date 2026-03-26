@@ -8,11 +8,11 @@ from bia_export.website_export.studies.models import (
 )
 from bia_export.website_export.studies.retrieve import (
     retrieve_study,
+    retrieve_datasets,
     retrieve_dataset_images,
     aggregate_file_list_data,
     retrieve_aggregation_fields,
     retrieve_detail_objects,
-    retrieve_datasets,
 )
 from bia_export.website_export.website_models import (
     BioSample,
@@ -30,9 +30,10 @@ logger = logging.getLogger("__main__." + __name__)
 
 
 def transform_study(context: StudyCLIContext) -> Study:
-    api_study = retrieve_study(context)
-    logger.info(f"Processing study: {api_study.accession_id}")
-    study_dict = api_study.model_dump()
+    if context.study is None:
+        context.study = retrieve_study(context)
+    logger.info(f"Processing study: {context.study.accession_id}")
+    study_dict = context.study.model_dump()
 
     # Collect file list information prior to creating eid if reading locally to avoid reading them multiple times.
     # TODO: make transform_study api/local independent: only retreive functions should have to worry about this.
@@ -40,7 +41,16 @@ def transform_study(context: StudyCLIContext) -> Study:
         aggregate_file_list_data(context)
 
     study_dict["dataset"] = transform_datasets(context)
-
+    study_dict["image"] = []
+    for dataset in study_dict["dataset"]:
+        study_dict["image"].extend(
+            retrieve_dataset_images(dataset.uuid, api_models.Image, context)
+        )
+        # Limit to 5 images
+        if len(study_dict["image"]) >= 5:
+            break
+    study_dict["image"] = study_dict["image"]
+    study_dict["image_format"] = []
     study = Study(**study_dict)
     return study
 
@@ -48,10 +58,8 @@ def transform_study(context: StudyCLIContext) -> Study:
 def transform_datasets(
     context: StudyCLIContext,
 ) -> List[Dataset]:
-    api_datasets = retrieve_datasets(context)
-
     dataset_list = []
-    for api_dataset in api_datasets:
+    for api_dataset in context.dataset:
         dataset_list.append(transform_dataset(api_dataset, context))
 
     return dataset_list
@@ -68,11 +76,9 @@ def transform_dataset(
 
     dataset_dict = dataset_dict | retrieve_aggregation_fields(api_dataset, context)
 
-    dataset_api_images = retrieve_dataset_images(
-        api_dataset.uuid, api_models.Image, context
-    )
-    dataset_dict = dataset_dict | {"image": dataset_api_images}
-
+    # dataset_api_images = retrieve_dataset_images(
+    #    api_dataset.uuid, api_models.Image, context
+    # )
     dataset = Dataset(**dataset_dict)
     return dataset
 
@@ -133,3 +139,7 @@ def transform_detail_object(
 
     detail = target_type(**detail_dict)
     return detail
+
+
+def flatten(xss):
+    return [x for xs in xss for x in xs]

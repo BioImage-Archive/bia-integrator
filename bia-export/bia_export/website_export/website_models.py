@@ -52,3 +52,5 @@ class CLIContext(BaseModel):
     # API Processing Fields
     study_uuid: Optional[UUID] = Field(default=None)
     # Fields used in both
+    study: Optional[api_models.Study] = Field(default=None)
+    dataset: Optional[api_models.Dataset] = Field(default=None)

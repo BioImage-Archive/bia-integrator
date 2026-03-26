@@ -15,6 +15,7 @@ from bia_export.website_export.images.retrieve import (
     retrieve_images,
     get_local_img_rep_map,
     retrieve_representations,
+    retrieve_file_reference_attr,
 )
 from bia_export.website_export.website_models import (
     BioSample,
@@ -30,18 +31,26 @@ def transform_images(context: ImageCLIContext) -> Image:
 
     api_images = retrieve_images(context)
 
+    if context.dataset is not None:
+        dataset_map = {dataset.uuid: dataset for dataset in context.dataset}
+    else:
+        dataset_map = {}
     if context.root_directory:
         context.image_to_rep_uuid_map = get_local_img_rep_map(context)
-
+    image_format = set()
     for api_image in api_images:
-        image = transform_image(api_image, context)
-
+        image_ds = dataset_map.get(api_image.submission_dataset_uuid)
+        image = transform_image(api_image, context, image_ds)
         image_map[str(image.uuid)] = image.model_dump(mode="json")
+        image_format.update(
+            [image_rep.image_format for image_rep in image.representation]
+        )
+    return image_map, image_format
 
-    return image_map
 
-
-def transform_image(api_image: api_models.Image, context: ImageCLIContext) -> Image:
+def transform_image(
+    api_image: api_models.Image, context: ImageCLIContext, dataset: api_models.Dataset
+) -> Image:
     api_creation_process = retrieve_object(
         api_image.creation_process_uuid, api_models.CreationProcess, context
     )
@@ -51,16 +60,58 @@ def transform_image(api_image: api_models.Image, context: ImageCLIContext) -> Im
 
     physical_sizes = transform_physical_size_xyz_from_image_rep(api_img_rep)
 
-    accession_id = context.accession_id
+    file_reference_attr_d = retrieve_file_reference_attr(
+        api_image.original_file_reference_uuid
+    )
 
     image_dict = api_image.model_dump() | {
         "representation": api_img_rep,
         "creation_process": creation_process,
         **physical_sizes,
-        "accession_id": accession_id,
+        **transform_study_attr_to_image_dict(context=context),
+        "dataset_title": dataset.title if dataset is not None else "",
+        "dataset_description": dataset.description if dataset is not None else "",
+        **file_reference_attr_d,
     }
 
     return Image(**image_dict)
+
+
+def transform_study_attr_to_image_dict(context: ImageCLIContext) -> dict:
+    image_dict = {}
+    study_attr_field_map = {
+        "accession_id": "accession_id",
+        "licence": "licence",
+        "release_date": "study_release_date",
+        "title": "study_title",
+        "doi": "study_doi",
+        "author.display_name": "author_display_name",
+        "author.orcid": "author_orcid",
+        "author.rorid": "author_rorid",
+        "author.affiliation": "author_affiliation",
+        "related_publication": "publication",
+    }
+    study_attr = {} if context.study is None else context.study.model_dump()
+    for key, val in study_attr_field_map.items():
+        if key.__contains__("author"):
+            k1, k2 = key.split(".")
+            image_dict[val] = transform_author_to_flat_fields(
+                study_attr.get(k1, {}), k2
+            )
+        else:
+            image_dict[val] = study_attr.get(key, None)
+    return image_dict
+
+
+def transform_author_to_flat_fields(author: dict, field: str) -> list:
+    if field != "affiliation":
+        return [a[field] for a in author if a[field] is not None]
+    else:
+        affiliations = []
+        for a in author:
+            for aff in a["affiliation"]:
+                affiliations.append(aff["display_name"])
+        return affiliations
 
 
 def transform_creation_process(

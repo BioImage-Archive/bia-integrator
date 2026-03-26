@@ -11,6 +11,7 @@ from ..website_models import (
     AnnotationMethod,
 )
 from typing import List, Optional
+from datetime import date
 
 
 class CreationProcess(api_models.CreationProcess):
@@ -60,6 +61,45 @@ class Image(api_models.Image):
     )
     accession_id: str | None = Field(
         description="""study accession ID""",
+    )
+    licence: str | None = Field(
+        description="""study accession ID""",
+    )
+    study_release_date: date | None = Field(
+        description="""study release date""",
+    )
+    study_title: str | None = Field(
+        description="""study title""",
+    )
+    study_doi: str | None = Field(
+        description="""study doi""",
+    )
+    author_display_name: list[str] | None = Field(
+        description="""study authors""",
+    )
+    author_orcid: list[str] | None = Field(
+        description="""study authors""",
+    )
+    author_rorid: list[str] | None = Field(
+        description="""study authors""",
+    )
+    author_affiliation: list[str] | None = Field(
+        description="""study authors""",
+    )
+    dataset_description: str | None = Field(
+        description="""dataset description""",
+    )
+    dataset_title: str | None = Field(
+        description="""dataset description""",
+    )
+    publication: list[dict] | None = Field(
+        description="""study publication""",
+    )
+    total_size_in_bytes: float | None = Field(
+        description="""dataset description""",
+    )
+    file_path: str | None = Field(
+        description="""dataset description""",
     )
 
 

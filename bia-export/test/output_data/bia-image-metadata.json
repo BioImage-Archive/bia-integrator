@@ -15,7 +15,29 @@
         "total_physical_size_x": null,
         "total_physical_size_y": null,
         "total_physical_size_z": null,
+        "total_size_in_bytes": null,
+        "file_path": null,
         "accession_id": "S-BIADTEST",
+        "licence": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "study_release_date": "2024-02-13",
+        "study_title": "A test submission with title greater than 25 characters",
+        "study_doi": null,
+        "author_display_name": [
+            "Test Author1",
+            "Test Author2"
+        ],
+        "author_orcid": [
+            "0000-0000-0000-0000",
+            "1111-1111-1111-1111"
+        ],
+        "author_rorid": [],
+        "author_affiliation": [
+            "Test College 1",
+            "Test College 2"
+        ],
+        "dataset_description": null,
+        "dataset_title": "Annotations and segmentation masks",
+        "publication": [],
         "creation_process": {
             "object_creator": "bia_image_assignment",
             "uuid": "8444ff28-e32b-4c6f-9677-d9ff597b0c29",
@@ -79,7 +101,8 @@
         "total_physical_size_x": null,
         "total_physical_size_y": null,
         "total_physical_size_z": null,
-        "accession_id": "S-BIADTEST",
+        "total_size_in_bytes": null,
+        "file_path": null,
         "creation_process": {
             "object_creator": "bia_image_assignment",
             "uuid": "2447db96-dd23-44eb-ad47-1086c9be1cba",
@@ -247,6 +270,27 @@
                 "image_viewer_setting": [],
                 "representation_of_uuid": "e7322131-8e27-455d-b9fc-8add0719af70"
             }
-        ]
+        ],
+        "accession_id": "S-BIADTEST",
+        "licence": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "study_release_date": "2024-02-13",
+        "study_title": "A test submission with title greater than 25 characters",
+        "study_doi": null,
+        "author_display_name": [
+            "Test Author1",
+            "Test Author2"
+        ],
+        "author_orcid": [
+            "0000-0000-0000-0000",
+            "1111-1111-1111-1111"
+        ],
+        "author_rorid": [],
+        "author_affiliation": [
+            "Test College 1",
+            "Test College 2"
+        ],
+        "dataset_description": "Description of study component 1",
+        "dataset_title": "Study Component 1",
+        "publication": []
     }
 }

@@ -23,9 +23,7 @@ def retrieve_images(
         )
 
     else:
-        dataset_list = get_all_api_results(
-            context.study_uuid, api_client.get_dataset_linking_study
-        )
+        dataset_list = context.dataset
         api_images = []
         for dataset in dataset_list:
             api_images += get_all_api_results(
@@ -66,3 +64,21 @@ def get_local_img_rep_map(context: ImageCLIContext) -> dict[UUID, UUID]:
         image_to_rep_map[image_rep.representation_of_uuid].append(image_rep.uuid)
 
     return image_to_rep_map
+
+
+def retrieve_file_reference_attr(uuid_l: List[UUID]) -> dict:
+    total_size_in_bytes, file_path = None, None
+    if len(uuid_l) != 0:
+        file_reference = api_client.get_file_reference(uuid_l[0])
+        if file_reference:
+            total_size_in_bytes = (
+                file_reference.size_in_bytes
+                if file_reference.size_in_bytes != 0
+                else None
+            )
+            file_path = file_reference.file_path
+
+    return {
+        "total_size_in_bytes": total_size_in_bytes,
+        "file_path": file_path,
+    }

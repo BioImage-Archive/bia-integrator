@@ -40,16 +40,20 @@ class Dataset(models.Dataset, models.DatasetStats):
         description="""Other protocols followed in order to create the images in this dataset.""",
         default_factory=list,
     )
-    image: List[Image] = Field(
-        default_factory=list,
-        description="List of image associated with the dataset.",
-    )
 
 
 class Study(models.Study):
     dataset: Optional[List[Dataset]] = Field(
         default_factory=list,
         description="""A dataset that is associated with the study.""",
+    )
+    image: List[Image] = Field(
+        default_factory=list,
+        description="List of image associated with the study.",
+    )
+    image_format: list[str] = Field(
+        default_factory=list,
+        description="List of image formats.",
     )
 
 
