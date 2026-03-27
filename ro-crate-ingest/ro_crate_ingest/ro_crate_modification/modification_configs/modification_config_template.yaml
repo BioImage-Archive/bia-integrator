@@ -1,0 +1,195 @@
+# modification_config_template.yaml
+#
+# Template illustrating all three modification scenarios. A real config file
+# will use only the sections relevant to its case.
+#
+# Scenario 1  — Image assignment only (typical for BIA/BioStudies entries)
+# Scenario 2  — REMBI assignment only (no image assignment)
+# Scenario 3  — REMBI + specimen track assignment (typical for EMPIAR entries)
+# ---------------------------------------------------------------------------
+
+
+# ---------------------------------------------------------------------------
+# REMBI components — study-wide, not dataset-specific (Scenarios 2 & 3)
+# ---------------------------------------------------------------------------
+rembis:
+  biosamples:
+    - title: "Human HeLa cells"
+      biological_entity_description: "Description of the biological entity."
+      organism_classification:
+        - common_name: "human"
+          scientific_name: "Homo sapiens"
+          ncbi_id: "NCBI:txid9606"
+      growth_protocol_title: "HeLa cell culture protocol"
+
+  specimen_imaging_preparation_protocols:
+    - title: "Cryo-vitrification by plunge freezing"
+      protocol_description: "..."
+    - title: "FIB-SEM lamella preparation"
+      protocol_description: "..."
+
+  image_acquisition_protocols:
+    - title: "Cryo-electron tomography"
+      protocol_description: "..."
+      imaging_instrument_description: "Titan Krios G3i"
+      fbbi_id:
+        - "obo:FBbi_00000256"
+      imaging_method_name:
+        - "Cryo-electron tomography"
+
+  protocols:
+    - title: "HeLa cell culture protocol"
+      protocol_description: "..."
+    - title: "Tomogram reconstruction"
+      protocol_description: "..."
+
+  annotation_methods:
+    - title: "Manual segmentation of mitochondria"
+      protocol_description: "..."
+      method_type:
+        - "segmentation"
+
+
+# ---------------------------------------------------------------------------
+# Specimen defaults — top-level, cross-dataset (Scenario 3 only)
+# Applied to every discovered specimen unless overridden by a specimen_group.
+# ---------------------------------------------------------------------------
+specimen_defaults:
+  biosample_title: "Human HeLa cells"
+  specimen_imaging_preparation_protocol_titles:
+    - "Cryo-vitrification by plunge freezing"
+    - "FIB-SEM lamella preparation"
+
+
+# ---------------------------------------------------------------------------
+# Specimen track ID extraction — top-level, cross-dataset (Scenario 3 only)
+# Exactly one of patterns / pattern_alias_mappings / literal_alias_mappings.
+# ---------------------------------------------------------------------------
+specimen_tracks:
+  # Option A: simple regex patterns (one capture group per pattern = specimen ID)
+  patterns:
+    - "tomo_(\\d{4})"
+
+  # Option B: alias mappings for zero-padded IDs appearing in multiple forms
+  # pattern_alias_mappings:
+  #   "(\\d{4})":
+  #     - "(\\d{4})"            # "0001" -> "0001"
+  #     - "tomo_(\\d{4})"       # "tomo_0001" -> "0001"
+  #     - "specimen_(\\d{2})"   # "specimen_12" -> "0012"
+
+  # Option C: literal alias mappings for non-algorithmic relationships
+  # literal_alias_mappings:
+  #   "centrosome_01": ["**/20190429/**/TS_05*", "**/cent1.mrc"]
+  #   "centrosome_02": ["**/20200309/**/TS_002*", "**/cent2.mrc"]
+
+
+# ---------------------------------------------------------------------------
+# Datasets — per-dataset modification instructions.
+#
+# 'name' must match the dataset title in the minimal RO-Crate, or be the
+# sentinel '__default__' to create a new catch-everything-else dataset.
+# ---------------------------------------------------------------------------
+datasets:
+
+  # --- Scenario 1: flat image assignment ------------------------------------
+  # A bare list of glob patterns under 'images:'. All matches are assigned
+  # type 'image' (non-track-aware). No REMBI or specimen config needed.
+  - name: "Fluorescence images of HeLa cells"
+    images:
+      - "**/*.tif"
+      - "**/*.ome.tiff"
+
+  # --- Scenario 1: default dataset ------------------------------------------
+  # '__default__' creates a new 'Default dataset' and assigns matching files
+  # from those not yet belonging to any named dataset.
+  - name: "__default__"
+    images:
+      - "**/*.png"
+
+  # --- Scenario 2: REMBI association only ------------------------------------
+  # No 'images' block — only dataset-level REMBI associations are written.
+  # The 'associations' block covers all association fields on the Dataset
+  # model. Reference entities by title; they must be declared in the rembis
+  # block above (or already exist in the minimal RO-Crate).
+  - name: "Unaligned multi-frame micrographs"
+    associations:
+      image_acquisition_protocol_titles:
+        - "Cryo-electron tomography"
+      biosample_titles:
+        - "Human HeLa cells"
+      specimen_imaging_preparation_protocol_titles:
+        - "Cryo-vitrification by plunge freezing"
+      protocol_titles:
+        - "HeLa cell culture protocol"
+
+  # --- Scenario 2: associations alongside image assignment ------------------
+  # 'associations' and 'images' can coexist — images are assigned and REMBI
+  # associations are written to the Dataset entity in the same step.
+  - name: "Fluorescence images with REMBI"
+    images:
+      - "**/*.tif"
+    associations:
+      image_acquisition_protocol_titles:
+        - "Cryo-electron tomography"
+      annotation_method_titles:
+        - "Manual segmentation of mitochondria"
+
+  # --- Scenario 3: by_type image assignment + specimen tracks ---------------
+  # 'by_type' assigns files to specific ImageType values. 'specimen_tracks'
+  # carries per-dataset IAP/protocol titles keyed by image type and specimen
+  # group overrides. The top-level 'specimen_tracks' block provides ID
+  # extraction. 'associations' can also be added here for any flat
+  # dataset-level associations not needing image-type keying.
+  - name: "Raw tilt series frames"
+    images:
+      by_type:
+        frames: "**/*.tif"
+    specimen_tracks:
+      image_acquisition_protocol_title:
+        dataset:
+          - "Cryo-electron tomography"
+
+  - name: "Unaligned tilt stacks"
+    images:
+      by_type:
+        tilt_series: "**/*.mrc.st"
+        aligned_tilt_series: "**/*.ali.mrc"
+    specimen_tracks:
+      image_acquisition_protocol_title:
+        tilt_series:
+          - "Cryo-electron tomography"
+      protocol_titles:
+        aligned_tilt_series:
+          - "Tomogram reconstruction"
+
+  - name: "Reconstructed tomograms"
+    images:
+      by_type:
+        tomogram: "**/*.mrc"
+    associations:
+      biosample_titles:
+        - "Human HeLa cells"
+      specimen_imaging_preparation_protocol_titles:
+        - "Cryo-vitrification by plunge freezing"
+    specimen_tracks:
+      protocol_titles:
+        tomogram:
+          - "Tomogram reconstruction"
+      # Per-specimen metadata overrides for this dataset.
+      specimen_groups:
+        - specimen_ids:
+            - "0012"
+            - "0013"
+          biosample_title: "Human HeLa cells (outlier batch)"
+        - specimen_id_pattern: "^00[2-9]\\d$"
+          specimen_imaging_preparation_protocol_titles:
+            - "FIB-SEM lamella preparation"
+
+  # --- Scenario 3: 'image' key in by_type -----------------------------------
+  # For files that are images but don't belong to a specimen track — e.g.
+  # overview images stored alongside track data.
+  - name: "Overview images"
+    images:
+      by_type:
+        image: "**/*_overview.png"
+        tomogram: "**/*.mrc"

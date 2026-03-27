@@ -1,0 +1,577 @@
+import glob
+import logging
+import pandas as pd
+import re
+from pathlib import Path
+from pydantic import BaseModel, computed_field, Field
+
+from bia_shared_datamodels import ro_crate_models
+from bia_shared_datamodels.linked_data.pydantic_ld.LDModel import ObjectReference
+from ro_crate_ingest.bia_ro_crate.bia_ro_crate_metadata import BIAROCrateMetadata
+from ro_crate_ingest.bia_ro_crate.file_list import FileList
+from ro_crate_ingest.ro_crate_modification.enrichment.image_types import ImageType
+from ro_crate_ingest.ro_crate_modification.enrichment.utils import (
+    FILE_TYPE_IMAGE, 
+    RDF_TYPE_PROPERTY, 
+    get_dataset_column_id, 
+    get_or_add_source_image_label_column_id, 
+    get_path_column_id, 
+    match_patterns, 
+    ref, 
+    resolve_dataset_id_by_name, 
+    title_to_id
+)
+from ro_crate_ingest.ro_crate_modification.modification_config import (
+    DEFAULT_DATASET_SENTINEL,
+    IMAGE_ASSIGNMENT_TYPE_KEY,
+    DatasetModificationConfig,
+    ModificationConfig,
+    SpecimenDefaults,
+    SpecimenGroup,
+    SpecimenTrackConfig,
+)
+
+logger = logging.getLogger(__name__)
+
+
+class SpecimenTrack(BaseModel):
+    """
+    SpecimenTrack represents one complete experimental unit of images,
+    linked by a specimen.
+    
+    For example in cryoET — the track from raw movie frames through the 
+    tilt series to a reconstructed tomogram, all belonging to one specimen.
+
+    dataset_for maps each ImageType value (str) to the name of the dataset
+    block that contributed that image type. extra_files has no entry in
+    dataset_for since their provenance is not meaningful for downstream use.
+    """
+    specimen_id: str
+    frames: list[Path] = Field(default_factory=list)
+    tilt_series: Path | None = None
+    aligned_tilt_series: Path | None = None
+    tomogram: Path | None = None
+    denoised_tomogram: Path | None = None
+    extra_files: list[Path] = Field(default_factory=list)
+    dataset_for: dict[str, str] = Field(default_factory=dict)
+
+    @computed_field
+    @property
+    def track_start(self) -> ImageType:
+        if self.frames:
+            return ImageType.FRAMES
+        if self.tilt_series is not None:
+            return ImageType.TILT_SERIES
+        if self.aligned_tilt_series is not None:
+            return ImageType.ALIGNED_TILT_SERIES
+        if self.tomogram is not None:
+            return ImageType.TOMOGRAM
+        if self.denoised_tomogram is not None:
+            return ImageType.DENOISED_TOMOGRAM
+        raise ValueError(f"ImageTrack for specimen '{self.specimen_id}' has no images")
+
+
+def _transform_to_canonical_id(raw_id: str, canonical_pattern: str) -> str:
+    """
+    Transform a raw specimen ID to match the canonical pattern format.
+    For example: "12" with pattern "(\\d{4})" -> "0012"
+    """
+    digit_length_match = re.search(r'\\d\{(\d+)\}', canonical_pattern)
+    if digit_length_match:
+        target_length = int(digit_length_match.group(1))
+        if raw_id.isdigit():
+            return raw_id.zfill(target_length)
+    return raw_id
+
+
+def _classify_file_by_type(
+    path: Path,
+    by_type: dict[str, str | list[str]],
+    dataset_name: str,
+) -> str | None:
+    """
+    Classify a file against the by_type patterns from an ImageAssignmentConfig.
+    Returns the matching ImageType value string, or None if no pattern matches
+    or if the key is the plain 'image' sentinel (which is not a track stage).
+    """
+    matched: list[str] = []
+    for type_key, raw_patterns in by_type.items():
+        patterns = [raw_patterns] if isinstance(raw_patterns, str) else raw_patterns
+        if match_patterns(str(path), patterns):
+            matched.append(type_key)
+
+    if len(matched) > 1:
+        logger.warning(
+            f"Dataset '{dataset_name}': '{path}' matched multiple by_type keys "
+            f"{matched}; using first ({matched[0]})."
+        )
+
+    if not matched:
+        return None
+
+    key = matched[0]
+    # The plain 'image' key marks a file as an image without track stage
+    # membership — return None so _merge_tracks treats it as an extra_file.
+    if key == IMAGE_ASSIGNMENT_TYPE_KEY:
+        return None
+
+    return key
+
+
+def _extract_specimen_id(
+    file_path: Path,
+    specimen_config: SpecimenTrackConfig,
+) -> str | None:
+    """
+    Extract specimen ID using one of three methods:
+
+    1. patterns: list[str] - simple regex patterns
+    2. pattern_alias_mappings: dict[str, list[str]] - canonical pattern -> alias patterns
+       (with algorithmic transformation, e.g., zero-padding)
+    3. literal_alias_mappings: dict[str, list[str]] - canonical_id -> [literal_aliases]
+       (direct, or with globs, lookup table for arbitrary relationships)
+    """
+    path_str = file_path.as_posix()
+
+    # Case 1: Simple patterns
+    for pattern in specimen_config.patterns:
+        match = re.search(pattern, path_str)
+        if match:
+            groups = [g for g in match.groups() if g is not None]
+            if len(groups) > 1:
+                return "_".join(groups)
+            return groups[0]
+
+    # Case 2: Pattern alias mappings (with transformation)
+    for canonical_pattern, alias_patterns in specimen_config.pattern_alias_mappings.items():
+        for alias_pattern in alias_patterns:
+            match = re.search(alias_pattern, path_str)
+            if match:
+                raw_id = match.group(1)
+                return _transform_to_canonical_id(raw_id, canonical_pattern)
+
+    # Case 3: Literal alias mappings (glob matching with ** support)
+    for canonical_id, aliases in specimen_config.literal_alias_mappings.items():
+        for alias in aliases:
+            regex_pattern = glob.translate(alias, recursive=True, include_hidden=True)
+            if re.match(regex_pattern, path_str):
+                return canonical_id
+
+    return None
+
+
+def _build_track_dataframe(
+    file_list: FileList,
+    ro_crate_metadata: BIAROCrateMetadata,
+    dataset_configs: list[DatasetModificationConfig],
+    specimen_track_config: SpecimenTrackConfig,
+) -> pd.DataFrame:
+    """
+    Build a one-row-per-file DataFrame for _merge_tracks, reading from the
+    file list rather than from EMPIARFile + DatasetConfig.
+
+    For each dataset that has a specimen_tracks block:
+      - Filters the file list to image-assigned rows belonging to that dataset
+      - Applies the by_type patterns to classify each file as an ImageType
+      - Extracts a specimen ID from each file path using specimen_track_config
+
+    Result columns: path, dataset_name, specimen_id, image_type
+    """
+    path_col_id = get_path_column_id(file_list)
+    type_col_id = file_list.get_column_id_by_property(RDF_TYPE_PROPERTY)
+    dataset_col_id = get_dataset_column_id(file_list)
+
+    if path_col_id is None or dataset_col_id is None:
+        logger.warning(
+            "Specimen track identification requires both a file path column and a "
+            "dataset membership column in the file list. One or both are absent."
+        )
+        return pd.DataFrame(columns=["path", "dataset_name", "specimen_id", "image_type"])
+
+    candidate_rows: list[pd.DataFrame] = []
+
+    for dataset_config in dataset_configs:
+        dataset_id = resolve_dataset_id_by_name(ro_crate_metadata, dataset_config.name)
+        if dataset_id is None:
+            continue
+
+        # Image-assigned rows belonging to this dataset
+        type_series = file_list.data.get(type_col_id, pd.Series(dtype=str))
+        image_mask = (
+            (file_list.data[dataset_col_id] == dataset_id)
+            & (type_series == FILE_TYPE_IMAGE)
+        )
+        subset = file_list.data[image_mask][[path_col_id]].copy()
+        subset = subset.rename(columns={path_col_id: "path"})
+        subset["path"] = subset["path"].apply(Path)
+
+        if subset.empty:
+            logger.warning(
+                f"Dataset '{dataset_config.name}': no image-assigned files found "
+                "for specimen track identification."
+            )
+            continue
+
+        # Classify each file by ImageType using the by_type patterns.
+        # Files that match no typed pattern get image_type = None and will
+        # be treated as extra_files in the track.
+        if dataset_config.images and dataset_config.images.by_type:
+            subset["image_type"] = subset["path"].apply(
+                lambda p: _classify_file_by_type(
+                    p, dataset_config.images.by_type, dataset_config.name
+                )
+            )
+        else:
+            subset["image_type"] = None
+
+        # Extract specimen ID from path using the cross-dataset strategy
+        subset["specimen_id"] = subset["path"].apply(
+            lambda p: _extract_specimen_id(p, specimen_track_config)
+        )
+
+        unmatched = subset["specimen_id"].isna().sum()
+        if unmatched:
+            logger.warning(
+                f"Dataset '{dataset_config.name}': {unmatched} file(s) could not be "
+                "assigned a specimen ID and will be skipped."
+            )
+        subset = subset.dropna(subset=["specimen_id"])
+
+        subset["dataset_name"] = dataset_config.name
+        candidate_rows.append(subset[["path", "dataset_name", "specimen_id", "image_type"]])
+
+    if not candidate_rows:
+        return pd.DataFrame(columns=["path", "dataset_name", "specimen_id", "image_type"])
+
+    return pd.concat(candidate_rows, ignore_index=True)
+
+
+
+def _merge_tracks(df: pd.DataFrame) -> list[SpecimenTrack]:
+    """
+    Make one ImageTrack per specimen_id from the per-row DataFrame.
+
+    _build_file_dataframe guarantees one row per file, so there is no
+    deduplication to do here — accumulate into track fields and
+    record dataset provenance in dataset_for.
+    """
+    tracks: dict[str, SpecimenTrack] = {}
+
+    for _, row in df.iterrows():
+        sid = str(row["specimen_id"])
+        path = row["path"]
+        image_type = row["image_type"]
+        dataset_name = row["dataset_name"]
+
+        if str(path).startswith("data/"):
+            path = Path(path.relative_to("data/"))
+
+        track = tracks.setdefault(sid, SpecimenTrack(specimen_id=sid))
+
+        if pd.isna(image_type):
+            track.extra_files.append(path)
+            continue
+
+        if image_type == ImageType.FRAMES:
+            track.frames.append(path)
+            track.dataset_for[ImageType.FRAMES] = dataset_name
+
+        # TODO: even/odd tilt series images
+        elif image_type == ImageType.TILT_SERIES:
+            if track.tilt_series is not None:
+                logger.warning(
+                    f"Specimen {sid}: second tilt series file encountered "
+                    f"('{path}'); keeping the first."
+                )
+            else:
+                track.tilt_series = path
+                track.dataset_for[ImageType.TILT_SERIES] = dataset_name
+
+        elif image_type == ImageType.ALIGNED_TILT_SERIES:
+            if track.aligned_tilt_series is not None:
+                logger.warning(
+                    f"Specimen {sid}: second aligned tilt series file "
+                    f"encountered ('{path}'); keeping the first."
+                )
+            else:
+                track.aligned_tilt_series = path
+                track.dataset_for[ImageType.ALIGNED_TILT_SERIES] = dataset_name
+
+        elif image_type == ImageType.TOMOGRAM:
+            if track.tomogram is not None:
+                logger.warning(
+                    f"Specimen {sid}: second tomogram file encountered "
+                    f"('{path}'); keeping the first."
+                )
+            else:
+                track.tomogram = path
+                track.dataset_for[ImageType.TOMOGRAM] = dataset_name
+
+        elif image_type == ImageType.DENOISED_TOMOGRAM:
+            if track.denoised_tomogram is not None:
+                logger.warning(
+                    f"Specimen {sid}: second denoised tomogram file "
+                    f"encountered ('{path}'); keeping the first."
+                )
+            else:
+                track.denoised_tomogram = path
+                track.dataset_for[ImageType.DENOISED_TOMOGRAM] = dataset_name
+        
+        else:
+            logger.warning(
+                f"Specimen {sid}: unrecognised image type '{image_type}' for "
+                f"'{path}'; file will be skipped."
+            )
+
+    for track in tracks.values():
+        track.frames.sort()
+        track.extra_files.sort()
+
+    return sorted(tracks.values(), key=lambda t: t.specimen_id)
+
+
+def _resolve_specimen_metadata(
+    tracks: list[SpecimenTrack],
+    specimen_defaults: SpecimenDefaults | None,
+    dataset_configs: list[DatasetModificationConfig],
+) -> list[dict]:
+    """
+    Build per-specimen metadata dicts from tracks, applying the same
+    defaults -> specimen_groups cascade as the proposal generation path.
+
+    Returns a list of dicts with keys:
+        title, biosample_title, specimen_imaging_preparation_protocol_titles
+    """
+    group_lookup: dict[str, SpecimenGroup] = {}
+    group_patterns: list[tuple[str, SpecimenGroup]] = []
+
+    for dataset_config in dataset_configs:
+        if dataset_config.specimen_tracks is None:
+            continue
+        for group in dataset_config.specimen_tracks.specimen_groups:
+            if group.specimen_id_pattern is not None:
+                group_patterns.append((group.specimen_id_pattern, group))
+            else:
+                for sid in group.specimen_ids:
+                    group_lookup[sid] = group
+
+    specimens: list[dict] = []
+    for track in tracks:
+        sid = track.specimen_id
+
+        biosample_title = specimen_defaults.biosample_title if specimen_defaults else None
+        sipp_titles = (
+            list(specimen_defaults.specimen_imaging_preparation_protocol_titles)
+            if specimen_defaults else []
+        )
+
+        override: SpecimenGroup | None = group_lookup.get(sid)
+        if override is None:
+            for pattern, group in group_patterns:
+                if re.search(pattern, sid):
+                    override = group
+                    break
+
+        if override is not None:
+            if override.biosample_title is not None:
+                biosample_title = override.biosample_title
+            if override.specimen_imaging_preparation_protocol_titles:
+                sipp_titles = list(override.specimen_imaging_preparation_protocol_titles)
+
+        specimens.append({
+            "title": f"Specimen_{sid}",
+            "biosample_title": biosample_title,
+            "specimen_imaging_preparation_protocol_titles": sipp_titles,
+        })
+
+    return specimens
+
+
+
+def _make_specimen_entities(
+    spec_meta: dict,
+) -> tuple[ro_crate_models.Specimen, ro_crate_models.CreationProcess]:
+    """
+    Build a Specimen and a paired CreationProcess entity from resolved
+    per-specimen metadata.
+
+    Specimen references its BioSample(s) and SIPP(s) by @id.
+    CreationProcess references the Specimen as its subject.
+    """
+    title = spec_meta["title"]
+    biosample_title = spec_meta["biosample_title"]
+    sipp_titles = spec_meta["specimen_imaging_preparation_protocol_titles"]
+
+    biological_entity_refs = [ref(biosample_title)] if biosample_title else []
+    sipp_refs = [ref(t) for t in sipp_titles]
+
+    specimen = ro_crate_models.Specimen(**{
+        "@id": title_to_id(title),
+        "biologicalEntity": biological_entity_refs,
+        "imagingPreparationProtocol": sipp_refs,
+    })
+
+    creation_process = ro_crate_models.CreationProcess(**{
+        "@id": title_to_id(f"CreationProcess_{title}"),
+        "subject": ObjectReference(**{"@id": specimen.id}),
+    })
+
+    return specimen, creation_process
+
+
+def _write_source_image_labels(
+    file_list: FileList,
+    tracks: list[SpecimenTrack],
+) -> None:
+    """
+    For each file corresponding to a non-track-start image in a specimen
+    track, write the label of its upstream image into the source_image_label
+    column. The upstream label follows the ImageType ordering:
+
+        tilt_series       <- frames
+        aligned_t_s       <- tilt_series (or frames)
+        tomogram          <- aligned_t_s (or tilt_series, or frames)
+        denoised_tomogram <- aligned_t_s (or tilt_series, or frames)
+    """
+    path_col_id = get_path_column_id(file_list)
+    if path_col_id is None:
+        return
+
+    source_label_col_id = get_or_add_source_image_label_column_id(file_list)
+
+    path_to_source_label: dict[str, str] = {}
+
+    for track in tracks:
+        sid = track.specimen_id
+        frames_label = f"Specimen_{sid} frames" if track.frames else None
+        ts_label = f"Specimen_{sid} tilt_series" if track.tilt_series else None
+        ats_label = f"Specimen_{sid} aligned_tilt_series" if track.aligned_tilt_series else None
+
+        upstream: dict[ImageType, str | None] = {
+            ImageType.TILT_SERIES: frames_label,
+            ImageType.ALIGNED_TILT_SERIES: ts_label or frames_label,
+            ImageType.TOMOGRAM: ats_label or ts_label or frames_label,
+            ImageType.DENOISED_TOMOGRAM: ats_label or ts_label or frames_label,
+        }
+
+        for image_type, upstream_label in upstream.items():
+            file_path = getattr(track, image_type.value, None)
+            if file_path is not None and upstream_label is not None:
+                path_to_source_label[str(file_path)] = upstream_label
+
+    if not path_to_source_label:
+        return
+
+    labels = file_list.data[path_col_id].apply(
+        lambda p: path_to_source_label.get(str(p))
+    )
+    file_list.data[source_label_col_id] = labels
+
+    written = int(labels.notna().sum())
+    logger.info(f"Wrote source_image_label for {written} file(s).")
+
+
+def _apply_dataset_track_metadata(
+    ro_crate_metadata: BIAROCrateMetadata,
+    dataset_config: DatasetModificationConfig,
+    tracks: list[SpecimenTrack],
+) -> None:
+    """
+    Update the Dataset entity in the RO-Crate with IAP and protocol
+    associations from the per-dataset specimen_tracks config. These are keyed
+    by image type or 'dataset' and are distinct from the simpler flat
+    associations in the DatasetAssociations block — both can be present.
+    """
+    if dataset_config.specimen_tracks is None:
+        return
+
+    dataset_id = resolve_dataset_id_by_name(ro_crate_metadata, dataset_config.name)
+    if dataset_id is None:
+        return
+
+    entity = ro_crate_metadata.get_object(dataset_id)
+    if not isinstance(entity, ro_crate_models.Dataset):
+        logger.warning(
+            f"Entity '{dataset_id}' is not a Dataset; cannot apply track metadata."
+        )
+        return
+
+    track_config = dataset_config.specimen_tracks
+
+    iap_refs: list[ObjectReference] = []
+    if track_config.image_acquisition_protocol_title:
+        seen: set[str] = set()
+        for titles in track_config.image_acquisition_protocol_title.values():
+            for t in ([titles] if isinstance(titles, str) else titles):
+                if t not in seen:
+                    iap_refs.append(ref(t))
+                    seen.add(t)
+
+    protocol_refs: list[ObjectReference] = []
+    if track_config.protocol_titles:
+        seen = set()
+        for titles in track_config.protocol_titles.values():
+            for t in ([titles] if isinstance(titles, str) else titles):
+                if t not in seen:
+                    protocol_refs.append(ref(t))
+                    seen.add(t)
+
+    updated = entity.model_copy(update={
+        "associatedImageAcquisitionProtocol": (
+            list(entity.associatedImageAcquisitionProtocol) + iap_refs
+        ),
+        "associatedProtocol": (
+            list(entity.associatedProtocol) + protocol_refs
+        ),
+    })
+    ro_crate_metadata.update_entity(updated)
+    logger.debug(
+        f"Dataset '{dataset_config.name}': added {len(iap_refs)} IAP ref(s) "
+        f"and {len(protocol_refs)} protocol ref(s) from specimen_tracks config."
+    )
+
+
+def assign_specimen_tracks(
+    ro_crate_metadata: BIAROCrateMetadata,
+    file_list: FileList,
+    config: ModificationConfig,
+) -> None:
+    """
+    Identify specimen tracks across all datasets and write Specimen and
+    CreationProcess entities to the metadata graph, and source_image_label
+    values to the file list.
+
+    Mirrors the identify_tracks -> assign_specimen_metadata flow from proposal
+    generation, operating directly on the file list and metadata graph rather
+    than producing a YAML proposal as an intermediate.
+    """
+    dataset_configs_with_tracks = [
+        d for d in config.datasets
+        if d.specimen_tracks is not None and d.name != DEFAULT_DATASET_SENTINEL
+    ]
+
+    track_df = _build_track_dataframe(
+        file_list, ro_crate_metadata, dataset_configs_with_tracks, config.specimen_tracks
+    )
+
+    if track_df.empty:
+        logger.warning("Specimen track identification: no files could be classified.")
+        return
+
+    tracks = _merge_tracks(track_df)
+    logger.info(f"Identified {len(tracks)} specimen track(s).")
+
+    specimen_metadata = _resolve_specimen_metadata(
+        tracks, config.specimen_defaults, dataset_configs_with_tracks
+    )
+
+    for spec_meta in specimen_metadata:
+        specimen_entity, creation_process_entity = _make_specimen_entities(spec_meta)
+        ro_crate_metadata.add_entity(specimen_entity)
+        ro_crate_metadata.add_entity(creation_process_entity)
+        logger.debug(f"Added Specimen: {specimen_entity.id}")
+
+    _write_source_image_labels(file_list, tracks)
+
+    for dataset_config in dataset_configs_with_tracks:
+        _apply_dataset_track_metadata(ro_crate_metadata, dataset_config, tracks)
