@@ -14,7 +14,7 @@ python = "^3.13"
 bia-integrator-api = { path = "../", develop=true}
 typer = "^0.12.3"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 black = "^23.12.1"
 
 [build-system]
