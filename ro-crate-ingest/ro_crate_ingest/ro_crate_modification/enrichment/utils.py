@@ -20,7 +20,7 @@ IS_PART_OF_PROPERTY = "http://schema.org/isPartOf"
 FILE_PATH_PROPERTY = "http://bia/filePath"
 SOURCE_IMAGE_LABEL_PROPERTY = "http://bia/sourceImageLabel"
 
-FILE_TYPE_IMAGE = "bia:Image"
+FILE_TYPE_IMAGE = "http://bia:Image"
 
 
 def title_to_id(title: str) -> str:
@@ -45,9 +45,12 @@ def type_for(model_cls) -> str:
     return full_uri
 
 
+# TODO: which columns are always present? Same for source image, below.
 def get_or_add_type_column_id(file_list: FileList) -> str:
     col_id = file_list.get_column_id_by_property(RDF_TYPE_PROPERTY)
     if col_id is not None:
+        if file_list.data[col_id].dtype != object:
+            file_list.data[col_id] = file_list.data[col_id].astype(object)
         return col_id
     new_col = ro_crate_models.Column(**{
         "@id": "_:col_type",
@@ -56,7 +59,7 @@ def get_or_add_type_column_id(file_list: FileList) -> str:
         "propertyUrl": RDF_TYPE_PROPERTY,
     })
     file_list.add_column(new_col, pd.Series([None] * len(file_list.data)))
-    logger.debug("Added 'type' column to file list.")
+    logger.info("Added 'type' column to file list.")
     return new_col.id
 
 
