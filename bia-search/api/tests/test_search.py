@@ -113,7 +113,7 @@ def test_fts_use_facet_year(api_client: TestClient):
 def test_fts_use_facet_imaging_method(api_client: TestClient):
     rsp = api_client.get(
         f"search/fts",
-        params={"query": "with", "imaging_method": ["confocal microscopy"]},
+        params={"query": "with", "facet.imaging_method": ["confocal microscopy"]},
     )
     assert rsp.status_code == 200
     body = rsp.json()
@@ -154,6 +154,23 @@ def test_get(api_client: TestClient):
     body = rsp.json()
     assert len(body["hits"]) == 1
     assert body["hits"][0]["_source"]["uuid"] == doc_uuid
+
+
+def test_study_browse_card(api_client: TestClient):
+    rsp = api_client.get(f"website/browse/study", params={"query": "with"})
+    assert rsp.status_code == 200
+
+    body = rsp.json()
+    assert len(body["facets"]["scientific_name"]["buckets"]) == 3
+
+    rsp = api_client.get(
+        f"website/browse/study",
+        params={"query": "with", "facet.imaging_method": ["confocal microscopy"]},
+    )
+    assert rsp.status_code == 200
+    body = rsp.json()
+    print(len(body["hits"]["hits"]))
+    assert len(body["hits"]["hits"]) == 4
 
 
 def test_fts_search_study_by_dataset_uuid(api_client: TestClient):

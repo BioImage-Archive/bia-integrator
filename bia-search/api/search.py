@@ -2,15 +2,13 @@ from fastapi import APIRouter, Depends, Query, Request
 from typing import Annotated, Any
 from api.elastic import Elastic
 from api.app import get_elastic
-from api.queryBuilder import QueryBuilder
 from api.utils import (
+    get_query_results,
     ImageSearchFilters,
     StudySearchFilters,
-    AdvancedSearchFilters,
     build_pagination,
     format_elastic_results,
     is_valid_uuid,
-    build_params_as_list,
     aggregations,
 )
 
@@ -26,20 +24,14 @@ async def fts(
     page: Annotated[int, Query(ge=1, alias="pagination.page", le=1000)] = 1,
     page_size: Annotated[int, Query(ge=1, le=100, alias="pagination.page_size")] = 50,
 ) -> dict:
-    params = build_params_as_list(request)
-    qb = QueryBuilder(text_query=query)
-    qb.parse_params(
-        query=query, params=params, index_type="study", include_nested_author=True
-    )
     pagination = build_pagination(page, page_size)
-    rsp = await qb.search(
-        client=elastic.client,
-        index=elastic.index_study,
-        offset=pagination["offset"],
-        size=pagination["page_size"],
-        aggs=aggregations["study"],
+    return await get_query_results(
+        request=request,
+        elastic=elastic,
+        query=query,
+        index_type="study",
+        pagination=pagination,
     )
-    return format_elastic_results(rsp, pagination, aggregations["study"])
 
 
 @router.get("/fts/image")
@@ -65,20 +57,14 @@ async def fts_image(
         )
 
     # Normal text search
-    params = build_params_as_list(request)
-    qb = QueryBuilder(text_query=query)
-    qb.parse_params(query=query, params=params, index_type="image")
     pagination = build_pagination(page, page_size)
-
-    rsp = await qb.search(
-        client=elastic.client,
-        index=elastic.index_image,
-        offset=pagination["offset"],
-        size=pagination["page_size"],
-        aggs=aggregations["image"],
+    return await get_query_results(
+        request=request,
+        elastic=elastic,
+        query=query,
+        index_type="image",
+        pagination=pagination,
     )
-
-    return format_elastic_results(rsp, pagination, aggregations["image"])
 
 
 async def uuid_search(
@@ -128,6 +114,7 @@ async def uuid_search(
     return format_elastic_results(rsp, pagination, aggregations)
 
 
+"""
 @router.get("/advanced")
 async def advanced_search(
     request: Request,
@@ -161,3 +148,4 @@ async def advanced_search(
     )
 
     return format_elastic_results(rsp, pagination, aggregations["image"])
+"""

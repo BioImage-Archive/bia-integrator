@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from typing import Any
-from api.utils import (
+from api.resources import (
     operators_map,
     fields_map,
 )
@@ -306,6 +306,7 @@ class QueryBuilder:
         offset: int,
         size: int,
         aggs: dict | None = None,
+        view_fields: list[str] | None = None,
     ):
         body = {
             "query": self.build(),
@@ -317,6 +318,8 @@ class QueryBuilder:
                 "fields": {"*": {}},
             },
         }
+        if view_fields:
+            body["_source"] = view_fields
         if aggs:
             body["aggs"] = aggs
 
