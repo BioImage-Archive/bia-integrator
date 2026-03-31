@@ -7,6 +7,9 @@ from bia_shared_datamodels.package_specific_uuid_creation.shared import (
 )
 from bia_shared_datamodels.ro_crate_models import ROCrateCreativeWork
 
+from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_parsing_utils import (
+    find_section_types_recursive,
+)
 from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_api import (
     load_submission,
 )
@@ -121,9 +124,7 @@ def convert_biostudies_to_ro_crate(
     # TODO - Assume in this case only one filelist is present - no need to combine. However, add dataset_id column?
     if submission.section.files and len(submission.section.files) > 0:
         # create a default dataset for the files that are part of the pagetab, rather than referenced via filelist
-        default_dataset = pagetab_file.create_root_dataset_for_submission(
-            submission
-        )
+        default_dataset = pagetab_file.create_root_dataset_for_submission(submission)
         graph.append(default_dataset)
 
         file_list_and_dependencies = pagetab_file.create_file_list_from_pagetab_files(
@@ -148,7 +149,7 @@ def convert_biostudies_to_ro_crate(
         roc_contributors,
         roc_datasets.values(),
         combined_file_list,
-        roc_external_references
+        roc_external_references,
     )
     graph.append(roc_study)
 
@@ -156,3 +157,35 @@ def convert_biostudies_to_ro_crate(
     context = get_default_context()
 
     write_ro_crate_metadata(ro_crate_dir, context, graph)
+    check_sections_converted(submission)
+
+
+def check_sections_converted(submission) -> list:
+
+    convertible_section_types = [
+        c.lower()
+        for c in [
+            "organisation",
+            "organization",
+            "Annotations",
+            "Biosample",
+            "author",
+            "Study Component",
+            "Associations",
+            "Imaging Method",
+            "Image acquisition",
+            "Image analysis",
+            "Image correlation",
+            "Specimen",
+            "Protocol",
+            "Study",
+            "Organism",
+        ]
+    ]
+    section_types_in_submission = find_section_types_recursive(submission.section)
+    unprocessed_sections = [
+        section_type
+        for section_type in section_types_in_submission
+        if section_type.lower() not in convertible_section_types
+    ]
+    logger.info(f"Unprocessed sections: {unprocessed_sections}")

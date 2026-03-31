@@ -20,13 +20,25 @@ FLIST_URI_TEMPLATE = (
 FILE_URI_TEMPLATE = "https://www.ebi.ac.uk/biostudies/files/{accession_id}/{relpath}"
 
 
-def flatten_lists_of_list(data) -> list:
+# def flatten_lists_of_list(data) -> list:
+#    if isinstance(data, list):
+#        if isinstance(next(iter(data)), list):
+#            return [element for sublist in data for element in sublist]
+#        return data
+#    else:
+#        raise TypeError(f"Expecting a list of objects or lists")
+
+
+def flatten_lists_of_list(data, parent_list=None) -> list:
     if isinstance(data, list):
-        if isinstance(next(iter(data)), list):
-            return [element for sublist in data for element in sublist]
-        return data
-    else:
-        raise TypeError(f"Expecting a list of objects or lists")
+        if parent_list is None:
+            parent_list = []
+        for element in data:
+            if isinstance(element, list):
+                flatten_lists_of_list(element, parent_list)
+            else:
+                parent_list.append(element)
+        return parent_list
 
 
 class AttributeDetail(BaseModel):

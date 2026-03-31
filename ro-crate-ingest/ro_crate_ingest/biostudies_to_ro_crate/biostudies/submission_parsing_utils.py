@@ -59,6 +59,32 @@ def find_sections_recursive(
     return results
 
 
+def find_section_types_recursive(
+    section: Section, results: list[Section] | None = None
+) -> list[str]:
+    """
+    Find all types of sections within tree, starting at given section
+    """
+    if results == None:
+        results = []
+
+    results.append(section.type)
+
+    # Each thing in section.subsections is either Section or List[Section] which we want to flatten
+    flattened = []
+    for item in section.subsections:
+        if isinstance(item, list):
+            for sub_item in item:
+                flattened.append(sub_item)
+        else:
+            flattened.append(item)
+
+    for section in flattened:
+        find_section_types_recursive(section, results)
+
+    return results
+
+
 def filter_section_by_attribute_key(
     sections: list[Section],
     required_attr_keys: list[str],
