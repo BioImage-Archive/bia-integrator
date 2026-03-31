@@ -12,9 +12,9 @@ def bia_roc_validation(ro_crate_directory: Path):
 
     roc_metadata = None
     try:
-        roc_medatadata_parser = JSONLDMetadataParser(ro_crate_directory)
-        roc_medatadata_parser.parse()
-        roc_metadata = roc_medatadata_parser.result
+        roc_metadata_parser = JSONLDMetadataParser(ro_crate_directory)
+        roc_metadata_parser.parse()
+        roc_metadata = roc_metadata_parser.result
     except ExceptionGroup as validationExceptionGroup:
         for exception in validationExceptionGroup.exceptions:
             logger.error(exception)
