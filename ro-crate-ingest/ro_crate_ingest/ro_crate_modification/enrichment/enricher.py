@@ -9,6 +9,7 @@ from ro_crate_ingest.ro_crate_modification.modification_config import (
 from ro_crate_ingest.ro_crate_modification.enrichment import (
     images, 
     rembis, 
+    study, 
     specimens
 )
 
@@ -23,13 +24,17 @@ def apply_enrichment(
     """
     Apply all enrichment steps to a minimal RO-Crate in the order:
 
-    1. Add study-wide REMBI entities to the metadata graph.
-    2. For each named dataset: apply image assignment and explicit associations.
-    3. Create the default dataset and assign its images (if sentinel present).
-    4. Identify and assign specimen tracks (if specimen_tracks configured).
+    1. Add information to the study object.
+    2. Add study-wide REMBI entities to the metadata graph.
+    3. For each named dataset: apply image assignment and explicit associations.
+    4. Create the default dataset and assign its images (if sentinel present).
+    5. Identify and assign specimen tracks (if specimen_tracks configured).
 
     Returns the modified (ro_crate_metadata, file_list) pair.
     """
+    if config.study_metadata:
+        study.add_study_metadata(ro_crate_metadata, config.study_metadata)
+
     if config.rembis:
         rembis.add_rembi_entities(ro_crate_metadata, config.rembis)
 
@@ -41,9 +46,12 @@ def apply_enrichment(
     for dataset_config in named_configs:
         if dataset_config.associations:
             rembis.apply_dataset_associations(ro_crate_metadata, dataset_config)
+        # TODO: assign images must assign relevant protocols to images in file list.
         if dataset_config.images:
             images.assign_images_for_dataset(file_list, ro_crate_metadata, dataset_config)
 
+    # TODO: needs assigning all non-assigned files to default dataset,
+    # or a means of assigning extra files to an existing named dataset. 
     if default_config is not None and default_config.images:
         images.assign_images_for_default_dataset(file_list, ro_crate_metadata, default_config)
 
