@@ -33,7 +33,6 @@ from rich.progress import (
     TaskProgressColumn,
     TimeElapsedColumn,
 )
-import gzip
 
 logging.basicConfig(
     level=logging.WARNING,

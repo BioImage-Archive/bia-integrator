@@ -139,7 +139,3 @@ def transform_detail_object(
 
     detail = target_type(**detail_dict)
     return detail
-
-
-def flatten(xss):
-    return [x for xs in xss for x in xs]

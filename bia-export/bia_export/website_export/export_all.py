@@ -3,13 +3,9 @@ from pathlib import Path
 from typing import Optional, Union
 from bia_export.bia_client import api_client
 from bia_export.website_export.studies.models import Study as exportStudy
-from bia_export.website_export.website_models import CLIContext
 from bia_integrator_api.models import Study as apiStudy
-from bia_integrator_api.models import Dataset as apiDataset
 from .generic_object_retrieval import (
     read_api_json_file,
-    read_all_json,
-    get_all_api_results,
 )
 import logging
 import re
