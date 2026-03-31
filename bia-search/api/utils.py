@@ -3,107 +3,9 @@ from pydantic import create_model, Field
 from uuid import UUID
 from fastapi import Request, Query
 from inspect import Signature, Parameter
-
-fields_map = {
-    "study": {
-        "facet.organism": "dataset.biological_entity.organism_classification.scientific_name.keyword",
-        "facet.imaging_method": "dataset.acquisition_process.imaging_method_name.keyword",
-        "facet.year": "release_date",
-        "facet.licence": "licence",
-        "facet.annotation_method": "dataset.annotation_process.method_type.keyword",
-        "has":
-         {"thumbnail": "dataset.example_image_uri"}
-    },
-    "image": {
-        "facet.organism": "creation_process.subject.sample_of.organism_classification.scientific_name.keyword",
-        "facet.imaging_method": "creation_process.acquisition_process.imaging_method_name.keyword",
-        "facet.annotation_method": "creation_process.annotation_method.method_type.keyword",
-        "facet.image_format": "representation.image_format",
-        "numeric": {
-            "size_x": "representation.size_x",
-            "size_y": "representation.size_y",
-            "size_z": "representation.size_z",
-            "size_c": "representation.size_c",
-            "size_t": "representation.size_t",
-            "total_size_in_bytes": "representation.total_size_in_bytes",
-            "voxel_physical_size_x": "representation.voxel_physical_size_x",
-            "voxel_physical_size_y": "representation.voxel_physical_size_y",
-            "voxel_physical_size_z": "representation.voxel_physical_size_z",
-            "total_physical_size_x": "total_physical_size_x",
-            "total_physical_size_y": "total_physical_size_y",
-            "total_physical_size_z": "total_physical_size_z",
-        }
-    },
-    
-}
-
-operators_map = {
-    "numeric": {
-        "eq": "",
-        "gt": "gt",
-        "gte": "gte",
-        "lt": "lt",
-        "lte": "lte",
-        "or": "or",
-        "not": "not"
-    },
-    "boolean_operators": {"and", "or", "not"}}
-
-aggregations = {
-    "study": {
-        "scientific_name": { "terms": {"field": fields_map["study"]["facet.organism"] }},
-        "release_date": {
-            "date_histogram": {
-                "field": fields_map["study"]["facet.year"],
-                "calendar_interval": "1y",
-                "format": "yyyy",
-            }
-        },
-        "imaging_method": { "terms": {"field": f"{fields_map["study"]["facet.imaging_method"]}" }},
-        "annotation_method": { "terms": {"field": fields_map["study"]["facet.annotation_method"] }},
-        "licence": { "terms": {"field": fields_map["study"]["facet.licence"] }},
-    }, 
-    "image" : {
-        "scientific_name": { "terms": {"field": fields_map["image"]["facet.organism"] }},
-        "image_format": { "terms": {"field": fields_map["image"]["facet.image_format"] }},
-        "imaging_method": { "terms": {"field": fields_map["image"]["facet.imaging_method"]}},
-        "annotation_method": { "terms": {"field": fields_map["image"]["facet.annotation_method"]}},
-        "number_of_channels": {
-            "filters": {
-                "keyed": False,
-                "filters": {
-                    "1":  { "term":  { fields_map["image"]["numeric"]["size_c"]: 1 } }, "2":  { "term":  { fields_map["image"]["numeric"]["size_c"]: 2 } }, 
-                    "3":  { "term":  { fields_map["image"]["numeric"]["size_c"]: 3 } }, "4":  { "term":  { fields_map["image"]["numeric"]["size_c"]: 4 } }, 
-                    "5":  { "term":  { fields_map["image"]["numeric"]["size_c"]: 5 } }, "More than 5": { "range": { fields_map["image"]["numeric"]["size_c"]: { "gt": 5 } } }
-                }
-            }
-        }
-    }
-}
-
-numeric_aggs = {
-    "image_pixel_x": fields_map["image"]["numeric"]["size_x"],
-    "image_pixel_y": fields_map["image"]["numeric"]["size_y"],
-    "z_planes": fields_map["image"]["numeric"]["size_z"],
-    "time_steps": fields_map["image"]["numeric"]["size_t"],
-    "total_size_in_bytes": fields_map["image"]["numeric"]["total_size_in_bytes"],
-    "total_physical_size_x": fields_map["image"]["numeric"]["total_physical_size_x"],
-    "total_physical_size_y": fields_map["image"]["numeric"]["total_physical_size_y"],
-    "total_physical_size_z": fields_map["image"]["numeric"]["total_physical_size_z"],
-    "voxel_physical_size_x": fields_map["image"]["numeric"]["voxel_physical_size_x"],
-    "voxel_physical_size_y": fields_map["image"]["numeric"]["voxel_physical_size_y"],
-    "voxel_physical_size_z": fields_map["image"]["numeric"]["voxel_physical_size_z"],
-}
-
-aggregations["image"]["selected"] = {
-    "filter": {"match_all": {}},
-    "aggs": {k: {"stats": {"field": f}} for k, f in numeric_aggs.items()},
-}
-
-aggregations["image"]["all_stats"] = {
-    "global": {},
-    "aggs": {k: {"stats": {"field": f}} for k, f in numeric_aggs.items()},
-}
+from api.elastic import Elastic
+from api.queryBuilder import QueryBuilder
+from api.resources import (numeric_aggs, aggregations, operators_map, fields_map)
 
 def handle_numeric_fields_aggs_results(data: dict) -> dict:
     selected = data.get("selected")
@@ -135,6 +37,30 @@ def handle_numeric_fields_aggs_results(data: dict) -> dict:
     data.pop("selected", None)
     data.pop("all_stats", None)
     return data
+
+async def get_query_results(request: Request, 
+    elastic: Elastic, 
+    pagination: dict[str, int], 
+    query: str | None, 
+    index_type: str, 
+    view_fields: list[str] | None = None
+) -> dict:
+    include_nested_author = True if index_type == "study" else False
+    elastic_index = elastic.index_study if index_type == "study" else elastic.index_image
+    params = build_params_as_list(request)
+    qb = QueryBuilder(text_query=query)
+    qb.parse_params(
+        query=query, params=params, index_type=index_type, include_nested_author=include_nested_author
+    )
+    rsp = await qb.search(
+        client=elastic.client,
+        index=elastic_index,
+        offset=pagination["offset"],
+        size=pagination["page_size"],
+        aggs=aggregations[index_type],
+        view_fields=view_fields
+    )
+    return format_elastic_results(rsp, pagination, aggregations[index_type])
 
 
 

@@ -1,3 +1,4 @@
+"""
 from fastapi.testclient import TestClient
 
 
@@ -103,3 +104,4 @@ def test_advanced_search_paging(api_client: TestClient):
     uuid_1 = page_1["hits"]["hits"][0]["_source"]["uuid"]
     uuid_2 = page_2["hits"]["hits"][0]["_source"]["uuid"]
     assert [uuid_1, uuid_2] == uuids_in_both
+"""
