@@ -36,6 +36,7 @@ def _make_biosample_entities(
     for taxon in biosample.organism_classification:
         taxon_entity = ro_crate_models.Taxon(**{
             "@id": title_to_id(taxon.scientific_name),
+            "@type": type_for(ro_crate_models.Taxon),
             "commonName": taxon.common_name,
             "scientificName": taxon.scientific_name,
         })
@@ -54,6 +55,7 @@ def _make_biosample_entities(
 
     biosample_entity = ro_crate_models.BioSample(**{
         "@id": title_to_id(biosample.title),
+        "@type": type_for(ro_crate_models.BioSample),
         "title": biosample.title,
         "biologicalEntityDescription": biosample.biological_entity_description,
         "organismClassification": taxon_refs,
@@ -61,7 +63,6 @@ def _make_biosample_entities(
     })
     entities.append(biosample_entity)
     return entities
-
 
 
 def apply_dataset_associations(
@@ -128,13 +129,11 @@ def add_rembi_entities(
 ) -> None:
     """
     Add study-wide REMBI entities to the metadata graph.
-
-    Protocols are added first because BioSample.growthProtocol references
-    them by @id — the referenced entity must already exist in the graph.
     """
     for protocol in rembis.protocols:
         entity = ro_crate_models.Protocol(**{
             "@id": title_to_id(protocol.title),
+            "@type": type_for(ro_crate_models.Protocol),
             "title": protocol.title,
             "protocolDescription": protocol.protocol_description,
         })
@@ -149,6 +148,7 @@ def add_rembi_entities(
     for sipp in rembis.specimen_imaging_preparation_protocols:
         entity = ro_crate_models.SpecimenImagingPreparationProtocol(**{
             "@id": title_to_id(sipp.title),
+            "@type": type_for(ro_crate_models.SpecimenImagingPreparationProtocol),
             "title": sipp.title,
             "protocolDescription": sipp.protocol_description,
         })
@@ -171,6 +171,7 @@ def add_rembi_entities(
     for annotation_method in rembis.annotation_methods:
         entity = ro_crate_models.AnnotationMethod(**{
             "@id": title_to_id(annotation_method.title),
+            "@type": type_for(ro_crate_models.AnnotationMethod),
             "title": annotation_method.title,
             "protocolDescription": annotation_method.protocol_description,
             "methodType": annotation_method.method_type,
