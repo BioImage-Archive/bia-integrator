@@ -17,8 +17,6 @@ venv/
 env/
 .env
 
-# Poetry
-poetry.lock
 
 # pytest
 .pytest_cache/

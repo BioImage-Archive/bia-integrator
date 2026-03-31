@@ -20,6 +20,9 @@ dependencies = [
 [tool.ruff]
 target-version = "py313"
 
+[project.scripts]
+bia-ro-crate = "cli:bia_ro_crate"
+
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
@@ -36,6 +39,11 @@ dev = [
     "commitizen (>=4.13.9,<5.0.0)"
 ]
 
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    "ignore::DeprecationWarning:rdflib",
+]
 
 [tool.commitizen]
 name = "cz_conventional_commits"
