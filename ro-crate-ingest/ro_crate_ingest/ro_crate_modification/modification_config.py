@@ -42,6 +42,15 @@ class ClosedBaseModel(BaseModel):
 
 
 # ---------------------------------------------------------------------------
+# Study component model — for adding information to study entity
+# ---------------------------------------------------------------------------
+class StudyMetadata(ClosedBaseModel):
+    description: str | None = None
+    see_also: list[str] = Field(default_factory=list)
+    related_publication: list[str] = Field(default_factory=list)
+
+
+# ---------------------------------------------------------------------------
 # REMBI component models — study-wide, not dataset-specific
 # ---------------------------------------------------------------------------
 
@@ -393,6 +402,7 @@ class ModificationConfig(ClosedBaseModel):
     pruning
         Placeholder for future pruning configuration.
     """
+    study_metadata: StudyMetadata | None = Field(None)
     rembis: RembiByType | None = Field(None)
     specimen_defaults: SpecimenDefaults | None = Field(None)
     specimen_tracks: SpecimenTrackConfig | None = Field(None)
