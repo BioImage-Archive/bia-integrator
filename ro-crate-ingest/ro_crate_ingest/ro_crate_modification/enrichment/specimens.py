@@ -19,7 +19,8 @@ from ro_crate_ingest.ro_crate_modification.enrichment.utils import (
     match_patterns, 
     ref, 
     resolve_dataset_id_by_name, 
-    title_to_id
+    title_to_id, 
+    type_for
 )
 from ro_crate_ingest.ro_crate_modification.modification_config import (
     DEFAULT_DATASET_SENTINEL,
@@ -32,6 +33,9 @@ from ro_crate_ingest.ro_crate_modification.modification_config import (
 )
 
 logger = logging.getLogger(__name__)
+
+
+_FRAME_LABEL_DELIMITERS = ["_", "."]
 
 
 class SpecimenTrack(BaseModel):
@@ -163,17 +167,18 @@ def _extract_specimen_id(
 def _build_track_dataframe(
     file_list: FileList,
     ro_crate_metadata: BIAROCrateMetadata,
-    dataset_configs: list[DatasetModificationConfig],
+    dataset_configs_with_images_by_type: list[DatasetModificationConfig],
     specimen_track_config: SpecimenTrackConfig,
 ) -> pd.DataFrame:
     """
-    Build a one-row-per-file DataFrame for _merge_tracks, reading from the
-    file list rather than from EMPIARFile + DatasetConfig.
+    Build a one-row-per-file DataFrame for _merge_tracks, 
+    reading from the file list.
 
-    For each dataset that has a specimen_tracks block:
-      - Filters the file list to image-assigned rows belonging to that dataset
-      - Applies the by_type patterns to classify each file as an ImageType
-      - Extracts a specimen ID from each file path using specimen_track_config
+    For each dataset that has images.by_type block 
+    (since that inidcated need for specimen tracks):
+      - Filter file list to image-assigned rows belonging to that dataset
+      - Apply the by_type patterns to classify each file as an ImageType
+      - Extract a specimen ID from each file path using specimen_track_config
 
     Result columns: path, dataset_name, specimen_id, image_type
     """
@@ -182,15 +187,14 @@ def _build_track_dataframe(
     dataset_col_id = get_dataset_column_id(file_list)
 
     if path_col_id is None or dataset_col_id is None:
-        logger.warning(
+        raise ValueError(
             "Specimen track identification requires both a file path column and a "
             "dataset membership column in the file list. One or both are absent."
         )
-        return pd.DataFrame(columns=["path", "dataset_name", "specimen_id", "image_type"])
 
     candidate_rows: list[pd.DataFrame] = []
 
-    for dataset_config in dataset_configs:
+    for dataset_config in dataset_configs_with_images_by_type:
         dataset_id = resolve_dataset_id_by_name(ro_crate_metadata, dataset_config.name)
         if dataset_id is None:
             continue
@@ -215,15 +219,12 @@ def _build_track_dataframe(
         # Classify each file by ImageType using the by_type patterns.
         # Files that match no typed pattern get image_type = None and will
         # be treated as extra_files in the track.
-        if dataset_config.images and dataset_config.images.by_type:
-            subset["image_type"] = subset["path"].apply(
-                lambda p: _classify_file_by_type(
-                    p, dataset_config.images.by_type, dataset_config.name
-                )
+        subset["image_type"] = subset["path"].apply(
+            lambda p: _classify_file_by_type(
+                p, dataset_config.images.by_type, dataset_config.name
             )
-        else:
-            subset["image_type"] = None
-
+        )
+        
         # Extract specimen ID from path using the cross-dataset strategy
         subset["specimen_id"] = subset["path"].apply(
             lambda p: _extract_specimen_id(p, specimen_track_config)
@@ -262,9 +263,6 @@ def _merge_tracks(df: pd.DataFrame) -> list[SpecimenTrack]:
         path = row["path"]
         image_type = row["image_type"]
         dataset_name = row["dataset_name"]
-
-        if str(path).startswith("data/"):
-            path = Path(path.relative_to("data/"))
 
         track = tracks.setdefault(sid, SpecimenTrack(specimen_id=sid))
 
@@ -333,7 +331,7 @@ def _merge_tracks(df: pd.DataFrame) -> list[SpecimenTrack]:
 def _resolve_specimen_metadata(
     tracks: list[SpecimenTrack],
     specimen_defaults: SpecimenDefaults | None,
-    dataset_configs: list[DatasetModificationConfig],
+    dataset_configs_with_additional_specimen_data: list[DatasetModificationConfig],
 ) -> list[dict]:
     """
     Build per-specimen metadata dicts from tracks, applying the same
@@ -345,9 +343,7 @@ def _resolve_specimen_metadata(
     group_lookup: dict[str, SpecimenGroup] = {}
     group_patterns: list[tuple[str, SpecimenGroup]] = []
 
-    for dataset_config in dataset_configs:
-        if dataset_config.specimen_tracks is None:
-            continue
+    for dataset_config in dataset_configs_with_additional_specimen_data:
         for group in dataset_config.specimen_tracks.specimen_groups:
             if group.specimen_id_pattern is not None:
                 group_patterns.append((group.specimen_id_pattern, group))
@@ -387,13 +383,11 @@ def _resolve_specimen_metadata(
     return specimens
 
 
-
 def _make_specimen_entities(
     spec_meta: dict,
-) -> tuple[ro_crate_models.Specimen, ro_crate_models.CreationProcess]:
+) -> ro_crate_models.Specimen:
     """
-    Build a Specimen and a paired CreationProcess entity from resolved
-    per-specimen metadata.
+    Build a Specimen entity from resolved per-specimen metadata.
 
     Specimen references its BioSample(s) and SIPP(s) by @id.
     CreationProcess references the Specimen as its subject.
@@ -407,68 +401,12 @@ def _make_specimen_entities(
 
     specimen = ro_crate_models.Specimen(**{
         "@id": title_to_id(title),
+        "@type": type_for(ro_crate_models.Specimen),
         "biologicalEntity": biological_entity_refs,
         "imagingPreparationProtocol": sipp_refs,
     })
 
-    creation_process = ro_crate_models.CreationProcess(**{
-        "@id": title_to_id(f"CreationProcess_{title}"),
-        "subject": ObjectReference(**{"@id": specimen.id}),
-    })
-
-    return specimen, creation_process
-
-
-def _write_source_image_labels(
-    file_list: FileList,
-    tracks: list[SpecimenTrack],
-) -> None:
-    """
-    For each file corresponding to a non-track-start image in a specimen
-    track, write the label of its upstream image into the source_image_label
-    column. The upstream label follows the ImageType ordering:
-
-        tilt_series       <- frames
-        aligned_t_s       <- tilt_series (or frames)
-        tomogram          <- aligned_t_s (or tilt_series, or frames)
-        denoised_tomogram <- aligned_t_s (or tilt_series, or frames)
-    """
-    path_col_id = get_path_column_id(file_list)
-    if path_col_id is None:
-        return
-
-    source_label_col_id = get_or_add_source_image_label_column_id(file_list)
-
-    path_to_source_label: dict[str, str] = {}
-
-    for track in tracks:
-        sid = track.specimen_id
-        frames_label = f"Specimen_{sid} frames" if track.frames else None
-        ts_label = f"Specimen_{sid} tilt_series" if track.tilt_series else None
-        ats_label = f"Specimen_{sid} aligned_tilt_series" if track.aligned_tilt_series else None
-
-        upstream: dict[ImageType, str | None] = {
-            ImageType.TILT_SERIES: frames_label,
-            ImageType.ALIGNED_TILT_SERIES: ts_label or frames_label,
-            ImageType.TOMOGRAM: ats_label or ts_label or frames_label,
-            ImageType.DENOISED_TOMOGRAM: ats_label or ts_label or frames_label,
-        }
-
-        for image_type, upstream_label in upstream.items():
-            file_path = getattr(track, image_type.value, None)
-            if file_path is not None and upstream_label is not None:
-                path_to_source_label[str(file_path)] = upstream_label
-
-    if not path_to_source_label:
-        return
-
-    labels = file_list.data[path_col_id].apply(
-        lambda p: path_to_source_label.get(str(p))
-    )
-    file_list.data[source_label_col_id] = labels
-
-    written = int(labels.notna().sum())
-    logger.info(f"Wrote source_image_label for {written} file(s).")
+    return specimen
 
 
 def _apply_dataset_track_metadata(
@@ -531,27 +469,379 @@ def _apply_dataset_track_metadata(
     )
 
 
+def _split_with_delimiters(split_pattern: str, split_string: str) -> list[str]:
+    return re.split(split_pattern, split_string)
+
+
+def _infer_frame_pattern(frame_files: list[Path]) -> str | None:
+    """
+    Given a list of frame file paths (all from one specimen), infer the
+    file pattern by replacing the variable parts with {}.
+    """
+    if not frame_files:
+        return None
+
+    str_paths = [str(p) for p in sorted(frame_files)]
+    if len(str_paths) == 1:
+        return str_paths[0]
+
+    escaped = [re.escape(d) for d in _FRAME_LABEL_DELIMITERS]
+    split_pattern = '(' + '|'.join(escaped) + ')'
+
+    tokenised = [_split_with_delimiters(split_pattern, p) for p in str_paths]
+
+    lengths = {len(t) for t in tokenised}
+    if len(lengths) > 1:
+        logger.warning(
+            "Frame files for a specimen have inconsistent token counts after "
+            f"splitting on {_FRAME_LABEL_DELIMITERS}; falling back to first "
+            "path as pattern."
+        )
+        return str_paths[0]
+
+    first_tokens = tokenised[0]
+    result_parts = []
+    for i, token in enumerate(first_tokens):
+        if token in _FRAME_LABEL_DELIMITERS:
+            result_parts.append(token)
+            continue
+        if all(t[i] == token for t in tokenised[1:]):
+            result_parts.append(token)
+        else:
+            result_parts.append('{}')
+
+    return ''.join(result_parts)
+
+
+def _fill_frame_label(frame_path: Path, pattern: str, label_prefix: str) -> str:
+    """
+    Given a frame file path and the inferred pattern for its specimen,
+    construct a per-frame label by filling the {} slots with the varying
+    token values from this file's path, excluding the file extension.
+
+    For example:
+        pattern:      "data/frames/20190429/TS_05_{}_{}. 0.tif"
+        frame_path:   "data/frames/20190429/TS_05_001_-0.0.tif"
+        label_prefix: "Specimen_centrosome_01 frames"
+        → "Specimen_centrosome_01 frames_001_-0"
+    """
+    escaped = [re.escape(d) for d in _FRAME_LABEL_DELIMITERS]
+    split_pattern = '(' + '|'.join(escaped) + ')'
+
+    path_str = str(frame_path)
+    path_nosuffix = path_str[:path_str.rfind('.')] if '.' in path_str else path_str
+    pattern_nosuffix = pattern[:pattern.rfind('.')] if '.' in pattern else pattern
+    
+    pattern_tokens = _split_with_delimiters(split_pattern, pattern_nosuffix)
+    path_tokens = _split_with_delimiters(split_pattern, path_nosuffix)
+
+    if len(pattern_tokens) != len(path_tokens):
+        logger.warning(
+            f"Token count mismatch between pattern '{pattern}' and path "
+            f"'{frame_path}'; using path stem as label suffix."
+        )
+        return f"{label_prefix}_{frame_path.stem}"
+
+    varying_parts = []
+    seen_varying = False
+    for pt, vt in zip(pattern_tokens, path_tokens):
+        if pt == '{}':
+            varying_parts.append(vt)
+            seen_varying = True
+        elif seen_varying:
+            # Append delimiters and constant tokens that follow a varying part
+            varying_parts.append(vt)
+
+    if not varying_parts:
+        return f"{label_prefix}_{frame_path.stem}"
+
+    # Strip any trailing delimiters
+    while varying_parts and varying_parts[-1] in _FRAME_LABEL_DELIMITERS:
+        varying_parts.pop()
+
+    return label_prefix + '_' + ''.join(varying_parts)
+
+
+def _generate_labels(tracks: list[SpecimenTrack]) -> dict[str, str]:
+    """
+    Build a path -> label mapping for all image files across all tracks.
+
+    Frames: per-file label constructed by filling {} slots in the inferred
+    pattern with the varying token values from each frame's path, giving
+    e.g. "Specimen_0042 frames_0003_-15.0".
+
+    All other image types: label is "Specimen_{sid} {image_type.value}",
+    e.g. "Specimen_0042 tilt_series".
+
+    Returns a dict keyed by str(path) as it appears in the track, matching
+    what is stored in the file list.
+    """
+    path_to_label: dict[str, str] = {}
+
+    for track in tracks:
+        sid = track.specimen_id
+        label_prefix = f"Specimen_{sid} frames"
+
+        if track.frames:
+            pattern = _infer_frame_pattern(track.frames)
+            for frame_path in track.frames:
+                if pattern is not None:
+                    label = _fill_frame_label(frame_path, pattern, label_prefix)
+                else:
+                    label = f"{label_prefix}_{frame_path.stem}"
+                path_to_label[str(frame_path)] = label
+
+        for image_type in [
+            ImageType.TILT_SERIES,
+            ImageType.ALIGNED_TILT_SERIES,
+            ImageType.TOMOGRAM,
+            ImageType.DENOISED_TOMOGRAM,
+        ]:
+            file_path = getattr(track, image_type.value)
+            if file_path is not None:
+                path_to_label[str(file_path)] = f"Specimen_{sid} {image_type.value}"
+
+    return path_to_label
+
+
+def _write_label_column(
+    file_list: FileList,
+    path_to_label: dict[str, str],
+) -> None:
+    """
+    Write the label column for all image files that have a label in
+    path_to_label.
+    """
+    path_col_id = get_path_column_id(file_list)
+    if path_col_id is None:
+        return
+
+    label_col_id = file_list.get_column_id_by_property("http://schema.org/name")
+    if label_col_id is None:
+        logger.warning("No label column found in file list; skipping label writing.")
+        return
+    if file_list.data[label_col_id].dtype != object:
+        file_list.data[label_col_id] = file_list.data[label_col_id].astype(object)
+
+    labels = file_list.data[path_col_id].apply(
+        lambda p: path_to_label.get(str(p))
+    )
+    file_list.data[label_col_id] = labels
+
+    written = int(labels.notna().sum())
+    logger.info(f"Wrote label for {written} file(s).")
+
+
+def _write_source_image_labels(
+    file_list: FileList,
+    tracks: list[SpecimenTrack],
+    path_to_label: dict[str, str],
+) -> None:
+    """
+    For each non-track-start image, write the label(s) of its upstream
+    image(s) into the source_image_label column.
+
+    For tilt_series whose upstream is frames, the value is a serialised
+    list of all frame labels e.g. "['Specimen_0042 frames_0001_-15.0', ...]".
+    For all other upstream relationships there is a single upstream file,
+    so the value is a plain string.
+    """
+    path_col_id = get_path_column_id(file_list)
+    if path_col_id is None:
+        return
+
+    source_label_col_id = get_or_add_source_image_label_column_id(file_list)
+    if file_list.data[source_label_col_id].dtype != object:
+        file_list.data[source_label_col_id] = file_list.data[source_label_col_id].astype(object)
+
+    path_to_source_label: dict[str, str] = {}
+
+    for track in tracks:
+        frames_labels = (
+            [path_to_label[str(p)] for p in track.frames if str(p) in path_to_label]
+            if track.frames else []
+        )
+        frames_source = str(frames_labels) if len(frames_labels) > 1 else (frames_labels[0] if frames_labels else None)
+
+        ts_label = path_to_label.get(str(track.tilt_series)) if track.tilt_series else None
+        ats_label = path_to_label.get(str(track.aligned_tilt_series)) if track.aligned_tilt_series else None
+
+        upstream: dict[ImageType, str | None] = {
+            ImageType.TILT_SERIES: frames_source,
+            ImageType.ALIGNED_TILT_SERIES: ts_label or frames_source,
+            ImageType.TOMOGRAM: ats_label or ts_label or frames_source,
+            ImageType.DENOISED_TOMOGRAM: ats_label or ts_label or frames_source,
+        }
+
+        for image_type, upstream_label in upstream.items():
+            file_path = getattr(track, image_type.value)
+            if file_path is not None and upstream_label is not None:
+                path_to_source_label[str(file_path)] = upstream_label
+
+    labels = file_list.data[path_col_id].apply(
+        lambda p: path_to_source_label.get(str(p))
+    )
+    file_list.data[source_label_col_id] = labels
+
+    written = int(labels.notna().sum())
+    logger.info(f"Wrote source_image_label for {written} file(s).")
+
+
+def _write_associated_specimen(
+    file_list: FileList,
+    tracks: list[SpecimenTrack],
+) -> None:
+    """
+    Write the @id of the Specimen entity into the associated_specimen column
+    for the first image file belonging to a track.
+    """
+    path_col_id = get_path_column_id(file_list)
+    if path_col_id is None:
+        return
+
+    specimen_col_id = file_list.get_column_id_by_property("http://bia/associatedSubject")
+    if specimen_col_id is None:
+        logger.warning("No associated_specimen column found in file list; skipping.")
+        return
+    if file_list.data[specimen_col_id].dtype != object:
+        file_list.data[specimen_col_id] = file_list.data[specimen_col_id].astype(object)
+
+    path_to_specimen_id: dict[str, str] = {}
+
+    for track in tracks:
+        specimen_id = title_to_id(f"Specimen_{track.specimen_id}")
+
+        if track.track_start == ImageType.FRAMES:
+            for frame_path in track.frames:
+                path_to_specimen_id[str(frame_path)] = specimen_id
+        else:
+            for upstream_type in [
+                ImageType.TILT_SERIES, 
+                ImageType.ALIGNED_TILT_SERIES, 
+                ImageType.TOMOGRAM, 
+                ImageType.DENOISED_TOMOGRAM,
+            ]:
+                if track.track_start == upstream_type:
+                    file_path = getattr(track, upstream_type.value)
+                    if file_path is not None:
+                        path_to_specimen_id[str(file_path)] = specimen_id
+                    if upstream_type == ImageType.TOMOGRAM:
+                        denoised_tomo_path = getattr(track, ImageType.DENOISED_TOMOGRAM.value)
+                        if denoised_tomo_path is not None:
+                            path_to_specimen_id[str(denoised_tomo_path)] = specimen_id
+                    break
+
+    values = file_list.data[path_col_id].apply(
+        lambda p: path_to_specimen_id.get(str(p))
+    )
+    file_list.data[specimen_col_id] = values
+
+    written = int(values.notna().sum())
+    logger.info(f"Wrote associated_specimen for {written} file(s).")
+
+
+def _write_associated_protocol(
+    file_list: FileList,
+    tracks: list[SpecimenTrack],
+    dataset_configs: list[DatasetModificationConfig],
+) -> None:
+    """
+    Write the @id(s) of Protocol entities into the associated_protocol column
+    for image files whose image type is mapped to a protocol in the
+    per-dataset specimen_tracks.protocol_titles config.
+
+    Where multiple protocols are mapped to a single image type, the value
+    is a serialised list e.g. "['#Protocol_a', '#Protocol_b']".
+    """
+    path_col_id = get_path_column_id(file_list)
+    if path_col_id is None:
+        return
+
+    protocol_col_id = file_list.get_column_id_by_property("http://bia/associatedProtocol")
+    if protocol_col_id is None:
+        logger.warning("No associated_protocol column found in file list; skipping.")
+        return
+    if file_list.data[protocol_col_id].dtype != object:
+        file_list.data[protocol_col_id] = file_list.data[protocol_col_id].astype(object)
+
+    # Build dataset_name -> protocol_titles lookup keyed by ImageType value
+    dataset_protocol_map: dict[str, dict[str, list[str]]] = {}
+    for dc in dataset_configs:
+        if dc.specimen_tracks and dc.specimen_tracks.protocol_titles:
+            dataset_protocol_map[dc.name] = dc.specimen_tracks.protocol_titles
+
+    path_to_protocol: dict[str, str] = {}
+
+    for track in tracks:
+        for image_type in [
+            ImageType.TILT_SERIES,
+            ImageType.ALIGNED_TILT_SERIES,
+            ImageType.TOMOGRAM,
+            ImageType.DENOISED_TOMOGRAM,
+        ]:
+            file_path = getattr(track, image_type.value)
+            if file_path is None:
+                continue
+
+            dataset_name = track.dataset_for.get(image_type.value)
+            if dataset_name is None:
+                continue
+
+            protocol_titles_by_type = dataset_protocol_map.get(dataset_name, {})
+            raw = protocol_titles_by_type.get(image_type.value)
+            if raw is None:
+                continue
+
+            titles = [raw] if isinstance(raw, str) else raw
+            ids = [title_to_id(t) for t in titles]
+            value = str(ids) if len(ids) > 1 else ids[0]
+            path_to_protocol[str(file_path)] = value
+
+    values = file_list.data[path_col_id].apply(
+        lambda p: path_to_protocol.get(str(p))
+    )
+    file_list.data[protocol_col_id] = values
+
+    written = int(values.notna().sum())
+    logger.info(f"Wrote associated_protocol for {written} file(s).")
+
+
+def _write_specimen_metadata_to_file_list(
+    file_list: FileList,
+    tracks: list[SpecimenTrack],
+    dataset_configs: list[DatasetModificationConfig],
+) -> None:
+    path_to_label = _generate_labels(tracks)
+    _write_label_column(file_list, path_to_label)
+    _write_source_image_labels(file_list, tracks, path_to_label)
+    _write_associated_specimen(file_list, tracks)
+    _write_associated_protocol(file_list, tracks, dataset_configs)
+
+
 def assign_specimen_tracks(
     ro_crate_metadata: BIAROCrateMetadata,
     file_list: FileList,
     config: ModificationConfig,
 ) -> None:
     """
-    Identify specimen tracks across all datasets and write Specimen and
-    CreationProcess entities to the metadata graph, and source_image_label
-    values to the file list.
-
-    Mirrors the identify_tracks -> assign_specimen_metadata flow from proposal
-    generation, operating directly on the file list and metadata graph rather
-    than producing a YAML proposal as an intermediate.
+    Identify specimen tracks across all datasets and write Specimen entities 
+    to the metadata graph, and labels, source_image_label, associated_specimen,
+    and associated_protocol values to the file list.
     """
-    dataset_configs_with_tracks = [
+    dataset_configs_with_images_by_type = [
+        d for d in config.datasets
+        if d.images is not None and d.images.by_type and d.name != DEFAULT_DATASET_SENTINEL
+    ]
+    dataset_configs_with_additional_specimen_data = [
         d for d in config.datasets
         if d.specimen_tracks is not None and d.name != DEFAULT_DATASET_SENTINEL
     ]
 
     track_df = _build_track_dataframe(
-        file_list, ro_crate_metadata, dataset_configs_with_tracks, config.specimen_tracks
+        file_list, 
+        ro_crate_metadata, 
+        dataset_configs_with_images_by_type, 
+        config.specimen_tracks
     )
 
     if track_df.empty:
@@ -562,16 +852,21 @@ def assign_specimen_tracks(
     logger.info(f"Identified {len(tracks)} specimen track(s).")
 
     specimen_metadata = _resolve_specimen_metadata(
-        tracks, config.specimen_defaults, dataset_configs_with_tracks
+        tracks, 
+        config.specimen_defaults, 
+        dataset_configs_with_additional_specimen_data
     )
 
     for spec_meta in specimen_metadata:
-        specimen_entity, creation_process_entity = _make_specimen_entities(spec_meta)
+        specimen_entity = _make_specimen_entities(spec_meta)
         ro_crate_metadata.add_entity(specimen_entity)
-        ro_crate_metadata.add_entity(creation_process_entity)
         logger.debug(f"Added Specimen: {specimen_entity.id}")
 
-    _write_source_image_labels(file_list, tracks)
+    _write_specimen_metadata_to_file_list(
+        file_list, 
+        tracks, 
+        dataset_configs_with_additional_specimen_data
+    )
 
-    for dataset_config in dataset_configs_with_tracks:
+    for dataset_config in dataset_configs_with_additional_specimen_data:
         _apply_dataset_track_metadata(ro_crate_metadata, dataset_config, tracks)
