@@ -3,6 +3,7 @@ from bia_export.website_export.generic_object_retrieval import (
     read_all_json,
     read_file_by_uuid_and_type,
     get_all_api_results,
+    get_one_api_result,
 )
 from bia_export.bia_client import api_client
 from .models import ImageCLIContext
@@ -69,7 +70,10 @@ def get_local_img_rep_map(context: ImageCLIContext) -> dict[UUID, UUID]:
 def retrieve_file_reference_attr(uuid_l: List[UUID]) -> dict:
     total_size_in_bytes, file_path = None, None
     if len(uuid_l) != 0:
-        file_reference = [api_client.get_file_reference(fr_uuid) for fr_uuid in uuid_l]
+        file_reference = [
+            get_one_api_result(fr_uuid, api_client.get_file_reference)
+            for fr_uuid in uuid_l
+        ]
         if len(file_reference) > 0:
             total_size_in_bytes = sum(
                 [

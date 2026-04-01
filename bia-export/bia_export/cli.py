@@ -11,6 +11,7 @@ from bia_export.website_export.export_all import (
     write_json,
     write_elastic_bulk_ndjson_gz_chunks,
 )
+from bia_export.website_export.generic_object_retrieval import get_one_api_result
 
 from bia_export.website_export.studies.retrieve import retrieve_study, retrieve_datasets
 from bia_integrator_api.models import Study as apiStudy
@@ -449,9 +450,9 @@ def sort_studies(studies_map: dict, should_sort: bool) -> dict:
 
 def get_study_from_id(id: str) -> apiStudy:
     if is_uuid(id):
-        study = api_client.get_study(id)
+        study = get_one_api_result(id, api_client.get_study)
     else:
-        study = api_client.search_study_by_accession(accession_id=id)
+        study = get_one_api_result(id, api_client.search_study_by_accession)
     if study:
         return study
     else:

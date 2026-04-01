@@ -4,15 +4,12 @@ from typing import Optional, Union
 from bia_export.bia_client import api_client
 from bia_export.website_export.studies.models import Study as exportStudy
 from bia_integrator_api.models import Study as apiStudy
-from .generic_object_retrieval import (
-    read_api_json_file,
-)
+from .generic_object_retrieval import read_api_json_file, api_rate_limiter
 import logging
 import re
 from json import dump, dumps
 import gzip
 from typing import Mapping, Any
-from bia_export.website_export.website_models import CLIContext
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -34,7 +31,7 @@ def fetch_studies_from_api(
         start_uuid = None
     else:
         start_uuid = agregator_list[-1].uuid
-
+    api_rate_limiter.acquire()
     fetched_studies = api_client.search_study(
         page_size=page_size, start_from_uuid=start_uuid
     )

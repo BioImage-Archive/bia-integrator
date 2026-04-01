@@ -5,6 +5,7 @@ from bia_export.website_export.generic_object_retrieval import (
     read_api_json_file,
     get_source_directory,
     get_all_api_results,
+    get_one_api_result,
     retrieve_object,
 )
 from pathlib import Path
@@ -34,7 +35,7 @@ def retrieve_study(context: StudyCLIContext) -> api_models.Study:
 
         api_study = read_api_json_file(study_path, api_models.Study)
     else:
-        api_study = api_client.get_study(str(context.study_uuid))
+        api_study = get_one_api_result(context.study_uuid, api_client.get_study)
 
     return api_study
 
@@ -76,7 +77,9 @@ def retrieve_aggregation_fields(
         dataset_stats = None
         while not dataset_stats and retry_count < max_retry_count:
             try:
-                dataset_stats = api_client.get_dataset_stats(dataset.uuid)
+                dataset_stats = get_one_api_result(
+                    dataset.uuid, api_client.get_dataset_stats
+                )
             except:
                 retry_count += 1
                 if retry_count == max_retry_count:
