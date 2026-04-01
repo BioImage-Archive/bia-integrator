@@ -1,12 +1,27 @@
 # modification_config_template.yaml
 #
-# Template illustrating all three modification scenarios. A real config file
+# Template illustrating all modification scenarios. A real config file
 # will use only the sections relevant to its case.
 #
-# Scenario 1  — Image assignment only (typical for BIA/BioStudies entries)
+# Scenario 1  — Image assignment 
 # Scenario 2  — REMBI assignment only (no image assignment)
 # Scenario 3  — REMBI + specimen track assignment (typical for EMPIAR entries)
+#
+# In all scenarios, any files that remain unassigned after all named datasets
+# have been processed are automatically collected into a 'Default dataset'
+# at the end of enrichment. No explicit entry is needed or supported for this.
 # ---------------------------------------------------------------------------
+
+
+# ---------------------------------------------------------------------------
+# Study metadata — optional additions to the Study entity
+# ---------------------------------------------------------------------------
+study_metadata:
+  description: "Optional free-text description to add to the Study entity."
+  see_also:
+    - "https://example.org/related-resource"
+  related_publication:
+    - "https://doi.org/10.1234/example"
 
 
 # ---------------------------------------------------------------------------
@@ -51,7 +66,7 @@ rembis:
 
 
 # ---------------------------------------------------------------------------
-# Specimen defaults — top-level, cross-dataset (Scenario 3 only)
+# Specimen defaults — top-level, cross-dataset (Scenario 3)
 # Applied to every discovered specimen unless overridden by a specimen_group.
 # ---------------------------------------------------------------------------
 specimen_defaults:
@@ -62,7 +77,7 @@ specimen_defaults:
 
 
 # ---------------------------------------------------------------------------
-# Specimen track ID extraction — top-level, cross-dataset (Scenario 3 only)
+# Specimen track ID extraction — top-level, cross-dataset (Scenario 3)
 # Exactly one of patterns / pattern_alias_mappings / literal_alias_mappings.
 # ---------------------------------------------------------------------------
 specimen_tracks:
@@ -86,25 +101,62 @@ specimen_tracks:
 # ---------------------------------------------------------------------------
 # Datasets — per-dataset modification instructions.
 #
-# 'name' must match the dataset title in the minimal RO-Crate, or be the
-# sentinel '__default__' to create a new catch-everything-else dataset.
+# 'name' must match the dataset title in the minimal RO-Crate exactly.
+# Dataset names must be unique within a config file.
+#
+# After all named datasets have been processed, any files that are still
+# unassigned are automatically placed into a 'Default dataset'. This is
+# unconditional — no config entry is needed.
 # ---------------------------------------------------------------------------
 datasets:
 
   # --- Scenario 1: flat image assignment ------------------------------------
   # A bare list of glob patterns under 'images:'. All matches are assigned
-  # type 'image' (non-track-aware). No REMBI or specimen config needed.
+  # type 'bia:Image' (non-track-aware). No REMBI or specimen config needed.
   - name: "Fluorescence images of HeLa cells"
     images:
-      - "**/*.tif"
-      - "**/*.ome.tiff"
+      patterns:
+        - "**/*.tif"
+        - "**/*.ome.tiff"
 
-  # --- Scenario 1: default dataset ------------------------------------------
-  # '__default__' creates a new 'Default dataset' and assigns matching files
-  # from those not yet belonging to any named dataset.
-  - name: "__default__"
+  # --- Scenario 1: assigning additional unassigned files to a dataset -------
+  # 'additional_files' assigns currently-unassigned files to this dataset.
+  # Files are narrowed first by 'data_directories' (directory prefix match),
+  # then by 'patterns' (glob). At least one of the two must be present.
+  # The optional 'images' list marks subsets of those files as images, with
+  # an optional 'image_type' for specimen track participation.
+  # additional_files runs before images so newly-assigned files are visible
+  # to the images block if also present.
+  - name: "Mixed dataset with additional files"
+    additional_files:
+      data_directories:
+        - "data/extra/"
+      patterns:
+        - "**/*.tif"
+        - "**/*.mrc"
+      images:
+        - patterns: "**/*.tif"
+          # image_type omitted → plain 'bia:Image', not track-aware
+        - patterns: "**/*.mrc"
+          image_type: "tilt_series"   # participates in specimen track identification
+
+  # --- Scenario 1: image_groups for sub-dataset protocol assignment ---------
+  # 'image_groups' assigns protocols to named groups of track-less images
+  # within a dataset, at finer than dataset granularity. Each entry requires
+  # glob patterns identifying matched images (which must already be assigned
+  # as images) and a non-empty list of protocol titles.
+  - name: "Dataset with two imaging modalities"
     images:
-      - "**/*.png"
+      patterns:
+        - "**/*.tif"
+        - "**/*.mrc"
+    image_groups:
+      - patterns: "**/*.tif"
+        protocol_titles:
+          - "Fluorescence imaging protocol"
+      - patterns: "**/*.mrc"
+        protocol_titles:
+          - "EM acquisition protocol"
 
   # --- Scenario 2: REMBI association only ------------------------------------
   # No 'images' block — only dataset-level REMBI associations are written.
@@ -127,7 +179,8 @@ datasets:
   # associations are written to the Dataset entity in the same step.
   - name: "Fluorescence images with REMBI"
     images:
-      - "**/*.tif"
+      patterns:
+        - "**/*.tif"
     associations:
       image_acquisition_protocol_titles:
         - "Cryo-electron tomography"

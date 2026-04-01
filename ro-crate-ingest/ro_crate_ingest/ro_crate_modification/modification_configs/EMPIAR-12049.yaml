@@ -1,10 +1,12 @@
 # modification_config for EMPIAR-12049
 # C. elegans centrosome cryo-ET
-# Paper: https://doi.org/10.1016/j.devcel.2024.12.002
 #
 # Specimen ID strategy: literal_alias_mappings — each centrosome is identified
 # by non-algorithmic aliases across the two datasets (date-stamped tilt series
 # directories and canonically named tomogram files).
+#
+# Unassigned files (e.g. README, metadata) are automatically collected into
+# a 'Default dataset' at the end of enrichment — no explicit entry needed.
 
 study_metadata:
   related_publication: 
