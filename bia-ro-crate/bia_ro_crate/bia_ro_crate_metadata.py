@@ -1,5 +1,5 @@
-import json
 from collections import defaultdict
+from operator import attrgetter
 from pathlib import Path
 from typing import Iterable
 
@@ -15,7 +15,9 @@ class BIAROCrateMetadata:
     _graph_bia_entities: dict[str, ROCrateModel]
     _context: SimpleJSONLDContext
     _base_path: Path
+    _metadata_path: Path
     _file_list_id: str
+    DEFAULT_RO_CRATE_FILENAME: str = "ro-crate-metadata.json"
 
     def __init__(
         self,
@@ -27,11 +29,12 @@ class BIAROCrateMetadata:
         self._graph_bia_entities = graph_bia_entities
         self._context = context
         self._base_path = base_path
+        self._metadata_path = base_path / self.DEFAULT_RO_CRATE_FILENAME
 
         if file_list_id:
             if file_list_id not in graph_bia_entities:
                 raise ValueError(
-                    f"File list with ID {file_list_id} not graph entities."
+                    f"File list with ID {file_list_id} not found in graph entities."
                 )
             self._file_list_id = file_list_id
         else:
@@ -40,15 +43,13 @@ class BIAROCrateMetadata:
                 raise ValueError(
                     f"Found unexpected number of file lists: {file_list_count}"
                 )
-            self._file_list_id = list(file_lists.keys())[0]
+            self._file_list_id = next(iter(file_lists))
 
     def to_graph(self) -> Graph:
         graph = Graph()
 
         for entity in self._graph_bia_entities.values():
-            graph += entity.to_graph(
-                self._context, self._base_path / "ro-crate-metadata.json"
-            )
+            graph += entity.to_graph(self._context, self._metadata_path)
 
         return graph
 
@@ -56,9 +57,9 @@ class BIAROCrateMetadata:
         context_dict = self._context.to_dict()
 
         graph_objects = [
-            json.loads(entity.model_dump_json(by_alias=True))
+            entity.model_dump(by_alias=True, mode='json')
             for entity in sorted(
-                self._graph_bia_entities.values(), key=lambda entity: entity.id
+                self._graph_bia_entities.values(), key=attrgetter('id')
             )
         ]
 
