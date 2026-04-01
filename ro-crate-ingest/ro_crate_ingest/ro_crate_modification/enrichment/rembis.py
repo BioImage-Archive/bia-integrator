@@ -65,6 +65,66 @@ def _make_biosample_entities(
     return entities
 
 
+def add_rembi_entities(
+    ro_crate_metadata: BIAROCrateMetadata,
+    rembis: RembiByType,
+) -> None:
+    """
+    Add study-wide REMBI entities to the metadata graph.
+    """
+    for protocol in rembis.protocols:
+        entity = ro_crate_models.Protocol(**{
+            "@id": title_to_id(protocol.title),
+            "@type": type_for(ro_crate_models.Protocol),
+            "title": protocol.title,
+            "protocolDescription": protocol.protocol_description,
+        })
+        ro_crate_metadata.add_entity(entity)
+        logger.debug(f"Added Protocol: {entity.id}")
+
+    for biosample in rembis.biosamples:
+        for entity in _make_biosample_entities(biosample):
+            if isinstance(entity, ro_crate_models.Taxon):
+                ro_crate_metadata.add_entity_if_absent(entity)
+            else:
+                ro_crate_metadata.add_entity(entity)
+            logger.debug(f"Added entity: {entity.id}")
+
+    for sipp in rembis.specimen_imaging_preparation_protocols:
+        entity = ro_crate_models.SpecimenImagingPreparationProtocol(**{
+            "@id": title_to_id(sipp.title),
+            "@type": type_for(ro_crate_models.SpecimenImagingPreparationProtocol),
+            "title": sipp.title,
+            "protocolDescription": sipp.protocol_description,
+        })
+        ro_crate_metadata.add_entity(entity)
+        logger.debug(f"Added SpecimenImagingPreparationProtocol: {entity.id}")
+
+    for iap in rembis.image_acquisition_protocols:
+        entity = ro_crate_models.ImageAcquisitionProtocol(**{
+            "@id": title_to_id(iap.title),
+            "@type": type_for(ro_crate_models.ImageAcquisitionProtocol),
+            "title": iap.title,
+            "protocolDescription": iap.protocol_description,
+            "imagingInstrumentDescription": iap.imaging_instrument_description,
+            "imagingMethodName": iap.imaging_method_name,
+            "fbbiId": iap.fbbi_id,
+        })
+        ro_crate_metadata.add_entity(entity)
+        logger.debug(f"Added ImageAcquisitionProtocol: {entity.id}")
+
+    for annotation_method in rembis.annotation_methods:
+        entity = ro_crate_models.AnnotationMethod(**{
+            "@id": title_to_id(annotation_method.title),
+            "@type": type_for(ro_crate_models.AnnotationMethod),
+            "title": annotation_method.title,
+            "protocolDescription": annotation_method.protocol_description,
+            "methodType": annotation_method.method_type,
+        })
+        ro_crate_metadata.add_entity(entity)
+        logger.debug(f"Added AnnotationMethod: {entity.id}")
+
+
 def apply_dataset_associations(
     ro_crate_metadata: BIAROCrateMetadata,
     dataset_config: DatasetModificationConfig,
@@ -121,60 +181,3 @@ def apply_dataset_associations(
     })
     ro_crate_metadata.update_entity(updated)
     logger.debug(f"Applied explicit associations to dataset '{dataset_config.name}'.")
-
-
-def add_rembi_entities(
-    ro_crate_metadata: BIAROCrateMetadata,
-    rembis: RembiByType,
-) -> None:
-    """
-    Add study-wide REMBI entities to the metadata graph.
-    """
-    for protocol in rembis.protocols:
-        entity = ro_crate_models.Protocol(**{
-            "@id": title_to_id(protocol.title),
-            "@type": type_for(ro_crate_models.Protocol),
-            "title": protocol.title,
-            "protocolDescription": protocol.protocol_description,
-        })
-        ro_crate_metadata.add_entity(entity)
-        logger.debug(f"Added Protocol: {entity.id}")
-
-    for biosample in rembis.biosamples:
-        for entity in _make_biosample_entities(biosample):
-            ro_crate_metadata.add_entity(entity)
-            logger.debug(f"Added entity: {entity.id}")
-
-    for sipp in rembis.specimen_imaging_preparation_protocols:
-        entity = ro_crate_models.SpecimenImagingPreparationProtocol(**{
-            "@id": title_to_id(sipp.title),
-            "@type": type_for(ro_crate_models.SpecimenImagingPreparationProtocol),
-            "title": sipp.title,
-            "protocolDescription": sipp.protocol_description,
-        })
-        ro_crate_metadata.add_entity(entity)
-        logger.debug(f"Added SpecimenImagingPreparationProtocol: {entity.id}")
-
-    for iap in rembis.image_acquisition_protocols:
-        entity = ro_crate_models.ImageAcquisitionProtocol(**{
-            "@id": title_to_id(iap.title),
-            "@type": type_for(ro_crate_models.ImageAcquisitionProtocol),
-            "title": iap.title,
-            "protocolDescription": iap.protocol_description,
-            "imagingInstrumentDescription": iap.imaging_instrument_description,
-            "imagingMethodName": iap.imaging_method_name,
-            "fbbiId": iap.fbbi_id,
-        })
-        ro_crate_metadata.add_entity(entity)
-        logger.debug(f"Added ImageAcquisitionProtocol: {entity.id}")
-
-    for annotation_method in rembis.annotation_methods:
-        entity = ro_crate_models.AnnotationMethod(**{
-            "@id": title_to_id(annotation_method.title),
-            "@type": type_for(ro_crate_models.AnnotationMethod),
-            "title": annotation_method.title,
-            "protocolDescription": annotation_method.protocol_description,
-            "methodType": annotation_method.method_type,
-        })
-        ro_crate_metadata.add_entity(entity)
-        logger.debug(f"Added AnnotationMethod: {entity.id}")

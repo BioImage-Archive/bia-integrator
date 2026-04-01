@@ -2,14 +2,11 @@ import logging
 
 from ro_crate_ingest.bia_ro_crate.bia_ro_crate_metadata import BIAROCrateMetadata
 from ro_crate_ingest.bia_ro_crate.file_list import FileList
-from ro_crate_ingest.ro_crate_modification.modification_config import (
-    DEFAULT_DATASET_SENTINEL,
-    ModificationConfig,
-)
+from ro_crate_ingest.ro_crate_modification.modification_config import ModificationConfig
 from ro_crate_ingest.ro_crate_modification.enrichment import (
-    images, 
-    rembis, 
-    study, 
+    assignments,
+    rembis,
+    study,
     specimens
 )
 
@@ -26,9 +23,16 @@ def apply_enrichment(
 
     1. Add information to the study object.
     2. Add study-wide REMBI entities to the metadata graph.
-    3. For each named dataset: apply image assignment and explicit associations.
-    4. Create the default dataset and assign its images (if sentinel present).
-    5. Identify and assign specimen tracks (if specimen_tracks configured).
+    3. For each named dataset:
+       a. Apply explicit REMBI associations.
+       b. Assign additional unassigned files to the dataset (with optional
+          image marking, including typed images for specimen tracks).
+       c. Apply image assignment for files already in the dataset.
+       d. Write image-group protocol associations.
+    4. Identify and assign specimen tracks (if specimen_tracks configured).
+    5. Create the default dataset and assign any remaining unassigned files.
+
+    The default dataset is created automatically — no YAML entry is needed.
 
     Returns the modified (ro_crate_metadata, file_list) pair.
     """
@@ -38,24 +42,26 @@ def apply_enrichment(
     if config.rembis:
         rembis.add_rembi_entities(ro_crate_metadata, config.rembis)
 
-    named_configs = [d for d in config.datasets if d.name != DEFAULT_DATASET_SENTINEL]
-    default_config = next(
-        (d for d in config.datasets if d.name == DEFAULT_DATASET_SENTINEL), None
-    )
-
-    for dataset_config in named_configs:
+    for dataset_config in config.datasets:
         if dataset_config.associations:
             rembis.apply_dataset_associations(ro_crate_metadata, dataset_config)
-        # TODO: assign images must assign relevant protocols to images in file list.
-        if dataset_config.images:
-            images.assign_images_for_dataset(file_list, ro_crate_metadata, dataset_config)
 
-    # TODO: needs assigning all non-assigned files to default dataset,
-    # or a means of assigning extra files to an existing named dataset. 
-    if default_config is not None and default_config.images:
-        images.assign_images_for_default_dataset(file_list, ro_crate_metadata, default_config)
+        if dataset_config.additional_files:
+            assignments.assign_additional_files_for_dataset(
+                file_list, ro_crate_metadata, dataset_config
+            )
+
+        if dataset_config.images:
+            assignments.assign_images_for_dataset(file_list, ro_crate_metadata, dataset_config)
+
+        if dataset_config.image_groups:
+            assignments.assign_image_group_protocols(
+                file_list, ro_crate_metadata, dataset_config
+            )
 
     if config.specimen_tracks:
         specimens.assign_specimen_tracks(ro_crate_metadata, file_list, config)
+
+    assignments.assign_unassigned_to_default_dataset(file_list, ro_crate_metadata)
 
     return ro_crate_metadata, file_list

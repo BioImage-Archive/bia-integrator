@@ -23,8 +23,8 @@ from ro_crate_ingest.ro_crate_modification.enrichment.utils import (
     type_for
 )
 from ro_crate_ingest.ro_crate_modification.modification_config import (
-    DEFAULT_DATASET_SENTINEL,
     IMAGE_ASSIGNMENT_TYPE_KEY,
+    AdditionalFilesConfig,
     DatasetModificationConfig,
     ModificationConfig,
     SpecimenDefaults,
@@ -122,6 +122,36 @@ def _classify_file_by_type(
     return key
 
 
+def _classify_file_by_additional_images(
+    path: Path,
+    additional_files: AdditionalFilesConfig,
+    dataset_name: str,
+) -> str | None:
+    """
+    Classify a file against the typed image assignments in an AdditionalFilesConfig.
+    Returns the image_type string for the first matching entry whose image_type is
+    a real ImageType (not the plain 'image' sentinel), or None if no typed entry
+    matches (treating it as a non-track-stage image).
+
+    Entries with image_type=None or image_type='image' are skipped here — those
+    files are plain images that do not participate in specimen track identification.
+    """
+    matched_typed: list[str] = []
+    for img_assignment in additional_files.images:
+        if img_assignment.image_type is None or img_assignment.image_type == IMAGE_ASSIGNMENT_TYPE_KEY:
+            continue
+        if match_patterns(str(path), img_assignment.patterns):
+            matched_typed.append(img_assignment.image_type)
+
+    if len(matched_typed) > 1:
+        logger.warning(
+            f"Dataset '{dataset_name}': '{path}' matched multiple typed additional_files "
+            f"image entries {matched_typed}; using first ({matched_typed[0]})."
+        )
+
+    return matched_typed[0] if matched_typed else None
+
+
 def _extract_specimen_id(
     file_path: Path,
     specimen_config: SpecimenTrackConfig,
@@ -167,18 +197,22 @@ def _extract_specimen_id(
 def _build_track_dataframe(
     file_list: FileList,
     ro_crate_metadata: BIAROCrateMetadata,
-    dataset_configs_with_images_by_type: list[DatasetModificationConfig],
+    dataset_configs_for_tracks: list[DatasetModificationConfig],
     specimen_track_config: SpecimenTrackConfig,
 ) -> pd.DataFrame:
     """
-    Build a one-row-per-file DataFrame for _merge_tracks, 
-    reading from the file list.
+    Build a one-row-per-file DataFrame for _merge_tracks, reading from the
+    file list.
 
-    For each dataset that has images.by_type block 
-    (since that inidcated need for specimen tracks):
+    For each dataset that participates in specimen track identification —
+    either via images.by_type or via typed entries in additional_files.images:
       - Filter file list to image-assigned rows belonging to that dataset
-      - Apply the by_type patterns to classify each file as an ImageType
+      - Classify each file as an ImageType using whichever source applies
       - Extract a specimen ID from each file path using specimen_track_config
+
+    Classification sources (mutually exclusive per dataset):
+      - images.by_type: classic glob-keyed dict, handled by _classify_file_by_type
+      - additional_files.images typed entries: handled by _classify_file_by_additional_images
 
     Result columns: path, dataset_name, specimen_id, image_type
     """
@@ -194,7 +228,7 @@ def _build_track_dataframe(
 
     candidate_rows: list[pd.DataFrame] = []
 
-    for dataset_config in dataset_configs_with_images_by_type:
+    for dataset_config in dataset_configs_for_tracks:
         dataset_id = resolve_dataset_id_by_name(ro_crate_metadata, dataset_config.name)
         if dataset_id is None:
             continue
@@ -216,15 +250,26 @@ def _build_track_dataframe(
             )
             continue
 
-        # Classify each file by ImageType using the by_type patterns.
-        # Files that match no typed pattern get image_type = None and will
-        # be treated as extra_files in the track.
-        subset["image_type"] = subset["path"].apply(
-            lambda p: _classify_file_by_type(
-                p, dataset_config.images.by_type, dataset_config.name
+        # Classify each file by ImageType.
+        # For images.by_type datasets: use the by_type glob dict.
+        # For additional_files typed image datasets: use the typed image entries.
+        # Files that resolve to no typed stage get image_type = None and are
+        # treated as extra_files in the track (no label/specimen written).
+        has_by_type = dataset_config.images is not None and bool(dataset_config.images.by_type)
+        if has_by_type:
+            subset["image_type"] = subset["path"].apply(
+                lambda p: _classify_file_by_type(
+                    p, dataset_config.images.by_type, dataset_config.name
+                )
             )
-        )
-        
+        else:
+            # additional_files with typed image entries
+            subset["image_type"] = subset["path"].apply(
+                lambda p: _classify_file_by_additional_images(
+                    p, dataset_config.additional_files, dataset_config.name
+                )
+            )
+
         # Extract specimen ID from path using the cross-dataset strategy
         subset["specimen_id"] = subset["path"].apply(
             lambda p: _extract_specimen_id(p, specimen_track_config)
@@ -390,7 +435,6 @@ def _make_specimen_entities(
     Build a Specimen entity from resolved per-specimen metadata.
 
     Specimen references its BioSample(s) and SIPP(s) by @id.
-    CreationProcess references the Specimen as its subject.
     """
     title = spec_meta["title"]
     biosample_title = spec_meta["biosample_title"]
@@ -828,19 +872,27 @@ def assign_specimen_tracks(
     to the metadata graph, and labels, source_image_label, associated_specimen,
     and associated_protocol values to the file list.
     """
-    dataset_configs_with_images_by_type = [
-        d for d in config.datasets
-        if d.images is not None and d.images.by_type and d.name != DEFAULT_DATASET_SENTINEL
-    ]
+    # Datasets that contribute typed images to track identification, via either
+    # images.by_type or typed entries in additional_files.images.
+    def _has_typed_images(d: DatasetModificationConfig) -> bool:
+        if d.images is not None and d.images.by_type:
+            return True
+        if d.additional_files is not None:
+            return any(
+                img.image_type is not None and img.image_type != IMAGE_ASSIGNMENT_TYPE_KEY
+                for img in d.additional_files.images
+            )
+        return False
+
+    dataset_configs_for_tracks = [d for d in config.datasets if _has_typed_images(d)]
     dataset_configs_with_additional_specimen_data = [
-        d for d in config.datasets
-        if d.specimen_tracks is not None and d.name != DEFAULT_DATASET_SENTINEL
+        d for d in config.datasets if d.specimen_tracks is not None
     ]
 
     track_df = _build_track_dataframe(
-        file_list, 
-        ro_crate_metadata, 
-        dataset_configs_with_images_by_type, 
+        file_list,
+        ro_crate_metadata,
+        dataset_configs_for_tracks,
         config.specimen_tracks
     )
 
