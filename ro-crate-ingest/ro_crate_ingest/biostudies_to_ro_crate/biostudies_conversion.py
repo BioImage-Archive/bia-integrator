@@ -1,6 +1,7 @@
 import logging
 from pathlib import Path
 from typing import Optional
+from collections import Counter
 
 from bia_shared_datamodels.package_specific_uuid_creation.shared import (
     create_study_uuid,
@@ -9,9 +10,12 @@ from bia_shared_datamodels.ro_crate_models import ROCrateCreativeWork
 
 from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_parsing_utils import (
     find_section_types_recursive,
+    find_sections_recursive,
+    is_section_empty,
 )
 from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_api import (
     load_submission,
+    Submission,
 )
 from ro_crate_ingest.biostudies_to_ro_crate.entity_conversion import (
     affiliation,
@@ -50,6 +54,15 @@ def convert_biostudies_to_ro_crate(
         logger.error("Failed to retrieve information from BioStudies")
         logging.exception("message")
         return
+
+    # Raise error if there are sections that will not be processed
+    section_types_not_processed = [
+        f"{section}: {n}" for section, n in get_unprocessed_section_types(submission)
+    ]
+    if section_types_not_processed:
+        raise ValueError(
+            f"The following section types cannot be processed:\nsection type: n_occurences\n{"\n".join(section_types_not_processed)}"
+        )
 
     ro_crate_dir = create_ro_crate_folder(accession_id, crate_path)
 
@@ -157,10 +170,10 @@ def convert_biostudies_to_ro_crate(
     context = get_default_context()
 
     write_ro_crate_metadata(ro_crate_dir, context, graph)
-    check_sections_converted(submission)
 
 
-def check_sections_converted(submission) -> list:
+def get_unprocessed_section_types(submission: Submission) -> list[tuple]:
+    """Return count of types of unprocessed sections"""
 
     convertible_section_types = [
         c.lower()
@@ -182,10 +195,28 @@ def check_sections_converted(submission) -> list:
             "Organism",
         ]
     ]
-    section_types_in_submission = find_section_types_recursive(submission.section)
-    unprocessed_sections = [
+    section_types_in_submission = set(find_section_types_recursive(submission.section))
+    unprocessed_section_types = [
         section_type
         for section_type in section_types_in_submission
         if section_type.lower() not in convertible_section_types
     ]
-    logger.info(f"Unprocessed sections: {unprocessed_sections}")
+
+    non_empty_unprocessed_sections = Counter()
+    for section_type in unprocessed_section_types:
+        sections = find_sections_recursive(
+            submission.section,
+            [
+                section_type,
+            ],
+            [],
+        )
+        for section in sections:
+            if not is_section_empty(section):
+                non_empty_unprocessed_sections.update(
+                    [
+                        section.type,
+                    ]
+                )
+
+    return non_empty_unprocessed_sections.most_common()

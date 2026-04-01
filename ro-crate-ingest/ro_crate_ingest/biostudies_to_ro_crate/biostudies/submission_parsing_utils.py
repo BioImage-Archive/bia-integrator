@@ -167,3 +167,30 @@ def find_sections_with_filelists_recursive(
         find_sections_with_filelists_recursive(subsection, results, ignore_types)
 
     return results
+
+
+# TODO - discuss if this can be a method of section. Issue is it depends on `attr_to_dict` function
+def is_section_empty(section: Section) -> bool:
+    """Check if a section is empty. Recursively check any subsections"""
+
+    # Check Section attributes.
+    attr_dict = attributes_to_dict(section.attributes)
+    for attr_value in attr_dict.values():
+        if attr_value:
+            return False
+
+    # Check links
+    if section.links:
+        return False
+
+    # Check attached files
+    if section.files:
+        return False
+
+    # Recursively check through subsections. False if any none empty subsection
+    for subsection in section.subsections:
+        is_empty = is_section_empty(subsection)
+        if not is_empty:
+            return False
+
+    return True
