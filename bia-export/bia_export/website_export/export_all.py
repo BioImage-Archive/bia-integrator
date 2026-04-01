@@ -131,9 +131,17 @@ def transform_study_attr_to_dict(study_dict: dict, attr_field_map: dict) -> dict
         dest: extract_path(study_dict, src) for src, dest in attr_field_map.items()
     }
     return {
-        key: list(dict.fromkeys(value)) if isinstance(value, list) else value
+        key: dedupe_list_preserve_order(value) if isinstance(value, list) else value
         for key, value in study_attr_dict.items()
     }
+
+
+def dedupe_list_preserve_order(values):
+    result = []
+    for item in values:
+        if item not in result:
+            result.append(item)
+    return result
 
 
 def write_json(path: Path, data: dict, description: str) -> None:
