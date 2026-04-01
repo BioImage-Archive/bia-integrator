@@ -29,6 +29,7 @@ class JSONLDMetadataParser(ROCrateMetadataParser):
     """
 
     parser_classes_map: dict[URIRef, type[ROCrateModel]]
+    DEFAULT_RO_CRATE_FILENAME: str = "ro-crate-metadata.json"
 
     def __init__(self, ro_crate_root: Path | str, context: dict | None = None) -> None:
         if context and "parser_classes" in context:
@@ -42,12 +43,14 @@ class JSONLDMetadataParser(ROCrateMetadataParser):
 
         super().__init__(ro_crate_root=ro_crate_root, context=context)
 
-    def parse(self, target="ro-crate-metadata.json"):
+    def parse(self, target: str | None = None):
+        if target is None:
+            target = self.DEFAULT_RO_CRATE_FILENAME
         crate_metadata_path = self._get_metadata_path(target)
         self._pre_parse_validation(crate_metadata_path)
 
         with open(crate_metadata_path, "r") as jsonfile:
-            json_dict = json.loads(jsonfile.read())
+            json_dict = json.load(jsonfile)
 
         context = self._parse_context(json_dict["@context"])
         rocrate_objects_by_id = self._parse_objects(json_dict["@graph"], context)
@@ -60,24 +63,19 @@ class JSONLDMetadataParser(ROCrateMetadataParser):
 
     @staticmethod
     def _format_pydantic_error(error_dict: ErrorDetails) -> str:
+        loc = error_dict["loc"]
+        msg = error_dict["msg"]
+
         if error_dict["type"] == "missing":
-            return f"Missing required field: {error_dict['loc'][0]}"
+            return f"Missing required field: {loc[0]}"
 
-        position_string = None
-        if error_dict["loc"]:
-            if len(error_dict["loc"]) > 1:
-                position_string = (
-                    f"At {error_dict['loc'][0]}, index: {error_dict['loc'][1]}"
-                )
-            elif len(error_dict["loc"]) == 1:
-                position_string = f"At {error_dict['loc'][0]}"
-            else:
-                pass
-
-        if position_string:
-            return f"{position_string}: {error_dict['msg']}"
-        else:
-            return f"{error_dict['msg']}"
+        match len(loc):
+            case 0:
+                return msg
+            case 1:
+                return f"At {loc[0]}: {msg}"
+            case _:
+                return f"At {loc[0]}, index: {loc[1]}: {msg}"
 
     def _parse_objects(self, entities, context):
 
@@ -132,7 +130,7 @@ class JSONLDMetadataParser(ROCrateMetadataParser):
         if target:
             return self._ro_crate_root / target
         else:
-            return self._ro_crate_root / "ro-crate-metadata.json"
+            return self._ro_crate_root / self.DEFAULT_RO_CRATE_FILENAME
 
     def _get_class_intersection(self, object_types: set[URIRef]) -> set[URIRef]:
         return set(self.parser_classes_map.keys()) & object_types
@@ -228,13 +226,13 @@ class JSONLDMetadataParser(ROCrateMetadataParser):
         undefined_references = uri_referenced_object - subjects
         unconnected_subjects = subjects - uri_referenced_object
 
-        if URIRef("ro-crate-metadata.json") in unconnected_subjects:
-            unconnected_subjects.remove(URIRef("ro-crate-metadata.json"))
+        if URIRef(self.DEFAULT_RO_CRATE_FILENAME) in unconnected_subjects:
+            unconnected_subjects.remove(URIRef(self.DEFAULT_RO_CRATE_FILENAME))
 
         if len(unconnected_subjects) > 0:
             self._parse_issues.append(
                 ValidationError(
-                    message=f"Found object not connected to the ro-crate-metadata.json object: {', '.join(str(unconnected_subjects))}",
+                    message=f"Found object not connected to the {self.DEFAULT_RO_CRATE_FILENAME} object: {', '.join(str(unconnected_subjects))}",
                     severity=Severity.WARNING,
                 )
             )
