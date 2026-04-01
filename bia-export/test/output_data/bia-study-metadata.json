@@ -533,6 +533,15 @@
                 "file_path": null
             }
         ],
-        "image_format": []
+        "image_format": [],
+        "author_display_name": ["Test Author1", "Test Author2"], 
+        "author_orcid": ["0000-0000-0000-0000", "1111-1111-1111-1111"], 
+        "author_rorid": null, 
+        "author_affiliation": ["Test College 1", "Test College 2"],
+        "example_image": null, 
+        "organism_scientific_name": ["Homo sapiens", "Mus musculus"], 
+        "organism_common_name": ["human", "mouse"], 
+        "imaging_method": ["confocal microscopy"], 
+        "annotation_type": ["other"]
     }
 }

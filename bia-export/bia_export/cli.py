@@ -109,7 +109,7 @@ def generate_all(
     max_workers: Annotated[
         int,
         typer.Option(
-            "--workers", "-w", help="Number of parallel workers", min=1, max=5
+            "--workers", "-w", help="Number of parallel workers", min=1, max=4
         ),
     ] = 2,
     write_bulk_gzip: Annotated[

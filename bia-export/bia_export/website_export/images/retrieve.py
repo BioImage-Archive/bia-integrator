@@ -69,15 +69,15 @@ def get_local_img_rep_map(context: ImageCLIContext) -> dict[UUID, UUID]:
 def retrieve_file_reference_attr(uuid_l: List[UUID]) -> dict:
     total_size_in_bytes, file_path = None, None
     if len(uuid_l) != 0:
-        file_reference = api_client.get_file_reference(uuid_l[0])
-        if file_reference:
-            total_size_in_bytes = (
-                file_reference.size_in_bytes
-                if file_reference.size_in_bytes != 0
-                else None
+        file_reference = [api_client.get_file_reference(fr_uuid) for fr_uuid in uuid_l]
+        if len(file_reference) > 0:
+            total_size_in_bytes = sum(
+                [
+                    fr.size_in_bytes if fr.size_in_bytes != 0 else 0
+                    for fr in file_reference
+                ]
             )
-            file_path = file_reference.file_path
-
+            file_path = [fr.file_path for fr in file_reference]
     return {
         "total_size_in_bytes": total_size_in_bytes,
         "file_path": file_path,

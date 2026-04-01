@@ -98,8 +98,20 @@ class Image(api_models.Image):
     total_size_in_bytes: float | None = Field(
         description="""dataset description""",
     )
-    file_path: str | None = Field(
+    file_path: list[str] | None = Field(
         description="""dataset description""",
+    )
+    organism_scientific_name: list[str] | None = Field(
+        description="""study authors""",
+    )
+    organism_common_name: list[str] | None = Field(
+        description="""study authors""",
+    )
+    imaging_method: list[str] | None = Field(
+        description="""study authors""",
+    )
+    annotation_type: list[str] | None = Field(
+        description="""study authors""",
     )
 
 

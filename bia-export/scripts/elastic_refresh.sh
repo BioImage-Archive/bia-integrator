@@ -11,7 +11,7 @@ ELASTIC_USERNAME=${ELASTIC_USERNAME:-"elastic"}
 ELASTIC_PASSWORD=${ELASTIC_PASSWORD:-"test"}
 ELASTIC_INDEX=${ELASTIC_INDEX:-"test_index"}
 ELASTIC_INDEX_IMAGES=${ELASTIC_INDEX_IMAGES:-"${ELASTIC_INDEX}_images"}
-EXPORT_WORKERS=${EXPORT_WORKERS:-5}
+EXPORT_WORKERS=${EXPORT_WORKERS:-4}
 
 # Export studies and images
 poetry --directory ${SCRIPT_DIR}/../../bia-export run bia-export website all --out_dir=$EXPORT_JSON_OUT_DIR --workers $EXPORT_WORKERS --bulk-gzip

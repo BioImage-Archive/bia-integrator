@@ -55,6 +55,33 @@ class Study(models.Study):
         default_factory=list,
         description="List of image formats.",
     )
+    author_display_name: list[str] | None = Field(
+        description="""study authors""",
+    )
+    author_orcid: list[str] | None = Field(
+        description="""study authors""",
+    )
+    author_rorid: list[str] | None = Field(
+        description="""study authors""",
+    )
+    author_affiliation: list[str] | None = Field(
+        description="""study authors""",
+    )
+    example_image: list[str] | None = Field(
+        description="""study authors""",
+    )
+    organism_scientific_name: list[str] | None = Field(
+        description="""study authors""",
+    )
+    organism_common_name: list[str] | None = Field(
+        description="""study authors""",
+    )
+    imaging_method: list[str] | None = Field(
+        description="""study authors""",
+    )
+    annotation_type: list[str] | None = Field(
+        description="""study authors""",
+    )
 
 
 class CacheUse(Enum):

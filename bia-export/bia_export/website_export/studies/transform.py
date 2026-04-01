@@ -8,7 +8,6 @@ from bia_export.website_export.studies.models import (
 )
 from bia_export.website_export.studies.retrieve import (
     retrieve_study,
-    retrieve_datasets,
     retrieve_dataset_images,
     aggregate_file_list_data,
     retrieve_aggregation_fields,
@@ -23,6 +22,7 @@ from bia_export.website_export.website_models import (
     AnnotationMethod,
 )
 from bia_export.website_export.generic_object_retrieval import retrieve_object
+from bia_export.website_export.export_all import transform_study_attr_to_dict
 from bia_integrator_api import models as api_models
 import logging
 
@@ -49,8 +49,23 @@ def transform_study(context: StudyCLIContext) -> Study:
         # Limit to 5 images
         if len(study_dict["image"]) >= 5:
             break
-    study_dict["image"] = study_dict["image"]
     study_dict["image_format"] = []
+    attr_field_map = {
+        "author.display_name": "author_display_name",
+        "author.orcid": "author_orcid",
+        "author.rorid": "author_rorid",
+        "author.affiliation.display_name": "author_affiliation",
+        "dataset.example_image_uri": "example_image",
+        "dataset.biological_entity.organism_classification.scientific_name": "organism_scientific_name",
+        "dataset.biological_entity.organism_classification.common_name": "organism_common_name",
+        "dataset.acquisition_process.imaging_method_name": "imaging_method",
+        "dataset.annotation_process.method_type": "annotation_type",
+    }
+    study_dict.update(
+        transform_study_attr_to_dict(
+            study_dict=study_dict, attr_field_map=attr_field_map
+        )
+    )
     study = Study(**study_dict)
     return study
 

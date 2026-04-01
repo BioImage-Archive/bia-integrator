@@ -12,7 +12,7 @@ import re
 from json import dump, dumps
 import gzip
 from typing import Mapping, Any
-
+from bia_export.website_export.website_models import CLIContext
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -87,6 +87,53 @@ def sort_studies(studies_list: list[Union[apiStudy, exportStudy]]):
     )
 
     return sorted_studies
+
+
+def extract_path(data, path):
+    parts = path.split(".")
+
+    def _extract(value, keys):
+        if value is None:
+            return None
+        if not keys:
+            return value
+
+        key = keys[0]
+        rest = keys[1:]
+        if not isinstance(value, list) and not isinstance(value, dict):
+            value = value.model_dump()
+        if isinstance(value, list):
+            out = []
+            for item in value:
+                v = _extract(item, keys)
+                if v is None:
+                    continue
+                if isinstance(v, list):
+                    out.extend(v)
+                else:
+                    out.append(v)
+            return out or None
+
+        if isinstance(value, dict):
+            return _extract(value.get(key), rest)
+
+        return None
+
+    return _extract(data, parts)
+
+
+def map_fields(source: dict, field_map: dict) -> dict:
+    return {dest: extract_path(source, src) for src, dest in field_map.items()}
+
+
+def transform_study_attr_to_dict(study_dict: dict, attr_field_map: dict) -> dict:
+    study_attr_dict = {
+        dest: extract_path(study_dict, src) for src, dest in attr_field_map.items()
+    }
+    return {
+        key: list(dict.fromkeys(value)) if isinstance(value, list) else value
+        for key, value in study_attr_dict.items()
+    }
 
 
 def write_json(path: Path, data: dict, description: str) -> None:

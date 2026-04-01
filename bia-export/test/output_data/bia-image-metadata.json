@@ -30,7 +30,7 @@
             "0000-0000-0000-0000",
             "1111-1111-1111-1111"
         ],
-        "author_rorid": [],
+        "author_rorid": null,
         "author_affiliation": [
             "Test College 1",
             "Test College 2"
@@ -83,7 +83,11 @@
             ],
             "protocol": []
         },
-        "representation": []
+        "representation": [],
+        "organism_scientific_name": null, 
+        "organism_common_name": null, 
+        "imaging_method": null,
+        "annotation_type": ["other"]
     },
     "e7322131-8e27-455d-b9fc-8add0719af70": {
         "object_creator": "bia_image_assignment",
@@ -284,13 +288,17 @@
             "0000-0000-0000-0000",
             "1111-1111-1111-1111"
         ],
-        "author_rorid": [],
+        "author_rorid": null,
         "author_affiliation": [
             "Test College 1",
             "Test College 2"
         ],
         "dataset_description": "Description of study component 1",
         "dataset_title": "Study Component 1",
-        "publication": []
+        "publication": [],
+        "organism_scientific_name": ["Homo sapiens"], 
+        "organism_common_name": ["human"], 
+        "imaging_method": ["confocal microscopy"], 
+        "annotation_type": null
     }
 }

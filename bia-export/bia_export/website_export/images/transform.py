@@ -25,6 +25,8 @@ from bia_export.website_export.website_models import (
     AnnotationMethod,
 )
 
+from bia_export.website_export.export_all import transform_study_attr_to_dict
+
 
 def transform_images(context: ImageCLIContext) -> Image:
     image_map = {}
@@ -64,22 +66,7 @@ def transform_image(
         api_image.original_file_reference_uuid
     )
 
-    image_dict = api_image.model_dump() | {
-        "representation": api_img_rep,
-        "creation_process": creation_process,
-        **physical_sizes,
-        **transform_study_attr_to_image_dict(context=context),
-        "dataset_title": dataset.title if dataset is not None else "",
-        "dataset_description": dataset.description if dataset is not None else "",
-        **file_reference_attr_d,
-    }
-
-    return Image(**image_dict)
-
-
-def transform_study_attr_to_image_dict(context: ImageCLIContext) -> dict:
-    image_dict = {}
-    study_attr_field_map = {
+    attr_field_map = {
         "accession_id": "accession_id",
         "licence": "licence",
         "release_date": "study_release_date",
@@ -88,30 +75,28 @@ def transform_study_attr_to_image_dict(context: ImageCLIContext) -> dict:
         "author.display_name": "author_display_name",
         "author.orcid": "author_orcid",
         "author.rorid": "author_rorid",
-        "author.affiliation": "author_affiliation",
+        "author.affiliation.display_name": "author_affiliation",
         "related_publication": "publication",
+        "subject.sample_of.organism_classification.scientific_name": "organism_scientific_name",
+        "subject.sample_of.organism_classification.common_name": "organism_common_name",
+        "acquisition_process.imaging_method_name": "imaging_method",
+        "annotation_method.method_type": "annotation_type",
     }
-    study_attr = {} if context.study is None else context.study.model_dump()
-    for key, val in study_attr_field_map.items():
-        if key.__contains__("author"):
-            k1, k2 = key.split(".")
-            image_dict[val] = transform_author_to_flat_fields(
-                study_attr.get(k1, {}), k2
-            )
-        else:
-            image_dict[val] = study_attr.get(key, None)
-    return image_dict
 
+    study_dict = context.study.model_dump() | creation_process.model_dump()
+    image_dict = api_image.model_dump() | {
+        "representation": api_img_rep,
+        "creation_process": creation_process,
+        **physical_sizes,
+        **transform_study_attr_to_dict(
+            study_dict=study_dict, attr_field_map=attr_field_map
+        ),
+        "dataset_title": dataset.title if dataset is not None else "",
+        "dataset_description": dataset.description if dataset is not None else "",
+        **file_reference_attr_d,
+    }
 
-def transform_author_to_flat_fields(author: dict, field: str) -> list:
-    if field != "affiliation":
-        return [a[field] for a in author if a[field] is not None]
-    else:
-        affiliations = []
-        for a in author:
-            for aff in a["affiliation"]:
-                affiliations.append(aff["display_name"])
-        return affiliations
+    return Image(**image_dict)
 
 
 def transform_creation_process(
