@@ -29,7 +29,6 @@ class RateLimiter:
                 now = time.monotonic()
                 cutoff = now - self.period
                 self.timestamps = [t for t in self.timestamps if t > cutoff]
-
                 if len(self.timestamps) < self.calls:
                     self.timestamps.append(now)
                     return
@@ -40,7 +39,7 @@ class RateLimiter:
                 time.sleep(sleep_for)
 
 
-api_rate_limiter = RateLimiter(calls=20, period=5.0)
+api_rate_limiter = RateLimiter(calls=200, period=5.0)
 
 
 def get_source_directory(
