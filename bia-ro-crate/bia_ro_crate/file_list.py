@@ -26,9 +26,7 @@ class FileList:
         self.ro_crate_id = ro_crate_id
 
         self._validate_schema_dict(schema)
-        schema_name_map = {
-            column.columnName: column.id for column in self.schema.values()
-        }
+        schema_name_map = self._column_map('columnName', 'id')
         self._validate_column_defitions(schema_name_map, data.columns, strict)
         column_id_map = {
             col_name: schema_name_map[col_name] for col_name in data.columns
@@ -37,13 +35,15 @@ class FileList:
 
         super().__init__()
 
+    def _column_map(self, key: str, value: str) -> dict:
+        return {getattr(col, key): getattr(col, value) for col in self.schema.values()}
+
     def _validate_schema_dict(self, schema: dict[str, Column]):
-        if all(key == column.id for key, column in schema.items()):
-            self.schema = schema
-        else:
+        if not all(key == column.id for key, column in schema.items()):
             raise KeyError(
                 "Schema dictionary must have keys that are the IDs of the column objects"
             )
+        self.schema = schema
 
     def _validate_column_defitions(
         self, schema_name_map: dict[str, str], data_columns: pd.Index, strict: bool
@@ -52,21 +52,23 @@ class FileList:
             if list(schema_name_map.keys()) != list(data_columns):
                 raise ValueError("Schema does not match data columns")
 
-        for column in data_columns:
-            if column not in schema_name_map:
-                raise ValueError(
-                    "Schema does not contain columns with names that match data columns."
-                )
+        missing = set(data_columns) - schema_name_map.keys()
+        if missing:
+            raise ValueError(
+                f"Schema does not contain columns with names that match data columns: {missing}"
+            )
 
     def get_column_id_by_property(self, propertyUrl) -> str | None:
-        lookup = {column.propertyUrl: column.id for column in self.schema.values()}
-        return lookup.get(propertyUrl)
+        return next(
+            (column.id for column in self.schema.values() if column.propertyUrl == propertyUrl),
+            None,
+        )
 
     def get_column_properties(self) -> dict[str, None | str]:
-        return {column.id: column.propertyUrl for column in self.schema.values()}
+        return self._column_map('id', 'propertyUrl')
 
     def get_column_names(self) -> dict[str, str]:
-        return {column.id: column.columnName for column in self.schema.values()}
+        return self._column_map('id', 'columnName')
 
     def add_column(self, columnDefinition: Column, data: list | pd.Series):
         if len(data) != len(self.data):
