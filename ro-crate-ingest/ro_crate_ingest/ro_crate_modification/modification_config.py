@@ -5,9 +5,6 @@ from typing import Annotated, Self
 from ro_crate_ingest.ro_crate_modification.enrichment.image_types import ImageType
 
 
-DEFAULT_DATASET_SENTINEL = "__default__"
-DEFAULT_DATASET_TITLE = "Default dataset"
-
 # Valid keys for ImageAssignmentConfig.by_type: all ImageType values plus the
 # non-track-aware "image" sentinel for files that are images but don't belong
 # to a specimen track.
@@ -325,6 +322,109 @@ class ImageAssignmentConfig(ClosedBaseModel):
         return self
 
 
+class AdditionalFileImageAssignment(ClosedBaseModel):
+    """
+    Marks a subset of additionally-assigned files as images, with an optional
+    image type for specimen track participation.
+
+    patterns
+        Glob patterns identifying which of the additionally-assigned files are
+        images. Must be a subset of (or equal to) the patterns in the enclosing
+        AdditionalFilesConfig.
+
+    image_type
+        Optional ImageType value (e.g. 'tilt_series', 'tomogram'). When set,
+        the file participates in specimen track identification using this type.
+        When absent (or 'image'), the file is a plain image with no track stage.
+    """
+    patterns: Annotated[list[str], BeforeValidator(_string_to_list)]
+    image_type: str | None = None
+
+    @model_validator(mode="after")
+    def validate_image_type(self) -> Self:
+        if self.image_type is not None and self.image_type not in _VALID_BY_TYPE_KEYS:
+            raise ValueError(
+                f"additional_files.images: unknown image_type '{self.image_type}'. "
+                f"Valid values: {sorted(_VALID_BY_TYPE_KEYS)}"
+            )
+        return self
+
+
+class AdditionalFilesConfig(ClosedBaseModel):
+    """
+    Configuration for assigning currently-unassigned files to an existing named
+    dataset, with optional image marking. Files already assigned to any dataset
+    are never re-assigned.
+
+    data_directories
+        Optional list of directory prefixes. When present, only unassigned files
+        whose path falls under one of these directories are considered. Supports
+        the same glob syntax as patterns.
+
+    patterns
+        Optional glob patterns applied within the candidate pool (after
+        data_directories filtering). When absent, all candidates in the
+        data_directories are assigned.
+
+    images
+        Optional list of image assignment entries. Each entry provides glob
+        patterns (a subset of those matched above) and an optional image_type.
+        Entries with a typed image_type participate in specimen track
+        identification.
+
+    At least one of data_directories or patterns must be provided.
+    """
+    data_directories: Annotated[list[str], BeforeValidator(_string_to_list)] = Field(
+        default_factory=list
+    )
+    patterns: Annotated[list[str], BeforeValidator(_string_to_list)] = Field(
+        default_factory=list
+    )
+    images: list[AdditionalFileImageAssignment] = Field(default_factory=list)
+
+    @model_validator(mode="after")
+    def validate_has_filter(self) -> Self:
+        if not self.data_directories and not self.patterns:
+            raise ValueError(
+                "additional_files: at least one of 'data_directories' or 'patterns' "
+                "must be provided to identify which files to assign."
+            )
+        return self
+
+
+class ImageGroupConfig(ClosedBaseModel):
+    """
+    A named group of track-less images within a dataset, used to assign
+    protocol associations at sub-dataset granularity.
+
+    Useful when a dataset contains multiple types of plain (non-track-stage)
+    images that require different protocol associations — for example, two
+    distinct imaging modalities whose files live in the same dataset.
+
+    patterns
+        Glob patterns identifying which image files in this dataset belong to
+        this group. Matched files must already be assigned as images (via
+        the images block or additional_files).
+
+    protocol_titles
+        Titles of Protocol entities to associate with matched image files,
+        written to the associated_protocol column in the file list.
+    """
+    patterns: Annotated[list[str], BeforeValidator(_string_to_list)]
+    protocol_titles: Annotated[list[str], BeforeValidator(_string_to_list)] = Field(
+        default_factory=list
+    )
+
+    @model_validator(mode="after")
+    def validate_has_effect(self) -> Self:
+        if not self.protocol_titles:
+            raise ValueError(
+                "image_groups entry: 'protocol_titles' must be non-empty — "
+                "an entry with no protocol assignments has no effect."
+            )
+        return self
+
+
 class SpecimenTrackAssignmentConfig(ClosedBaseModel):
     """
     Per-dataset configuration for the specimen track scenario.
@@ -347,17 +447,15 @@ class SpecimenTrackAssignmentConfig(ClosedBaseModel):
 
 class DatasetModificationConfig(ClosedBaseModel):
     """
-    Modification instructions for a single dataset.
+    Modification instructions for a single named dataset.
 
     name
         Must match the 'name'/'title' of a dataset already present in the
-        minimal RO-Crate, or the sentinel '__default__' to create a new
-        catch-all dataset (titled 'Default dataset') for files not yet
-        assigned to any named dataset.
+        minimal RO-Crate.
 
     associations
         Explicit REMBI associations to write to the Dataset entity. Covers
-        all association fields on the Dataset model. Used for  modifications 
+        all association fields on the Dataset model. Used for modifications
         of REMBIs only, and optionally alongside images/specimen_tracks.
 
     images
@@ -366,15 +464,28 @@ class DatasetModificationConfig(ClosedBaseModel):
         by_type form, files receive their specific ImageType for track
         identification purposes; all still receive bia:Image in the file list.
 
+    additional_files
+        Configuration for assigning currently-unassigned files to this dataset,
+        with optional image marking. Runs before images assignment so that
+        newly-assigned files are visible to the images block if needed.
+
+    image_groups
+        Sub-dataset groups of track-less images, used to assign protocols at
+        finer than dataset granularity. Each entry provides glob patterns and
+        protocol titles; matched images get protocol associations written to
+        the file list.
+
     specimen_tracks
         Per-dataset IAP/protocol titles keyed by image type, and specimen
-        group overrides. Requires the top-level specimen_tracks block 
+        group overrides. Requires the top-level specimen_tracks block
         to be present. For simple (non-type-keyed) associations, prefer
         the associations block instead.
     """
     name: str
     associations: DatasetAssociations | None = Field(None)
     images: ImageAssignmentConfig | None = Field(None)
+    additional_files: AdditionalFilesConfig | None = Field(None)
+    image_groups: list[ImageGroupConfig] = Field(default_factory=list)
     specimen_tracks: SpecimenTrackAssignmentConfig | None = Field(None)
 
 
@@ -395,9 +506,10 @@ class ModificationConfig(ClosedBaseModel):
         specimen_groups or by_type image classification.
 
     datasets
-        Per-dataset modification instructions. Names must be unique. Use the
-        sentinel '__default__' to create a catch-all dataset for unassigned
-        files.
+        Per-dataset modification instructions. Names must be unique. A default
+        dataset (titled 'Default dataset') is created automatically at the end
+        of enrichment for any files that remain unassigned — no explicit entry
+        is needed or supported.
 
     pruning
         Placeholder for future pruning configuration.
@@ -428,19 +540,33 @@ class ModificationConfig(ClosedBaseModel):
         track identification — i.e. has specimen_groups or uses by_type image
         classification. A dataset block that only carries IAP/protocol titles
         in specimen_tracks without those features does not require it.
+
+        Additionally, any AdditionalFileImageAssignment with a typed image_type
+        (i.e. an ImageType, not 'image') participates in track identification
+        and therefore also requires the top-level specimen_tracks block.
         """
         def _needs_top_level_tracks(d: DatasetModificationConfig) -> bool:
-            if d.specimen_tracks is None:
-                return False
-            has_groups = bool(d.specimen_tracks.specimen_groups)
-            has_by_type = d.images is not None and bool(d.images.by_type)
-            return has_groups or has_by_type
+            if d.specimen_tracks is not None:
+                has_groups = bool(d.specimen_tracks.specimen_groups)
+                has_by_type = d.images is not None and bool(d.images.by_type)
+                if has_groups or has_by_type:
+                    return True
+
+            if d.additional_files is not None:
+                typed_images = [
+                    img for img in d.additional_files.images
+                    if img.image_type is not None and img.image_type != IMAGE_ASSIGNMENT_TYPE_KEY
+                ]
+                if typed_images:
+                    return True
+
+            return False
 
         if any(_needs_top_level_tracks(d) for d in self.datasets) and self.specimen_tracks is None:
             raise ValueError(
                 "One or more datasets use specimen track identification "
-                "(specimen_groups or by_type image classification), but the top-level "
-                "'specimen_tracks' (ID extraction strategy) is absent. "
+                "(specimen_groups, by_type image classification, or typed additional_files images), "
+                "but the top-level 'specimen_tracks' (ID extraction strategy) is absent. "
                 "Provide a top-level 'specimen_tracks' block."
             )
         return self
