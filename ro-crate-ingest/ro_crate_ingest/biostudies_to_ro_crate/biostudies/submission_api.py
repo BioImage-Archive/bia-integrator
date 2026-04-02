@@ -1,9 +1,10 @@
+from __future__ import annotations
 import logging
 import pathlib
 from typing import Annotated
 
 import requests
-from pydantic import BaseModel, BeforeValidator, ConfigDict
+from pydantic import BaseModel, BeforeValidator, ConfigDict, model_validator, Field
 
 from ro_crate_ingest.settings import get_settings
 
@@ -20,13 +21,40 @@ FLIST_URI_TEMPLATE = (
 FILE_URI_TEMPLATE = "https://www.ebi.ac.uk/biostudies/files/{accession_id}/{relpath}"
 
 
-def flatten_lists_of_list(data) -> list:
+def flatten_lists_of_list(data: list, parent_list=None) -> list:
     if isinstance(data, list):
-        if isinstance(next(iter(data)), list):
-            return [element for sublist in data for element in sublist]
-        return data
+        if parent_list is None:
+            parent_list = []
+        for element in data:
+            if isinstance(element, list):
+                flatten_lists_of_list(element, parent_list)
+            else:
+                parent_list.append(element)
+        return parent_list
     else:
-        raise TypeError(f"Expecting a list of objects or lists")
+        raise TypeError(f"Expecting a list of objects or lists. Got {type(data)}.")
+
+
+def attributes_to_dict(
+    attributes: list[Attribute],
+) -> dict[str, str | list[str]]:
+    attr_dict = {}
+    for attr in attributes:
+        if not attr.value:
+            logger.debug(
+                f"Skipping attribute {attr.name} from attribute dict, as it has no value!"
+            )
+        else:
+            normalised_key = attr.name.lower()
+            if normalised_key in attr_dict:
+                if not isinstance(attr_dict[normalised_key], list):
+                    attr_dict[normalised_key] = [
+                        attr_dict[normalised_key],
+                    ]
+                attr_dict[normalised_key].append(attr.value)
+            else:
+                attr_dict[normalised_key] = attr.value
+    return attr_dict
 
 
 class AttributeDetail(BaseModel):
@@ -38,8 +66,8 @@ class Attribute(BaseModel):
     name: str
     value: str | None = None
     reference: bool = False
-    nmqual: list[AttributeDetail] = []
-    valqual: list[AttributeDetail] = []
+    nmqual: list[AttributeDetail] = Field(default_factory=list)
+    valqual: list[AttributeDetail] = Field(default_factory=list)
 
 
 # File list
@@ -69,16 +97,51 @@ class Section(BaseModel):
     type: str = ""
     accno: str | None = None
     attributes: list[Attribute] = []
+    attributes_dict: dict[str, str | list[str]] = {}
     subsections: Annotated[list["Section"], BeforeValidator(flatten_lists_of_list)] = []
     links: Annotated[list[Link | Empty], BeforeValidator(flatten_lists_of_list)] = []
     files: Annotated[list[File], BeforeValidator(flatten_lists_of_list)] = []
+
+    @model_validator(mode="after")
+    def populate_attributes_dict(self) -> "Section":
+        self.attributes_dict = attributes_to_dict(self.attributes)
+        return self
+
+    def is_empty(self) -> bool:
+        """Return True if section is empty. Recursively check any subsections"""
+
+        # Check Section attributes.
+        for attr_value in self.attributes_dict.values():
+            if attr_value:
+                return False
+
+        # Check links
+        if self.links:
+            return False
+
+        # Check attached files
+        if self.files:
+            return False
+
+        # Recursively check through subsections. False if any none empty subsection
+        for subsection in self.subsections:
+            if not subsection.is_empty():
+                return False
+
+        return True
 
 
 class Submission(BaseModel):
     accno: str | None = None
     section: Section
     attributes: list[Attribute]
+    attributes_dict: dict[str, str | list[str]] = {}
     files: list | None = None
+
+    @model_validator(mode="after")
+    def populate_attributes_dict(self) -> "Submission":
+        self.attributes_dict = attributes_to_dict(self.attributes)
+        return self
 
 
 def load_submission(accession_id: str) -> Submission:

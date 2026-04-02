@@ -1,14 +1,20 @@
 import logging
 from pathlib import Path
 from typing import Optional
+from collections import Counter
 
 from bia_shared_datamodels.package_specific_uuid_creation.shared import (
     create_study_uuid,
 )
 from bia_shared_datamodels.ro_crate_models import ROCrateCreativeWork
 
+from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_parsing_utils import (
+    find_section_types_recursive,
+    find_sections_recursive,
+)
 from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_api import (
     load_submission,
+    Submission,
 )
 from ro_crate_ingest.biostudies_to_ro_crate.entity_conversion import (
     affiliation,
@@ -39,6 +45,7 @@ logger = logging.getLogger("__main__." + __name__)
 def convert_biostudies_to_ro_crate(
     accession_id: str,
     crate_path: Optional[Path],
+    fail_on_unprocessed_sections: bool = False,
 ):
     try:
         # Get information from biostudies
@@ -47,6 +54,18 @@ def convert_biostudies_to_ro_crate(
         logger.error("Failed to retrieve information from BioStudies")
         logging.exception("message")
         return
+
+    # Raise error if there are sections that will not be processed
+    section_types_not_processed = [
+        f"{section}: {n}" for section, n in get_unprocessed_section_types(submission)
+    ]
+    if section_types_not_processed:
+        unprocessed_str = "\n".join(section_types_not_processed)
+        message = f"The following section types cannot be processed:\nsection type: n_occurences\n{unprocessed_str}"
+        if fail_on_unprocessed_sections:
+            raise ValueError(message)
+        else:
+            logger.warning(message)
 
     ro_crate_dir = create_ro_crate_folder(accession_id, crate_path)
 
@@ -68,10 +87,12 @@ def convert_biostudies_to_ro_crate(
     )
     graph += roc_gp.values()
 
-    roc_taxon, roc_bio_sample, bs_association_map = (
-        bio_sample.get_taxons_bio_samples_and_association_map(
-            submission, roc_gp, accession_id
-        )
+    (
+        roc_taxon,
+        roc_bio_sample,
+        bs_association_map,
+    ) = bio_sample.get_taxons_bio_samples_and_association_map(
+        submission, roc_gp, accession_id
     )
     graph += roc_bio_sample
     graph += roc_taxon
@@ -103,10 +124,12 @@ def convert_biostudies_to_ro_crate(
         protocols=roc_generic_protocols,
     )
 
-    column_list, schema_list, combined_file_list = (
-        file_list.create_combined_file_list_for_study(
-            ro_crate_dir, submission, roc_datasets
-        )
+    (
+        column_list,
+        schema_list,
+        combined_file_list,
+    ) = file_list.create_combined_file_list_for_study(
+        ro_crate_dir, submission, roc_datasets
     )
     if roc_datasets:
         roc_file_list_schema_objects = (
@@ -121,9 +144,7 @@ def convert_biostudies_to_ro_crate(
     # TODO - Assume in this case only one filelist is present - no need to combine. However, add dataset_id column?
     if submission.section.files and len(submission.section.files) > 0:
         # create a default dataset for the files that are part of the pagetab, rather than referenced via filelist
-        default_dataset = pagetab_file.create_root_dataset_for_submission(
-            submission
-        )
+        default_dataset = pagetab_file.create_root_dataset_for_submission(submission)
         graph.append(default_dataset)
 
         file_list_and_dependencies = pagetab_file.create_file_list_from_pagetab_files(
@@ -148,7 +169,7 @@ def convert_biostudies_to_ro_crate(
         roc_contributors,
         roc_datasets.values(),
         combined_file_list,
-        roc_external_references
+        roc_external_references,
     )
     graph.append(roc_study)
 
@@ -156,3 +177,53 @@ def convert_biostudies_to_ro_crate(
     context = get_default_context()
 
     write_ro_crate_metadata(ro_crate_dir, context, graph)
+
+
+def get_unprocessed_section_types(submission: Submission) -> list[tuple]:
+    """Return count of types of unprocessed sections"""
+
+    convertible_section_types = [
+        c.lower()
+        for c in [
+            "organisation",
+            "organization",
+            "Annotations",
+            "Biosample",
+            "author",
+            "Study Component",
+            "Associations",
+            "Imaging Method",
+            "Image acquisition",
+            "Image analysis",
+            "Image correlation",
+            "Specimen",
+            "Protocol",
+            "Study",
+            "Organism",
+        ]
+    ]
+    section_types_in_submission = set(find_section_types_recursive(submission.section))
+    unprocessed_section_types = [
+        section_type
+        for section_type in section_types_in_submission
+        if section_type not in convertible_section_types
+    ]
+
+    non_empty_unprocessed_sections = Counter()
+    for section_type in unprocessed_section_types:
+        sections = find_sections_recursive(
+            submission.section,
+            [
+                section_type,
+            ],
+            [],
+        )
+        for section in sections:
+            if not section.is_empty():
+                non_empty_unprocessed_sections.update(
+                    [
+                        section.type,
+                    ]
+                )
+
+    return non_empty_unprocessed_sections.most_common()

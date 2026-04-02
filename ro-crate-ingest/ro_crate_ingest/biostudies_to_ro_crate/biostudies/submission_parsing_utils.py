@@ -1,34 +1,13 @@
 import logging
 
 from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_api import (
-    Attribute,
     Section,
     Submission,
+    # TODO Need to refactor to remove this import and use section.attributes_dict instead
+    attributes_to_dict,
 )
 
 logger = logging.getLogger("__main__." + __name__)
-
-
-def attributes_to_dict(
-    attributes: list[Attribute],
-) -> dict[str, str | list[str]]:
-    attr_dict = {}
-    for attr in attributes:
-        if not attr.value:
-            logger.warning(
-                f"Skipping attribute {attr.name} from attribute dict, as it has no value!"
-            )
-        else:
-            normalised_key = attr.name.lower()
-            if normalised_key in attr_dict:
-                if not isinstance(attr_dict[normalised_key], list):
-                    attr_dict[normalised_key] = [
-                        attr_dict[normalised_key],
-                    ]
-                attr_dict[normalised_key].append(attr.value)
-            else:
-                attr_dict[normalised_key] = attr.value
-    return attr_dict
 
 
 def find_sections_recursive(
@@ -37,7 +16,7 @@ def find_sections_recursive(
     """
     Find all sections of search_types within tree, starting at given section
     """
-    if results == None:
+    if results is None:
         results = []
 
     search_types_lower = [s.lower() for s in search_types]
@@ -59,11 +38,36 @@ def find_sections_recursive(
     return results
 
 
+def find_section_types_recursive(
+    section: Section, results: list[Section] | None = None
+) -> list[str]:
+    """
+    Find all types of sections within tree, starting at given section
+    """
+    if results is None:
+        results = []
+
+    results.append(section.type.lower())
+
+    # Each thing in section.subsections is either Section or List[Section] which we want to flatten
+    flattened = []
+    for item in section.subsections:
+        if isinstance(item, list):
+            for sub_item in item:
+                flattened.append(sub_item)
+        else:
+            flattened.append(item)
+
+    for section in flattened:
+        find_section_types_recursive(section, results)
+
+    return results
+
+
 def filter_section_by_attribute_key(
     sections: list[Section],
     required_attr_keys: list[str],
 ) -> list[Section]:
-
     filtered_sections = []
     required_keys_as_set = set([k.lower() for k in required_attr_keys])
     for section in sections:
@@ -116,7 +120,7 @@ def find_sections_with_filelists_recursive(
     Return a list of sections with filists.
     """
 
-    if results == None:
+    if results is None:
         results = []
 
     attr_dict = attributes_to_dict(section.attributes)
