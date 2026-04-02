@@ -23,6 +23,13 @@ target-version = "py313"
 [project.scripts]
 bia-ro-crate = "cli:bia_ro_crate"
 
+[tool.poetry]
+packages = [
+    {include = "bia_ro_crate"},
+    {include = "models"},
+    {include = "validator"},
+]
+
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
