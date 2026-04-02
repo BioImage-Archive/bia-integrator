@@ -1,37 +1,36 @@
 import logging
-from pathlib import Path
-from typing import Optional
 from collections import Counter
+from pathlib import Path
 
-from bia_shared_datamodels.package_specific_uuid_creation.shared import (
-    create_study_uuid,
-)
 from bia_shared_datamodels.ro_crate_models import ROCrateCreativeWork
 
+from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_api import (
+    Submission,
+    load_submission,
+)
 from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_parsing_utils import (
     find_section_types_recursive,
     find_sections_recursive,
 )
-from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_api import (
-    load_submission,
-    Submission,
-)
 from ro_crate_ingest.biostudies_to_ro_crate.entity_conversion import (
     affiliation,
-    annotation_method,
-    bio_sample,
     contributor,
     dataset,
     external_reference,
     file_list,
-    image_acquisition_protocol,
-    image_analysis_method,
-    image_correlation_method,
     pagetab_file,
-    protocol,
-    protocol_from_growth_protocol,
-    specimen_imaging_preparation_protocol,
     study,
+)
+from ro_crate_ingest.biostudies_to_ro_crate.entity_conversion.rembi_mifa_mapping import (
+    AnnotationMethodMapper,
+    BioSampleTaxonMapper,
+    GrowthProtocolMapper,
+    ImageAcquisitionProtocolMapper,
+    ImageAnalysisMethodMapper,
+    ImageCorrelationMethodMapper,
+    ProtocolMapper,
+    SpecimenImagingPreprationProtocolMapper,
+    utils,
 )
 from ro_crate_ingest.ro_crate_defaults import (
     create_ro_crate_folder,
@@ -44,7 +43,7 @@ logger = logging.getLogger("__main__." + __name__)
 
 def convert_biostudies_to_ro_crate(
     accession_id: str,
-    crate_path: Optional[Path],
+    crate_path: Path | None,
     fail_on_unprocessed_sections: bool = False,
 ):
     try:
@@ -71,58 +70,25 @@ def convert_biostudies_to_ro_crate(
 
     graph = []
 
-    # Used for the creation of other uuids, not the actual study.
-    if not submission.accno:
-        raise ValueError("Missing accession id for study: cannot proccess.")
-    study_uuid = str(create_study_uuid(submission.accno)[0])
+    association_map = utils.initialise_association_map()
 
-    roc_iam = image_analysis_method.get_image_analysis_method_by_title(submission)
-    graph += roc_iam.values()
-
-    roc_icm = image_correlation_method.get_image_correlation_method_by_title(submission)
-    graph += roc_icm.values()
-
-    roc_gp = protocol_from_growth_protocol.get_growth_protocol_by_title(
-        submission, study_uuid
+    graph += ImageAnalysisMethodMapper().get_mapped_objects(submission, association_map)
+    graph += ImageCorrelationMethodMapper().get_mapped_objects(
+        submission, association_map
     )
-    graph += roc_gp.values()
-
-    (
-        roc_taxon,
-        roc_bio_sample,
-        bs_association_map,
-    ) = bio_sample.get_taxons_bio_samples_and_association_map(
-        submission, roc_gp, accession_id
+    graph += GrowthProtocolMapper().get_mapped_objects(submission, association_map)
+    graph += BioSampleTaxonMapper().get_mapped_objects(submission, association_map)
+    graph += SpecimenImagingPreprationProtocolMapper().get_mapped_objects(
+        submission, association_map
     )
-    graph += roc_bio_sample
-    graph += roc_taxon
+    graph += AnnotationMethodMapper().get_mapped_objects(submission, association_map)
 
-    roc_sipp = specimen_imaging_preparation_protocol.get_specimen_imaging_prepratation_protocol_by_title(
-        submission
+    graph += ImageAcquisitionProtocolMapper().get_mapped_objects(
+        submission, association_map
     )
-    graph += roc_sipp.values()
+    graph += ProtocolMapper().get_mapped_objects(submission, association_map)
 
-    roc_annotation_method = annotation_method.get_annotation_method_by_title(submission)
-    graph += roc_annotation_method.values()
-
-    roc_iap = image_acquisition_protocol.get_image_acquisition_protocol_by_title(
-        submission
-    )
-    graph += roc_iap.values()
-
-    roc_generic_protocols = protocol.get_protocol_by_title(submission)
-    graph += roc_generic_protocols.values()
-
-    roc_datasets = dataset.get_datasets_by_accno(
-        submission,
-        image_aquisition_protocols=roc_iap,
-        specimen_imaging_preparation_protocols=roc_sipp,
-        annotation_methods=roc_annotation_method,
-        image_analysis_methods=roc_iam,
-        image_correlation_method=roc_icm,
-        bio_samples_association=bs_association_map,
-        protocols=roc_generic_protocols,
-    )
+    roc_datasets = dataset.get_datasets_by_accno(submission, association_map)
 
     (
         column_list,
