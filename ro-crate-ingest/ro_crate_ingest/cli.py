@@ -12,10 +12,10 @@ from ro_crate_ingest.empiar_to_ro_crate.empiar_proposal_conversion import (
     convert_empiar_proposal_to_ro_crate,
 )
 from ro_crate_ingest.empiar_to_ro_crate.empiar_proposal_generation import (
-    generate_empiar_proposal
+    generate_empiar_proposal,
 )
 from ro_crate_ingest.minimal_ro_crate.minimal_ro_crate_creation import (
-    make_minimal_ro_crate
+    make_minimal_ro_crate,
 )
 from ro_crate_ingest.validator.validation import bia_roc_validation
 
@@ -30,8 +30,7 @@ logger = logging.getLogger()
 @ro_crate_ingest.callback()
 def main(
     verbose: Annotated[
-        bool,
-        typer.Option("--verbose", "-v", help="Enable debug logging.")
+        bool, typer.Option("--verbose", "-v", help="Enable debug logging.")
     ] = False,
 ):
     if verbose:
@@ -92,25 +91,33 @@ def biostudies_to_ro_crate(
             help="Path to output the ro-crate document",
         ),
     ] = None,
+    fail_on_unprocessed_sections: Annotated[
+        bool,
+        typer.Option(
+            "--fail-on-unprocessed-sections",
+            help="Raise an error if there are non-empty sections that cannot be processed",
+        ),
+    ] = False,
 ):
-    convert_biostudies_to_ro_crate(accession_id, crate_path)
+    convert_biostudies_to_ro_crate(
+        accession_id, crate_path, fail_on_unprocessed_sections
+    )
 
 
 @ro_crate_ingest.command("generate-empiar-proposal")
 def empiar_proposal(
     proposal_config_path: Annotated[
-        Path, 
-        typer.Argument(help="Path to the yaml proposal config file.")
-    ], 
+        Path, typer.Argument(help="Path to the yaml proposal config file.")
+    ],
     proposal_output_dir_path: Annotated[
-        Optional[Path], 
+        Optional[Path],
         typer.Option(
-            "--proposal-dir-path", 
-            "-p", 
-            case_sensitive=False, 
-            help="Path to output proposal directory."
-        )
-    ] = None
+            "--proposal-dir-path",
+            "-p",
+            case_sensitive=False,
+            help="Path to output proposal directory.",
+        ),
+    ] = None,
 ):
     generate_empiar_proposal(proposal_config_path, proposal_output_dir_path)
 

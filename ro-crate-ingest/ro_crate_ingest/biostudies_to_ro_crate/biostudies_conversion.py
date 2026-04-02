@@ -11,7 +11,6 @@ from bia_shared_datamodels.ro_crate_models import ROCrateCreativeWork
 from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_parsing_utils import (
     find_section_types_recursive,
     find_sections_recursive,
-    is_section_empty,
 )
 from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_api import (
     load_submission,
@@ -46,6 +45,7 @@ logger = logging.getLogger("__main__." + __name__)
 def convert_biostudies_to_ro_crate(
     accession_id: str,
     crate_path: Optional[Path],
+    fail_on_unprocessed_sections: bool = False,
 ):
     try:
         # Get information from biostudies
@@ -60,9 +60,12 @@ def convert_biostudies_to_ro_crate(
         f"{section}: {n}" for section, n in get_unprocessed_section_types(submission)
     ]
     if section_types_not_processed:
-        raise ValueError(
-            f"The following section types cannot be processed:\nsection type: n_occurences\n{"\n".join(section_types_not_processed)}"
-        )
+        unprocessed_str = "\n".join(section_types_not_processed)
+        message = f"The following section types cannot be processed:\nsection type: n_occurences\n{unprocessed_str}"
+        if fail_on_unprocessed_sections:
+            raise ValueError(message)
+        else:
+            logger.warning(message)
 
     ro_crate_dir = create_ro_crate_folder(accession_id, crate_path)
 
@@ -84,10 +87,12 @@ def convert_biostudies_to_ro_crate(
     )
     graph += roc_gp.values()
 
-    roc_taxon, roc_bio_sample, bs_association_map = (
-        bio_sample.get_taxons_bio_samples_and_association_map(
-            submission, roc_gp, accession_id
-        )
+    (
+        roc_taxon,
+        roc_bio_sample,
+        bs_association_map,
+    ) = bio_sample.get_taxons_bio_samples_and_association_map(
+        submission, roc_gp, accession_id
     )
     graph += roc_bio_sample
     graph += roc_taxon
@@ -119,10 +124,12 @@ def convert_biostudies_to_ro_crate(
         protocols=roc_generic_protocols,
     )
 
-    column_list, schema_list, combined_file_list = (
-        file_list.create_combined_file_list_for_study(
-            ro_crate_dir, submission, roc_datasets
-        )
+    (
+        column_list,
+        schema_list,
+        combined_file_list,
+    ) = file_list.create_combined_file_list_for_study(
+        ro_crate_dir, submission, roc_datasets
     )
     if roc_datasets:
         roc_file_list_schema_objects = (
@@ -199,7 +206,7 @@ def get_unprocessed_section_types(submission: Submission) -> list[tuple]:
     unprocessed_section_types = [
         section_type
         for section_type in section_types_in_submission
-        if section_type.lower() not in convertible_section_types
+        if section_type not in convertible_section_types
     ]
 
     non_empty_unprocessed_sections = Counter()
@@ -212,7 +219,7 @@ def get_unprocessed_section_types(submission: Submission) -> list[tuple]:
             [],
         )
         for section in sections:
-            if not is_section_empty(section):
+            if not section.is_empty():
                 non_empty_unprocessed_sections.update(
                     [
                         section.type,
