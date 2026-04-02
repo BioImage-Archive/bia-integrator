@@ -68,7 +68,7 @@ def find_section_types_recursive(
     if results == None:
         results = []
 
-    results.append(section.type)
+    results.append(section.type.lower())
 
     # Each thing in section.subsections is either Section or List[Section] which we want to flatten
     flattened = []

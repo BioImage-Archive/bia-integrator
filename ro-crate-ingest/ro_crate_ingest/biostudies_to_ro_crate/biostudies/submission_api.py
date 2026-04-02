@@ -20,7 +20,7 @@ FLIST_URI_TEMPLATE = (
 FILE_URI_TEMPLATE = "https://www.ebi.ac.uk/biostudies/files/{accession_id}/{relpath}"
 
 
-def flatten_lists_of_list(data, parent_list=None) -> list:
+def flatten_lists_of_list(data: list, parent_list=None) -> list:
     if isinstance(data, list):
         if parent_list is None:
             parent_list = []
@@ -30,6 +30,8 @@ def flatten_lists_of_list(data, parent_list=None) -> list:
             else:
                 parent_list.append(element)
         return parent_list
+    else:
+        raise TypeError(f"Expecting a list of objects or lists. Got {type(data)}.")
 
 
 class AttributeDetail(BaseModel):
