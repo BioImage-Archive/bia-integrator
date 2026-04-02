@@ -135,7 +135,13 @@ class Submission(BaseModel):
     accno: str | None = None
     section: Section
     attributes: list[Attribute]
+    attributes_dict: dict[str, str | list[str]] = {}
     files: list | None = None
+
+    @model_validator(mode="after")
+    def populate_attributes_dict(self) -> "Submission":
+        self.attributes_dict = attributes_to_dict(self.attributes)
+        return self
 
 
 def load_submission(accession_id: str) -> Submission:
