@@ -57,7 +57,7 @@ class SimpleMapper(Mapper, ABC):
                 association_map[type(roc_object)][title] = roc_object.id
             else:
                 # Add to association using accno as fallback
-                association_map[type(roc_object)] = {section.accno: roc_object.id}
+                association_map[type(roc_object)][section.accno] = roc_object.id
 
             self.mapped_object.append(roc_object)
 
