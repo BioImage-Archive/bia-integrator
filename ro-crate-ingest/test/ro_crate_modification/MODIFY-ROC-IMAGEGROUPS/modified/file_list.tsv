@@ -1,0 +1,6 @@
+file_path	size_in_bytes	dataset	type	label	source_image_label	associated_specimen	associated_annotation_method	associated_protocol
+data/README.txt	256	#Default%20dataset						
+data/images/cell_001.tif	1024	#Fluorescence%20microscopy%20images	http://bia:Image					#Fluorescence%20imaging%20protocol
+data/images/cell_002.tif	1024	#Fluorescence%20microscopy%20images	http://bia:Image					#Fluorescence%20imaging%20protocol
+data/overview/overview_001.png	512	#Fluorescence%20microscopy%20images	http://bia:Image					#Phase%20contrast%20imaging%20protocol
+data/overview/overview_002.png	512	#Fluorescence%20microscopy%20images	http://bia:Image					#Phase%20contrast%20imaging%20protocol

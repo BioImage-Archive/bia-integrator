@@ -17,6 +17,9 @@ from ro_crate_ingest.empiar_to_ro_crate.empiar_proposal_generation import (
 from ro_crate_ingest.minimal_ro_crate.minimal_ro_crate_creation import (
     make_minimal_ro_crate,
 )
+from ro_crate_ingest.ro_crate_modification.modifier import (
+    apply_modifications
+)
 from ro_crate_ingest.validator.validation import bia_roc_validation
 
 ro_crate_ingest = typer.Typer()
@@ -160,6 +163,26 @@ def minimal_ro_crate(
     ] = None,
 ):
     make_minimal_ro_crate(accession_id, crate_path)
+
+
+@ro_crate_ingest.command("modify-roc")
+def modify_ro_crate(
+    ro_crate_path: Annotated[
+        Path, 
+        typer.Argument(
+            case_sensitive=False, 
+            help="Path to the ro-crate root (or ro-crate-metadata.json) to modify."
+        )
+    ],
+    modification_config_path: Annotated[
+        Path,
+        typer.Argument(
+            case_sensitive=False,
+            help="Path to the yaml modification config file.",
+        )
+    ]
+):
+    apply_modifications(ro_crate_path, modification_config_path)
 
 
 @ro_crate_ingest.command("validate")

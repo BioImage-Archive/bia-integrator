@@ -1,3 +1,4 @@
+from ro_crate_ingest.bia_ro_crate.file_list import FileList
 from ro_crate_ingest.settings import get_settings
 from ro_crate_ingest.graph_utils import ro_crate_data_entity_id_to_path
 from ro_crate_ingest.api_client import get_local_bia_api_client, get_bia_api_client
@@ -10,7 +11,6 @@ import os
 from typing import Type
 from enum import Enum
 from pydantic.alias_generators import to_snake
-from bia_integrator_api.exceptions import NotFoundException
 import pandas as pd
 import logging
 
@@ -136,3 +136,28 @@ def write_filelist(
         axis=0, by=filelist_dataframe.columns[0], inplace=True
     )
     filelist_dataframe.to_csv(filelist_path, sep="\t", index=False)
+
+
+def write_modified_file_list(
+    output_ro_crate_path: Path,
+    file_list: FileList,
+) -> None:
+    """
+    Write a FileList object to disk as a TSV file.
+
+    Unlike write_filelist(), which takes a plain DataFrame with human-readable
+    column names, this function handles FileList objects whose internal DataFrame
+    uses column @id keys rather than display names, renaming them back before
+    writing.
+    """
+    filelist_path = ro_crate_data_entity_id_to_path(
+        output_ro_crate_path, file_list.ro_crate_id
+    )
+    filelist_path.parent.mkdir(parents=True, exist_ok=True)
+
+    id_to_name = file_list.get_column_names()
+    df = file_list.data.rename(columns=id_to_name)
+    df = df.map(lambda x: None if x == [] else x)
+
+    df.sort_values(by=df.columns[0], inplace=True)
+    df.to_csv(filelist_path, sep="\t", index=False)
