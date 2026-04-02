@@ -1,25 +1,16 @@
 import logging
-from pathlib import Path
 from collections import Counter
+from pathlib import Path
 
+from bia_shared_datamodels.ro_crate_models import ROCrateCreativeWork
+
+from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_api import (
+    Submission,
+    load_submission,
+)
 from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_parsing_utils import (
     find_section_types_recursive,
     find_sections_recursive,
-)
-from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_api import (
-    load_submission,
-    Submission,
-)
-from ro_crate_ingest.biostudies_to_ro_crate.entity_conversion.rembi_mifa_mapping import (
-    utils,
-    AnnotationMethodMapper,
-    ImageAcquisitionProtocolMapper,
-    BioSampleTaxonMapper,
-    ImageAnalysisMethodMapper,
-    ImageCorrelationMethodMapper,
-    ProtocolMapper,
-    GrowthProtocolMapper,
-    SpecimenImagingPreprationProtocolMapper,
 )
 from ro_crate_ingest.biostudies_to_ro_crate.entity_conversion import (
     affiliation,
@@ -29,6 +20,17 @@ from ro_crate_ingest.biostudies_to_ro_crate.entity_conversion import (
     file_list,
     pagetab_file,
     study,
+)
+from ro_crate_ingest.biostudies_to_ro_crate.entity_conversion.rembi_mifa_mapping import (
+    AnnotationMethodMapper,
+    BioSampleTaxonMapper,
+    GrowthProtocolMapper,
+    ImageAcquisitionProtocolMapper,
+    ImageAnalysisMethodMapper,
+    ImageCorrelationMethodMapper,
+    ProtocolMapper,
+    SpecimenImagingPreprationProtocolMapper,
+    utils,
 )
 from ro_crate_ingest.ro_crate_defaults import (
     create_ro_crate_folder,
