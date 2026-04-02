@@ -26,8 +26,6 @@ bia-ro-crate = "cli:bia_ro_crate"
 [tool.poetry]
 packages = [
     {include = "bia_ro_crate"},
-    {include = "models"},
-    {include = "validator"},
 ]
 
 [build-system]
