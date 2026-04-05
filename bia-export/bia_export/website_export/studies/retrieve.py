@@ -5,12 +5,13 @@ from bia_export.website_export.generic_object_retrieval import (
     read_api_json_file,
     get_source_directory,
     get_all_api_results,
+    get_one_api_result,
     retrieve_object,
 )
 from pathlib import Path
 from pydantic import ValidationError
 from pydantic.alias_generators import to_snake
-from .models import StudyCLIContext, CacheUse, Image
+from .models import StudyCLIContext, Image
 from bia_shared_datamodels import bia_data_model, attribute_models
 from bia_integrator_api import models as api_models
 import json
@@ -34,7 +35,7 @@ def retrieve_study(context: StudyCLIContext) -> api_models.Study:
 
         api_study = read_api_json_file(study_path, api_models.Study)
     else:
-        api_study = api_client.get_study(str(context.study_uuid))
+        api_study = get_one_api_result(context.study_uuid, api_client.get_study)
 
     return api_study
 
@@ -76,7 +77,9 @@ def retrieve_aggregation_fields(
         dataset_stats = None
         while not dataset_stats and retry_count < max_retry_count:
             try:
-                dataset_stats = api_client.get_dataset_stats(dataset.uuid)
+                dataset_stats = get_one_api_result(
+                    dataset.uuid, api_client.get_dataset_stats
+                )
             except:
                 retry_count += 1
                 if retry_count == max_retry_count:
@@ -167,29 +170,16 @@ def retrieve_dataset_images(
             if image.submission_dataset_uuid == dataset_uuid
         ]
     else:
-        api_images = get_all_api_results(
-            dataset_uuid, api_client.get_image_linking_dataset, page_size_setting=500
+        api_images = api_client.get_image_linking_dataset(
+            uuid=dataset_uuid, page_size=5
         )
 
     images_with_file_size = []
     if len(api_images) > 0:
         for image in api_images:
-            if len(image.original_file_reference_uuid) == 0:
-                total_size_in_bytes = None
-                file_path = None
-            else:
-                file_reference = api_client.get_file_reference(
-                    str(image.original_file_reference_uuid[0])
-                )
-                total_size_in_bytes = (
-                    file_reference.size_in_bytes
-                    if file_reference and file_reference.size_in_bytes != 0
-                    else None
-                )
-                file_path = file_reference.file_path if file_reference else None
             image_dict = image.model_dump() | {
-                "total_size_in_bytes": total_size_in_bytes,
-                "file_path": file_path
+                "total_size_in_bytes": None,
+                "file_path": None,
             }
             images_with_file_size.append(Image(**image_dict))
 

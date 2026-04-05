@@ -5,24 +5,26 @@ set -o pipefail
 SCRIPT_DIR="$(dirname "$0")"
 #API_BASE_URL=${API_BASE_URL:-"http://localhost/api"}
 API_BASE_URL=${API_BASE_URL:-"https://wwwdev.ebi.ac.uk/bioimage-archive/api"}
-EXPORT_JSON_OUT_FILE=${EXPORT_JSON_OUT_FILE:-"/tmp/api_elastic_refresh.json"}
+EXPORT_JSON_OUT_DIR=${EXPORT_JSON_OUT_DIR:-"/tmp/"}
 ELASTIC_URL=${ELASTIC_URL:-"http://localhost:9200"}
 ELASTIC_USERNAME=${ELASTIC_USERNAME:-"elastic"}
 ELASTIC_PASSWORD=${ELASTIC_PASSWORD:-"test"}
 ELASTIC_INDEX=${ELASTIC_INDEX:-"test_index"}
 ELASTIC_INDEX_IMAGES=${ELASTIC_INDEX_IMAGES:-"${ELASTIC_INDEX}_images"}
+EXPORT_WORKERS=${EXPORT_WORKERS:-4}
 
-# Export studies
-poetry --directory ${SCRIPT_DIR}/../../bia-export run bia-export website study --out_file=$EXPORT_JSON_OUT_FILE
+# Export studies and images
+poetry --directory ${SCRIPT_DIR}/../../bia-export run bia-export website all --out_dir=$EXPORT_JSON_OUT_DIR --workers $EXPORT_WORKERS --bulk-gzip
 
-jq -c 'to_entries | map(.value)[:1000000][] | ({"index": {"_index": "'"${ELASTIC_INDEX}"'"}}, .)' $EXPORT_JSON_OUT_FILE > ${EXPORT_JSON_OUT_FILE}.bulk
-
+# Delete study Index
 curl -k -u "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -X DELETE "${ELASTIC_URL}/${ELASTIC_INDEX}"
 
 # https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-types.html
 # Limit of total fields [1000] in index [test_index] has been exceeded
 # also https://www.elastic.co/guide/en/elasticsearch/reference/current/nested.html for indexing nested objects
 #   either explicitly indexed or flattened?
+
+# Create study index
 curl -k -X PUT "${ELASTIC_URL}/${ELASTIC_INDEX}" \
 	-u "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" \
 	-H "Content-Type: application/json" \
@@ -160,21 +162,23 @@ curl -k -X PUT "${ELASTIC_URL}/${ELASTIC_INDEX}" \
 		}
 	}'
 
-curl -k -u "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" \
-	-H  "Content-Type: application/x-ndjson" \
-	-XPOST "${ELASTIC_URL}/_bulk?pretty&error_trace=true" \
-	--data-binary @${EXPORT_JSON_OUT_FILE}.bulk | jq '.items[] | select(.index.status != 201)'
+
+# Ingest Study data
+for f in ${EXPORT_JSON_OUT_DIR}api-study-metadata.bulk.part-*.ndjson.gz; do
+  	echo "Uploading $f"
+  	gzip -dc "$f" | \
+  	curl -k -u "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" \
+    	-H "Content-Type: application/x-ndjson" \
+    	-XPOST "${ELASTIC_URL}/_bulk?pretty&error_trace=true" \
+    	--data-binary @- | jq '.items[] | select(.index.status != 201)'
+	rm -rf $f
+
+done
 curl -k -u "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -X POST "${ELASTIC_URL}/${ELASTIC_INDEX}/_refresh"
 
-# Export images
-rm -rf $EXPORT_JSON_OUT_FILE
-
-poetry --directory ${SCRIPT_DIR}/../../bia-export run bia-export website image --out_file=$EXPORT_JSON_OUT_FILE
-
-jq -c 'to_entries | map(.value)[:1000000][] | ({"index": {"_index": "'"${ELASTIC_INDEX_IMAGES}"'"}}, .)' $EXPORT_JSON_OUT_FILE > ${EXPORT_JSON_OUT_FILE}.bulk
-
+# Delete Image index
 curl -k -u "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -X DELETE "${ELASTIC_URL}/${ELASTIC_INDEX_IMAGES}"
-
+# Create Image index
 curl -k -X PUT "${ELASTIC_URL}/${ELASTIC_INDEX_IMAGES}" \
 	-u "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" \
 	-H "Content-Type: application/json" \
@@ -297,21 +301,20 @@ curl -k -X PUT "${ELASTIC_URL}/${ELASTIC_INDEX_IMAGES}" \
         }
     }
 }'
-
-split -l 5000 ${EXPORT_JSON_OUT_FILE}.bulk ${EXPORT_JSON_OUT_FILE}_bulk_part_
-
-for f in ${EXPORT_JSON_OUT_FILE}_bulk_part_*; do
-  echo "Uploading $f"
-  curl -k -u "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" \
-       -H "Content-Type: application/x-ndjson" \
-       -XPOST "${ELASTIC_URL}/_bulk?pretty&error_trace=true" \
-       --data-binary "@$f" | jq '.items[] | select(.index.status != 201)'
-  rm -rf $f
+# Ingest Image data
+for f in ${EXPORT_JSON_OUT_DIR}api-image-metadata.bulk.part-*.ndjson.gz; do
+  	echo "Uploading $f"
+  	gzip -dc "$f" | \
+  	curl -k -u "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" \
+		-H "Content-Type: application/x-ndjson" \
+		-XPOST "${ELASTIC_URL}/_bulk?pretty&error_trace=true" \
+		--data-binary @- | jq '.items[] | select(.index.status != 201)'
+	rm -rf $f
 done
 
 curl -k -u "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -X POST "${ELASTIC_URL}/${ELASTIC_INDEX_IMAGES}/_refresh"
 
-echo -e "\n\n==============================================\nIndex Status: ${ELASTIC_INDEX}\n"
+echo -e "\n\n==============================================\nIndex Status:\n"
 
-curl -k -u "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -X GET "${ELASTIC_URL}/${ELASTIC_INDEX}/_count" -H "Content-Type: application/json"
+curl -k -u "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -X GET "${ELASTIC_URL}/_cat/indices?v&s=store.size:desc" -H "Content-Type: application/json"
 echo ""
