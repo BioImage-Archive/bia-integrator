@@ -93,7 +93,11 @@ def get_dataset_from_annotation_component(
         "name": attr_dict["title"],
         "description": attr_dict.get("annotation overview", None),
         "associatedAnnotationMethod": [
-            {"@id": association_map[ro_crate_models.AnnotationData][attr_dict["title"]]}
+            {
+                "@id": association_map[ro_crate_models.AnnotationMethod][
+                    attr_dict["title"]
+                ]
+            }
         ],
     }
     return ro_crate_models.Dataset(**model_dict)

@@ -1,0 +1,5 @@
+path	size	type	dataset	Genotype/Line	Channel 1	sourceImage
+folder1/file1.ome.zarr.zip	24628037	file	#Study%20Component-1	; ubiCAAX-GFP/+ ; neuPH-RFP/+	CAAX	
+folder1/file2.ome.zarr.zip	13161534	file	#Study%20Component-1	; ubiCAAX-GFP/+ ; neuPH-RFP/+	CAAX	
+folder1/annotation/file1.ome.zarr.zip	24628037	file	#Annotation-1	; ubiCAAX-GFP/+ ; neuPH-RFP/+	CAAX	folder1/file1.ome.zarr.zip
+folder1/annotation/file2.ome.zarr.zip	13161534	file	#Annotation-1	; ubiCAAX-GFP/+ ; neuPH-RFP/+	CAAX	folder1/file2.ome.zarr.zip
