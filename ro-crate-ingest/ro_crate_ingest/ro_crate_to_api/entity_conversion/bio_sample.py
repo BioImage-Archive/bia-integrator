@@ -49,7 +49,7 @@ def convert_bio_sample(
 
     bio_sample = {
         "uuid": str(uuid),
-        "title": ro_crate_bio_sample.id,
+        "title": ro_crate_bio_sample.title,
         "version": 0,
         "organism_classification": taxons,
         "biological_entity_description": ro_crate_bio_sample.biologicalEntityDescription,

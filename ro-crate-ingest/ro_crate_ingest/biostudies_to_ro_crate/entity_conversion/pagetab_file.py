@@ -10,6 +10,7 @@ from bia_shared_datamodels import ro_crate_models
 from ro_crate_ingest.biostudies_to_ro_crate.entity_conversion.file_list import (
     convert_filelist_to_dataframe,
     normalise_headers,
+    set_bia_image_type,
     create_ro_crate_filelist_and_schema_objects,
 )
 from urllib.parse import quote
@@ -49,6 +50,7 @@ def create_file_list_from_pagetab_files(
 
     dataframe_filelist = convert_filelist_to_dataframe(files)
     normalise_headers(dataframe_filelist)
+    set_bia_image_type(dataframe_filelist)
 
     # Add dataset ID column to file list dataframe
     column_headers = dataframe_filelist.columns.values.tolist()

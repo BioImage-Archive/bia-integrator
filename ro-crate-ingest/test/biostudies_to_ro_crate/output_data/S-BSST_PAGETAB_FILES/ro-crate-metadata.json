@@ -325,7 +325,7 @@
                 "csvw:Column"
             ],
             "columnName": "type",
-            "propertyUrl": null
+            "propertyUrl": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
         },
         {
             "@id": "_:col1",

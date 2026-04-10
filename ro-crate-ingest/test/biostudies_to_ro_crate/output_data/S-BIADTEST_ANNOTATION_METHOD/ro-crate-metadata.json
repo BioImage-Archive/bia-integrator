@@ -389,7 +389,7 @@
                 "csvw:Column"
             ],
             "columnName": "type",
-            "propertyUrl": null
+            "propertyUrl": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
         },
         {
             "@id": "_:col1",
@@ -406,6 +406,30 @@
             ],
             "columnName": "path",
             "propertyUrl": "http://bia/filePath"
+        },
+        {
+            "@id": "#Annotation-1",
+            "@type": [
+                "Dataset",
+                "bia:Dataset"
+            ],
+            "name": "Instance-level mitochondria annotations for volume EM",
+            "description": "This is a general description of the annotation dataset was annotated.",
+            "associatedBiologicalEntity": [],
+            "associatedSpecimenImagingPreparationProtocol": [],
+            "associatedSpecimen": null,
+            "associatedCreationProcess": null,
+            "associatedSourceImage": [],
+            "associatedImageAcquisitionProtocol": [],
+            "associatedAnnotationMethod": [
+                {
+                    "@id": "#Annotation-1"
+                }
+            ],
+            "associatedImageAnalysisMethod": [],
+            "associatedImageCorrelationMethod": [],
+            "associatedProtocol": [],
+            "hasPart": []
         },
         {
             "@id": "#Study%20Component-1",
@@ -434,30 +458,6 @@
                 }
             ],
             "associatedAnnotationMethod": [],
-            "associatedImageAnalysisMethod": [],
-            "associatedImageCorrelationMethod": [],
-            "associatedProtocol": [],
-            "hasPart": []
-        },
-        {
-            "@id": "#Annotation-1",
-            "@type": [
-                "Dataset",
-                "bia:Dataset"
-            ],
-            "name": "Instance-level mitochondria annotations for volume EM",
-            "description": "This is a general description of the annotation dataset was annotated.",
-            "associatedBiologicalEntity": [],
-            "associatedSpecimenImagingPreparationProtocol": [],
-            "associatedSpecimen": null,
-            "associatedCreationProcess": null,
-            "associatedSourceImage": [],
-            "associatedImageAcquisitionProtocol": [],
-            "associatedAnnotationMethod": [
-                {
-                    "@id": "#Annotation-1"
-                }
-            ],
             "associatedImageAnalysisMethod": [],
             "associatedImageCorrelationMethod": [],
             "associatedProtocol": [],
@@ -504,14 +504,6 @@
             "signalChannelInformation": []
         },
         {
-            "@id": "NCBI:txid7227",
-            "@type": [
-                "bia:Taxon"
-            ],
-            "commonName": "fruit fly",
-            "scientificName": "Drosophila melanogaster"
-        },
-        {
             "@id": "#Biosample-1",
             "@type": [
                 "bia:BioSample"
@@ -527,6 +519,14 @@
                 }
             ],
             "growthProtocol": null
+        },
+        {
+            "@id": "NCBI:txid7227",
+            "@type": [
+                "bia:Taxon"
+            ],
+            "commonName": "fruit fly",
+            "scientificName": "Drosophila melanogaster"
         }
     ]
 }

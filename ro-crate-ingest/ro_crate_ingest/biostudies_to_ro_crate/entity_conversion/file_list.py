@@ -54,6 +54,7 @@ def create_file_list(
         file_list = load_filelist(submission.accno, file_list_name)
         dataframe_filelist = convert_filelist_to_dataframe(file_list)
         normalise_headers(dataframe_filelist)
+        set_bia_image_type(dataframe_filelist)
 
         filelist_id = generate_relative_filelist_path(roc_dataset.id, file_list_name)
         write_filelist(output_ro_crate_path, filelist_id, dataframe_filelist)
@@ -96,6 +97,36 @@ def normalise_headers(filelist_dataframe: pd.DataFrame):
             "source image": "sourceImage",
         },
         inplace=True,
+    )
+
+
+def set_bia_image_type(filelist_dataframe: pd.DataFrame):
+    curated_extensions_path = (
+        Path(__file__).parents[3]
+        / "resources"
+        / "bioformats_curated_single_file_formats.txt"
+    )
+    with open(curated_extensions_path, "r") as f:
+        extensions = [line.strip().lower() for line in f if line.strip()]
+
+    # Ensure extensions start with . for matching
+    extensions = [ext if ext.startswith(".") else "." + ext for ext in extensions]
+
+    # Sort extensions by length descending to match longest possible extension first
+    extensions.sort(key=len, reverse=True)
+
+    def is_image(path):
+        if not isinstance(path, str):
+            path = str(path)
+        path_lower = path.lower()
+        return any(path_lower.endswith(ext) for ext in extensions)
+
+    # Set all rows in 'type' column to empty string
+    filelist_dataframe["type"] = ""
+
+    # Set all rows with extension in convertible image types to bia:Image
+    filelist_dataframe.loc[filelist_dataframe["path"].apply(is_image), "type"] = (
+        "http://bia:Image"
     )
 
 
@@ -153,6 +184,7 @@ def get_column(
         "size": "http://bia/sizeInBytes",
         "sourceImage": "http://bia/sourceImagePath",
         "dataset": "http://schema.org/isPartOf",
+        "type": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
     }
 
     column_data = {"columnName": column_name}

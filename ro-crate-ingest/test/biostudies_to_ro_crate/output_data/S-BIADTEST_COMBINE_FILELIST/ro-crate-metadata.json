@@ -400,7 +400,7 @@
                 "csvw:Column"
             ],
             "columnName": "type",
-            "propertyUrl": null
+            "propertyUrl": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
         },
         {
             "@id": "_:col1",
@@ -516,14 +516,6 @@
             "signalChannelInformation": []
         },
         {
-            "@id": "NCBI:txid7227",
-            "@type": [
-                "bia:Taxon"
-            ],
-            "commonName": "fruit fly",
-            "scientificName": "Drosophila melanogaster"
-        },
-        {
             "@id": "#Biosample-1%203af9100c-56dd-4419-9bde-f0c43157918f",
             "@type": [
                 "bia:BioSample"
@@ -558,6 +550,14 @@
                 }
             ],
             "growthProtocol": null
+        },
+        {
+            "@id": "NCBI:txid7227",
+            "@type": [
+                "bia:Taxon"
+            ],
+            "commonName": "fruit fly",
+            "scientificName": "Drosophila melanogaster"
         },
         {
             "@id": "#_Specimen-2",

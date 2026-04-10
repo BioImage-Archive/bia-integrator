@@ -1,7 +1,7 @@
 path	size	type	dataset	Genotype/Line	Channel 1
-folder1/file1.ome.zarr.zip	24628037	file	#Study%20Component-1	; ubiCAAX-GFP/+ ; neuPH-RFP/+	CAAX
-folder1/file2.ome.zarr.zip	13161534	file	#Study%20Component-1	; ubiCAAX-GFP/+ ; neuPH-RFP/+	CAAX
-folder2/file1.ome.zarr.zip	24628037	file	#Study%20Component-2	; ubiCAAX-GFP/+ ; neuPH-RFP/+	CAAX
-folder2/file2.ome.zarr.zip	13161534	file	#Study%20Component-2	; ubiCAAX-GFP/+ ; neuPH-RFP/+	CAAX
-folder3/file1.ome.zarr.zip	24628037	file	#Study%20Component-3	; ubiCAAX-GFP/+ ; neuPH-RFP/+	CAAX
-folder3/file2.ome.zarr.zip	13161534	file	#Study%20Component-3	; ubiCAAX-GFP/+ ; neuPH-RFP/+	CAAX
+folder1/file1.ome.zarr.zip	24628037	bia:Image	#Study%20Component-1	; ubiCAAX-GFP/+ ; neuPH-RFP/+	CAAX
+folder1/file2.ome.zarr.zip	13161534	bia:Image	#Study%20Component-1	; ubiCAAX-GFP/+ ; neuPH-RFP/+	CAAX
+folder2/file1.ome.zarr.zip	24628037	bia:Image	#Study%20Component-2	; ubiCAAX-GFP/+ ; neuPH-RFP/+	CAAX
+folder2/file2.ome.zarr.zip	13161534	bia:Image	#Study%20Component-2	; ubiCAAX-GFP/+ ; neuPH-RFP/+	CAAX
+folder3/file1.ome.zarr.zip	24628037	bia:Image	#Study%20Component-3	; ubiCAAX-GFP/+ ; neuPH-RFP/+	CAAX
+folder3/file2.ome.zarr.zip	13161534	bia:Image	#Study%20Component-3	; ubiCAAX-GFP/+ ; neuPH-RFP/+	CAAX

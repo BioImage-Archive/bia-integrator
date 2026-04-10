@@ -381,7 +381,7 @@
                 "csvw:Column"
             ],
             "columnName": "type",
-            "propertyUrl": null
+            "propertyUrl": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
         },
         {
             "@id": "_:col1",
@@ -535,30 +535,6 @@
             "signalChannelInformation": []
         },
         {
-            "@id": "#tx1",
-            "@type": [
-                "bia:Taxon"
-            ],
-            "commonName": "zebra fish",
-            "scientificName": "Danio  rerio"
-        },
-        {
-            "@id": "#tx0",
-            "@type": [
-                "bia:Taxon"
-            ],
-            "commonName": "Homo sapiens",
-            "scientificName": "Human"
-        },
-        {
-            "@id": "NCBI:txid7227",
-            "@type": [
-                "bia:Taxon"
-            ],
-            "commonName": "fruit fly",
-            "scientificName": "Drosophila melanogaster"
-        },
-        {
             "@id": "#Biosample-4",
             "@type": [
                 "bia:BioSample"
@@ -574,6 +550,14 @@
                 }
             ],
             "growthProtocol": null
+        },
+        {
+            "@id": "#tx1",
+            "@type": [
+                "bia:Taxon"
+            ],
+            "commonName": "zebra fish",
+            "scientificName": "Danio  rerio"
         },
         {
             "@id": "#Biosample-3",
@@ -610,6 +594,14 @@
             "growthProtocol": null
         },
         {
+            "@id": "#tx0",
+            "@type": [
+                "bia:Taxon"
+            ],
+            "commonName": "Homo sapiens",
+            "scientificName": "Human"
+        },
+        {
             "@id": "#Biosample-1%209094eed1-c332-4f45-add1-dc6e153ceb56",
             "@type": [
                 "bia:BioSample"
@@ -644,6 +636,14 @@
                 }
             ],
             "growthProtocol": null
+        },
+        {
+            "@id": "NCBI:txid7227",
+            "@type": [
+                "bia:Taxon"
+            ],
+            "commonName": "fruit fly",
+            "scientificName": "Drosophila melanogaster"
         },
         {
             "@id": "#_Specimen-2",

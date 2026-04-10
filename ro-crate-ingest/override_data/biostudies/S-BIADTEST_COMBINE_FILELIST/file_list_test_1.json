@@ -1,6 +1,6 @@
 [
   {
-    "path": "folder1/file1.ome.zarr.zip",
+    "path": "folder1/file1.not.image.extension",
     "size": 24628037,
     "attributes": [
       {

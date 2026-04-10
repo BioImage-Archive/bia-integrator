@@ -19,7 +19,7 @@
     "type": "file"
   },
   {
-    "path": "folder2/file2.ome.zarr.zip",
+    "path": "folder2/file2.not.image.extension",
     "size": 13161534,
     "attributes": [
       {
