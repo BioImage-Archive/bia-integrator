@@ -38,6 +38,7 @@ def load_filelist(accession_id: str, flist_fname: str):
     # Note, this is not necessarily the same override list as the load_submission in submission_api.py
     overrides = {
         "S-BIADTEST_AUTHOR_AFFILIATION": "A test submission that covers different author and affiliations options.",
+        "S-BIADTEST_ANNOTATION_METHOD": "A test submission that includes an annotation method.",
         "S-BIADTEST_COMPLEX_BIOSAMPLE": "A test submission that covers different biosample, taxon, and REMBI study component associations.",
         "S-BIADTEST_PROTOCOL_STUDY": "A test submission based on S-BIAD34 that covers the early protocol style studies.",
         "S-BIADTEST_COMBINE_FILELIST": "A test submission to verify filelists are combined as expected",

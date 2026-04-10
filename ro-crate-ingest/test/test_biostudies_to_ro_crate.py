@@ -42,6 +42,7 @@ def expected_path_to_created_path(expected_path: str, output_dir: Path) -> Path:
 @pytest.mark.parametrize(
     "accession_id",
     [
+        "S-BIADTEST_ANNOTATION_METHOD",
         "S-BIADTEST_AUTHOR_AFFILIATION",
         "S-BIADTEST_COMPLEX_BIOSAMPLE",
         "S-BIADTEST_PROTOCOL_STUDY",

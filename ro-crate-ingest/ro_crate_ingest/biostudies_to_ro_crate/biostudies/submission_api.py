@@ -148,6 +148,7 @@ def load_submission(accession_id: str) -> Submission:
     # Note this is a dictionary to include reasons why the override was made
     overrides = {
         "S-BIADTEST_AUTHOR_AFFILIATION": "A test submission that covers different author and affiliations options.",
+        "S-BIADTEST_ANNOTATION_METHOD": "A test submission that includes an annotation method.",
         "S-BIADTEST_COMPLEX_BIOSAMPLE": "A test submission that covers different biosample, taxon, and REMBI study component associations.",
         "S-BIADTEST_PROTOCOL_STUDY": "A test submission based on S-BIAD34 that covers the early protocol style studies.",
         "S-BIADTEST_COMBINE_FILELIST": "A test submission to verify filelists are combined as expected",
