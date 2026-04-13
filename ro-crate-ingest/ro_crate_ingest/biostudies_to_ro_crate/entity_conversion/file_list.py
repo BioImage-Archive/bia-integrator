@@ -115,19 +115,24 @@ def set_bia_image_type(filelist_dataframe: pd.DataFrame):
     # Sort extensions by length descending to match longest possible extension first
     extensions.sort(key=len, reverse=True)
 
-    def is_image(path):
+    def _is_image(path):
         if not isinstance(path, str):
             path = str(path)
         path_lower = path.lower()
         return any(path_lower.endswith(ext) for ext in extensions)
 
+    def _is_source_image(path):
+        return True if isinstance(path, str) and len(path.strip()) > 0 else False
+
     # Set all rows in 'type' column to empty string
     filelist_dataframe["type"] = ""
 
     # Set all rows with extension in convertible image types to bia:Image
-    filelist_dataframe.loc[filelist_dataframe["path"].apply(is_image), "type"] = (
-        "http://bia:Image"
-    )
+    is_image = filelist_dataframe["path"].apply(_is_image)
+    # TODO - check with FS if the assumption below about rows with source_image being AnnotationData is true.
+    is_annotation_data = is_image & filelist_dataframe["path"].apply(_is_source_image)
+    filelist_dataframe.loc[is_image, "type"] = "http://bia/Image"
+    filelist_dataframe.loc[is_annotation_data, "type"] = "http://bia/AnnotationData"
 
 
 def create_ro_crate_filelist_and_schema_objects(
