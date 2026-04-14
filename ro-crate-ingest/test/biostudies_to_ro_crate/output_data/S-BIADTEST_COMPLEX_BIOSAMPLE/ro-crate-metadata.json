@@ -258,6 +258,9 @@
                     "@id": "#Study%20Component-3"
                 },
                 {
+                    "@id": "#Study%20Component-4"
+                },
+                {
                     "@id": "combined_file_list.tsv"
                 }
             ],
@@ -435,6 +438,41 @@
             "hasPart": []
         },
         {
+            "@id": "#Study%20Component-4",
+            "@type": [
+                "Dataset",
+                "bia:Dataset"
+            ],
+            "name": "Component 4",
+            "description": "Has 2 associations with the two specimens pointing to same biosample - to test multiple entity bug.",
+            "associatedBiologicalEntity": [
+                {
+                    "@id": "#Biosample-2"
+                }
+            ],
+            "associatedSpecimenImagingPreparationProtocol": [
+                {
+                    "@id": "#Specimen-1"
+                },
+                {
+                    "@id": "#Specimen-3"
+                }
+            ],
+            "associatedSpecimen": null,
+            "associatedCreationProcess": null,
+            "associatedSourceImage": [],
+            "associatedImageAcquisitionProtocol": [
+                {
+                    "@id": "#Image%20Acquisition-1"
+                }
+            ],
+            "associatedAnnotationMethod": [],
+            "associatedImageAnalysisMethod": [],
+            "associatedImageCorrelationMethod": [],
+            "associatedProtocol": [],
+            "hasPart": []
+        },
+        {
             "@id": "#Study%20Component-2",
             "@type": [
                 "Dataset",
@@ -517,6 +555,14 @@
             ]
         },
         {
+            "@id": "#Specimen-3",
+            "@type": [
+                "bia:SpecimenImagingPreparationProtocol"
+            ],
+            "title": "Another specimen without growth protocol",
+            "protocolDescription": "Sample Preparation Protocol for specimen 3",
+            "signalChannelInformation": []
+        },{
             "@id": "#Specimen-2",
             "@type": [
                 "bia:SpecimenImagingPreparationProtocol"

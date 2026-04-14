@@ -43,6 +43,7 @@ class BioSampleTaxonMapper(Mapper):
             ["Title"],
         )
 
+        added_biosample_ids = set()
         for section in biosample_sections:
             referenced_taxon_ids = self._get_taxon_under_biosample(
                 bio_sample_section=section,
@@ -64,7 +65,9 @@ class BioSampleTaxonMapper(Mapper):
                     section, referenced_taxon_ids, growth_protocol_id, submission.accno
                 )
 
-                self.mapped_object.append(bio_sample)
+                if bio_sample.id not in added_biosample_ids:
+                    self.mapped_object.append(bio_sample)
+                    added_biosample_ids.add(bio_sample.id)
 
                 if growth_protocol_id:
                     association_map[ro_crate_models.BioSample][
