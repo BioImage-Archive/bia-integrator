@@ -110,7 +110,7 @@ def expected_2025_04_representation_of_image_converted_to_ome_zarr_empiar(
     obj_path = base_path / "2025_04_models"
     uuids = [
         "c7a0a5d2-0866-4cf7-8ae5-434b8562f888",
-        "a7f977ed-721c-4bb7-92b8-e14a57615477",
+        "de338bf4-a7d8-404f-9da7-ffdacb89d587",
     ]
     expected_objects = []
     for uuid in uuids:

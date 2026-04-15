@@ -10,7 +10,7 @@ from bia_test_data.mock_objects import mock_file_reference
 from bia_test_data.mock_objects.mock_object_constants import accession_id, study_uuid
 
 
-file_uri_base = "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data"
+file_uri_base = "https://livingobjects.ebi.ac.uk/bioimaging-integrator-data"
 # We are using image im06.png from study component 2
 file_reference = mock_file_reference.get_file_reference()[0]
 image_uuid = uuid_creation.create_image_uuid(

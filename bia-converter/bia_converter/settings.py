@@ -30,7 +30,7 @@ class Settings(ApiSettings):
     cache_root_dirpath: Path = Field(
         Path.home().absolute() / ".cache" / "bia-converter"
     )
-    s3_endpoint_url: str = Field("https://uk1s3.embassy.ebi.ac.uk")
+    s3_endpoint_url: str = Field("https://livingobjects.ebi.ac.uk")
     s3_bucket_name: str = Field("")
 
     aws_access_key_id: str = Field("")
