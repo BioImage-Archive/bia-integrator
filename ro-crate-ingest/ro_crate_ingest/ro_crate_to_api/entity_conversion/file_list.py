@@ -7,9 +7,9 @@ from urllib.parse import unquote
 import bia_integrator_api.models as APIModels
 import numpy as np
 import pandas as pd
-from bia_shared_datamodels import ro_crate_models
-from bia_shared_datamodels.linked_data.ontology_terms import BIA, DUBLINCORE, SCHEMA
-from bia_shared_datamodels.linked_data.pydantic_ld import FieldContext, ROCrateModel
+from bia_ro_crate.models import ro_crate_models
+from bia_ro_crate.models.linked_data.ontology_terms import BIA, DUBLINCORE, SCHEMA
+from bia_ro_crate.models.linked_data.pydantic_ld import FieldContext, ROCrateModel
 from bia_shared_datamodels.package_specific_uuid_creation.ro_crate_uuid_creation import (
     create_dataset_uuid,
 )
@@ -18,9 +18,9 @@ from bia_shared_datamodels.package_specific_uuid_creation.shared import (
 )
 from rdflib import RDF, URIRef
 
-from ro_crate_ingest.bia_ro_crate.bia_ro_crate_metadata import BIAROCrateMetadata
-from ro_crate_ingest.bia_ro_crate.file_list import FileList
-from ro_crate_ingest.bia_ro_crate.parser.tsv_metadata_parser import TSVMetadataParser
+from bia_ro_crate.core.bia_ro_crate_metadata import BIAROCrateMetadata
+from bia_ro_crate.core.file_list import FileList
+from bia_ro_crate.core.parser.tsv_metadata_parser import TSVMetadataParser
 from ro_crate_ingest.save_utils import PersistenceMode, persist
 
 logger = logging.getLogger("__main__." + __name__)

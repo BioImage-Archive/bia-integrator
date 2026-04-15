@@ -6,9 +6,10 @@ from uuid import UUID
 import bia_integrator_api.models as APIModels
 import pandas as pd
 import pandas.api.typing as pdtypes
-from bia_shared_datamodels import attribute_models, ro_crate_models
-from bia_shared_datamodels.linked_data.ontology_terms import BIA, DUBLINCORE, SCHEMA
-from bia_shared_datamodels.linked_data.pydantic_ld.ROCrateModel import ROCrateModel
+from bia_shared_datamodels import attribute_models
+from bia_ro_crate.models import ro_crate_models
+from bia_ro_crate.models.linked_data.ontology_terms import BIA, DUBLINCORE, SCHEMA
+from bia_ro_crate.models.linked_data.pydantic_ld.ROCrateModel import ROCrateModel
 from bia_shared_datamodels.package_specific_uuid_creation import (
     ro_crate_uuid_creation,
     shared,

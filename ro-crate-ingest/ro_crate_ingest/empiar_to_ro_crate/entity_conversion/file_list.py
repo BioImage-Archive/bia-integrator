@@ -7,7 +7,7 @@ from dataclasses import dataclass
 from ro_crate_ingest.empiar_to_ro_crate.empiar.entry_api_models import Entry
 from ro_crate_ingest.empiar_to_ro_crate.empiar.file_api import get_files, EMPIARFile
 from pathlib import Path
-from bia_shared_datamodels import ro_crate_models
+from bia_ro_crate.models import ro_crate_models
 from ro_crate_ingest.save_utils import write_filelist
 from typing import Optional
 from urllib.parse import quote
@@ -41,11 +41,11 @@ def create_file_list(
     Unlike biostudies, all EMPIAR file lists have the same schema.
 
     If part of the proposal-based route:
-        will create a separate list for 'unassigned' files that do not match any dataset if there are any. 
+        will create a separate list for 'unassigned' files that do not match any dataset if there are any.
         This is saved as unassigned_files.json in the RO-Crate directory (but not referenced as part of the RO-Crate).
-    But if part of minimal route, unassigned files are not separated, and dealt with later. 
+    But if part of minimal route, unassigned files are not separated, and dealt with later.
 
-    And note: if proposal-based, a yaml_file proposal is expected, and if minimal, the accession_id must be supplied. 
+    And note: if proposal-based, a yaml_file proposal is expected, and if minimal, the accession_id must be supplied.
     """
     if yaml_file is None and accession_id is None:
         raise ValueError("Either yaml_file or accession_id must be provided")
@@ -53,7 +53,9 @@ def create_file_list(
     columns = get_column_list()
     schema = get_schema(columns)
 
-    file_df = create_base_dataframe_from_file_paths(yaml_file["accession_id"] if yaml_file else accession_id)
+    file_df = create_base_dataframe_from_file_paths(
+        yaml_file["accession_id"] if yaml_file else accession_id
+    )
 
     if yaml_file:
         path_pattern_objects = get_file_patterns_matches_and_objects(
@@ -67,14 +69,16 @@ def create_file_list(
         )
     elif accession_id:
         file_list_df = expand_dataframe_metadata([], file_df)
-        file_list_df = assign_datasets_in_minimal_rocrate(file_list_df, empiar_api_entry, datasets_map)
-    
+        file_list_df = assign_datasets_in_minimal_rocrate(
+            file_list_df, empiar_api_entry, datasets_map
+        )
+
     ro_crate_objects: list = [schema]
     ro_crate_objects.extend(columns)
 
     file_list_id = "file_list.tsv"
     ro_crate_objects.append(get_ro_crate_filelist(file_list_id, schema))
-    
+
     write_filelist(output_ro_crate_path, file_list_id, file_list_df)
 
     return ro_crate_objects
@@ -91,36 +95,39 @@ def _rate_dataset_specificity(data_directories: list[str]) -> int:
 
 
 def _find_dataset_for_file(
-    file_path: str, 
-    imageset_to_dataset_id: dict[str, str]
+    file_path: str, imageset_to_dataset_id: dict[str, str]
 ) -> Optional[str]:
     matching_datasets = [
-        (dataset_id, dir_name) for dir_name, dataset_id in imageset_to_dataset_id.items() if dir_name in file_path
+        (dataset_id, dir_name)
+        for dir_name, dataset_id in imageset_to_dataset_id.items()
+        if dir_name in file_path
     ]
     if not matching_datasets:
         return None
-    return max(
-        matching_datasets,
-        key=lambda x: _rate_dataset_specificity([x[1]])
-    )[0]
+    return max(matching_datasets, key=lambda x: _rate_dataset_specificity([x[1]]))[0]
 
 
 def assign_datasets_in_minimal_rocrate(
-    file_list_df: pd.DataFrame, 
-    empiar_api_entry: Entry, 
-    datasets_map: dict[str, ro_crate_models.Dataset]
+    file_list_df: pd.DataFrame,
+    empiar_api_entry: Entry,
+    datasets_map: dict[str, ro_crate_models.Dataset],
 ) -> pd.DataFrame:
     """
-    In the minimal ro-crate route, we don't have a yaml proposal to guide the assignment of files to datasets. 
+    In the minimal ro-crate route, we don't have a yaml proposal to guide the assignment of files to datasets.
 
-    This function will look for dataset directory names in the file paths, and assign files to datasets accordingly. 
-    If a file path contains multiple dataset directory names, the most specific (longest) match will be used. 
+    This function will look for dataset directory names in the file paths, and assign files to datasets accordingly.
+    If a file path contains multiple dataset directory names, the most specific (longest) match will be used.
     If no dataset directory names are found in the file path, the dataset will be left unassigned (NaN).
     """
     imageset_to_dataset_id = {
-        imageset.directory: dataset.id for imageset in empiar_api_entry.imagesets for dataset in datasets_map.values() if dataset.name == imageset.name
+        imageset.directory: dataset.id
+        for imageset in empiar_api_entry.imagesets
+        for dataset in datasets_map.values()
+        if dataset.name == imageset.name
     }
-    file_list_df["dataset"] = file_list_df["file_path"].apply(_find_dataset_for_file, args=(imageset_to_dataset_id,))
+    file_list_df["dataset"] = file_list_df["file_path"].apply(
+        _find_dataset_for_file, args=(imageset_to_dataset_id,)
+    )
 
     return file_list_df
 
@@ -234,16 +241,16 @@ def get_file_patterns_matches_and_objects(
 
 
 def sort_imageset_paths_by_specificity(
-        pattern_matches: list[PatternMatch]
+    pattern_matches: list[PatternMatch],
 ) -> list[PatternMatch]:
-    
-    return sorted(pattern_matches, key=lambda pm: pm.file_pattern.count('/'), reverse=True)
+
+    return sorted(
+        pattern_matches, key=lambda pm: pm.file_pattern.count("/"), reverse=True
+    )
 
 
 def expand_row_metadata(
-    row: pd.Series,
-    path_maps: list[PatternMatch],
-    all_file_paths: list[Path]
+    row: pd.Series, path_maps: list[PatternMatch], all_file_paths: list[Path]
 ) -> pd.Series:
     file_path: Path = row["file_path"]
 
@@ -252,7 +259,7 @@ def expand_row_metadata(
     output_row = {
         "file_path": str(file_path),
         "size_in_bytes": int(row["size_in_bytes"]),
-        "dataset": None, 
+        "dataset": None,
         "type": None,
         "label": None,
         "source_image_label": None,
@@ -268,9 +275,9 @@ def expand_row_metadata(
                 pattern_match.yaml_object,
                 pattern_match.object_type,
                 pattern_match.dataset_id,
-                all_file_paths
+                all_file_paths,
             )
-            pattern_match.match_count += 1 
+            pattern_match.match_count += 1
             break
 
     if output_row["dataset"] is None:
@@ -284,27 +291,35 @@ def update_row(
     yaml_object: Optional[dict],
     row_type: Optional[str],
     dataset_id: str,
-    all_file_paths: list[Path]
+    all_file_paths: list[Path],
 ):
     output_row["type"] = row_type
-    output_row["dataset"] = dataset_id 
+    output_row["dataset"] = dataset_id
 
     if yaml_object:
         if label := yaml_object.get("label", None):
             output_row["label"] = label
         elif label_prefix := yaml_object.get("label_prefix", None):
-            label_parts = parse_file_path_for_label(output_row["file_path"], yaml_object.get("file_pattern", ""))
+            label_parts = parse_file_path_for_label(
+                output_row["file_path"], yaml_object.get("file_pattern", "")
+            )
             if label_parts is not None:
                 output_row["label"] = f"{label_prefix}_{label_parts}"
 
         specimen_title = yaml_object.get("specimen_title", None)
-        output_row["associated_specimen"] = f"#{quote(specimen_title)}" if specimen_title else None
+        output_row["associated_specimen"] = (
+            f"#{quote(specimen_title)}" if specimen_title else None
+        )
 
         annotation_method_title = yaml_object.get("annotation_method_title", None)
         output_row["associated_annotation_method"] = (
             [f"#{quote(title)}" for title in annotation_method_title]
             if isinstance(annotation_method_title, list)
-            else f"#{quote(annotation_method_title)}" if annotation_method_title else None
+            else (
+                f"#{quote(annotation_method_title)}"
+                if annotation_method_title
+                else None
+            )
         )
 
         protocol_title = yaml_object.get("protocol_title", None)
@@ -317,46 +332,42 @@ def update_row(
         if input_label := yaml_object.get("input_label", None):
             output_row["source_image_label"] = input_label
         elif input_label_prefix := yaml_object.get("input_label_prefix", None):
-            matching_label_parts = find_matching_input_label_parts(all_file_paths, yaml_object.get("input_file_pattern", ""))
-            output_row["source_image_label"] = create_input_labels(input_label_prefix, matching_label_parts)
+            matching_label_parts = find_matching_input_label_parts(
+                all_file_paths, yaml_object.get("input_file_pattern", "")
+            )
+            output_row["source_image_label"] = create_input_labels(
+                input_label_prefix, matching_label_parts
+            )
 
 
-def parse_file_path_for_label(
-        file_path: str, 
-        file_pattern: str
-) -> str | None:
+def parse_file_path_for_label(file_path: str, file_pattern: str) -> str | None:
 
     result = parse.parse(f"data/{file_pattern}", file_path)
     if result is not None:
         label_parts = [str(part) for part in result.fixed]
         return "_".join(label_parts)
-    
+
     return result
 
 
 def find_matching_input_label_parts(
-        file_paths: list[Path], 
-        input_image_pattern: str
+    file_paths: list[Path], input_image_pattern: str
 ) -> list[str]:
-    
-    
+
     matches = []
     for path in file_paths:
         matching_parts = parse_file_path_for_label(str(path), input_image_pattern)
         if matching_parts is not None:
             matches.append(matching_parts)
-    
+
     if len(matches) == 0:
         raise ValueError(f"No file parts found to match input image pattern")
 
     return sorted(matches)
 
 
-def create_input_labels(
-        label_prefix: str, 
-        file_parts: list[str]
-) -> list[str]:
-    
+def create_input_labels(label_prefix: str, file_parts: list[str]) -> list[str]:
+
     labels = [f"{label_prefix}_{part}" for part in file_parts]
     return labels
 
@@ -365,29 +376,28 @@ def separate_and_report_unassigned_files(
     file_list_df: pd.DataFrame,
     output_ro_crate_path: Path,
 ) -> pd.DataFrame:
-    
+
     unassigned_entries = file_list_df["dataset"].isna()
     unassigned_files_df = file_list_df[unassigned_entries]
     assigned_files_df = file_list_df[~unassigned_entries]
-    
+
     if len(unassigned_files_df) == 0:
         logger.info("All files successfully assigned to datasets.")
         return assigned_files_df
-    
-    
+
     unassigned_file_paths = unassigned_files_df["file_path"].tolist()
     logger.warning(f"Total unassigned files: {len(unassigned_file_paths)}")
-    
+
     unassigned_json_path = output_ro_crate_path / "unassigned_files.json"
-    unassigned_data = {
-        "files": unassigned_file_paths
-    }
-    
+    unassigned_data = {"files": unassigned_file_paths}
+
     with open(unassigned_json_path, "w") as f:
         json.dump(unassigned_data, f, indent=2)
-    
-    logger.info(f"Wrote {len(unassigned_file_paths)} unassigned file(s) to {unassigned_json_path}")
-    
+
+    logger.info(
+        f"Wrote {len(unassigned_file_paths)} unassigned file(s) to {unassigned_json_path}"
+    )
+
     return assigned_files_df
 
 
@@ -422,7 +432,7 @@ def get_column_list() -> list[ro_crate_models.Column]:
     columns_properties = {
         "file_path": "http://bia/filePath",
         "size_in_bytes": "http://bia/sizeInBytes",
-        "dataset": "http://schema.org/isPartOf", 
+        "dataset": "http://schema.org/isPartOf",
         "type": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
         "label": "http://schema.org/name",
         "source_image_label": "http://bia/sourceImageLabel",

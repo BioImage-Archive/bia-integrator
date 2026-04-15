@@ -2,7 +2,7 @@ import rdflib
 import pathlib
 import logging
 from urllib.parse import urljoin
-from bia_shared_datamodels.linked_data.ontology_terms import BIA, SCHEMA
+from bia_ro_crate.models.linked_data.ontology_terms import BIA, SCHEMA
 
 logger = logging.getLogger("__main__." + __name__)
 

@@ -14,8 +14,8 @@ from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_parsing_utils 
     find_sections_with_filelists_recursive,
 )
 from pathlib import Path
-from bia_shared_datamodels import ro_crate_models
-from bia_shared_datamodels.linked_data.pydantic_ld.LDModel import ObjectReference
+from bia_ro_crate.models import ro_crate_models
+from bia_ro_crate.models.linked_data.pydantic_ld.LDModel import ObjectReference
 from ro_crate_ingest.save_utils import write_filelist
 from urllib.parse import quote
 
