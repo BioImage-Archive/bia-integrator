@@ -1,4 +1,0 @@
-file_path	dataset	type	input_image
-input_image	#dataset	http://bia/Image	
-processed_image	#dataset	http://bia/Image	["missing_input_image", "input_file"]
-input_file	#dataset		

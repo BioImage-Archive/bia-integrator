@@ -102,7 +102,6 @@ def convert_empiar_proposal_to_ro_crate(proposal_path: Path, crate_path: Path | 
         contributors=roc_contributors,
         datasets=roc_dataset_title_map.values(),
         publications=roc_publications,
-        proposal=proposal,
     )
     graph.append(roc_study)
 
