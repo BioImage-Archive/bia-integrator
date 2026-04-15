@@ -19,6 +19,7 @@ from ro_crate_ingest.empiar_to_ro_crate.entity_conversion import (
     study,
     file_list,
     protocol,
+    publication
 )
 import logging
 from ro_crate_ingest.empiar_to_ro_crate.empiar.proposal import Proposal
@@ -89,12 +90,15 @@ def convert_empiar_proposal_to_ro_crate(proposal_path: Path, crate_path: Path | 
     roc_contributors = contributor.get_contributors(empiar_api_entry)
     graph += roc_contributors
 
+    roc_publications = publication.get_publications(proposal)
+    graph += roc_publications
+
     roc_study = study.get_study(
         accession_id=accession_id,
         empiar_api_entry=empiar_api_entry,
         contributors=roc_contributors,
         datasets=roc_dataset_title_map.values(),
-        proposal=proposal, 
+        publications=roc_publications,
     )
     graph.append(roc_study)
 

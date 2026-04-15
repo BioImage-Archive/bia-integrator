@@ -101,6 +101,9 @@
             "displayName": {
                 "@id": "schema:name"
             },
+            "doi": {
+                "@id": "schema:identifier"
+            },
             "experimentalVariableDescription": {
                 "@id": "bia:experimentalVariableDescription"
             },
@@ -172,6 +175,12 @@
             },
             "protocolDescription": {
                 "@id": "schema:description"
+            },
+            "publicationYear": {
+                "@id": "bia:publicationYear"
+            },
+            "pubmedId": {
+                "@id": "bia:pubmedId"
             },
             "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
             "relatedPublication": {
@@ -273,8 +282,22 @@
             "accessionId": "EMPIAR-STARFILETEST",
             "seeAlso": [],
             "relatedPublication": [
-                "https://doi.org/10.1038/s41592-023-02053-0"
+                {
+                    "@id": "https://doi.org/10.1038/s41592-023-02053-0"
+                }
             ]
+        },
+        {
+            "@id": "https://doi.org/10.1038/s41592-023-02053-0",
+            "@type": [
+                "ScholarlyArticle",
+                "bia:Publication"
+            ],
+            "title": null,
+            "authorNames": null,
+            "publicationYear": null,
+            "pubmedId": null,
+            "doi": "10.1038/s41592-023-02053-0"
         },
         {
             "@id": "https://orcid.org/9999-0001-2222-3333",

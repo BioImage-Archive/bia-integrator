@@ -101,6 +101,9 @@
             "displayName": {
                 "@id": "schema:name"
             },
+            "doi": {
+                "@id": "schema:identifier"
+            },
             "experimentalVariableDescription": {
                 "@id": "bia:experimentalVariableDescription"
             },
@@ -172,6 +175,12 @@
             },
             "protocolDescription": {
                 "@id": "schema:description"
+            },
+            "publicationYear": {
+                "@id": "bia:publicationYear"
+            },
+            "pubmedId": {
+                "@id": "bia:pubmedId"
             },
             "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
             "relatedPublication": {
@@ -538,14 +547,6 @@
             "signalChannelInformation": []
         },
         {
-            "@id": "NCBI:txid7227",
-            "@type": [
-                "bia:Taxon"
-            ],
-            "commonName": "fruit fly",
-            "scientificName": "Drosophila melanogaster"
-        },
-        {
             "@id": "#Biosample-1",
             "@type": [
                 "bia:BioSample"
@@ -561,6 +562,14 @@
                 }
             ],
             "growthProtocol": null
+        },
+        {
+            "@id": "NCBI:txid7227",
+            "@type": [
+                "bia:Taxon"
+            ],
+            "commonName": "fruit fly",
+            "scientificName": "Drosophila melanogaster"
         }
     ]
 }

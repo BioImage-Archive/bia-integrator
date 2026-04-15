@@ -101,6 +101,9 @@
             "displayName": {
                 "@id": "schema:name"
             },
+            "doi": {
+                "@id": "schema:identifier"
+            },
             "experimentalVariableDescription": {
                 "@id": "bia:experimentalVariableDescription"
             },
@@ -172,6 +175,12 @@
             },
             "protocolDescription": {
                 "@id": "schema:description"
+            },
+            "publicationYear": {
+                "@id": "bia:publicationYear"
+            },
+            "pubmedId": {
+                "@id": "bia:pubmedId"
             },
             "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
             "relatedPublication": {
@@ -408,6 +417,30 @@
             "propertyUrl": "http://bia/filePath"
         },
         {
+            "@id": "#Annotation-1",
+            "@type": [
+                "Dataset",
+                "bia:Dataset"
+            ],
+            "name": "Instance-level mitochondria annotations for volume EM",
+            "description": "This is a general description of the annotation dataset was annotated.",
+            "associatedBiologicalEntity": [],
+            "associatedSpecimenImagingPreparationProtocol": [],
+            "associatedSpecimen": null,
+            "associatedCreationProcess": null,
+            "associatedSourceImage": [],
+            "associatedImageAcquisitionProtocol": [],
+            "associatedAnnotationMethod": [
+                {
+                    "@id": "#Annotation-1"
+                }
+            ],
+            "associatedImageAnalysisMethod": [],
+            "associatedImageCorrelationMethod": [],
+            "associatedProtocol": [],
+            "hasPart": []
+        },
+        {
             "@id": "#Study%20Component-1",
             "@type": [
                 "Dataset",
@@ -434,30 +467,6 @@
                 }
             ],
             "associatedAnnotationMethod": [],
-            "associatedImageAnalysisMethod": [],
-            "associatedImageCorrelationMethod": [],
-            "associatedProtocol": [],
-            "hasPart": []
-        },
-        {
-            "@id": "#Annotation-1",
-            "@type": [
-                "Dataset",
-                "bia:Dataset"
-            ],
-            "name": "Instance-level mitochondria annotations for volume EM",
-            "description": "This is a general description of the annotation dataset was annotated.",
-            "associatedBiologicalEntity": [],
-            "associatedSpecimenImagingPreparationProtocol": [],
-            "associatedSpecimen": null,
-            "associatedCreationProcess": null,
-            "associatedSourceImage": [],
-            "associatedImageAcquisitionProtocol": [],
-            "associatedAnnotationMethod": [
-                {
-                    "@id": "#Annotation-1"
-                }
-            ],
             "associatedImageAnalysisMethod": [],
             "associatedImageCorrelationMethod": [],
             "associatedProtocol": [],
@@ -504,14 +513,6 @@
             "signalChannelInformation": []
         },
         {
-            "@id": "NCBI:txid7227",
-            "@type": [
-                "bia:Taxon"
-            ],
-            "commonName": "fruit fly",
-            "scientificName": "Drosophila melanogaster"
-        },
-        {
             "@id": "#Biosample-1",
             "@type": [
                 "bia:BioSample"
@@ -527,6 +528,14 @@
                 }
             ],
             "growthProtocol": null
+        },
+        {
+            "@id": "NCBI:txid7227",
+            "@type": [
+                "bia:Taxon"
+            ],
+            "commonName": "fruit fly",
+            "scientificName": "Drosophila melanogaster"
         }
     ]
 }

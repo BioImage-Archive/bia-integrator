@@ -43,6 +43,14 @@ def convert_study(
     external_references = []
     # TODO add logic and to models to handle external links
 
+    publications = []
+    for publication in ro_crate_study.relatedPublication:
+        publications.append(
+            convert_publication(
+                crate_objects_by_id[publication.id]
+            )
+        )
+
     study = {
         "accession_id": ro_crate_study.accessionId,
         "uuid": str(uuid_creation.create_study_uuid(ro_crate_study.accessionId)),
@@ -63,7 +71,7 @@ def convert_study(
                 value={"uuid_unique_input": ro_crate_study.accessionId},
             ).model_dump()
         ],
-        "related_publication": ro_crate_study.relatedPublication,
+        "related_publication": publications,
         "grant": [],
         "funding_statement": None,
     }
@@ -132,3 +140,18 @@ def convert_external_reference(
     }
 
     return APIModels.ExternalReference(**external_reference_dictionary)
+
+
+def convert_publication(
+    publication: ROCrateModels.Publication
+) -> APIModels.Publication:
+    
+    publication_dict = {
+        "title": publication.title, 
+        "authors_name": publication.authorNames, 
+        "publication_year": publication.publicationYear,
+        "pubmed_id": publication.pubmedId,
+        "doi": publication.doi,
+    }
+
+    return APIModels.Publication(**publication_dict)

@@ -1,5 +1,5 @@
-accession_id: EMPIAR-SPECIMENTEST
-paper_doi: https://doi.org/10.1016/j.molcel.2024.06.024
+accession_id: "EMPIAR-SPECIMENTEST"
+paper_doi: "https://doi.org/10.1016/j.molcel.2024.06.024"
 rembis:
   BioSample:
     - title: "S. cerevisiae"

@@ -1,5 +1,5 @@
-accession_id: EMPIAR-IMAGELABELTEST
-paper_doi: https://doi.org/10.1038/s41592-022-01746-2
+accession_id: "EMPIAR-IMAGELABELTEST"
+paper_doi: "https://doi.org/10.1038/s41592-022-01746-2"
 rembis:
   ImageAcquisitionProtocol:
     - title: "Cryo-electron tomography"

@@ -56,6 +56,7 @@ def make_minimal_ro_crate(
         empiar_api_entry=empiar_api_entry,
         contributors=roc_contributors,
         datasets=roc_dataset_title_map.values(),
+        publications=[],
     )
     graph.append(roc_study)
 
