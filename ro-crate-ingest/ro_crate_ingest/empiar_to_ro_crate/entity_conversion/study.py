@@ -1,7 +1,6 @@
 from bia_shared_datamodels import ro_crate_models
 from collections.abc import Iterable
 from ro_crate_ingest.empiar_to_ro_crate.empiar.entry_api_models import Entry
-from ro_crate_ingest.empiar_to_ro_crate.empiar.proposal import Proposal
 
 
 def get_study(
@@ -9,7 +8,7 @@ def get_study(
     empiar_api_entry: Entry,
     contributors: list[ro_crate_models.Contributor],
     datasets: Iterable[ro_crate_models.Dataset], 
-    proposal: Proposal | None = None, 
+    publications: list[ro_crate_models.Publication],
 ) -> ro_crate_models.Study:
 
     has_part_items = [{"@id": "file_list.tsv"}] 
@@ -27,7 +26,7 @@ def get_study(
         "keyword": [],
         "contributor": [{"@id": c.id} for c in contributors],
         "hasPart": has_part_items, 
-        "relatedPublication": proposal.paper_doi if proposal else [],
+        "relatedPublication": [{"@id": p.id} for p in publications]
     }
 
     return ro_crate_models.Study(**study_dict)

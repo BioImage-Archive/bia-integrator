@@ -1,5 +1,5 @@
-accession_id: EMPIAR-STARFILETEST
-paper_doi: https://doi.org/10.1038/s41592-023-02053-0
+accession_id: "EMPIAR-STARFILETEST"
+paper_doi: "https://doi.org/10.1038/s41592-023-02053-0"
 rembis:
   ImageAcquisitionProtocol:
     - title: "Cryo-electron tomography"

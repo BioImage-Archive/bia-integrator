@@ -1,5 +1,5 @@
-accession_id: EMPIAR-IMAGEPATTERNTEST
-paper_doi: https://doi.org/10.7554/eLife.83623
+accession_id: "EMPIAR-IMAGEPATTERNTEST"
+paper_doi: "https://doi.org/10.7554/eLife.83623"
 rembis:
   ImageAcquisitionProtocol:
     - title: "Cryo-serial pFIB/SEM"
