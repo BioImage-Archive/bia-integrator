@@ -4,8 +4,7 @@ from functools import partial
 
 import bia_integrator_api.models as APIModels
 import pandas as pd
-from bia_shared_datamodels import ro_crate_models
-from bia_shared_datamodels.linked_data.ontology_terms import BIA
+from bia_ro_crate.models.linked_data.ontology_terms import BIA
 from bia_shared_datamodels.package_specific_uuid_creation.ro_crate_uuid_creation import (
     create_annotation_method_uuid,
     create_bio_sample_uuid,

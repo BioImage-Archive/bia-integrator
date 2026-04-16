@@ -1,9 +1,9 @@
 import logging
 from pathlib import Path
 
-from bia_shared_datamodels.ro_crate_models import ROCrateCreativeWork
+from bia_ro_crate.models.ro_crate_models import ROCrateCreativeWork
 from ro_crate_ingest.biostudies_to_ro_crate.biostudies_conversion import (
-    convert_biostudies_to_ro_crate
+    convert_biostudies_to_ro_crate,
 )
 from ro_crate_ingest.empiar_to_ro_crate.empiar.entry_api import load_empiar_entry
 from ro_crate_ingest.empiar_to_ro_crate.entity_conversion import (
@@ -21,10 +21,7 @@ from ro_crate_ingest.ro_crate_defaults import (
 logger = logging.getLogger(__name__)
 
 
-def make_minimal_ro_crate(
-    accession_id: str, 
-    crate_path: Path | None = None
-):
+def make_minimal_ro_crate(accession_id: str, crate_path: Path | None = None):
     if accession_id.startswith(("S-BIAD", "S-BSST")):
         convert_biostudies_to_ro_crate(accession_id, crate_path)
         return

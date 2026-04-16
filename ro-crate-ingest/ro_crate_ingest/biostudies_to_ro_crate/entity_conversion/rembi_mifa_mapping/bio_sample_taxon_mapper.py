@@ -3,7 +3,7 @@ import logging
 import re
 from urllib.parse import quote
 
-from bia_shared_datamodels import ro_crate_models
+from bia_ro_crate.models import ro_crate_models
 from bia_shared_datamodels.package_specific_uuid_creation import (
     biostudies_ingest_uuid_creation,
     shared,

@@ -4,7 +4,7 @@ from pathlib import Path
 from bia_integrator_api import models
 from rich.logging import RichHandler
 
-from ro_crate_ingest.bia_ro_crate.parser.jsonld_metadata_parser import (
+from bia_ro_crate.core.parser.jsonld_metadata_parser import (
     JSONLDMetadataParser,
 )
 from ro_crate_ingest.ro_crate_to_api.entity_conversion import (

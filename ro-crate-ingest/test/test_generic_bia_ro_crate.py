@@ -1,4 +1,4 @@
-from ro_crate_ingest.bia_ro_crate.parser.jsonld_metadata_parser import (
+from bia_ro_crate.core.parser.jsonld_metadata_parser import (
     JSONLDMetadataParser,
 )
 from rdflib import Graph

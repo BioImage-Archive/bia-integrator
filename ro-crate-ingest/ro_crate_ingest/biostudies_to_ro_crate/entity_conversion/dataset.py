@@ -2,7 +2,7 @@ import logging
 from collections import defaultdict
 from urllib.parse import quote
 
-from bia_shared_datamodels import ro_crate_models
+from bia_ro_crate.models import ro_crate_models
 
 from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_api import (
     Section,

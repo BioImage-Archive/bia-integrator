@@ -1,4 +1,4 @@
-from bia_shared_datamodels.ro_crate_models import Contributor
+from bia_ro_crate.models.ro_crate_models import Contributor
 from urllib.parse import quote
 
 from ro_crate_ingest.empiar_to_ro_crate.empiar.entry_api_models import (
@@ -18,7 +18,9 @@ def get_contributors(empiar_api_entry: Entry) -> list[Contributor]:
     return contributors
 
 
-def get_contributor(author: AuthorEditor, contributor_bnode_int: int) -> tuple[Contributor, int]:
+def get_contributor(
+    author: AuthorEditor, contributor_bnode_int: int
+) -> tuple[Contributor, int]:
     contributor_id, contributor_bnode_int = get_contributor_id(
         author, contributor_bnode_int
     )

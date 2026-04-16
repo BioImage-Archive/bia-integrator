@@ -1,5 +1,5 @@
-from bia_shared_datamodels.linked_data.pydantic_ld import ROCrateModel
-from bia_shared_datamodels.ro_crate_generator_utils import get_all_ro_crate_classes
+from bia_ro_crate.models.linked_data.pydantic_ld import ROCrateModel
+from bia_ro_crate.models.ro_crate_generator_utils import get_all_ro_crate_classes
 
 
 def initialise_association_map() -> dict[type[ROCrateModel], dict[str, str]]:

@@ -1,4 +1,4 @@
-from bia_shared_datamodels import ro_crate_models
+from bia_ro_crate.models import ro_crate_models
 from collections.abc import Iterable
 from ro_crate_ingest.empiar_to_ro_crate.empiar.entry_api_models import Entry
 
@@ -11,8 +11,8 @@ def get_study(
     publications: list[ro_crate_models.Publication],
 ) -> ro_crate_models.Study:
 
-    has_part_items = [{"@id": "file_list.tsv"}] 
-    has_part_items.extend([{"@id": d.id} for d in datasets]) 
+    has_part_items = [{"@id": "file_list.tsv"}]
+    has_part_items.extend([{"@id": d.id} for d in datasets])
 
     study_dict = {
         "@id": "./",

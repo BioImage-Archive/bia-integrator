@@ -1,7 +1,7 @@
 import re
 from urllib.parse import quote
 
-from bia_shared_datamodels.ro_crate_models import Publication
+from bia_ro_crate.models.ro_crate_models import Publication
 
 from ro_crate_ingest.empiar_to_ro_crate.empiar.proposal import Proposal
 

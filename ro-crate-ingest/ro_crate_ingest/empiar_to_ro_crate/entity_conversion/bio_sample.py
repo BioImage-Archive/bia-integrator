@@ -1,5 +1,5 @@
 import logging
-from bia_shared_datamodels.ro_crate_models import BioSample, Taxon
+from bia_ro_crate.models.ro_crate_models import BioSample, Taxon
 from urllib.parse import quote
 
 from ro_crate_ingest.empiar_to_ro_crate.entity_conversion.taxon import (
@@ -44,7 +44,11 @@ def get_bio_sample(bio_sample_dict: dict) -> BioSample:
             {"@id": taxon["ncbi_id"]}
             for taxon in bio_sample_dict["organism_classification"]
         ],
-        "growthProtocol": ({"@id": f"#{quote(growth_protocol_title)}"} if growth_protocol_title else None),
+        "growthProtocol": (
+            {"@id": f"#{quote(growth_protocol_title)}"}
+            if growth_protocol_title
+            else None
+        ),
     }
 
     return BioSample(**model_dict)

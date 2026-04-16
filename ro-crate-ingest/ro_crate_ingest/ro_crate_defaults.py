@@ -3,16 +3,16 @@ import os
 
 from pydantic import BaseModel
 from pathlib import Path
-from bia_shared_datamodels.linked_data.pydantic_ld.ROCrateModel import ROCrateModel
-from bia_shared_datamodels import ro_crate_generator_utils
+from bia_ro_crate.models.linked_data.pydantic_ld.ROCrateModel import ROCrateModel
+from bia_ro_crate.models import ro_crate_generator_utils
 
 
 def get_default_context():
     with open(
         Path(__file__).parents[2]
-        / "bia-shared-datamodels"
-        / "src"
-        / "bia_shared_datamodels"
+        / "bia-ro-crate"
+        / "bia_ro_crate"
+        / "models"
         / "linked_data"
         / "bia_ro_crate_context.jsonld"
     ) as f:

@@ -17,7 +17,7 @@ from ro_crate_ingest.empiar_to_ro_crate.empiar_proposal_generation import (
 from ro_crate_ingest.minimal_ro_crate.minimal_ro_crate_creation import (
     make_minimal_ro_crate,
 )
-from ro_crate_ingest.validator.validation import bia_roc_validation
+from bia_ro_crate.validator.validation import bia_roc_validation
 
 ro_crate_ingest = typer.Typer()
 

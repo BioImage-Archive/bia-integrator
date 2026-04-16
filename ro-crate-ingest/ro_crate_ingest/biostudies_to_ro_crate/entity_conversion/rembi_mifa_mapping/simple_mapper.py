@@ -1,7 +1,7 @@
 import logging
 from abc import ABC, abstractmethod
 
-from bia_shared_datamodels.linked_data.pydantic_ld.ROCrateModel import ROCrateModel
+from bia_ro_crate.models.linked_data.pydantic_ld.ROCrateModel import ROCrateModel
 
 from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_api import (
     Section,

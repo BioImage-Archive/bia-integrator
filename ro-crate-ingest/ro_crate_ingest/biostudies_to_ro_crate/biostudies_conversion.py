@@ -2,7 +2,7 @@ import logging
 from collections import Counter
 from pathlib import Path
 
-from bia_shared_datamodels.ro_crate_models import ROCrateCreativeWork
+from bia_ro_crate.models.ro_crate_models import ROCrateCreativeWork
 
 from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_api import (
     Submission,
