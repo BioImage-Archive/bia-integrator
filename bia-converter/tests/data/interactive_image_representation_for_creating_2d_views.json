@@ -17,7 +17,7 @@
   ],
   "image_format": ".ome.zarr",
   "file_uri": [
-    "https://uk1s3.embassy.ebi.ac.uk/testbucket-bia/S-BIAD-BIACONVERTER-TEST/dc981ee8-ab5b-427e-8a4b-81a6e34bc3fb/841aaca8-633d-48f9-bfdb-6fe765aad109.ome.zarr/0"
+    "https://livingobjects.ebi.ac.uk/bioimaging-sandbox/S-BIAD-BIACONVERTER-TEST/dc981ee8-ab5b-427e-8a4b-81a6e34bc3fb/841aaca8-633d-48f9-bfdb-6fe765aad109.ome.zarr/0"
   ],
   "total_size_in_bytes": 3033,
   "voxel_physical_size_x": 1.0,

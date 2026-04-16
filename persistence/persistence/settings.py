@@ -49,7 +49,7 @@ class Settings(BaseSettings):
     aws_secret_access_key: str = Field(default="", description="AWS secret key (required for S3 uploads)")
     aws_request_checksum_calculation: str = Field(default="WHEN_REQUIRED")
     aws_response_checksum_validation: str = Field(default="WHEN_REQUIRED")
-    s3_endpoint_url: str = Field(default="https://uk1s3.embassy.ebi.ac.uk", description="S3 endpoint URL")
+    s3_endpoint_url: str = Field(default="https://livingobjects.ebi.ac.uk", description="S3 endpoint URL")
     s3_bucket_name: str = Field(default="", description="S3 bucket name (required for S3 uploads)")
 
     @model_validator(mode="after")

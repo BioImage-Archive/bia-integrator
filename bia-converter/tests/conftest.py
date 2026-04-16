@@ -39,7 +39,7 @@ def pytest_sessionstart(session):
     os.environ["api_base_url"] = "http://localhost:8080"
     os.environ["local_bia_api_username"] = "test@example.com"
     os.environ["local_bia_api_password"] = "test"
-    os.environ["s3_endpoint_url"] = "https://uk1s3.embassy.ebi.ac.uk"
+    os.environ["s3_endpoint_url"] = "https://livingobjects.ebi.ac.uk"
     os.environ["s3_bucket_name"] = "testbucket"
 
 

@@ -21,7 +21,7 @@
           "name": "image_thumbnail_uri",
                 "value": {
                     "256": {
-                        "uri": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/EMPIAR-10326/8bf3c882-6c45-4b28-9f46-030aac5e177a/29094359-598b-4d5b-9068-88fe54ad5d56.png",
+                        "uri": "https://livingobjects.ebi.ac.uk/bioimaging-integrator-data/EMPIAR-10326/8bf3c882-6c45-4b28-9f46-030aac5e177a/29094359-598b-4d5b-9068-88fe54ad5d56.png",
                         "size": 256
                     }
                 }
@@ -31,7 +31,7 @@
           "name": "image_static_display_uri",
           "value": {
             "slice": {
-              "uri": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/EMPIAR-10326/8bf3c882-6c45-4b28-9f46-030aac5e177a/d044ff82-49c6-425e-8dd8-899ad9ec1db6.png",
+              "uri": "https://livingobjects.ebi.ac.uk/bioimaging-integrator-data/EMPIAR-10326/8bf3c882-6c45-4b28-9f46-030aac5e177a/d044ff82-49c6-425e-8dd8-899ad9ec1db6.png",
               "size": 512
             }
           }
