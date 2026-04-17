@@ -224,16 +224,20 @@ class JSONLDMetadataParser(ROCrateMetadataParser):
         uri_referenced_object -= type_objects
         uri_referenced_object -= profiles
         undefined_references = uri_referenced_object - subjects
-        unconnected_subjects = subjects - uri_referenced_object
+        inboundless_subjects = subjects - uri_referenced_object
 
-        if URIRef(self.DEFAULT_RO_CRATE_FILENAME) in unconnected_subjects:
-            unconnected_subjects.remove(URIRef(self.DEFAULT_RO_CRATE_FILENAME))
+        metadata_uri = URIRef(ro_crate_metadata_path.resolve().as_uri())
+        if metadata_uri in inboundless_subjects:
+            inboundless_subjects.remove(metadata_uri)
 
-        if len(unconnected_subjects) > 0:
+        if len(inboundless_subjects) > 0:
             self._parse_issues.append(
                 ValidationError(
-                    message=f"Found object not connected to the {self.DEFAULT_RO_CRATE_FILENAME} object: {', '.join(str(unconnected_subjects))}",
-                    severity=Severity.WARNING,
+                    message=(
+                        "Found objects in ro-crate-metadata.json with no inbound "
+                        f"references: {', '.join(sorted(str(subject) for subject in inboundless_subjects))}"
+                    ),
+                    severity=Severity.INFO,
                 )
             )
 

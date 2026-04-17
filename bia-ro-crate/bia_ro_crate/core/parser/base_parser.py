@@ -2,7 +2,8 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import Any
 
-from ..validation import Severity, ValidationError
+from bia_ro_crate.core.validation.severity import Severity
+from bia_ro_crate.core.validation.validation_error import ValidationError
 
 
 class Parser[ParsedType](ABC):
@@ -31,6 +32,10 @@ class Parser[ParsedType](ABC):
             raise RuntimeError("parse() must be called prior to accessing result")
         self._raise_errors()
         return self._result
+
+    @property
+    def issues(self) -> list[ValidationError]:
+        return list(self._parse_issues)
 
     def _raise_errors(self):
         fatal_errors = [
