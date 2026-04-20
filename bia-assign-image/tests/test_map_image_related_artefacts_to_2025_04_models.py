@@ -44,7 +44,7 @@ def pre_2025_04_image_representation_dict() -> dict:
         "model": {"type_name": "ImageRepresentation", "version": 3},
     }
     file_uri = [
-        f"https://uks3/testbucket-bia/{accession_id}/{model_dict['representation_of_uuid']}/{model_dict['uuid']}.ome.zarr",
+        f"https://uks3/bioimaging-sandbox/{accession_id}/{model_dict['representation_of_uuid']}/{model_dict['uuid']}.ome.zarr",
     ]
     model_dict["file_uri"] = file_uri
     return model_dict

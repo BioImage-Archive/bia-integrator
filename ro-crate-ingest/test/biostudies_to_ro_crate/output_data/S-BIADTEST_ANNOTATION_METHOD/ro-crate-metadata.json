@@ -1,0 +1,541 @@
+{
+    "@context": [
+        "https://w3id.org/ro/crate/1.1/context",
+        {
+            "accessionId": {
+                "@id": "schema:identifier"
+            },
+            "acknowledgement": {
+                "@id": "bia:acknowledgement"
+            },
+            "address": {
+                "@id": "schema:address"
+            },
+            "affiliation": {
+                "@id": "schema:memberOf"
+            },
+            "annotationCoverage": {
+                "@id": "bia:annotationCoverage"
+            },
+            "annotationCriteria": {
+                "@id": "bia:annotationCriteria"
+            },
+            "annotationMethod": {
+                "@id": "bia:annotationMethod"
+            },
+            "annotationSourceIndicator": {
+                "@id": "bia:annotationSourceIndicator"
+            },
+            "associatedAnnotationMethod": {
+                "@id": "bia:associatedAnnotationMethod"
+            },
+            "associatedBiologicalEntity": {
+                "@id": "bia:associatedBiologicalEntity"
+            },
+            "associatedCreationProcess": {
+                "@id": "bia:associatedCreationProcess"
+            },
+            "associatedImageAcquisitionProtocol": {
+                "@id": "bia:associatedImageAcquisitionProtocol"
+            },
+            "associatedImageAnalysisMethod": {
+                "@id": "bia:associatedAnalysisMethod"
+            },
+            "associatedImageCorrelationMethod": {
+                "@id": "bia:associatedCorrelationMethod"
+            },
+            "associatedProtocol": {
+                "@id": "bia:associatedProtocol"
+            },
+            "associatedSourceImage": {
+                "@id": "bia:associatedSourceImage"
+            },
+            "associatedSpecimen": {
+                "@id": "bia:associatedSubject"
+            },
+            "associatedSpecimenImagingPreparationProtocol": {
+                "@id": "bia:associatedImagingPreparationProtocol"
+            },
+            "authorNames": {
+                "@id": "bia:authorNames"
+            },
+            "bia": "http://bia/",
+            "biologicalEntity": {
+                "@id": "bia:sampleOf"
+            },
+            "biologicalEntityDescription": {
+                "@id": "bia:biologicalEntityDescription"
+            },
+            "channelBiologicalEntity": {
+                "@id": "bia:channelBiologicalEntity"
+            },
+            "channelContentDescription": {
+                "@id": "bia:channelContentDescription"
+            },
+            "channelLabel": {
+                "@id": "dc:identifier"
+            },
+            "column": {
+                "@id": "csvw:column"
+            },
+            "columnName": {
+                "@id": "csvw:name"
+            },
+            "commonName": {
+                "@id": "http://rs.tdwg.org/dwc/terms/vernacularName"
+            },
+            "contactEmail": {
+                "@id": "schema:email"
+            },
+            "contributor": {
+                "@id": "schema:author"
+            },
+            "csvw": "http://www.w3.org/ns/csvw#",
+            "datePublished": {
+                "@id": "schema:datePublished"
+            },
+            "dc": "http://purl.org/dc/terms/",
+            "description": {
+                "@id": "schema:description"
+            },
+            "displayName": {
+                "@id": "schema:name"
+            },
+            "doi": {
+                "@id": "schema:identifier"
+            },
+            "experimentalVariableDescription": {
+                "@id": "bia:experimentalVariableDescription"
+            },
+            "extrinsicVariableDescription": {
+                "@id": "bia:extrinsicVariableDescription"
+            },
+            "fbbiId": {
+                "@id": "bia:fbbiId"
+            },
+            "featuresAnalysed": {
+                "@id": "bia:featuresAnalysed"
+            },
+            "fiducialsUsed": {
+                "@id": "bia:fiducialsUsed"
+            },
+            "growthProtocol": {
+                "@id": "bia:growthProtocol"
+            },
+            "hasPart": {
+                "@id": "schema:hasPart"
+            },
+            "imageAcquisitionProtocol": {
+                "@id": "bia:imageAcquisitionProtocol"
+            },
+            "imagingInstrumentDescription": {
+                "@id": "bia:imagingInstrumentDescription"
+            },
+            "imagingMethodName": {
+                "@id": "bia:imagingMethodName"
+            },
+            "imagingPreparationProtocol": {
+                "@id": "bia:imagingPreparationProtocol"
+            },
+            "inputImage": {
+                "@id": "bia:inputImage"
+            },
+            "intrinsicVariableDescription": {
+                "@id": "bia:intrinsicVariableDescription"
+            },
+            "keyword": {
+                "@id": "schema:keywords"
+            },
+            "label": {
+                "@id": "schema:name"
+            },
+            "license": {
+                "@id": "schema:license"
+            },
+            "link": {
+                "@id": "schema:url"
+            },
+            "linkDescription": {
+                "@id": "schema:description"
+            },
+            "methodType": {
+                "@id": "bia:annotationMethodType"
+            },
+            "name": {
+                "@id": "schema:name"
+            },
+            "organismClassification": {
+                "@id": "schema:taxonomicRange"
+            },
+            "propertyUrl": {
+                "@id": "csvw:propertyUrl"
+            },
+            "protocol": {
+                "@id": "bia:protocol"
+            },
+            "protocolDescription": {
+                "@id": "schema:description"
+            },
+            "publicationYear": {
+                "@id": "bia:publicationYear"
+            },
+            "pubmedId": {
+                "@id": "bia:pubmedId"
+            },
+            "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+            "relatedPublication": {
+                "@id": "bia:relatedPublication"
+            },
+            "resultOf": {
+                "@id": "bia:resultOf"
+            },
+            "role": {
+                "@id": "bia:role"
+            },
+            "schema": "http://schema.org/",
+            "scientificName": {
+                "@id": "http://rs.tdwg.org/dwc/terms/scientificName"
+            },
+            "seeAlso": {
+                "@id": "rdfs:seeAlso"
+            },
+            "signalChannelInformation": {
+                "@id": "bia:signalChannelInformation"
+            },
+            "signalContrastMechanismDescription": {
+                "@id": "bia:signalContrastMechanismDescription"
+            },
+            "spatialInformation": {
+                "@id": "bia:spatialInformation"
+            },
+            "subject": {
+                "@id": "bia:subject"
+            },
+            "tableSchema": {
+                "@id": "csvw:tableSchema"
+            },
+            "title": {
+                "@id": "schema:name"
+            },
+            "transformationDescription": {
+                "@id": "bia:transformationDescription"
+            },
+            "transformationMatrix": {
+                "@id": "bia:transformationMatrix"
+            },
+            "website": {
+                "@id": "bia:website"
+            }
+        }
+    ],
+    "@graph": [
+        {
+            "@id": "ro-crate-metadata.json",
+            "@type": "CreativeWork",
+            "conformsTo": {
+                "@id": "https://w3id.org/ro/crate/1.1"
+            },
+            "about": {
+                "@id": "./"
+            }
+        },
+        {
+            "@id": "./",
+            "@type": [
+                "Dataset",
+                "bia:Study"
+            ],
+            "name": "BIADTEST ANNOTATION METHOD TEST",
+            "contributor": [
+                {
+                    "@id": "https://orcid.org/0009-0007-4223-1439"
+                }
+            ],
+            "description": "Description 1",
+            "license": "https://creativecommons.org/publicdomain/zero/1.0/",
+            "datePublished": "2023-08-14",
+            "keyword": [],
+            "acknowledgement": null,
+            "hasPart": [
+                {
+                    "@id": "#Study%20Component-1"
+                },
+                {
+                    "@id": "#Annotation-1"
+                },
+                {
+                    "@id": "combined_file_list.tsv"
+                }
+            ],
+            "accessionId": "S-BIADTEST_ANNOTATION_METHOD",
+            "seeAlso": [
+                {
+                    "@id": "https://www.ebi.ac.uk/bioimage-archive/"
+                },
+                {
+                    "@id": "https://www.ebi.ac.uk/bioimage-archive/galleries/galleries.html"
+                }
+            ],
+            "relatedPublication": []
+        },
+        {
+            "@id": "https://www.ebi.ac.uk/bioimage-archive/galleries/galleries.html",
+            "@type": "bia:ExternalReference",
+            "description": "Pretty pictures",
+            "additionalType": null
+        },
+        {
+            "@id": "https://www.ebi.ac.uk/bioimage-archive/",
+            "@type": "bia:ExternalReference",
+            "description": "BIA website",
+            "additionalType": null
+        },
+        {
+            "@id": "https://orcid.org/0009-0007-4223-1439",
+            "@type": [
+                "Person",
+                "bia:Contributor"
+            ],
+            "displayName": "User with affiliaition and orcid",
+            "address": null,
+            "website": null,
+            "affiliation": [
+                {
+                    "@id": "#o1"
+                }
+            ],
+            "role": [
+                "data acquisition",
+                "data curator"
+            ],
+            "contactEmail": "user1@ebi.ac.uk"
+        },
+        {
+            "@id": "#o1",
+            "@type": [
+                "Organisation",
+                "bia:Affiliation"
+            ],
+            "displayName": "Organization with no rorid",
+            "address": "Hinxton, UK",
+            "website": null
+        },
+        {
+            "@id": "combined_file_list.tsv",
+            "@type": [
+                "File",
+                "bia:FileList",
+                "csvw:Table"
+            ],
+            "tableSchema": {
+                "@id": "_:ts0"
+            }
+        },
+        {
+            "@id": "_:ts0",
+            "@type": [
+                "csvw:Schema"
+            ],
+            "column": [
+                {
+                    "@id": "_:col0"
+                },
+                {
+                    "@id": "_:col1"
+                },
+                {
+                    "@id": "_:col2"
+                },
+                {
+                    "@id": "_:col3"
+                },
+                {
+                    "@id": "_:col4"
+                },
+                {
+                    "@id": "_:col5"
+                },
+                {
+                    "@id": "_:col6"
+                }
+            ]
+        },
+        {
+            "@id": "_:col6",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "sourceImage",
+            "propertyUrl": "http://bia/sourceImagePath"
+        },
+        {
+            "@id": "_:col5",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "Channel 1",
+            "propertyUrl": null
+        },
+        {
+            "@id": "_:col4",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "Genotype/Line",
+            "propertyUrl": null
+        },
+        {
+            "@id": "_:col3",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "dataset",
+            "propertyUrl": "http://schema.org/isPartOf"
+        },
+        {
+            "@id": "_:col2",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "type",
+            "propertyUrl": null
+        },
+        {
+            "@id": "_:col1",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "size",
+            "propertyUrl": "http://bia/sizeInBytes"
+        },
+        {
+            "@id": "_:col0",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "path",
+            "propertyUrl": "http://bia/filePath"
+        },
+        {
+            "@id": "#Annotation-1",
+            "@type": [
+                "Dataset",
+                "bia:Dataset"
+            ],
+            "name": "Instance-level mitochondria annotations for volume EM",
+            "description": "This is a general description of the annotation dataset was annotated.",
+            "associatedBiologicalEntity": [],
+            "associatedSpecimenImagingPreparationProtocol": [],
+            "associatedSpecimen": null,
+            "associatedCreationProcess": null,
+            "associatedSourceImage": [],
+            "associatedImageAcquisitionProtocol": [],
+            "associatedAnnotationMethod": [
+                {
+                    "@id": "#Annotation-1"
+                }
+            ],
+            "associatedImageAnalysisMethod": [],
+            "associatedImageCorrelationMethod": [],
+            "associatedProtocol": [],
+            "hasPart": []
+        },
+        {
+            "@id": "#Study%20Component-1",
+            "@type": [
+                "Dataset",
+                "bia:Dataset"
+            ],
+            "name": "Confocal fluorescence images",
+            "description": "Study component description 1",
+            "associatedBiologicalEntity": [
+                {
+                    "@id": "#Biosample-1"
+                }
+            ],
+            "associatedSpecimenImagingPreparationProtocol": [
+                {
+                    "@id": "#Specimen-1"
+                }
+            ],
+            "associatedSpecimen": null,
+            "associatedCreationProcess": null,
+            "associatedSourceImage": [],
+            "associatedImageAcquisitionProtocol": [
+                {
+                    "@id": "#Image%20Acquisition-1"
+                }
+            ],
+            "associatedAnnotationMethod": [],
+            "associatedImageAnalysisMethod": [],
+            "associatedImageCorrelationMethod": [],
+            "associatedProtocol": [],
+            "hasPart": []
+        },
+        {
+            "@id": "#Image%20Acquisition-1",
+            "@type": [
+                "bia:ImageAcquisitionProtocol"
+            ],
+            "title": "Image Acquisition 1 Title",
+            "protocolDescription": "Voxel size 0.0430x0.0430x0.5002 micron^3",
+            "imagingInstrumentDescription": "Microscope and/or telescope (but looking the other way).",
+            "imagingMethodName": [
+                "Confocal microscopy"
+            ],
+            "fbbiId": [
+                "http://purl.obolibrary.org/obo/FBbi_00000251"
+            ]
+        },
+        {
+            "@id": "#Annotation-1",
+            "@type": [
+                "bia:AnnotationMethod"
+            ],
+            "title": "Instance-level mitochondria annotations for volume EM",
+            "protocolDescription": "This is a description that is specific to the details of how the images in this Annotation Dataset were annotated.",
+            "annotationCriteria": null,
+            "annotationCoverage": null,
+            "transformationDescription": null,
+            "spatialInformation": null,
+            "methodType": [
+                "segmentation_mask"
+            ],
+            "annotationSourceIndicator": null
+        },
+        {
+            "@id": "#Specimen-1",
+            "@type": [
+                "bia:SpecimenImagingPreparationProtocol"
+            ],
+            "title": "Specimen 1 Title",
+            "protocolDescription": "Followed step 1, 2 and 3",
+            "signalChannelInformation": []
+        },
+        {
+            "@id": "#Biosample-1",
+            "@type": [
+                "bia:BioSample"
+            ],
+            "title": "Biosample 1 Title",
+            "biologicalEntityDescription": "Specific part of fly.",
+            "experimentalVariableDescription": [],
+            "extrinsicVariableDescription": [],
+            "intrinsicVariableDescription": [],
+            "organismClassification": [
+                {
+                    "@id": "NCBI:txid7227"
+                }
+            ],
+            "growthProtocol": null
+        },
+        {
+            "@id": "NCBI:txid7227",
+            "@type": [
+                "bia:Taxon"
+            ],
+            "commonName": "fruit fly",
+            "scientificName": "Drosophila melanogaster"
+        }
+    ]
+}

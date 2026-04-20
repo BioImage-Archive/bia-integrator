@@ -3,7 +3,8 @@ import re
 from collections.abc import Iterable
 from typing import Any
 
-from bia_shared_datamodels import ro_crate_models, semantic_models
+from bia_ro_crate.models import ro_crate_models
+from bia_shared_datamodels import semantic_models
 
 from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_api import (
     Submission,
@@ -36,7 +37,8 @@ def get_study(
         "name": study_title_from_submission(submission),
         "license": get_license(study_attributes),
         "datePublished": submission_attributes["releasedate"],
-        "description": study_attributes.get("description") or study_attributes.get("abstract"),
+        "description": study_attributes.get("description")
+        or study_attributes.get("abstract"),
         "acknowledgement": study_attributes.get("acknowledgements", None),
         "keyword": get_keywords(study_attributes.get("keywords", [])),
         "contributor": [{"@id": c.id} for c in contributors],

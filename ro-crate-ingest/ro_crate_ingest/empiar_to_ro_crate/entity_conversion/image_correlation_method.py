@@ -1,5 +1,5 @@
 import logging
-from bia_shared_datamodels.ro_crate_models import ImageCorrelationMethod
+from bia_ro_crate.models.ro_crate_models import ImageCorrelationMethod
 from urllib.parse import quote
 
 

@@ -13,10 +13,10 @@ from ro_crate_ingest.empiar_to_ro_crate.empiar_proposal_conversion import (
     convert_empiar_proposal_to_ro_crate,
 )
 from ro_crate_ingest.empiar_to_ro_crate.empiar_proposal_generation import (
-    generate_empiar_proposal
+    generate_empiar_proposal,
 )
 from ro_crate_ingest.minimal_ro_crate.minimal_ro_crate_creation import (
-    make_minimal_ro_crate
+    make_minimal_ro_crate,
 )
 from ro_crate_ingest.ro_crate_modification.modifier import (
     apply_modifications
@@ -33,8 +33,7 @@ logger = logging.getLogger()
 @ro_crate_ingest.callback()
 def main(
     verbose: Annotated[
-        bool,
-        typer.Option("--verbose", "-v", help="Enable debug logging.")
+        bool, typer.Option("--verbose", "-v", help="Enable debug logging.")
     ] = False,
 ):
     if verbose:
@@ -111,18 +110,17 @@ def biostudies_to_ro_crate(
 @ro_crate_ingest.command("generate-empiar-proposal")
 def empiar_proposal(
     proposal_config_path: Annotated[
-        Path, 
-        typer.Argument(help="Path to the yaml proposal config file.")
-    ], 
+        Path, typer.Argument(help="Path to the yaml proposal config file.")
+    ],
     proposal_output_dir_path: Annotated[
-        Optional[Path], 
+        Optional[Path],
         typer.Option(
-            "--proposal-dir-path", 
-            "-p", 
-            case_sensitive=False, 
-            help="Path to output proposal directory."
-        )
-    ] = None
+            "--proposal-dir-path",
+            "-p",
+            case_sensitive=False,
+            help="Path to output proposal directory.",
+        ),
+    ] = None,
 ):
     generate_empiar_proposal(proposal_config_path, proposal_output_dir_path)
 

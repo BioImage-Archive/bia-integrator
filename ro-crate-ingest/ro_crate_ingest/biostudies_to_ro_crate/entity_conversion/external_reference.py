@@ -1,6 +1,6 @@
 import logging
 
-from bia_shared_datamodels import ro_crate_models
+from bia_ro_crate.models import ro_crate_models
 from pydantic import AnyUrl
 
 from ro_crate_ingest.biostudies_to_ro_crate.biostudies.constants import (
@@ -43,7 +43,6 @@ def sanitise_link_and_link_type(
             return str(parsed_url), normalised_link_type
         except:
             return None, None
-        
 
 
 def get_external_references(
@@ -67,13 +66,15 @@ def get_external_references(
         if not link:
             continue
 
-        external_references.append(ro_crate_models.ExternalReference.model_validate(
-            {
-                "@id": link,
-                "@type": "bia:ExternalReference",
-                "description": attributes.get("description"),
-                "additionalType": link_type,
-            }
-        ))
+        external_references.append(
+            ro_crate_models.ExternalReference.model_validate(
+                {
+                    "@id": link,
+                    "@type": "bia:ExternalReference",
+                    "description": attributes.get("description"),
+                    "additionalType": link_type,
+                }
+            )
+        )
 
     return external_references

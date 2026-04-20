@@ -10,7 +10,7 @@
     "size_t": 1,
     "version": 0,
     "file_uri": [
-        "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD609/b0ecfe5d-b32d-4ab6-9c3c-a5afeba0a575/7e0044da-f64a-472a-924e-0395084ba26f.ome.zarr/0"
+        "https://livingobjects.ebi.ac.uk/bioimaging-integrator-data/S-BIAD609/b0ecfe5d-b32d-4ab6-9c3c-a5afeba0a575/7e0044da-f64a-472a-924e-0395084ba26f.ome.zarr/0"
     ],
     "object_creator": "bia_image_conversion",
     "model": {"type_name": "ImageRepresentation", "version": 4},

@@ -31,7 +31,7 @@
           "name": "image_static_display_uri",
           "value": {
               "slice": {
-                "uri": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD-MAP-IMAGE-RELATED-ARTEFACTS-TO-2025-04-MODELS-TEST/321af7aa-4299-4ad2-9ab6-f1ac50b28174-static_display.png",
+                "uri": "https://livingobjects.ebi.ac.uk/bioimaging-integrator-data/S-BIAD-MAP-IMAGE-RELATED-ARTEFACTS-TO-2025-04-MODELS-TEST/321af7aa-4299-4ad2-9ab6-f1ac50b28174-static_display.png",
                 "size": 512
               }
           }

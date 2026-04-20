@@ -36,7 +36,7 @@
                 "name": "image_thumbnail_uri",
                 "value": {
                     "256": {
-                        "uri": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1556/505d6c05-06e4-4364-b018-d313e7ffdd05/e3e5886d-531d-45b5-a999-7dc081688461.png",
+                        "uri": "https://livingobjects.ebi.ac.uk/bioimaging-integrator-data/S-BIAD1556/505d6c05-06e4-4364-b018-d313e7ffdd05/e3e5886d-531d-45b5-a999-7dc081688461.png",
                         "size": 256
                     }
                 }
@@ -46,7 +46,7 @@
                 "name": "image_static_display_uri",
                 "value": {
                     "slice": {
-                        "uri": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1556/505d6c05-06e4-4364-b018-d313e7ffdd05/25034645-2f43-4822-b808-f7364c6aca28.png",
+                        "uri": "https://livingobjects.ebi.ac.uk/bioimaging-integrator-data/S-BIAD1556/505d6c05-06e4-4364-b018-d313e7ffdd05/25034645-2f43-4822-b808-f7364c6aca28.png",
                         "size": 512
                     }
                 }
@@ -245,7 +245,7 @@
                 ],
                 "image_format": ".ome.zarr",
                 "file_uri": [
-                    "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD1556/505d6c05-06e4-4364-b018-d313e7ffdd05/d51ea73b-8c3b-46e6-af81-7d151b712a1d.ome.zarr/0"
+                    "https://livingobjects.ebi.ac.uk/bioimaging-integrator-data/S-BIAD1556/505d6c05-06e4-4364-b018-d313e7ffdd05/d51ea73b-8c3b-46e6-af81-7d151b712a1d.ome.zarr/0"
                 ],
                 "total_size_in_bytes": 204580770,
                 "voxel_physical_size_x": 1.100000011e-07,
@@ -343,7 +343,7 @@
                 "name": "image_thumbnail_uri",
                 "value": {
                     "256": {
-                        "uri": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD634/0931a00e-d4dc-4c82-9809-4fdeffb1fc2e/thumbnail_256x256.png",
+                        "uri": "https://livingobjects.ebi.ac.uk/bioimaging-integrator-data/S-BIAD634/0931a00e-d4dc-4c82-9809-4fdeffb1fc2e/thumbnail_256x256.png",
                         "size": 256
                     }
                 }
@@ -353,7 +353,7 @@
                 "name": "image_static_display_uri",
                 "value": {
                     "slice": {
-                        "uri": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD634/0931a00e-d4dc-4c82-9809-4fdeffb1fc2e/static_display_512x512.png",
+                        "uri": "https://livingobjects.ebi.ac.uk/bioimaging-integrator-data/S-BIAD634/0931a00e-d4dc-4c82-9809-4fdeffb1fc2e/static_display_512x512.png",
                         "size": 512
                     }
                 }
@@ -362,7 +362,7 @@
                 "provenance": "bia_image_conversion",
                 "name": "neuroglancer_view_link",
                 "value": {
-                    "neuroglancer_view_link": "https://neuroglancer-demo.appspot.com/#!%7B%22dimensions%22:%7B%22t%22:%5B1%2C%22%22%5D%2C%22z%22:%5B1%2C%22%22%5D%2C%22y%22:%5B0.00035277777777777776%2C%22m%22%5D%2C%22x%22:%5B0.00035277777777777776%2C%22m%22%5D%7D%2C%22displayDimensions%22:%5B%22x%22%2C%22y%22%5D%2C%22position%22:%5B0%2C0%2C381%2C507%5D%2C%22crossSectionScale%22:2.00720983985605%2C%22projectionScale%22:512%2C%22layers%22:%5B%7B%22type%22:%22image%22%2C%22source%22:%22https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD634/0931a00e-d4dc-4c82-9809-4fdeffb1fc2e/45407560-58f9-4b1a-b268-0e4caea3f094.ome.zarr/0/%7Czarr2:%22%2C%22localDimensions%22:%7B%22c%27%22:%5B1%2C%22%22%5D%7D%2C%22localPosition%22:%5B0%5D%2C%22tab%22:%22source%22%2C%22shaderControls%22:%7B%22normalized%22:%7B%22range%22:%5B13%2C123%5D%7D%7D%2C%22name%22:%22Source%20Image%22%7D%2C%7B%22type%22:%22segmentation%22%2C%22source%22:%22https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD634/2b3c7b46-c31f-4b0a-ac1b-29c2dee8eebf/ae7a197e-a6ad-46dc-aee0-e5f6b3829a93.ome.zarr/0/%7Czarr2:%22%2C%22localDimensions%22:%7B%22c%27%22:%5B1%2C%22%22%5D%7D%2C%22localPosition%22:%5B0%5D%2C%22tab%22:%22segments%22%2C%22segments%22:%5B%5D%2C%22name%22:%22Annotation%201%22%7D%5D%2C%22layout%22:%22xy%22%7D"
+                    "neuroglancer_view_link": "https://neuroglancer-demo.appspot.com/#!%7B%22dimensions%22:%7B%22t%22:%5B1%2C%22%22%5D%2C%22z%22:%5B1%2C%22%22%5D%2C%22y%22:%5B0.00035277777777777776%2C%22m%22%5D%2C%22x%22:%5B0.00035277777777777776%2C%22m%22%5D%7D%2C%22displayDimensions%22:%5B%22x%22%2C%22y%22%5D%2C%22position%22:%5B0%2C0%2C381%2C507%5D%2C%22crossSectionScale%22:2.00720983985605%2C%22projectionScale%22:512%2C%22layers%22:%5B%7B%22type%22:%22image%22%2C%22source%22:%22https://livingobjects.ebi.ac.uk/bioimaging-integrator-data/S-BIAD634/0931a00e-d4dc-4c82-9809-4fdeffb1fc2e/45407560-58f9-4b1a-b268-0e4caea3f094.ome.zarr/0/%7Czarr2:%22%2C%22localDimensions%22:%7B%22c%27%22:%5B1%2C%22%22%5D%7D%2C%22localPosition%22:%5B0%5D%2C%22tab%22:%22source%22%2C%22shaderControls%22:%7B%22normalized%22:%7B%22range%22:%5B13%2C123%5D%7D%7D%2C%22name%22:%22Source%20Image%22%7D%2C%7B%22type%22:%22segmentation%22%2C%22source%22:%22https://livingobjects.ebi.ac.uk/bioimaging-integrator-data/S-BIAD634/2b3c7b46-c31f-4b0a-ac1b-29c2dee8eebf/ae7a197e-a6ad-46dc-aee0-e5f6b3829a93.ome.zarr/0/%7Czarr2:%22%2C%22localDimensions%22:%7B%22c%27%22:%5B1%2C%22%22%5D%7D%2C%22localPosition%22:%5B0%5D%2C%22tab%22:%22segments%22%2C%22segments%22:%5B%5D%2C%22name%22:%22Annotation%201%22%7D%5D%2C%22layout%22:%22xy%22%7D"
                 }
             }
         ],
@@ -775,7 +775,7 @@
                 ],
                 "image_format": ".ome.zarr",
                 "file_uri": [
-                    "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD634/0931a00e-d4dc-4c82-9809-4fdeffb1fc2e/45407560-58f9-4b1a-b268-0e4caea3f094.ome.zarr/0"
+                    "https://livingobjects.ebi.ac.uk/bioimaging-integrator-data/S-BIAD634/0931a00e-d4dc-4c82-9809-4fdeffb1fc2e/45407560-58f9-4b1a-b268-0e4caea3f094.ome.zarr/0"
                 ],
                 "total_size_in_bytes": 705605,
                 "voxel_physical_size_x": 0.00035277777777777776,
@@ -862,7 +862,7 @@
                 "name": "image_thumbnail_uri",
                 "value": {
                     "256": {
-                        "uri": "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD634/2b3c7b46-c31f-4b0a-ac1b-29c2dee8eebf/thumbnail_256_256.png",
+                        "uri": "https://livingobjects.ebi.ac.uk/bioimaging-integrator-data/S-BIAD634/2b3c7b46-c31f-4b0a-ac1b-29c2dee8eebf/thumbnail_256_256.png",
                         "size": 256
                     }
                 }
@@ -988,7 +988,7 @@
                 ],
                 "image_format": ".ome.zarr",
                 "file_uri": [
-                    "https://uk1s3.embassy.ebi.ac.uk/bia-integrator-data/S-BIAD634/2b3c7b46-c31f-4b0a-ac1b-29c2dee8eebf/ae7a197e-a6ad-46dc-aee0-e5f6b3829a93.ome.zarr/0"
+                    "https://livingobjects.ebi.ac.uk/bioimaging-integrator-data/S-BIAD634/2b3c7b46-c31f-4b0a-ac1b-29c2dee8eebf/ae7a197e-a6ad-46dc-aee0-e5f6b3829a93.ome.zarr/0"
                 ],
                 "total_size_in_bytes": 104784,
                 "voxel_physical_size_x": 0.00035277777777777776,

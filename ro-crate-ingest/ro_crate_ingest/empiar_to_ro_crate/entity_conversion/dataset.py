@@ -1,5 +1,5 @@
 import logging
-from bia_shared_datamodels import ro_crate_models
+from bia_ro_crate.models import ro_crate_models
 from itertools import chain
 from ro_crate_ingest.empiar_to_ro_crate.empiar.entry_api_models import Imageset, Entry
 from urllib.parse import quote
@@ -19,7 +19,7 @@ def get_datasets_by_imageset_title(
 
     if yaml_file is None:
         return {
-            title: get_minimal_dataset(imageset) 
+            title: get_minimal_dataset(imageset)
             for title, imageset in imageset_by_name.items()
         }
 
@@ -39,13 +39,13 @@ def get_datasets_by_imageset_title(
 
 
 def get_minimal_dataset(
-    imageset: Imageset, 
+    imageset: Imageset,
 ) -> ro_crate_models.Dataset:
     """
-    Return a minimal dataset, when the calling function is part of the minimal ro-crate route, 
-    and as such there is no yaml proposal file to further populate the dataset. 
+    Return a minimal dataset, when the calling function is part of the minimal ro-crate route,
+    and as such there is no yaml proposal file to further populate the dataset.
     """
-    
+
     id = f"#{quote(f'{imageset.name} {imageset.directory}/')}"
 
     model_dict = {
@@ -59,8 +59,8 @@ def get_minimal_dataset(
 
 def get_dataset(
     imageset: Imageset,
-    dataset_dict: dict, 
-    specimens_yaml: list[dict], 
+    dataset_dict: dict,
+    specimens_yaml: list[dict],
 ) -> ro_crate_models.Dataset:
 
     association_yaml_fields = {
@@ -74,16 +74,16 @@ def get_dataset(
     }
 
     get_assigned_dataset_rembis_and_associations_from_assigned_objects(
-        association_yaml_fields, 
+        association_yaml_fields,
         dataset_dict,
     )
 
     get_associations_via_assigned_specimens(
-        association_yaml_fields, 
-        dataset_dict, 
-        specimens_yaml, 
+        association_yaml_fields,
+        dataset_dict,
+        specimens_yaml,
     )
-    
+
     id = f"#{quote(dataset_dict.get('id', f'{imageset.name} {imageset.directory}/'))}"
 
     model_dict = {
@@ -98,27 +98,37 @@ def get_dataset(
             "specimen_imaging_preparation_protocol_title"
         ],
         "associatedBiologicalEntity": association_yaml_fields["biosample_title"],
-        "associatedAnnotationMethod": association_yaml_fields["annotation_method_title"],
-        "associatedImageAnalysisMethod": association_yaml_fields["image_analysis_method_title"],
-        "associatedImageCorrelationMethod": association_yaml_fields["image_correlation_method_title"],
+        "associatedAnnotationMethod": association_yaml_fields[
+            "annotation_method_title"
+        ],
+        "associatedImageAnalysisMethod": association_yaml_fields[
+            "image_analysis_method_title"
+        ],
+        "associatedImageCorrelationMethod": association_yaml_fields[
+            "image_correlation_method_title"
+        ],
         "associatedProtocol": association_yaml_fields["protocol_title"],
     }
     return ro_crate_models.Dataset(**model_dict)
 
 
 def get_assigned_dataset_rembis_and_associations_from_assigned_objects(
-        association_yaml_fields: dict,
-        dataset_dict: dict, 
+    association_yaml_fields: dict,
+    dataset_dict: dict,
 ) -> dict:
-    
+
     for yaml_object in chain(
         dataset_dict.get("assigned_dataset_rembis", []),
-        dataset_dict.get("assigned_images", []), 
-        dataset_dict.get("assigned_annotations", [])
+        dataset_dict.get("assigned_images", []),
+        dataset_dict.get("assigned_annotations", []),
     ):
         for field in association_yaml_fields:
             if field in yaml_object:
-                titles = [yaml_object[field]] if isinstance(yaml_object[field], str) else yaml_object[field]
+                titles = (
+                    [yaml_object[field]]
+                    if isinstance(yaml_object[field], str)
+                    else yaml_object[field]
+                )
                 for title in titles:
                     id = {"@id": f"#{quote(title)}"}
                     if id not in association_yaml_fields[field]:
@@ -128,14 +138,14 @@ def get_assigned_dataset_rembis_and_associations_from_assigned_objects(
 
 
 def get_associations_via_assigned_specimens(
-        association_yaml_fields: dict, 
-        dataset_dict: dict, 
-        specimens_yaml: list[dict], 
+    association_yaml_fields: dict,
+    dataset_dict: dict,
+    specimens_yaml: list[dict],
 ) -> dict:
-    
+
     specimen_titles = [
-        yaml_object["specimen_title"] 
-        for yaml_object in dataset_dict.get("assigned_images", []) 
+        yaml_object["specimen_title"]
+        for yaml_object in dataset_dict.get("assigned_images", [])
         if "specimen_title" in yaml_object
     ]
 
@@ -143,7 +153,11 @@ def get_associations_via_assigned_specimens(
         if specimen_yaml["title"] in specimen_titles:
             for field in association_yaml_fields:
                 if field in specimen_yaml:
-                    titles = [specimen_yaml[field]] if isinstance(specimen_yaml[field], str) else specimen_yaml[field]
+                    titles = (
+                        [specimen_yaml[field]]
+                        if isinstance(specimen_yaml[field], str)
+                        else specimen_yaml[field]
+                    )
                     for title in titles:
                         id = {"@id": f"#{quote(title)}"}
                         if id not in association_yaml_fields[field]:

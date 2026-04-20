@@ -15,7 +15,7 @@ class Settings(ApiSettings):
         case_sensitive=False,
         extra="ignore",
     )
-    endpoint_url: str = "https://uk1s3.embassy.ebi.ac.uk"
+    endpoint_url: str = "https://livingobjects.ebi.ac.uk"
     bucket_name: str = "bia-integrator-data"
     cache_root_dirpath: Path = Path.home() / ".cache" / "bia-converter"
 

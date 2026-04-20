@@ -1,4 +1,4 @@
-from bia_shared_datamodels import ro_crate_models
+from bia_ro_crate.models import ro_crate_models
 import logging
 
 logger = logging.getLogger("__main__." + __name__)

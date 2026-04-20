@@ -6,7 +6,7 @@ from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_api import (
     Submission,
     File,
 )
-from bia_shared_datamodels import ro_crate_models
+from bia_ro_crate.models import ro_crate_models
 from ro_crate_ingest.biostudies_to_ro_crate.entity_conversion.file_list import (
     convert_filelist_to_dataframe,
     normalise_headers,

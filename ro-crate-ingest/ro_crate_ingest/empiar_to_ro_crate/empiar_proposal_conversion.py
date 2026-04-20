@@ -19,10 +19,11 @@ from ro_crate_ingest.empiar_to_ro_crate.entity_conversion import (
     study,
     file_list,
     protocol,
+    publication
 )
 import logging
 from ro_crate_ingest.empiar_to_ro_crate.empiar.proposal import Proposal
-from bia_shared_datamodels.ro_crate_models import ROCrateCreativeWork
+from bia_ro_crate.models.ro_crate_models import ROCrateCreativeWork
 
 logger = logging.getLogger("__main__." + __name__)
 
@@ -82,19 +83,25 @@ def convert_empiar_proposal_to_ro_crate(proposal_path: Path, crate_path: Path | 
     graph += roc_dataset_title_map.values()
 
     roc_file_lists_objects = file_list.create_file_list(
-        ro_crate_dir, empiar_api_entry, roc_dataset_title_map, yaml_file=yaml_file,
+        ro_crate_dir,
+        empiar_api_entry,
+        roc_dataset_title_map,
+        yaml_file=yaml_file,
     )
     graph += roc_file_lists_objects
 
     roc_contributors = contributor.get_contributors(empiar_api_entry)
     graph += roc_contributors
 
+    roc_publications = publication.get_publications(proposal)
+    graph += roc_publications
+
     roc_study = study.get_study(
         accession_id=accession_id,
         empiar_api_entry=empiar_api_entry,
         contributors=roc_contributors,
         datasets=roc_dataset_title_map.values(),
-        proposal=proposal, 
+        publications=roc_publications,
     )
     graph.append(roc_study)
 

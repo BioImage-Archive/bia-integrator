@@ -1,8 +1,8 @@
 import logging
 
 import bia_integrator_api.models as APIModels
-import bia_shared_datamodels.ro_crate_models as ROCrateModels
-from bia_shared_datamodels.linked_data.pydantic_ld.ROCrateModel import ROCrateModel
+import bia_ro_crate.models.ro_crate_models as ROCrateModels
+from bia_ro_crate.models.linked_data.pydantic_ld.ROCrateModel import ROCrateModel
 from bia_shared_datamodels.package_specific_uuid_creation.ro_crate_uuid_creation import (
     create_protocol_uuid,
 )

@@ -34,7 +34,7 @@ class Settings(ApiSettings):
     default_output_directory: Path = Field(Path(__file__).parents[1] / "output_data")
     local_annotations_server: str | None = Field(None)
 
-    s3_endpoint_url: str = Field("https://uk1s3.embassy.ebi.ac.uk")
+    s3_endpoint_url: str = Field("https://livingobjects.ebi.ac.uk")
     s3_bucket_name: str | None = Field(None)
 
     output_mode: OutputMode = Field(OutputMode.LOCAL)
