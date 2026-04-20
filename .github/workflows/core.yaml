@@ -13,12 +13,41 @@ jobs:
           [
             bia-shared-datamodels,
             core,
-            bia-ro-crate,
           ]
     runs-on: ${{ matrix.os }}
     defaults:
       run:
         working-directory: ${{ matrix.project }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Run image
+        uses: abatilo/actions-poetry@v2
+        with:
+          poetry-version: ${{ matrix.poetry-version }}
+      - name: View poetry --help
+        run: poetry --help
+      - name: Poetry env setup
+        run: poetry env use python
+      - name: Poetry install
+        run: poetry install
+      - name: Check to see if poetry can build
+        run: poetry build
+      - name: Run pytest
+        run: poetry run pytest
+  ci-test-bia-ro-crate:
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.13"]
+        poetry-version: ["2.1.1"]
+        os: [ubuntu-22.04, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: bia-ro-crate
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
