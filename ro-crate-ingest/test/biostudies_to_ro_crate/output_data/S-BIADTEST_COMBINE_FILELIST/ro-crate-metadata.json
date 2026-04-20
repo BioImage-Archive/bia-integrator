@@ -264,6 +264,9 @@
                     "@id": "#Study%20Component-2"
                 },
                 {
+                    "@id": "#Annotations-1"
+                },
+                {
                     "@id": "combined_file_list.tsv"
                 }
             ],
@@ -360,8 +363,19 @@
                 },
                 {
                     "@id": "_:col7"
+                },
+                {
+                    "@id": "_:col8"
                 }
             ]
+        },
+        {
+            "@id": "_:col8",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "sourceImage",
+            "propertyUrl": "http://bia/sourceImagePath"
         },
         {
             "@id": "_:col7",
@@ -426,6 +440,30 @@
             ],
             "columnName": "path",
             "propertyUrl": "http://bia/filePath"
+        },
+        {
+            "@id": "#Annotations-1",
+            "@type": [
+                "Dataset",
+                "bia:Dataset"
+            ],
+            "name": "Segmentation masks",
+            "description": "Segmentation label of individual cells of Drosophila wing disc curated by experts from a model prediction",
+            "associatedBiologicalEntity": [],
+            "associatedSpecimenImagingPreparationProtocol": [],
+            "associatedSpecimen": null,
+            "associatedCreationProcess": null,
+            "associatedSourceImage": [],
+            "associatedImageAcquisitionProtocol": [],
+            "associatedAnnotationMethod": [
+                {
+                    "@id": "#_Annotations-1"
+                }
+            ],
+            "associatedImageAnalysisMethod": [],
+            "associatedImageCorrelationMethod": [],
+            "associatedProtocol": [],
+            "hasPart": []
         },
         {
             "@id": "#Study%20Component-2",
@@ -505,6 +543,22 @@
             "fbbiId": [
                 "http://purl.obolibrary.org/obo/FBbi_00000251"
             ]
+        },
+        {
+            "@id": "#_Annotations-1",
+            "@type": [
+                "bia:AnnotationMethod"
+            ],
+            "title": "Segmentation masks",
+            "protocolDescription": "Cellpose (a generalist algorithm for cell segmentation) was used to predict the annotations. Then, using napari,  images were corrected.",
+            "annotationCriteria": null,
+            "annotationCoverage": null,
+            "transformationDescription": null,
+            "spatialInformation": null,
+            "methodType": [
+                "other"
+            ],
+            "annotationSourceIndicator": null
         },
         {
             "@id": "#Specimen-2",

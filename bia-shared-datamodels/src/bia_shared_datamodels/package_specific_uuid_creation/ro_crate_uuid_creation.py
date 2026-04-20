@@ -52,7 +52,7 @@ def create_protocol_uuid(
 def create_annotation_method_uuid(
     study_uuid: str, ro_crate_id: str
 ) -> tuple[UUID, attribute_models.DocumentUUIDUniqueInputAttribute]:
-    unique_string = unencode_relative_id(ro_crate_id)
+    unique_string = unencode_relative_id(ro_crate_id.removeprefix("#_"))
     return (
         uuid_creation.create_annotation_method_uuid(
             study_uuid=study_uuid, unique_string=unique_string

@@ -56,6 +56,20 @@ def parse_file_list(
             ),
             file_list.data[file_path_col_id],
         )
+    
+    type_column = file_list.get_column_id_by_property(str(RDF.type))
+    if not type_column:
+        file_list.add_column(
+            ro_crate_models.Column.model_validate(
+                {
+                    "columnName": str(RDF.type),
+                    "propertyUrl": str(RDF.type),
+                    "@id": str(RDF.type),
+                    "@type": "csvw:Column",
+                }
+            ),
+            pd.Series(np.nan, index=file_list.data.index)
+        )
 
     return file_list
 
