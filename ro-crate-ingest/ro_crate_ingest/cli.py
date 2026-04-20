@@ -3,6 +3,7 @@ import logging
 from typing import Annotated, Optional
 from pathlib import Path
 from rich.logging import RichHandler
+from bia_ro_crate.validator.validation import bia_roc_validation
 from ro_crate_ingest.save_utils import PersistenceMode
 from ro_crate_ingest.ro_crate_to_api.api_conversion import convert_ro_crate_to_bia_api
 from ro_crate_ingest.biostudies_to_ro_crate.biostudies_conversion import (
@@ -20,7 +21,6 @@ from ro_crate_ingest.minimal_ro_crate.minimal_ro_crate_creation import (
 from ro_crate_ingest.ro_crate_modification.modifier import (
     apply_modifications
 )
-from ro_crate_ingest.validator.validation import bia_roc_validation
 
 ro_crate_ingest = typer.Typer()
 
@@ -95,8 +95,17 @@ def biostudies_to_ro_crate(
             help="Path to output the ro-crate document",
         ),
     ] = None,
+    fail_on_unprocessed_sections: Annotated[
+        bool,
+        typer.Option(
+            "--fail-on-unprocessed-sections",
+            help="Raise an error if there are non-empty sections that cannot be processed",
+        ),
+    ] = False,
 ):
-    convert_biostudies_to_ro_crate(accession_id, crate_path)
+    convert_biostudies_to_ro_crate(
+        accession_id, crate_path, fail_on_unprocessed_sections
+    )
 
 
 @ro_crate_ingest.command("generate-empiar-proposal")

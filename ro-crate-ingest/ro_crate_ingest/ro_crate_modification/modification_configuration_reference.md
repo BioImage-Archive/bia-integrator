@@ -28,9 +28,9 @@ protocols → biosamples (+ taxons) → SIPPs → IAPs → annotation methods.
 Note: `BioSample.growthProtocol` is a single reference; only the first
 `growth_protocol_title` is used if multiple are given.
 
-Note: `Taxon` in the RO-Crate model has no `ncbi_id` field. The value is
-accepted in the config for completeness but is not currently written to
-the RO-Crate entity.
+Note: when `ncbi_id` is provided for a taxon, it is used as the `Taxon`
+entity `@id`. If it is omitted, the fallback is a title-derived ID from
+`scientific_name`.
 
 
 ### `specimen_tracks` (top-level)

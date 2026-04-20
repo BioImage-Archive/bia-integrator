@@ -1,7 +1,7 @@
 import logging
 
-from bia_shared_datamodels import ro_crate_models
-from ro_crate_ingest.bia_ro_crate.bia_ro_crate_metadata import BIAROCrateMetadata
+from bia_ro_crate.models import ro_crate_models
+from bia_ro_crate.core.bia_ro_crate_metadata import BIAROCrateMetadata
 from ro_crate_ingest.ro_crate_modification.modification_config import StudyMetadata
 
 logger = logging.getLogger(__name__)

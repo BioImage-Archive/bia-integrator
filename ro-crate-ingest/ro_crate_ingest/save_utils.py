@@ -1,4 +1,4 @@
-from ro_crate_ingest.bia_ro_crate.file_list import FileList
+from bia_ro_crate.core.file_list import FileList
 from ro_crate_ingest.settings import get_settings
 from ro_crate_ingest.graph_utils import ro_crate_data_entity_id_to_path
 from ro_crate_ingest.api_client import get_local_bia_api_client, get_bia_api_client

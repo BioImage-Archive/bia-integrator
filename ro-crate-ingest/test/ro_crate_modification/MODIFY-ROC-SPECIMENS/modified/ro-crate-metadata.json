@@ -536,7 +536,7 @@
             ]
         },
         {
-            "@id": "#Homo%20sapiens",
+            "@id": "NCBI:txid9606",
             "@type": "bia:Taxon",
             "commonName": "human",
             "scientificName": "Homo sapiens"
@@ -551,7 +551,7 @@
             "intrinsicVariableDescription": [],
             "organismClassification": [
                 {
-                    "@id": "#Homo%20sapiens"
+                    "@id": "NCBI:txid9606"
                 }
             ],
             "growthProtocol": {
@@ -568,7 +568,7 @@
             "intrinsicVariableDescription": [],
             "organismClassification": [
                 {
-                    "@id": "#Homo%20sapiens"
+                    "@id": "NCBI:txid9606"
                 }
             ],
             "growthProtocol": {

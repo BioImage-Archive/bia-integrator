@@ -5,10 +5,11 @@ import re
 from pathlib import Path
 from pydantic import BaseModel, computed_field, Field
 
-from bia_shared_datamodels import ro_crate_models
-from bia_shared_datamodels.linked_data.pydantic_ld.LDModel import ObjectReference
-from ro_crate_ingest.bia_ro_crate.bia_ro_crate_metadata import BIAROCrateMetadata
-from ro_crate_ingest.bia_ro_crate.file_list import FileList
+from bia_ro_crate.models import ro_crate_models
+from bia_ro_crate.models.linked_data.ontology_terms import BIA
+from bia_ro_crate.models.linked_data.pydantic_ld.LDModel import ObjectReference
+from bia_ro_crate.core.bia_ro_crate_metadata import BIAROCrateMetadata
+from bia_ro_crate.core.file_list import FileList
 from ro_crate_ingest.ro_crate_modification.enrichment.image_types import ImageType
 from ro_crate_ingest.ro_crate_modification.enrichment.utils import (
     FILE_TYPE_IMAGE, 
@@ -801,7 +802,7 @@ def _write_associated_protocol(
     if path_col_id is None:
         return
 
-    protocol_col_id = file_list.get_column_id_by_property("http://bia/associatedProtocol")
+    protocol_col_id = file_list.get_column_id_by_property(str(BIA.associatedProtocol))
     if protocol_col_id is None:
         logger.warning("No associated_protocol column found in file list; skipping.")
         return

@@ -1,11 +1,13 @@
 import logging
 import pandas as pd
 
-from bia_shared_datamodels import ro_crate_models
-from ro_crate_ingest.bia_ro_crate.bia_ro_crate_metadata import BIAROCrateMetadata
-from ro_crate_ingest.bia_ro_crate.file_list import FileList
+from bia_ro_crate.models import ro_crate_models
+from bia_ro_crate.models.linked_data.ontology_terms import BIA
+from bia_ro_crate.core.bia_ro_crate_metadata import BIAROCrateMetadata
+from bia_ro_crate.core.file_list import FileList
 from ro_crate_ingest.ro_crate_modification.enrichment.utils import (
     FILE_TYPE_IMAGE,
+    RDF_TYPE_PROPERTY,
     get_dataset_column_id,
     get_or_add_type_column_id,
     get_path_column_id,
@@ -216,9 +218,7 @@ def assign_image_group_protocols(
 
     dataset_col_id = get_dataset_column_id(file_list)
     path_col_id = get_path_column_id(file_list)
-    type_col_id = file_list.get_column_id_by_property(
-        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
-    )
+    type_col_id = file_list.get_column_id_by_property(RDF_TYPE_PROPERTY)
 
     if path_col_id is None:
         logger.warning(
@@ -227,7 +227,7 @@ def assign_image_group_protocols(
         )
         return
 
-    protocol_col_id = file_list.get_column_id_by_property("http://bia/associatedProtocol")
+    protocol_col_id = file_list.get_column_id_by_property(str(BIA.associatedProtocol))
     if protocol_col_id is None:
         logger.warning(
             f"Dataset '{dataset_config.name}': no associated_protocol column found in file list; "

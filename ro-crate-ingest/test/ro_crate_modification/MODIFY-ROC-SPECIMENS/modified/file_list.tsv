@@ -1,7 +1,7 @@
 file_path	size_in_bytes	dataset	type	label	source_image_label	associated_specimen	associated_annotation_method	associated_protocol
 data/README.md	1024	#Default%20dataset						
-data/extra/ts_003.mrc.st	4096000	#Raw%20tilt%20series	http://bia:Image	Specimen_003 tilt_series		#Specimen_003		
-data/tomo/tomo_001.mrc	18000000	#Reconstructed%20tomograms	http://bia:Image	Specimen_001 tomogram	Specimen_001 tilt_series			#Tomogram%20reconstruction
-data/tomo/tomo_002.mrc	18000000	#Reconstructed%20tomograms	http://bia:Image	Specimen_002 tomogram	Specimen_002 tilt_series			#Tomogram%20reconstruction
-data/ts/ts_001.mrc.st	4096000	#Raw%20tilt%20series	http://bia:Image	Specimen_001 tilt_series		#Specimen_001		
-data/ts/ts_002.mrc.st	4096000	#Raw%20tilt%20series	http://bia:Image	Specimen_002 tilt_series		#Specimen_002		
+data/extra/ts_003.mrc.st	4096000	#Raw%20tilt%20series	http://bia/Image	Specimen_003 tilt_series		#Specimen_003		
+data/tomo/tomo_001.mrc	18000000	#Reconstructed%20tomograms	http://bia/Image	Specimen_001 tomogram	Specimen_001 tilt_series			#Tomogram%20reconstruction
+data/tomo/tomo_002.mrc	18000000	#Reconstructed%20tomograms	http://bia/Image	Specimen_002 tomogram	Specimen_002 tilt_series			#Tomogram%20reconstruction
+data/ts/ts_001.mrc.st	4096000	#Raw%20tilt%20series	http://bia/Image	Specimen_001 tilt_series		#Specimen_001		
+data/ts/ts_002.mrc.st	4096000	#Raw%20tilt%20series	http://bia/Image	Specimen_002 tilt_series		#Specimen_002		

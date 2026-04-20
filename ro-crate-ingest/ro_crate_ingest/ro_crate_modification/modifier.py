@@ -2,13 +2,9 @@ import json
 import logging
 import yaml
 
-from bia_shared_datamodels import ro_crate_models
+from bia_ro_crate.models import ro_crate_models
+from bia_ro_crate.core.parser import JSONLDMetadataParser, TSVMetadataParser
 from pathlib import Path
-
-from ro_crate_ingest.bia_ro_crate.parser import (
-    JSONLDMetadataParser, 
-    TSVMetadataParser
-)
 from ro_crate_ingest.save_utils import write_modified_file_list
 
 from ro_crate_ingest.ro_crate_modification.enrichment.enricher import apply_enrichment

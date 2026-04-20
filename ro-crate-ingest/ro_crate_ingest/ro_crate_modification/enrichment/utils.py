@@ -5,22 +5,23 @@ from pathlib import Path
 from urllib.parse import quote
 
 import pandas as pd
+from rdflib import RDF
 
-from bia_shared_datamodels import ro_crate_models
-from bia_shared_datamodels.linked_data.ontology_terms import BIA
-from bia_shared_datamodels.linked_data.pydantic_ld.LDModel import ObjectReference
-from ro_crate_ingest.bia_ro_crate.bia_ro_crate_metadata import BIAROCrateMetadata
-from ro_crate_ingest.bia_ro_crate.file_list import FileList
+from bia_ro_crate.models import ro_crate_models
+from bia_ro_crate.models.linked_data.ontology_terms import BIA, SCHEMA
+from bia_ro_crate.models.linked_data.pydantic_ld.LDModel import ObjectReference
+from bia_ro_crate.core.bia_ro_crate_metadata import BIAROCrateMetadata
+from bia_ro_crate.core.file_list import FileList
 
 logger = logging.getLogger(__name__)
 
 
-RDF_TYPE_PROPERTY = "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
-IS_PART_OF_PROPERTY = "http://schema.org/isPartOf"
-FILE_PATH_PROPERTY = "http://bia/filePath"
+RDF_TYPE_PROPERTY = str(RDF.type)
+IS_PART_OF_PROPERTY = str(SCHEMA.isPartOf)
+FILE_PATH_PROPERTY = str(BIA.filePath)
 SOURCE_IMAGE_LABEL_PROPERTY = "http://bia/sourceImageLabel"
 
-FILE_TYPE_IMAGE = "http://bia:Image"
+FILE_TYPE_IMAGE = str(BIA.Image)
 
 
 def title_to_id(title: str) -> str:

@@ -1,8 +1,8 @@
 import logging
 
-from bia_shared_datamodels import ro_crate_models
-from bia_shared_datamodels.linked_data.pydantic_ld.LDModel import ObjectReference
-from ro_crate_ingest.bia_ro_crate.bia_ro_crate_metadata import BIAROCrateMetadata
+from bia_ro_crate.models import ro_crate_models
+from bia_ro_crate.models.linked_data.pydantic_ld.LDModel import ObjectReference
+from bia_ro_crate.core.bia_ro_crate_metadata import BIAROCrateMetadata
 from ro_crate_ingest.ro_crate_modification.enrichment.utils import (
     ref, 
     refs, 
@@ -26,16 +26,14 @@ def _make_biosample_entities(
     Build Taxon and BioSample entities for a single biosample config.
     Taxons are returned before the BioSample so they exist in the graph
     when the BioSample references them.
-
-    Note: Taxon in ro_crate_models has no ncbi_id field; if provided in
-    the config it is not currently representable in the RO-Crate entity.
     """
     entities: list[ro_crate_models.ROCrateModel] = []
 
     taxon_refs = []
     for taxon in biosample.organism_classification:
+        taxon_id = taxon.ncbi_id or title_to_id(taxon.scientific_name)
         taxon_entity = ro_crate_models.Taxon(**{
-            "@id": title_to_id(taxon.scientific_name),
+            "@id": taxon_id,
             "@type": type_for(ro_crate_models.Taxon),
             "commonName": taxon.common_name,
             "scientificName": taxon.scientific_name,
