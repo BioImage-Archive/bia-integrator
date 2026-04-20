@@ -20,22 +20,12 @@ from rdflib import RDF, URIRef
 
 from bia_ro_crate.core.bia_ro_crate_metadata import BIAROCrateMetadata
 from bia_ro_crate.core.file_list import FileList
-from bia_ro_crate.core.parser.tsv_metadata_parser import TSVMetadataParser
 from ro_crate_ingest.save_utils import PersistenceMode, persist
 
 logger = logging.getLogger("__main__." + __name__)
 
 
-def parse_file_list(
-    bia_rocrate_metadata: BIAROCrateMetadata,
-) -> FileList:
-
-    # For now, assuming this is TSV
-    parser = TSVMetadataParser(bia_rocrate_metadata)
-    parser.parse()
-
-    file_list = parser.result
-
+def prepare_file_list(file_list: FileList) -> FileList:
     size_in_bytes = file_list.get_column_id_by_property(str(BIA.sizeInBytes))
     if not size_in_bytes:
         # TODO: add logic to fetch sizes from files
