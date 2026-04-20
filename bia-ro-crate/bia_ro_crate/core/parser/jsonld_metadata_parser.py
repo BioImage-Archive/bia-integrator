@@ -19,7 +19,8 @@ from bia_ro_crate.core.bia_ro_crate_metadata import BIAROCrateMetadata
 from bia_ro_crate.core.parser.ro_crate_metadata_parser import (
     ROCrateMetadataParser,
 )
-from bia_ro_crate.core.validation import Severity, ValidationError
+from bia_ro_crate.core.validation.severity import Severity
+from bia_ro_crate.core.validation.validation_error import ValidationError
 from rocrate_validator import models, services
 
 

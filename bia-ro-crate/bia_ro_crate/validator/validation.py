@@ -1,8 +1,8 @@
 import logging
 from pathlib import Path
 
-from bia_ro_crate.core.parser import ROCrateParser
-from bia_ro_crate.core.validation import Severity
+from bia_ro_crate.core.parser.ro_crate_parser import ROCrateParser
+from bia_ro_crate.core.validation.severity import Severity
 
 logger = logging.getLogger("__main__." + __name__)
 logging.getLogger().setLevel(logging.INFO)

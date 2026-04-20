@@ -6,7 +6,8 @@ from rdflib import URIRef
 from bia_ro_crate.core.bia_ro_crate_metadata import BIAROCrateMetadata
 from bia_ro_crate.core.file_list import FileList
 from bia_ro_crate.core.parser.file_list_parser import FileListParser
-from bia_ro_crate.core.validation import Severity, ValidationError
+from bia_ro_crate.core.validation.severity import Severity
+from bia_ro_crate.core.validation.validation_error import ValidationError
 
 
 class ROCrateValidator:
