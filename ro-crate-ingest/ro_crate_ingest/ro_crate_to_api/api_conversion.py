@@ -33,10 +33,10 @@ def convert_ro_crate_to_bia_api(
 ):
     ro_crate_parser = ROCrateParser(crate_path)
     ro_crate_parser.parse()
-    parsed_ro_crate = ro_crate_parser.result
+    parsed_submission_metadata = ro_crate_parser.result
 
-    roc_metadata = parsed_ro_crate.metadata
-    file_list_with_sizes = file_list.prepare_file_list(parsed_ro_crate.file_list)
+    roc_metadata = parsed_submission_metadata.metadata
+    file_list_with_sizes = file_list.prepare_file_list(parsed_submission_metadata.file_list)
 
     api_objects = []
     api_study = study.create_api_study(roc_metadata.get_object_lookup())

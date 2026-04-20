@@ -44,7 +44,7 @@ class JSONLDMetadataParser(ROCrateMetadataParser):
 
         super().__init__(ro_crate_root=ro_crate_root, context=context)
 
-    def parse(self, target: str | None = None):
+    def parse(self, target: Path | str | None = None) -> None:
         if target is None:
             target = self.DEFAULT_RO_CRATE_FILENAME
         crate_metadata_path = self._get_metadata_path(target)
@@ -127,7 +127,7 @@ class JSONLDMetadataParser(ROCrateMetadataParser):
         self._raise_errors()
         return rocrate_objects_by_id
 
-    def _get_metadata_path(self, target: Path | str | None):
+    def _get_metadata_path(self, target: Path | str | None) -> Path:
         if target:
             return self._ro_crate_root / target
         else:
@@ -187,7 +187,7 @@ class JSONLDMetadataParser(ROCrateMetadataParser):
         self._raise_errors()
         return SimpleJSONLDContext.SimpleJSONLDContext(prefixes=prefixes, terms=terms)
 
-    def _pre_parse_validation(self, ro_crate_metadata_path):
+    def _pre_parse_validation(self, ro_crate_metadata_path: Path) -> None:
         self._id_reference_validation(ro_crate_metadata_path)
         self._base_ro_crate_validation(ro_crate_metadata_path)
         self._raise_errors()

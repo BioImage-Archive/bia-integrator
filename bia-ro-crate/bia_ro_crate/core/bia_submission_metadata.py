@@ -2,7 +2,7 @@ from bia_ro_crate.core.bia_ro_crate_metadata import BIAROCrateMetadata
 from bia_ro_crate.core.file_list import FileList
 
 
-class ParsedROCrate:
+class BIASubmissionMetadata:
     metadata: BIAROCrateMetadata
     file_list: FileList
 

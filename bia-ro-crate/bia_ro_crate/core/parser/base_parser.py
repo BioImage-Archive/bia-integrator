@@ -22,7 +22,7 @@ class Parser[ParsedType](ABC):
         super().__init__()
 
     @abstractmethod
-    def parse(self, target: Path | str | None):
+    def parse(self, target: Path | str | None) -> None:
         # TODO update this path to always be relative to the root of the ro-crate for consistency
         raise NotImplementedError
 
@@ -37,7 +37,7 @@ class Parser[ParsedType](ABC):
     def issues(self) -> list[ValidationError]:
         return list(self._parse_issues)
 
-    def _raise_errors(self):
+    def _raise_errors(self) -> None:
         fatal_errors = [
             e.to_exception() for e in self._parse_issues if e.severity is Severity.ERROR
         ]
