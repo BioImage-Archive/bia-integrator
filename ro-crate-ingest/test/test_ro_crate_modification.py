@@ -234,14 +234,14 @@ class TestSpecimenTracksWithAdditionalFiles:
                 f"{path}: unexpected associated_specimen {row.iloc[0]['associated_specimen']!r}"
             )
 
-    def test_tomograms_have_source_image_label(self):
+    def test_tomograms_have_associated_source_image(self):
         for path, sid in [
             ("data/tomo/tomo_001.mrc", "001"),
             ("data/tomo/tomo_002.mrc", "002"),
         ]:
             row = self.df[self.df["file_path"] == path]
-            assert row.iloc[0]["source_image_label"] == f"Specimen_{sid} tilt_series", (
-                f"{path}: unexpected source_image_label {row.iloc[0]['source_image_label']!r}"
+            assert row.iloc[0]["associated_source_image"] == f"Specimen_{sid} tilt_series", (
+                f"{path}: unexpected associated_source_image {row.iloc[0]['associated_source_image']!r}"
             )
 
     def test_tomograms_have_reconstruction_protocol(self):

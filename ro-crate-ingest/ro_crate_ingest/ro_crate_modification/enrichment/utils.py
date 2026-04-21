@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 RDF_TYPE_PROPERTY = str(RDF.type)
 IS_PART_OF_PROPERTY = str(SCHEMA.isPartOf)
 FILE_PATH_PROPERTY = str(BIA.filePath)
-SOURCE_IMAGE_LABEL_PROPERTY = "http://bia/sourceImageLabel"
+ASSOCIATED_SOURCE_IMAGE_PROPERTY = str(BIA.associatedSourceImage)
 
 FILE_TYPE_IMAGE = str(BIA.Image)
 
@@ -65,14 +65,14 @@ def get_or_add_type_column_id(file_list: FileList) -> str:
 
 
 def get_or_add_source_image_label_column_id(file_list: FileList) -> str:
-    col_id = file_list.get_column_id_by_property(SOURCE_IMAGE_LABEL_PROPERTY)
+    col_id = file_list.get_column_id_by_property(ASSOCIATED_SOURCE_IMAGE_PROPERTY)
     if col_id is not None:
         return col_id
     new_col = ro_crate_models.Column(**{
-        "@id": "_:col_source_image_label",
+        "@id": "_:col_associated_source_image",
         "@type": ["csvw:Column"],
-        "columnName": "source_image_label",
-        "propertyUrl": SOURCE_IMAGE_LABEL_PROPERTY,
+        "columnName": "associated_source_image",
+        "propertyUrl": ASSOCIATED_SOURCE_IMAGE_PROPERTY,
     })
     file_list.add_column(new_col, pd.Series([None] * len(file_list.data)))
     logger.debug("Added 'source_image_label' column to file list.")
