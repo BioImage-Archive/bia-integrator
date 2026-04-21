@@ -3,7 +3,7 @@ import logging
 import yaml
 
 from bia_ro_crate.models import ro_crate_models
-from bia_ro_crate.core.parser import JSONLDMetadataParser, TSVMetadataParser
+from bia_ro_crate.core.parser.ro_crate_parser import ROCrateParser
 from pathlib import Path
 from ro_crate_ingest.save_utils import write_modified_file_list
 
@@ -54,13 +54,12 @@ def apply_modifications(
         original_crate = json.load(f)
     original_context = original_crate["@context"]
 
-    ro_crate_metadata_parser = JSONLDMetadataParser(ro_crate_path)
-    ro_crate_metadata_parser.parse()
-    ro_crate_metadata = ro_crate_metadata_parser.result
+    ro_crate_parser = ROCrateParser(ro_crate_path)
+    ro_crate_parser.parse()
+    parsed_submission_metadata = ro_crate_parser.result
 
-    file_list_parser = TSVMetadataParser(ro_crate_metadata)
-    file_list_parser.parse()
-    file_list = file_list_parser.result
+    ro_crate_metadata = parsed_submission_metadata.metadata
+    file_list = parsed_submission_metadata.file_list
 
     mod_config = ModificationConfig.model_validate(
         yaml.safe_load(modification_config_path.read_text())
