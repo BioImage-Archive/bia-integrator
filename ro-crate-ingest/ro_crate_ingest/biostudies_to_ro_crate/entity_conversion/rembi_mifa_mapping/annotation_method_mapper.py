@@ -25,7 +25,7 @@ class AnnotationMethodMapper(SimpleMapper):
         attr_dict = attributes_to_dict(section.attributes)
 
         model_dict = {
-            "@id": f"#{quote(section.accno)}",
+            "@id": f"#_{quote(section.accno)}",
             "@type": ["bia:AnnotationMethod"],
             "title": attr_dict["title"],
             "protocolDescription": attr_dict.get("annotation method", ""),

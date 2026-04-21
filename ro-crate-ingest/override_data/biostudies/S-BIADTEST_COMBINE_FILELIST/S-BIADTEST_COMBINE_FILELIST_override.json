@@ -276,6 +276,36 @@
             ]
           }
         ]
+      },
+      {
+        "accno": "Annotations-1",
+        "type": "Annotations",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "Segmentation masks"
+          },
+          {
+            "name": "Annotation overview",
+            "value": "Segmentation label of individual cells of Drosophila wing disc curated by experts from a model prediction"
+          },
+          {
+            "name": "Annotation method",
+            "value": "Cellpose (a generalist algorithm for cell segmentation) was used to predict the annotations. Then, using napari,  images were corrected."
+          },
+          {
+            "name": "Annotation criteria",
+            "value": "Individual cells were labelled in 3D"
+          },
+          {
+            "name": "Annotation coverage",
+            "value": "100% of available data was annotated"
+          },
+          {
+            "name": "File List",
+            "value": "file_list_segmentations.json"
+          }
+        ]
       }
     ]
   },

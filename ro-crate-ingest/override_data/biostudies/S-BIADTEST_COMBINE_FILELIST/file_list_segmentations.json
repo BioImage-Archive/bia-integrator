@@ -1,0 +1,78 @@
+[
+  {
+    "path": "folder1/file1.ome.zarr.zip",
+    "size": 24628037,
+    "attributes": [
+      {
+        "name": "Genotype/Line",
+        "value": "; ubiCAAX-GFP/+ ; neuPH-RFP/+"
+      },
+      {
+        "name": "Channel 1",
+        "value": "CAAX"
+      },
+      {
+        "name": "Source Image",
+        "value": null
+      }
+    ],
+    "type": "file"
+  },
+  {
+    "path": "folder1/file2.ome.zarr.zip",
+    "size": 13161534,
+    "attributes": [
+      {
+        "name": "Genotype/Line",
+        "value": "; ubiCAAX-GFP/+ ; neuPH-RFP/+"
+      },
+      {
+        "name": "Channel 1",
+        "value": "CAAX"
+      },
+      {
+        "name": "Source Image",
+        "value": null
+      }
+    ],
+    "type": "file"
+  },
+  {
+    "path": "folder1/file1_segmentation.png",
+    "size": 13161534,
+    "attributes": [
+      {
+        "name": "Genotype/Line",
+        "value": null
+      },
+      {
+        "name": "Channel 1",
+        "value": null
+      },
+      {
+        "name": "Source Image",
+        "value": "folder1/file1.ome.zarr.zip"
+      }
+    ],
+    "type": "file"
+  },
+  {
+    "path": "folder1/file2_segmentation.png",
+    "size": 13161534,
+    "attributes": [
+      {
+        "name": "Genotype/Line",
+        "value": null
+      },
+      {
+        "name": "Channel 1",
+        "value": null
+      },
+      {
+        "name": "Source Image",
+        "value": "folder1/file2.ome.zarr.zip"
+      }
+    ],
+    "type": "file"
+  }
+]

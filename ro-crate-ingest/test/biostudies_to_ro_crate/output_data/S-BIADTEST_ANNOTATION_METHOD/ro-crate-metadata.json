@@ -432,7 +432,7 @@
             "associatedImageAcquisitionProtocol": [],
             "associatedAnnotationMethod": [
                 {
-                    "@id": "#Annotation-1"
+                    "@id": "#_Annotation-1"
                 }
             ],
             "associatedImageAnalysisMethod": [],
@@ -488,7 +488,7 @@
             ]
         },
         {
-            "@id": "#Annotation-1",
+            "@id": "#_Annotation-1",
             "@type": [
                 "bia:AnnotationMethod"
             ],
