@@ -1,0 +1,80 @@
+# Test modification config: specimen tracks via patterns, additional_files
+# Two datasets spanning a tilt series -> tomogram processing chain.
+# additional_files pulls unassigned data/extra/ts_003.mrc.st into the
+# tilt series dataset as a typed tilt_series image for specimen track
+# participation. Specimen 002 overrides to use a different biosample.
+# Unassigned files (README) go to the automatic default dataset.
+
+rembis:
+  protocols:
+    - title: "Sample preparation"
+      protocol_description: "Standard cryo preparation."
+    - title: "Tomogram reconstruction"
+      protocol_description: "IMOD-based reconstruction."
+
+  biosamples:
+    - title: "HeLa cells (wild type)"
+      biological_entity_description: "HeLa cervical cancer cell line, wild-type."
+      organism_classification:
+        - common_name: "human"
+          scientific_name: "Homo sapiens"
+          ncbi_id: "NCBI:txid9606"
+      growth_protocol_title: "Sample preparation"
+    - title: "HeLa cells (mutant)"
+      biological_entity_description: "HeLa cervical cancer cell line, mutant strain."
+      organism_classification:
+        - common_name: "human"
+          scientific_name: "Homo sapiens"
+          ncbi_id: "NCBI:txid9606"
+      growth_protocol_title: "Sample preparation"
+
+  specimen_imaging_preparation_protocols:
+    - title: "Cryo-vitrification"
+      protocol_description: "Plunge-frozen in liquid ethane."
+
+  image_acquisition_protocols:
+    - title: "Cryo-electron tomography"
+      protocol_description: "Tilt series collected on Titan Krios."
+      imaging_instrument_description: "Thermo Fisher Titan Krios"
+      fbbi_id:
+        - "obo:FBbi_00000256"
+      imaging_method_name:
+        - "Cryo-electron tomography"
+
+specimen_defaults:
+  biosample_title: "HeLa cells (wild type)"
+  specimen_imaging_preparation_protocol_titles:
+    - "Cryo-vitrification"
+
+specimen_tracks:
+  patterns:
+    - "(\\d{3})"
+
+datasets:
+  - name: "Raw tilt series"
+    images:
+      by_type:
+        tilt_series: "**/*.mrc.st"
+    additional_files:
+      data_directories:
+        - "data/extra/"
+      images:
+        - patterns: "**/*.mrc.st"
+          image_type: "tilt_series"
+    specimen_tracks:
+      image_acquisition_protocol_title:
+        dataset:
+          - "Cryo-electron tomography"
+
+  - name: "Reconstructed tomograms"
+    images:
+      by_type:
+        tomogram: "**/*.mrc"
+    specimen_tracks:
+      protocol_titles:
+        tomogram:
+          - "Tomogram reconstruction"
+      specimen_groups:
+        - specimen_ids:
+            - "002"
+          biosample_title: "HeLa cells (mutant)"
