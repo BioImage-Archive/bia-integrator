@@ -1,0 +1,24 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "73f877d6-2b5a-4956-a21d-df1764702f66",
+  "version": 0,
+  "model": {
+    "type_name": "Image",
+    "version": 2
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "c5e57080-dcca-4cc8-a1cb-71dc16f0a2d6"
+      }
+    }
+  ],
+  "label": "TS 027 tilt series",
+  "submission_dataset_uuid": "54af3e7f-de91-4920-bdc3-ac876da86403",
+  "creation_process_uuid": "08fd8d3f-cf70-413a-ab20-0917f8c49611",
+  "original_file_reference_uuid": [
+    "c5e57080-dcca-4cc8-a1cb-71dc16f0a2d6"
+  ]
+}

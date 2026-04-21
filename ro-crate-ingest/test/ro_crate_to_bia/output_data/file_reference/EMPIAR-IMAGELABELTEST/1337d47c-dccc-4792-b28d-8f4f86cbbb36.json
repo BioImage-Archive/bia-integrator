@@ -1,0 +1,42 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "1337d47c-dccc-4792-b28d-8f4f86cbbb36",
+  "version": 0,
+  "model": {
+    "type_name": "FileReference",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "data/particle_lists/TS_026_cyto_ribosomes.csv12"
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "attributes_from_file_list",
+      "value": {
+        "file_path": "data/particle_lists/TS_026_cyto_ribosomes.csv",
+        "size_in_bytes": 12,
+        "dataset": "#Tomograms%20data/tomograms/",
+        "type": "http://bia/AnnotationData",
+        "label": "TS_026 ribosome annotations defocus data",
+        "associated_source_image": [
+          "TS_026 tomogram"
+        ],
+        "associated_subject": null,
+        "associated_annotation_method": [
+          "#Annotation%20of%20ribosomes%20and%20fatty%20acid%20synthase%20%28FAS%29%20in%20defocus%20data"
+        ],
+        "associated_protocol": []
+      }
+    }
+  ],
+  "file_path": "data/particle_lists/TS_026_cyto_ribosomes.csv",
+  "format": ".csv",
+  "size_in_bytes": 12,
+  "uri": "https://ftp.ebi.ac.uk/empiar/world_availability/IMAGELABELTEST/data/particle_lists/TS_026_cyto_ribosomes.csv",
+  "submission_dataset_uuid": "3948e0a3-9b18-4b11-b1c2-096ff4395ffa"
+}

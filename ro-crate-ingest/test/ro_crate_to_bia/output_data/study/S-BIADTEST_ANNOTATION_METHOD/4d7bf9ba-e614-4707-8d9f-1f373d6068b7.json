@@ -1,0 +1,52 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "4d7bf9ba-e614-4707-8d9f-1f373d6068b7",
+  "version": 0,
+  "model": {
+    "type_name": "Study",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "S-BIADTEST_ANNOTATION_METHOD"
+      }
+    }
+  ],
+  "accession_id": "S-BIADTEST_ANNOTATION_METHOD",
+  "doi": null,
+  "licence": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "author": [
+    {
+      "rorid": null,
+      "address": null,
+      "website": null,
+      "orcid": "https://orcid.org/0009-0007-4223-1439",
+      "display_name": "User with affiliaition and orcid",
+      "affiliation": [
+        {
+          "rorid": null,
+          "address": "Hinxton, UK",
+          "website": null,
+          "display_name": "Organization with no rorid"
+        }
+      ],
+      "contact_email": "user1@ebi.ac.uk",
+      "role": [
+        "data acquisition",
+        "data curator"
+      ]
+    }
+  ],
+  "title": "BIADTEST ANNOTATION METHOD TEST",
+  "release_date": "2023-08-14",
+  "description": "Description 1",
+  "keyword": [],
+  "acknowledgement": null,
+  "see_also": [],
+  "related_publication": [],
+  "grant": [],
+  "funding_statement": null
+}

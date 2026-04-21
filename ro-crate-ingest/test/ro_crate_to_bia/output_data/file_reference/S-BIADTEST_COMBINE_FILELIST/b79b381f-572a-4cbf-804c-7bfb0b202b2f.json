@@ -1,0 +1,40 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "b79b381f-572a-4cbf-804c-7bfb0b202b2f",
+  "version": 0,
+  "model": {
+    "type_name": "FileReference",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "folder1/file1_segmentation.png13161534"
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "attributes_from_file_list",
+      "value": {
+        "path": "folder1/file1_segmentation.png",
+        "size": 13161534,
+        "type": "file",
+        "dataset": "#Annotations-1",
+        "Genotype/Line": null,
+        "Channel 1": null,
+        "Channel 2": null,
+        "Channel 3": null,
+        "sourceImage": "folder1/file1.ome.zarr.zip",
+        "http://schema.org/name": "folder1/file1_segmentation.png",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": null
+      }
+    }
+  ],
+  "file_path": "folder1/file1_segmentation.png",
+  "format": ".png",
+  "size_in_bytes": 13161534,
+  "uri": "https://www.ebi.ac.uk/biostudies/files/S-BIADTEST_COMBINE_FILELIST/folder1/file1_segmentation.png",
+  "submission_dataset_uuid": "d2eef6cf-51cc-4b76-ad6b-48fd9c3477b1"
+}

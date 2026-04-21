@@ -1,0 +1,26 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "211239ca-fa4e-4c3e-8670-b9694a18a541",
+  "version": 0,
+  "model": {
+    "type_name": "Image",
+    "version": 2
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "2ad71eaa-8cff-476e-84ed-f024b43c1853 b07939f7-7fe3-47f6-b2a5-b8c48726b053 f248c715-4869-4742-8790-fcb1dafd36c9"
+      }
+    }
+  ],
+  "label": "TS_027 movie stack series",
+  "submission_dataset_uuid": "805747e4-5c9c-4805-b508-24c67baba477",
+  "creation_process_uuid": "516cd92f-a573-43b8-8000-8501842760b5",
+  "original_file_reference_uuid": [
+    "b07939f7-7fe3-47f6-b2a5-b8c48726b053",
+    "2ad71eaa-8cff-476e-84ed-f024b43c1853",
+    "f248c715-4869-4742-8790-fcb1dafd36c9"
+  ]
+}

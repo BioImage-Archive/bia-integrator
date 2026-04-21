@@ -1,0 +1,21 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "c75aed36-96b6-4897-98de-635abd7540d8",
+  "version": 0,
+  "model": {
+    "type_name": "SpecimenImagingPreparationProtocol",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Cryo-ET sample preparation and focused ion beam (FIB) milling"
+      }
+    }
+  ],
+  "title": "Cryo-ET sample preparation and focused ion beam (FIB) milling",
+  "protocol_description": "TEM grids with vitrified yeast cells were clipped into an autogrid with a cut-out. Mounted on a 45° pre-tilt shuttle, grids were transferred into an Aquilos Dual beam microscope (Thermo Fisher Scientific), sputter-coated with platinum for 10–15 s (1 kV, 10 mA, 10 Pa), and subsequently coated with organometallic platinum using the gas injection system (8 s with the stage positioned 3 mm below the coincidence point). In three independent sessions, three grids with five lamellae each were processed at a milling angle of 15°. Agglomerations of several cells were thinned in three steps of rough milling to a thickness of 5 µm at 1 nA ion beam current, 3 µm at 0.5 nA and 1 µm at 0.1 nA. Milling progress was visually monitored between each milling step with the scanning electron microscope beam (10 kV, 50 pA). Fine milling was performed at 50 pA to a target thickness of 200 nm. To render the lamellae conductive for TEM imaging, grids were sputtered with platinum for 5 s (1 kV, 10 mA, 10 Pa) and transferred into cryo-boxes.",
+  "signal_channel_information": []
+}

@@ -1,0 +1,42 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "c5e57080-dcca-4cc8-a1cb-71dc16f0a2d6",
+  "version": 0,
+  "model": {
+    "type_name": "FileReference",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "data/metadata/TS_027.st12"
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "attributes_from_file_list",
+      "value": {
+        "file_path": "data/metadata/TS_027.st",
+        "size_in_bytes": 12,
+        "dataset": "#Tilt%20series%20data/metadata/",
+        "type": "http://bia/Image",
+        "label": "TS 027 tilt series",
+        "associated_source_image": [
+          "TS_027 movie stack series"
+        ],
+        "associated_subject": null,
+        "associated_annotation_method": [],
+        "associated_protocol": [
+          "#Tilt%20series%20preprocessing"
+        ]
+      }
+    }
+  ],
+  "file_path": "data/metadata/TS_027.st",
+  "format": ".st",
+  "size_in_bytes": 12,
+  "uri": "https://ftp.ebi.ac.uk/empiar/world_availability/IMAGELABELTEST/data/metadata/TS_027.st",
+  "submission_dataset_uuid": "54af3e7f-de91-4920-bdc3-ac876da86403"
+}

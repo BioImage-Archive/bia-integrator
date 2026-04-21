@@ -1,0 +1,38 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "2ad71eaa-8cff-476e-84ed-f024b43c1853",
+  "version": 0,
+  "model": {
+    "type_name": "FileReference",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "data/frames/TS_027_002_2.0.tif12"
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "attributes_from_file_list",
+      "value": {
+        "file_path": "data/frames/TS_027_002_2.0.tif",
+        "size_in_bytes": 12,
+        "dataset": "#Movie%20stacks%20data/frames/",
+        "type": "http://bia/Image",
+        "label": "TS_027 movie stack series",
+        "associated_source_image": [],
+        "associated_subject": null,
+        "associated_annotation_method": [],
+        "associated_protocol": []
+      }
+    }
+  ],
+  "file_path": "data/frames/TS_027_002_2.0.tif",
+  "format": ".tif",
+  "size_in_bytes": 12,
+  "uri": "https://ftp.ebi.ac.uk/empiar/world_availability/IMAGELABELTEST/data/frames/TS_027_002_2.0.tif",
+  "submission_dataset_uuid": "805747e4-5c9c-4805-b508-24c67baba477"
+}

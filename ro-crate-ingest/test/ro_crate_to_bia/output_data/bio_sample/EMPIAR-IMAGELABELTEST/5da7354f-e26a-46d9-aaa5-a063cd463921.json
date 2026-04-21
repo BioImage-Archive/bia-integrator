@@ -1,0 +1,32 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "5da7354f-e26a-46d9-aaa5-a063cd463921",
+  "version": 0,
+  "model": {
+    "type_name": "BioSample",
+    "version": 4
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "S. pombe wild-type cells"
+      }
+    }
+  ],
+  "title": "#S.%20pombe%20wild-type%20cells",
+  "organism_classification": [
+    {
+      "additional_metadata": [],
+      "common_name": "Fission yeast",
+      "scientific_name": "Schizosaccharomyces pombe",
+      "ncbi_id": null
+    }
+  ],
+  "biological_entity_description": "S. pombe K972 Sp h- wild-type haploid cells.",
+  "experimental_variable_description": [],
+  "extrinsic_variable_description": [],
+  "intrinsic_variable_description": [],
+  "growth_protocol_uuid": null
+}

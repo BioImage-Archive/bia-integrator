@@ -1,0 +1,36 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "598120a5-7023-4b6a-8515-f9a1b7369524",
+  "version": 0,
+  "model": {
+    "type_name": "FileReference",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "u/Cryo-SEM.zip1620870640"
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "attributes_from_file_list",
+      "value": {
+        "path": "u/Cryo-SEM.zip",
+        "size": 1620870640,
+        "type": "file",
+        "dataset": "#Default%20template.%20No%20Study%20Components",
+        "Description": "Cryo-SEM images",
+        "http://schema.org/name": "u/Cryo-SEM.zip",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": null
+      }
+    }
+  ],
+  "file_path": "u/Cryo-SEM.zip",
+  "format": ".zip",
+  "size_in_bytes": 1620870640,
+  "uri": "https://www.ebi.ac.uk/biostudies/files/S-BSST_PAGETAB_FILES/u/Cryo-SEM.zip",
+  "submission_dataset_uuid": "7758bf95-4486-43bd-a2cb-d3b91d58e759"
+}

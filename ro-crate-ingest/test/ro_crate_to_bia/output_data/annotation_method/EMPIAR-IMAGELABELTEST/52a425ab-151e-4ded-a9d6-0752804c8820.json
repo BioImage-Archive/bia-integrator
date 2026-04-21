@@ -1,0 +1,28 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "52a425ab-151e-4ded-a9d6-0752804c8820",
+  "version": 0,
+  "model": {
+    "type_name": "AnnotationMethod",
+    "version": 4
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Annotation of ribosomes and fatty acid synthase (FAS) in VPP data"
+      }
+    }
+  ],
+  "title": "Annotation of ribosomes and fatty acid synthase (FAS) in VPP data",
+  "protocol_description": "Ribosome and FAS were localized in 4×-binned tomograms (13.48 Å voxel size) in an iterative workflow. Manually curated template matching for ribosomes and non-exhaustive manual picking for FAS (step 1; Supplementary Tables 2 and 3) were used for training 3D CNNs (step 2). CNN predictions were masked with a segmentation of the cytosol. For ribosomes, step 2 was repeated three times (always trained on combined predictions of step 1 and the preceding round) and each round consisted of three simultaneously trained networks with default hyperparameters (Supplementary Tables 2 and 3), except for the number of IF = 4, 8, and 32, to provide a cumulative prediction that is less overfitted to the incomplete training data. Cumulative predictions were manually revised in tom_chooser (ribosomes) and in EMAN2 (FAS) and manual picking was performed in either spectrum-matched or Gaussian-filtered tomograms (σ = 3) for up to three rounds in EMAN2 spt2_boxer (step 3; Supplementary Tables 2 and 3). The particle lists were cleaned for duplicates by applying elliptic distance constraints to the coordinates (Supplementary Note 1 and Supplementary Tables 2 and 3). Template matching for ribosomes was performed with pyTOM by a 3D cross-correlation search over 1,944 Euler angle combinations using the large subunit of S. cerevisiae 80S ribosome map (EMDB accession EMD-3228) scaled to the corresponding pixel size, and a spherical mask (diameter 337 Å). The 2,000–3,000 highest cross correlation scores were manually revised in Gaussian-filtered tomograms (σ = 3) with tom_chooser (pyTOM toolbox). For FAS in the VPP dataset template matching with a published S. cerevisiae FAS33 map (EMDB accession EMD-1623) as reference failed.",
+  "annotation_criteria": null,
+  "annotation_coverage": null,
+  "transformation_description": null,
+  "spatial_information": null,
+  "method_type": [
+    "point_annotations"
+  ],
+  "annotation_source_indicator": null
+}

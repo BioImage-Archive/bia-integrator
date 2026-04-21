@@ -1,0 +1,42 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "3948e0a3-9b18-4b11-b1c2-096ff4395ffa",
+  "version": 0,
+  "model": {
+    "type_name": "Dataset",
+    "version": 2
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "annotation_method_uuid",
+      "value": {
+        "annotation_method_uuid": [
+          "89881ff3-3b36-4f08-9605-8e5dc8a824a6"
+        ]
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "protocol_uuid",
+      "value": {
+        "protocol_uuid": [
+          "7fab1860-094e-494e-a9dd-6b8d057cbb4b"
+        ]
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Tomograms data/tomograms"
+      }
+    }
+  ],
+  "title": "Tomograms",
+  "description": "Tomograms (4-times binned reconstructions, original pixel size 3.3702 Å) from aligned frame stacks (st files in metadata folder, tif files in frames folder), mdoc and xf alignment files (in metadata folder). Naming from TS_026 to TS_045 corresponds to TS_0011 to TS_0020 in the original publication.\nFor each of the 10 tomograms, comprehensive segmentation volumes (32 bit floats, 928x960, 13.48 Å voxel size) of ribosomes, fatty acid synthase (FAS), membranes, organelles (labels) and cytosol are provided in the labels folder. Voxel labels of individual organelles in labels files are defined in organelle_labels.txt.\nRibosome and FAS particle coordinates (csv files) are provided in the corresponding particle_lists folder (in csv files with x, y, z coordinates in columns 1, 2, 3 respectively, 4-times binned pixels with original pixel size 3.3702 Å).",
+  "analysis_method": [],
+  "correlation_method": [],
+  "example_image_uri": [],
+  "submitted_in_study_uuid": "5c5deb1d-8eef-48ce-aa5c-38ea59b6d765"
+}

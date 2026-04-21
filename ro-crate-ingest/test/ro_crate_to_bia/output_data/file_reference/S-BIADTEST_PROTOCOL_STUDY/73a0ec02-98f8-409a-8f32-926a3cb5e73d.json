@@ -18,13 +18,16 @@
       "provenance": "bia_ingest",
       "name": "attributes_from_file_list",
       "value": {
-        "http://bia/filePath": "HPA043018",
-        "http://bia/sizeInBytes": "280865015",
+        "path": "HPA043018",
+        "size": 280865015,
         "type": "directory",
+        "dataset": "#experimentB",
         "Gene Identifier": "ENSG00000003249",
         "Gene Symbol": "DBNDD1",
         "Gene Annotation Comments": "dysbindin domain containing 1",
-        "Channels": "W1 microtubules, W2 FITC GMNN tagged  , W3 Cy3 CDT1 tagged, W4 Cy5 protein of intrest "
+        "Channels": "W1 microtubules, W2 FITC GMNN tagged  , W3 Cy3 CDT1 tagged, W4 Cy5 protein of intrest ",
+        "http://schema.org/name": "HPA043018",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": null
       }
     }
   ],

@@ -18,14 +18,19 @@
       "provenance": "bia_ingest",
       "name": "attributes_from_file_list",
       "value": {
-        "http://bia/filePath": "data/220330/tomograms/TS_010.mrc_aretomo.mrc",
-        "http://bia/sizeInBytes": "16",
-        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "http://bia/Image",
-        "http://schema.org/name": "Tomogram TS_010",
-        "http://bia/sourceImageLabel": "Tilt series TS_010",
-        "http://bia/associatedSubject": "",
-        "http://bia/associatedAnnotationMethod": "",
-        "http://bia/associatedProtocol": "_:Tomogram reconstruction and sub-tomogram averaging"
+        "file_path": "data/220330/tomograms/TS_010.mrc_aretomo.mrc",
+        "size_in_bytes": 16,
+        "dataset": "#Reconstructed%20tomograms%20for%20dataset%202%20%28220330%29%20data/220330/tomograms/",
+        "type": "http://bia/Image",
+        "label": "Tomogram TS_010",
+        "associated_source_image": [
+          "Tilt series TS_010"
+        ],
+        "associated_subject": null,
+        "associated_annotation_method": [],
+        "associated_protocol": [
+          "#Tomogram%20reconstruction%20and%20sub-tomogram%20averaging"
+        ]
       }
     }
   ],

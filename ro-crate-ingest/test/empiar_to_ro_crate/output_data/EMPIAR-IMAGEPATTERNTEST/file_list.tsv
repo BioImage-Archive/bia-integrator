@@ -1,4 +1,4 @@
-file_path	size_in_bytes	dataset	type	label	source_image_label	associated_specimen	associated_annotation_method	associated_protocol
+file_path	size_in_bytes	dataset	type	label	associated_source_image	associated_subject	associated_annotation_method	associated_protocol
 data/HeLa/Raw SEM images/SEM Image - SliceImage - 001.tif	12	#Cryo%20Serial%20FIB/SEM%20of%20HeLa%20cells%20data/HeLa/	http://bia/Image	Cryo-serial pFIB/SEM of HeLa cell				
 data/HeLa/Raw SEM images/SEM Image - SliceImage - 002.tif	12	#Cryo%20Serial%20FIB/SEM%20of%20HeLa%20cells%20data/HeLa/	http://bia/Image	Cryo-serial pFIB/SEM of HeLa cell				
 data/HeLa/Raw SEM images/param.pdf	0	#Cryo%20Serial%20FIB/SEM%20of%20HeLa%20cells%20data/HeLa/						

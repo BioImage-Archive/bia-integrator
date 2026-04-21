@@ -8,6 +8,8 @@ from ro_crate_ingest.empiar_to_ro_crate.empiar.entry_api_models import Entry
 from ro_crate_ingest.empiar_to_ro_crate.empiar.file_api import get_files, EMPIARFile
 from pathlib import Path
 from bia_ro_crate.models import ro_crate_models
+from bia_ro_crate.models.linked_data.ontology_terms import BIA, SCHEMA
+from rdflib import RDF
 from ro_crate_ingest.save_utils import write_filelist
 from typing import Optional
 from urllib.parse import quote
@@ -262,8 +264,8 @@ def expand_row_metadata(
         "dataset": None,
         "type": None,
         "label": None,
-        "source_image_label": None,
-        "associated_specimen": None,
+        "associated_source_image": None,
+        "associated_subject": None,
         "associated_annotation_method": None,
         "associated_protocol": None,
     }
@@ -307,7 +309,7 @@ def update_row(
                 output_row["label"] = f"{label_prefix}_{label_parts}"
 
         specimen_title = yaml_object.get("specimen_title", None)
-        output_row["associated_specimen"] = (
+        output_row["associated_subject"] = (
             f"#{quote(specimen_title)}" if specimen_title else None
         )
 
@@ -330,12 +332,12 @@ def update_row(
         )
 
         if input_label := yaml_object.get("input_label", None):
-            output_row["source_image_label"] = input_label
+            output_row["associated_source_image"] = input_label
         elif input_label_prefix := yaml_object.get("input_label_prefix", None):
             matching_label_parts = find_matching_input_label_parts(
                 all_file_paths, yaml_object.get("input_file_pattern", "")
             )
-            output_row["source_image_label"] = create_input_labels(
+            output_row["associated_source_image"] = create_input_labels(
                 input_label_prefix, matching_label_parts
             )
 
@@ -430,15 +432,15 @@ def get_schema(
 def get_column_list() -> list[ro_crate_models.Column]:
 
     columns_properties = {
-        "file_path": "http://bia/filePath",
-        "size_in_bytes": "http://bia/sizeInBytes",
-        "dataset": "http://schema.org/isPartOf",
-        "type": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
-        "label": "http://schema.org/name",
-        "source_image_label": "http://bia/sourceImageLabel",
-        "associated_specimen": "http://bia/associatedSubject",
-        "associated_annotation_method": "http://bia/associatedAnnotationMethod",
-        "associated_protocol": "http://bia/associatedProtocol",
+        "file_path": BIA.filePath,
+        "size_in_bytes": BIA.sizeInBytes,
+        "dataset": SCHEMA.isPartOf,
+        "type": RDF.type,
+        "label": SCHEMA.name,
+        "associated_source_image": BIA.associatedSourceImage,
+        "associated_subject": BIA.associatedSubject,
+        "associated_annotation_method": BIA.associatedAnnotationMethod,
+        "associated_protocol": BIA.associatedProtocol,
     }
 
     id_no = 0
@@ -451,7 +453,7 @@ def get_column_list() -> list[ro_crate_models.Column]:
             "columnName": column_header,
         }
         if property:
-            model_dict["propertyUrl"] = property
+            model_dict["propertyUrl"] = str(property)
         columns.append(ro_crate_models.Column(**model_dict))
         id_no += 1
 

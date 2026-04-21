@@ -18,11 +18,14 @@
       "provenance": "bia_ingest",
       "name": "attributes_from_file_list",
       "value": {
-        "http://bia/filePath": "folder1/file1.ome.zarr.zip",
-        "http://bia/sizeInBytes": "24628037",
+        "path": "folder1/file1.ome.zarr.zip",
+        "size": 24628037,
         "type": "file",
+        "dataset": "#Study%20Component-1",
         "Genotype/Line": "; ubiCAAX-GFP/+ ; neuPH-RFP/+",
-        "Channel 1": "CAAX"
+        "Channel 1": "CAAX",
+        "http://schema.org/name": "folder1/file1.ome.zarr.zip",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": null
       }
     }
   ],

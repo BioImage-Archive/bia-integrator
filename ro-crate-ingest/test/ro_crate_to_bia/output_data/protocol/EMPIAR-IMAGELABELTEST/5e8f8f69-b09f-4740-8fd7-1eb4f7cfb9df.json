@@ -1,0 +1,20 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "5e8f8f69-b09f-4740-8fd7-1eb4f7cfb9df",
+  "version": 0,
+  "model": {
+    "type_name": "Protocol",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Tilt series preprocessing"
+      }
+    }
+  ],
+  "title": "Tilt series preprocessing",
+  "protocol_description": "Tilt movie frames were aligned using a SerialEM plugin. Tilt series were filtered according to the accumulated electron dose by Fourier cropping using the mtffilter function in etomo (IMOD/BETA4.10.1258), and sorted by tilt angle using a python script. Four-times-binned tilt images were aligned in etomo (IMOD/4.9.4) using patch tracking (typical residual error 0.291–0.569 pixels)."
+}

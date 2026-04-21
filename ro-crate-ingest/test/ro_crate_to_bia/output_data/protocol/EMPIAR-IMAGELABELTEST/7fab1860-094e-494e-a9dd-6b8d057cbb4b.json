@@ -1,0 +1,20 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "7fab1860-094e-494e-a9dd-6b8d057cbb4b",
+  "version": 0,
+  "model": {
+    "type_name": "Protocol",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Tomogram reconstruction"
+      }
+    }
+  ],
+  "title": "Tomogram reconstruction",
+  "protocol_description": "Tomograms were reconstructed via weighted back projection. Tomogram thicknesses ranged between 80–310 nm."
+}

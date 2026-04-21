@@ -1,0 +1,32 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "fb89ad6e-f53b-44dd-9e2d-64f24e2961ec",
+  "version": 0,
+  "model": {
+    "type_name": "BioSample",
+    "version": 4
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Biosample-1 3af9100c-56dd-4419-9bde-f0c43157918f"
+      }
+    }
+  ],
+  "title": "#Biosample-1%203af9100c-56dd-4419-9bde-f0c43157918f",
+  "organism_classification": [
+    {
+      "additional_metadata": [],
+      "common_name": "fruit fly",
+      "scientific_name": "Drosophila melanogaster",
+      "ncbi_id": null
+    }
+  ],
+  "biological_entity_description": "Specific part of fly.",
+  "experimental_variable_description": [],
+  "extrinsic_variable_description": [],
+  "intrinsic_variable_description": [],
+  "growth_protocol_uuid": "3af9100c-56dd-4419-9bde-f0c43157918f"
+}
