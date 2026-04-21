@@ -4,9 +4,7 @@ from pathlib import Path
 from bia_integrator_api import models
 from rich.logging import RichHandler
 
-from bia_ro_crate.core.parser.jsonld_metadata_parser import (
-    JSONLDMetadataParser,
-)
+from bia_ro_crate.core.parser.ro_crate_parser import ROCrateParser
 from ro_crate_ingest.ro_crate_to_api.entity_conversion import (
     annotation_method,
     bio_sample,
@@ -33,10 +31,12 @@ def convert_ro_crate_to_bia_api(
     persistence_mode: PersistenceMode,
     file_ref_url_prefix: str | None,
 ):
-    ro_crate_metadata_parser = JSONLDMetadataParser(crate_path)
-    ro_crate_metadata_parser.parse()
-    roc_metadata = ro_crate_metadata_parser.result
-    crate_graph = roc_metadata.to_graph()
+    ro_crate_parser = ROCrateParser(crate_path)
+    ro_crate_parser.parse()
+    parsed_submission_metadata = ro_crate_parser.result
+
+    roc_metadata = parsed_submission_metadata.metadata
+    file_list_with_sizes = file_list.prepare_file_list(parsed_submission_metadata.file_list)
 
     api_objects = []
     api_study = study.create_api_study(roc_metadata.get_object_lookup())
@@ -90,8 +90,6 @@ def convert_ro_crate_to_bia_api(
         persistence_mode,
     )
     api_objects += specimen_imaging_preparation_protocols
-
-    file_list_with_sizes = file_list.parse_file_list(roc_metadata)
 
     identified_result_data = file_list.process_and_persist_file_references(
         file_list_with_sizes,
