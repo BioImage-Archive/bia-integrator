@@ -26,7 +26,20 @@ class Mapper(ABC):
         raise NotImplementedError
 
     def get_mapped_objects(
-        self, submission: Submission, association_map: dict[type, dict[str, str]]
+        self,
+        submission: Submission,
+        association_map: dict[type, dict[str, str]],
+        unique: bool = True,
     ) -> list[ROCrateModel]:
         self.map(submission, association_map)
-        return self.mapped_object
+
+        if unique:
+            try:
+                return list(set(self.mapped_object))
+            # Account for objects that cannot be hashed (e.g. Taxon)
+            except TypeError as e:
+                raise (e)
+                logging.debug(f"Cannot create set -> {e}. Not checking for uniqueness")
+                return self.mapped_object
+        else:
+            return self.mapped_object

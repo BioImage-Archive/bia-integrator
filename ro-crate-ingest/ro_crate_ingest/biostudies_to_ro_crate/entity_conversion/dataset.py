@@ -192,9 +192,9 @@ def get_association_fields(
         )
 
         if roc_bio_sample_id:
-            association_ro_crate_fields["associatedBiologicalEntity"].append(
-                {"@id": roc_bio_sample_id}
-            )
+            id = {"@id": roc_bio_sample_id}
+            if id not in association_ro_crate_fields["associatedBiologicalEntity"]:
+                association_ro_crate_fields["associatedBiologicalEntity"].append(id)
 
     return association_ro_crate_fields
 
