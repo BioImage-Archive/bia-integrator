@@ -252,8 +252,8 @@
             "value": "Another specimen without growth protocol"
           },
           {
-            "name": "Sample Preparation Protocol for specimen 3",
-            "value": "Followed step 1, 2 and 3"
+            "name": "Sample Preparation Protocol",
+            "value": "For specimen 3 - followed step 1, 2 and 3"
           }
         ]
       },
