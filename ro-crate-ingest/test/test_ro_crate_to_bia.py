@@ -46,6 +46,9 @@ def get_empiar_to_ro_crate_path(accession_id) -> Path:
     return Path(__file__).parent / "empiar_to_ro_crate" / "output_data" / accession_id
 
 
+def get_minimal_to_ro_crate_path(accession_id) -> Path:
+    return Path(__file__).parent / "minimal_to_ro_crate" / "output_data" / accession_id
+
 def accession_id_from_path(ro_crate_path: Path) -> str:
     return ro_crate_path.name
 

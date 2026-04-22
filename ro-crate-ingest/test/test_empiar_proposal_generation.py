@@ -318,15 +318,15 @@ class TestSpecimenGroupOverride:
     def test_default_specimens_have_condition_a_biosample(self):
         specimens = _specimens_by_title(self.proposal)
         for sid in ["Specimen_0001", "Specimen_0002"]:
-            assert specimens[sid]["biosample_title"] == "Test organism cells, condition A"
+            assert specimens[sid]["biosample_title"] == "Test organism cells condition A"
 
     def test_specimen_ids_override_has_condition_b_biosample(self):
         specimens = _specimens_by_title(self.proposal)
-        assert specimens["Specimen_0003"]["biosample_title"] == "Test organism cells, condition B"
+        assert specimens["Specimen_0003"]["biosample_title"] == "Test organism cells condition B"
 
     def test_specimen_pattern_override_has_condition_c_biosample(self):
         specimens = _specimens_by_title(self.proposal)
-        assert specimens["Specimen_0004"]["biosample_title"] == "Test organism cells, condition C"
+        assert specimens["Specimen_0004"]["biosample_title"] == "Test organism cells condition C"
 
     def test_specimen_ids_override_has_alternative_prep_protocol(self):
         specimens = _specimens_by_title(self.proposal)
