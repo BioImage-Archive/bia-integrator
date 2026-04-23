@@ -156,7 +156,24 @@ def write_modified_file_list(
     filelist_path.parent.mkdir(parents=True, exist_ok=True)
 
     id_to_name = file_list.get_column_names()
-    df = file_list.data.rename(columns=id_to_name)
+    normalized_names = {
+        col_id: (
+            "associated_source_image"
+            if name == "source_image_label"
+            else name
+        )
+        for col_id, name in id_to_name.items()
+    }
+    df = file_list.data.rename(columns=normalized_names)
+    if df.columns.duplicated().any():
+        deduped = pd.DataFrame(index=df.index)
+        for column_name in dict.fromkeys(df.columns):
+            same_name = df.loc[:, df.columns == column_name]
+            if same_name.shape[1] == 1:
+                deduped[column_name] = same_name.iloc[:, 0]
+            else:
+                deduped[column_name] = same_name.bfill(axis=1).iloc[:, 0]
+        df = deduped
     df = df.map(lambda x: None if x == [] else x)
 
     df.sort_values(by=df.columns[0], inplace=True)

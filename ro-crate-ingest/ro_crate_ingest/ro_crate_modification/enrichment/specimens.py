@@ -726,10 +726,11 @@ def _write_source_image_labels(
     labels = file_list.data[path_col_id].apply(
         lambda p: path_to_source_label.get(str(p))
     )
-    file_list.data[source_label_col_id] = labels
+    existing = file_list.data[source_label_col_id]
+    file_list.data[source_label_col_id] = existing.where(existing.notna(), labels)
 
     written = int(labels.notna().sum())
-    logger.info(f"Wrote source_image_label for {written} file(s).")
+    logger.info(f"Wrote associated_source_image for {written} file(s).")
 
 
 def _write_associated_specimen(

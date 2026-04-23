@@ -70,7 +70,7 @@ def create_file_list(
             file_list_df, output_ro_crate_path
         )
     elif accession_id:
-        file_list_df = expand_dataframe_metadata([], file_df)
+        file_list_df = expand_dataframe_metadata([], file_df, report_unassigned=False)
         file_list_df = assign_datasets_in_minimal_rocrate(
             file_list_df, empiar_api_entry, datasets_map
         )
@@ -146,11 +146,12 @@ def create_base_dataframe_from_file_paths(accession_id: str):
 def expand_dataframe_metadata(
     path_pattern_objects: list[PatternMatch],
     file_df: pd.DataFrame,
+    report_unassigned: bool = True,
 ):
 
     file_list_df = file_df.apply(
         expand_row_metadata,
-        args=(path_pattern_objects, file_df["file_path"].to_list()),
+        args=(path_pattern_objects, file_df["file_path"].to_list(), report_unassigned),
         axis=1,
     )
 
@@ -252,7 +253,10 @@ def sort_imageset_paths_by_specificity(
 
 
 def expand_row_metadata(
-    row: pd.Series, path_maps: list[PatternMatch], all_file_paths: list[Path]
+    row: pd.Series,
+    path_maps: list[PatternMatch],
+    all_file_paths: list[Path],
+    report_unassigned: bool = True,
 ) -> pd.Series:
     file_path: Path = row["file_path"]
 
@@ -282,7 +286,7 @@ def expand_row_metadata(
             pattern_match.match_count += 1
             break
 
-    if output_row["dataset"] is None:
+    if report_unassigned and output_row["dataset"] is None:
         logger.debug(f"Unassigned file detected: {file_path}")
 
     return pd.Series(output_row)

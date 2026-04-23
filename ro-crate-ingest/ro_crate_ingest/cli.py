@@ -24,10 +24,25 @@ from ro_crate_ingest.ro_crate_modification.modifier import (
 
 ro_crate_ingest = typer.Typer()
 
+
+def configure_library_loggers() -> None:
+    # To keep third-party FTP wire logging quiet, even when --verbose is enabled.
+    logging.getLogger("aioftp").setLevel(logging.INFO)
+    logging.getLogger("aioftp.client").setLevel(logging.INFO)
+    logging.getLogger("urllib3").setLevel(logging.INFO)
+    logging.getLogger("requests_cache").setLevel(logging.INFO)
+    logging.getLogger("requests_cache.actions").setLevel(logging.INFO)
+
+
 logging.basicConfig(
-    level="NOTSET", format="%(message)s", datefmt="[%X]", handlers=[RichHandler()]
+    level="INFO",
+    format="%(message)s",
+    datefmt="[%X]",
+    handlers=[RichHandler()],
+    force=True,
 )
 logger = logging.getLogger()
+configure_library_loggers()
 
 
 @ro_crate_ingest.callback()
@@ -38,6 +53,7 @@ def main(
 ):
     if verbose:
         logging.getLogger().setLevel(logging.DEBUG)
+        configure_library_loggers()
 
 
 @ro_crate_ingest.command("ingest")

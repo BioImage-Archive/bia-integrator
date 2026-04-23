@@ -8,6 +8,9 @@ from pathlib import Path
 from ro_crate_ingest.save_utils import write_modified_file_list
 
 from ro_crate_ingest.ro_crate_modification.enrichment.enricher import apply_enrichment
+from ro_crate_ingest.ro_crate_modification.enrichment.utils import (
+    ASSOCIATED_SOURCE_IMAGE_PROPERTY,
+)
 from ro_crate_ingest.ro_crate_modification.modification_config import ModificationConfig
 
 logger = logging.getLogger(__name__)
@@ -18,20 +21,21 @@ _TYPE_ORDER = {
     ro_crate_models.Study: 1,
     ro_crate_models.Contributor: 2,
     ro_crate_models.Affiliaton: 3,
-    ro_crate_models.FileList: 4,
-    ro_crate_models.Column: 5,
-    ro_crate_models.TableSchema: 6,
-    ro_crate_models.Dataset: 7,
-    ro_crate_models.Protocol: 8,
-    ro_crate_models.ImageAnalysisMethod: 9,
-    ro_crate_models.ImageCorrelationMethod: 10,
-    ro_crate_models.AnnotationMethod: 11,
-    ro_crate_models.Specimen: 12,
-    ro_crate_models.CreationProcess: 13,
-    ro_crate_models.SpecimenImagingPreparationProtocol: 14,
-    ro_crate_models.ImageAcquisitionProtocol: 15,
-    ro_crate_models.Taxon: 16,
-    ro_crate_models.BioSample: 17,
+    ro_crate_models.Publication: 4,
+    ro_crate_models.FileList: 5,
+    ro_crate_models.Column: 6,
+    ro_crate_models.TableSchema: 7,
+    ro_crate_models.Dataset: 8,
+    ro_crate_models.Protocol: 9,
+    ro_crate_models.ImageAnalysisMethod: 10,
+    ro_crate_models.ImageCorrelationMethod: 11,
+    ro_crate_models.AnnotationMethod: 12,
+    ro_crate_models.Specimen: 13,
+    ro_crate_models.CreationProcess: 14,
+    ro_crate_models.SpecimenImagingPreparationProtocol: 15,
+    ro_crate_models.ImageAcquisitionProtocol: 16,
+    ro_crate_models.Taxon: 17,
+    ro_crate_models.BioSample: 18,
 }
 
 
@@ -40,6 +44,29 @@ def _sort_graph(entities):
         type_order = _TYPE_ORDER.get(type(entity), 99)
         return (type_order, entity.id)
     return sorted(entities, key=sort_key)
+
+
+def _normalize_legacy_source_image_column(ro_crate_metadata, file_list) -> None:
+    """
+    If the parsed minimal RO-Crate still carries the old file-list column
+    name/property ('source_image_label' / http://bia/sourceImageLabel), retarget
+    that existing column to the newer associated_source_image shape instead of
+    creating a duplicate column.
+    """
+    try:
+        id_to_name = file_list.get_column_names()
+    except Exception:
+        return
+
+    legacy_col_ids = [
+        col_id for col_id, name in id_to_name.items() if name == "source_image_label"
+    ]
+    for col_id in legacy_col_ids:
+        column = ro_crate_metadata.get_object(col_id)
+        if column is None:
+            continue
+        column.columnName = "associated_source_image"
+        column.propertyUrl = ASSOCIATED_SOURCE_IMAGE_PROPERTY
 
 
 def apply_modifications(
@@ -66,6 +93,7 @@ def apply_modifications(
     )
 
     ro_crate_metadata, file_list = apply_enrichment(ro_crate_metadata, file_list, mod_config)
+    _normalize_legacy_source_image_column(ro_crate_metadata, file_list)
 
     graph_objects = [
         json.loads(entity.model_dump_json(by_alias=True))

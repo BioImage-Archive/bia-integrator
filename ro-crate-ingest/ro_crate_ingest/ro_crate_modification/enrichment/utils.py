@@ -20,8 +20,11 @@ RDF_TYPE_PROPERTY = str(RDF.type)
 IS_PART_OF_PROPERTY = str(SCHEMA.isPartOf)
 FILE_PATH_PROPERTY = str(BIA.filePath)
 ASSOCIATED_SOURCE_IMAGE_PROPERTY = str(BIA.associatedSourceImage)
+LEGACY_SOURCE_IMAGE_LABEL_PROPERTY = "http://bia/sourceImageLabel"
+ASSOCIATED_ANNOTATION_METHOD_PROPERTY = str(BIA.associatedAnnotationMethod)
 
 FILE_TYPE_IMAGE = str(BIA.Image)
+FILE_TYPE_ANNOTATION = str(BIA.AnnotationData)
 
 
 def title_to_id(title: str) -> str:
@@ -46,37 +49,75 @@ def type_for(model_cls) -> str:
     return full_uri
 
 
-# TODO: which columns are always present? Same for source image, below.
-def get_or_add_type_column_id(file_list: FileList) -> str:
-    col_id = file_list.get_column_id_by_property(RDF_TYPE_PROPERTY)
+def _get_or_add_column_id(
+    file_list: FileList,
+    *,
+    property_url: str,
+    column_id: str,
+    column_name: str,
+    coerce_to_object: bool = True,
+    log_level: str = "debug",
+) -> str:
+    col_id = file_list.get_column_id_by_property(property_url)
     if col_id is not None:
-        if file_list.data[col_id].dtype != object:
+        if coerce_to_object and file_list.data[col_id].dtype != object:
             file_list.data[col_id] = file_list.data[col_id].astype(object)
         return col_id
+
     new_col = ro_crate_models.Column(**{
-        "@id": "_:col_type",
+        "@id": column_id,
         "@type": ["csvw:Column"],
-        "columnName": "type",
-        "propertyUrl": RDF_TYPE_PROPERTY,
+        "columnName": column_name,
+        "propertyUrl": property_url,
     })
     file_list.add_column(new_col, pd.Series([None] * len(file_list.data)))
-    logger.info("Added 'type' column to file list.")
+    getattr(logger, log_level)(f"Added '{column_name}' column to file list.")
     return new_col.id
+
+
+# TODO: which columns are always present? Same for source image, below.
+def get_or_add_type_column_id(file_list: FileList) -> str:
+    return _get_or_add_column_id(
+        file_list,
+        property_url=RDF_TYPE_PROPERTY,
+        column_id="_:col_type",
+        column_name="type",
+        coerce_to_object=True,
+        log_level="info",
+    )
+
+
+def get_or_add_associated_source_image_column_id(file_list: FileList) -> str:
+    legacy_col_id = file_list.get_column_id_by_property(LEGACY_SOURCE_IMAGE_LABEL_PROPERTY)
+    if legacy_col_id is not None:
+        if file_list.data[legacy_col_id].dtype != object:
+            file_list.data[legacy_col_id] = file_list.data[legacy_col_id].astype(object)
+        return legacy_col_id
+
+    return _get_or_add_column_id(
+        file_list,
+        property_url=ASSOCIATED_SOURCE_IMAGE_PROPERTY,
+        column_id="_:col_associated_source_image",
+        column_name="associated_source_image",
+        coerce_to_object=True,
+        log_level="debug",
+    )
 
 
 def get_or_add_source_image_label_column_id(file_list: FileList) -> str:
-    col_id = file_list.get_column_id_by_property(ASSOCIATED_SOURCE_IMAGE_PROPERTY)
-    if col_id is not None:
-        return col_id
-    new_col = ro_crate_models.Column(**{
-        "@id": "_:col_associated_source_image",
-        "@type": ["csvw:Column"],
-        "columnName": "associated_source_image",
-        "propertyUrl": ASSOCIATED_SOURCE_IMAGE_PROPERTY,
-    })
-    file_list.add_column(new_col, pd.Series([None] * len(file_list.data)))
-    logger.debug("Added 'source_image_label' column to file list.")
-    return new_col.id
+    # Backward-compatible alias: source_image_label now maps to associated_source_image.
+    return get_or_add_associated_source_image_column_id(file_list)
+
+
+def get_or_add_associated_annotation_method_column_id(file_list: FileList) -> str:
+    return _get_or_add_column_id(
+        file_list,
+        property_url=ASSOCIATED_ANNOTATION_METHOD_PROPERTY,
+        column_id="_:col_associated_annotation_method",
+        column_name="associated_annotation_method",
+        coerce_to_object=True,
+        log_level="debug",
+    )
 
 
 def get_dataset_column_id(file_list: FileList) -> str | None:

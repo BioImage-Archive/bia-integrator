@@ -154,6 +154,42 @@ image_groups:
 `associations`, and `specimen_tracks` in the same dataset block.
 
 
+### `datasets[].annotations`
+
+Assign annotation files within a dataset. Each entry matches files by glob
+pattern and writes annotation metadata into the file list:
+
+- file `type` is set to `bia:AnnotationData`
+- `associated_annotation_method` is written from `annotation_method_titles`
+- `associated_source_image` is written from `associated_source_image`
+
+```yaml
+annotations:
+  - patterns:
+      - "**/*_mask.json"
+    annotation_method_titles:
+      - "Manual segmentation"
+    associated_source_image:
+      - "HeLa_tomogram_001"
+  - patterns:
+      - "**/*_labels.csv"
+    annotation_method_titles:
+      - "Manual segmentation"
+    associated_source_image:
+      - "HeLa_tomogram_002"
+      - "HeLa_tomogram_003"
+```
+
+| Field | Required | Description |
+|---|---|---|
+| `patterns` | Yes | Glob patterns identifying annotation files in the dataset. |
+| `annotation_method_titles` | Yes | AnnotationMethod titles to write to `associated_annotation_method`. Must be non-empty. |
+| `associated_source_image` | Yes | Source image label(s) to write to `associated_source_image`. Must be non-empty. |
+
+`annotations` can be combined with `images`, `additional_files`,
+`image_groups`, `associations`, and/or `specimen_tracks` in the same dataset block.
+
+
 ### `datasets[].associations`
 
 Explicit REMBI associations written to the Dataset entity. All fields are

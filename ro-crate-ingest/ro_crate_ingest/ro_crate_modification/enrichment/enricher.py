@@ -29,6 +29,7 @@ def apply_enrichment(
           image marking, including typed images for specimen tracks).
        c. Apply image assignment for files already in the dataset.
        d. Write image-group protocol associations.
+       e. Apply annotation assignment for files already in the dataset.
     4. Identify and assign specimen tracks (if specimen_tracks configured).
     5. Create the default dataset and assign any remaining unassigned files.
 
@@ -56,6 +57,11 @@ def apply_enrichment(
 
         if dataset_config.image_groups:
             assignments.assign_image_group_protocols(
+                file_list, ro_crate_metadata, dataset_config
+            )
+
+        if dataset_config.annotations:
+            assignments.assign_annotations_for_dataset(
                 file_list, ro_crate_metadata, dataset_config
             )
 
