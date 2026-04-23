@@ -34,7 +34,6 @@ def convert_bio_sample(
     crate_objects_by_id: dict[str, ROCrateModel],
     study_uuid: str,
 ) -> APIModels.BioSample:
-
     taxons = []
     for taxon_reference in ro_crate_bio_sample.organismClassification:
         taxons.append(convert_taxon(crate_objects_by_id[taxon_reference.id]))
@@ -49,7 +48,7 @@ def convert_bio_sample(
 
     bio_sample = {
         "uuid": str(uuid),
-        "title": ro_crate_bio_sample.id,
+        "title": ro_crate_bio_sample.title,
         "version": 0,
         "organism_classification": taxons,
         "biological_entity_description": ro_crate_bio_sample.biologicalEntityDescription,

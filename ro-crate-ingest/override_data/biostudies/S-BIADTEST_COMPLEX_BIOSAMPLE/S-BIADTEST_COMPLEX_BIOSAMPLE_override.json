@@ -244,6 +244,20 @@
         ]
       },
       {
+        "accno": "Specimen-3",
+        "type": "Specimen",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "Another specimen without growth protocol"
+          },
+          {
+            "name": "Sample Preparation Protocol",
+            "value": "For specimen 3 - followed step 1, 2 and 3"
+          }
+        ]
+      },
+      {
         "accno": "Image Acquisition-1",
         "type": "Image Acquisition",
         "attributes": [
@@ -417,6 +431,61 @@
               {
                 "name": "Specimen",
                 "value": "Specimen without growth protocol"
+              },
+              {
+                "name": "Image acquisition",
+                "value": "Image Acquisition 1 Title"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "accno": "Study Component-4",
+        "type": "Study Component",
+        "attributes": [
+          {
+            "name": "Name",
+            "value": "Component 4"
+          },
+          {
+            "name": "Description",
+            "value": "Has 2 associations with the two specimens pointing to same biosample - to test multiple entity bug."
+          },
+          {
+            "name": "File List",
+            "value": "file_list_test_4.json"
+          }
+        ],
+        "subsections": [
+          {
+            "type": "Associations",
+            "attributes": [
+              {
+                "name": "Biosample",
+                "value": "Biosample with organism attribute"
+              },
+              {
+                "name": "Specimen",
+                "value": "Specimen without growth protocol"
+              },
+              {
+                "name": "Image acquisition",
+                "value": "Image Acquisition 1 Title"
+              }
+            ]
+          },
+          {
+            "type": "Associations",
+            "attributes": [
+              {
+                "name": "Biosample",
+                "value": "Biosample with organism attribute"
+              },
+              {
+                "name": "Specimen",
+                "value": "Another specimen without growth protocol"
+
               },
               {
                 "name": "Image acquisition",
