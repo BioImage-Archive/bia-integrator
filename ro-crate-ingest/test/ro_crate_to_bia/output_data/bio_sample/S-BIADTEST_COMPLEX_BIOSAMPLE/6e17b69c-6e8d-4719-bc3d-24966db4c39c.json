@@ -15,7 +15,7 @@
       }
     }
   ],
-  "title": "#Biosample-4",
+  "title": "Second Biosample with organism subsection without ncbi id",
   "organism_classification": [
     {
       "additional_metadata": [],
