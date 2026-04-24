@@ -19,5 +19,7 @@
   "image_acquisition_protocol_uuid": [],
   "input_image_uuid": [],
   "protocol_uuid": [],
-  "annotation_method_uuid": ["4f3069cc-86de-49b8-9ed7-484b5d5316da"]
+  "annotation_method_uuid": [
+    "4f3069cc-86de-49b8-9ed7-484b5d5316da"
+  ]
 }

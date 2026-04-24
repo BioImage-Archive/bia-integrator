@@ -16,7 +16,9 @@
     }
   ],
   "subject_specimen_uuid": null,
-  "image_acquisition_protocol_uuid": ["d00b8468-2364-46a0-9ccc-e1bb1d86793c"],
+  "image_acquisition_protocol_uuid": [
+    "d00b8468-2364-46a0-9ccc-e1bb1d86793c"
+  ],
   "input_image_uuid": [],
   "protocol_uuid": [],
   "annotation_method_uuid": []

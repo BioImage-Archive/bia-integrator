@@ -15,7 +15,7 @@
       }
     }
   ],
-  "title": "#Biosample-2",
+  "title": "Biosample with organism attribute",
   "organism_classification": [
     {
       "additional_metadata": [],

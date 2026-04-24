@@ -1,6 +1,6 @@
 {
   "object_creator": "bia_ingest",
-  "uuid": "2003b507-c6c7-4463-923a-55581b850a17",
+  "uuid": "2f59521d-0fc6-4126-87c7-7dff1b3bb1f5",
   "version": 0,
   "model": {
     "type_name": "Dataset",
@@ -12,7 +12,7 @@
       "name": "image_acquisition_protocol_uuid",
       "value": {
         "image_acquisition_protocol_uuid": [
-          "c3b0b8c1-cb1c-4070-8ee7-1b7a14ab5e0e"
+          "0f0a0a13-c734-4580-902e-53126c5070cd"
         ]
       }
     },
@@ -21,7 +21,8 @@
       "name": "specimen_imaging_preparation_protocol_uuid",
       "value": {
         "specimen_imaging_preparation_protocol_uuid": [
-          "7f60f374-e3dc-42b0-b53e-299f13f2ddf5"
+          "ffb2b974-01f7-43c3-a4c4-7812d4a4f823",
+          "7d75f831-8fb3-4bbe-9937-00f0009ca6c0"
         ]
       }
     },
@@ -30,7 +31,7 @@
       "name": "bio_sample_uuid",
       "value": {
         "bio_sample_uuid": [
-          "ea04c914-a368-431c-af65-f4eedde76d47"
+          "8ac0b5ed-3552-436b-9d90-9374997b94c3"
         ]
       }
     },
@@ -38,14 +39,14 @@
       "provenance": "bia_ingest",
       "name": "uuid_unique_input",
       "value": {
-        "uuid_unique_input": "DNA_damage/WT/NP_2h/Rep2"
+        "uuid_unique_input": "Study Component-4"
       }
     }
   ],
-  "title": "Wild Type 2h replicate-2",
-  "description": null,
+  "title": "Component 4",
+  "description": "Has 2 associations with the two specimens pointing to same biosample - to test multiple entity bug.",
   "analysis_method": [],
   "correlation_method": [],
   "example_image_uri": [],
-  "submitted_in_study_uuid": "6c7bd4af-6d77-433f-a5b6-0dbc545ff214"
+  "submitted_in_study_uuid": "6f707d67-3320-4bec-b0a3-8291f2275b97"
 }
