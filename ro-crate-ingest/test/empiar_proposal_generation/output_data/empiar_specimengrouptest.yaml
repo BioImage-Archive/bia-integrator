@@ -2,21 +2,21 @@ accession_id: "EMPIAR-SPECIMENGROUPTEST"
 paper_doi: ["https://doi.org/10.0000/test.0004"]
 rembis:
   BioSample:
-    - title: "Test organism cells, condition A"
+    - title: "Test organism cells condition A"
       organism_classification:
         - common_name: "Test organism"
           scientific_name: "Testus organismicus"
           ncbi_id: "NCBI:txid000001"
       biological_entity_description: "Test organism cells under condition A."
       growth_protocol_title: "Cell culture"
-    - title: "Test organism cells, condition B"
+    - title: "Test organism cells condition B"
       organism_classification:
         - common_name: "Test organism"
           scientific_name: "Testus organismicus"
           ncbi_id: "NCBI:txid000001"
       biological_entity_description: "Test organism cells under condition B."
       growth_protocol_title: "Cell culture"
-    - title: "Test organism cells, condition C"
+    - title: "Test organism cells condition C"
       organism_classification:
         - common_name: "Test organism"
           scientific_name: "Testus organismicus"
@@ -34,21 +34,21 @@ rembis:
       protocol_description: "Special grid prep for condition C."
   Specimen:
     - title: "Specimen_0001"
-      biosample_title: "Test organism cells, condition A"
+      biosample_title: "Test organism cells condition A"
       specimen_imaging_preparation_protocol_title:
         - "Grid preparation"
         - "Cryo-FIB milling"
     - title: "Specimen_0002"
-      biosample_title: "Test organism cells, condition A"
+      biosample_title: "Test organism cells condition A"
       specimen_imaging_preparation_protocol_title:
         - "Grid preparation"
         - "Cryo-FIB milling"
     - title: "Specimen_0003"
-      biosample_title: "Test organism cells, condition B"
+      biosample_title: "Test organism cells condition B"
       specimen_imaging_preparation_protocol_title:
         - "Alternative grid preparation"
     - title: "Specimen_0004"
-      biosample_title: "Test organism cells, condition C"
+      biosample_title: "Test organism cells condition C"
       specimen_imaging_preparation_protocol_title:
         - "Special grid preparation"
   ImageAcquisitionProtocol:

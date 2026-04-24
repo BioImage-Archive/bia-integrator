@@ -1,0 +1,33 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "4d21183f-a0f2-4af1-a7df-b631fc6b41b2",
+  "version": 0,
+  "model": {
+    "type_name": "Dataset",
+    "version": 2
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "annotation_method_uuid",
+      "value": {
+        "annotation_method_uuid": [
+          "9db50f04-839b-4b23-9b7b-f043436468a9"
+        ]
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Annotation-1"
+      }
+    }
+  ],
+  "title": "Instance-level mitochondria annotations for volume EM",
+  "description": "This is a general description of the annotation dataset was annotated.",
+  "analysis_method": [],
+  "correlation_method": [],
+  "example_image_uri": [],
+  "submitted_in_study_uuid": "4d7bf9ba-e614-4707-8d9f-1f373d6068b7"
+}

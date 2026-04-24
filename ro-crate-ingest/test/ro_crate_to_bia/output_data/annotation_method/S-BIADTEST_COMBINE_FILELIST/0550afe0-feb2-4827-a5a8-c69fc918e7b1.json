@@ -1,0 +1,28 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "0550afe0-feb2-4827-a5a8-c69fc918e7b1",
+  "version": 0,
+  "model": {
+    "type_name": "AnnotationMethod",
+    "version": 4
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Annotations-1"
+      }
+    }
+  ],
+  "title": "Segmentation masks",
+  "protocol_description": "Cellpose (a generalist algorithm for cell segmentation) was used to predict the annotations. Then, using napari,  images were corrected.",
+  "annotation_criteria": null,
+  "annotation_coverage": null,
+  "transformation_description": null,
+  "spatial_information": null,
+  "method_type": [
+    "other"
+  ],
+  "annotation_source_indicator": null
+}

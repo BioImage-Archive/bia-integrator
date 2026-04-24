@@ -1,0 +1,51 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "805747e4-5c9c-4805-b508-24c67baba477",
+  "version": 0,
+  "model": {
+    "type_name": "Dataset",
+    "version": 2
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "image_acquisition_protocol_uuid",
+      "value": {
+        "image_acquisition_protocol_uuid": [
+          "49210788-0548-4b13-998a-e5dc85346215"
+        ]
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "specimen_imaging_preparation_protocol_uuid",
+      "value": {
+        "specimen_imaging_preparation_protocol_uuid": [
+          "c75aed36-96b6-4897-98de-635abd7540d8"
+        ]
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "bio_sample_uuid",
+      "value": {
+        "bio_sample_uuid": [
+          "5da7354f-e26a-46d9-aaa5-a063cd463921"
+        ]
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Movie stacks data/frames"
+      }
+    }
+  ],
+  "title": "Movie stacks",
+  "description": "Raw unaligned multi-frame micrographs were aligned, sorted and combined into tilt series stacks using Warp (st files in metadata folder) and tomograms reconstructed using etomo (IMOD) (rec files in tomgrams folder). Naming from TS_026 to TS_045 corresponds to TS_0011 to TS_0020 in the original publication.\nOriginal metadata files (mdocs_ori) and the count ref file (dm4 file) are provided in the frames folder.",
+  "analysis_method": [],
+  "correlation_method": [],
+  "example_image_uri": [],
+  "submitted_in_study_uuid": "5c5deb1d-8eef-48ce-aa5c-38ea59b6d765"
+}

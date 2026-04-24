@@ -18,14 +18,17 @@
       "provenance": "bia_ingest",
       "name": "attributes_from_file_list",
       "value": {
-        "http://bia/filePath": "data/220330/alignment/TS_008.mrc/TS_008.mrc.st",
-        "http://bia/sizeInBytes": "27",
-        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "http://bia/Image",
-        "http://schema.org/name": "Tilt series TS_008",
-        "http://bia/sourceImageLabel": "Unaligned, unbinned, multi-frame micrograph TS_008",
-        "http://bia/associatedSubject": "",
-        "http://bia/associatedAnnotationMethod": "",
-        "http://bia/associatedProtocol": ""
+        "file_path": "data/220330/alignment/TS_008.mrc/TS_008.mrc.st",
+        "size_in_bytes": 27,
+        "dataset": "#Tilt%20series%20and%20alignment%20information%20for%20dataset%202%20%28220330%29%20data/220330/alignment/",
+        "type": "http://bia/Image",
+        "label": "Tilt series TS_008",
+        "associated_source_image": [
+          "Unaligned unbinned multi-frame micrograph TS_008"
+        ],
+        "associated_subject": null,
+        "associated_annotation_method": [],
+        "associated_protocol": []
       }
     }
   ],

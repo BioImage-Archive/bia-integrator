@@ -329,7 +329,7 @@
             "@type": [
                 "csvw:Column"
             ],
-            "columnName": "associated_specimen",
+            "columnName": "associated_subject",
             "propertyUrl": "http://bia/associatedSubject"
         },
         {
@@ -337,8 +337,8 @@
             "@type": [
                 "csvw:Column"
             ],
-            "columnName": "source_image_label",
-            "propertyUrl": "http://bia/sourceImageLabel"
+            "columnName": "associated_source_image",
+            "propertyUrl": "http://bia/associatedSourceImage"
         },
         {
             "@id": "_:col4",

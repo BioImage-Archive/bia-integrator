@@ -1,0 +1,27 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "ca7bfdec-dc64-47d0-8b01-30c2c1f2070c",
+  "version": 0,
+  "model": {
+    "type_name": "CreationProcess",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "ea48dfaf-6bad-4abb-ba75-eac5a67b4110"
+      }
+    }
+  ],
+  "subject_specimen_uuid": null,
+  "image_acquisition_protocol_uuid": [],
+  "input_image_uuid": [
+    "7430148b-2c83-410e-ad7d-6217a8ac6112"
+  ],
+  "protocol_uuid": [
+    "7fab1860-094e-494e-a9dd-6b8d057cbb4b"
+  ],
+  "annotation_method_uuid": []
+}

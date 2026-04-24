@@ -1,0 +1,36 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "476be7c0-6f48-4334-b088-0e01d70d207b",
+  "version": 0,
+  "model": {
+    "type_name": "FileReference",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "u/Lisette Rodriguez.zip3508061759"
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "attributes_from_file_list",
+      "value": {
+        "path": "u/Lisette Rodriguez.zip",
+        "size": 3508061759,
+        "type": "file",
+        "dataset": "#Default%20template.%20No%20Study%20Components",
+        "Description": "SEM images",
+        "http://schema.org/name": "u/Lisette Rodriguez.zip",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": null
+      }
+    }
+  ],
+  "file_path": "u/Lisette Rodriguez.zip",
+  "format": ".zip",
+  "size_in_bytes": 3508061759,
+  "uri": "https://www.ebi.ac.uk/biostudies/files/S-BSST_PAGETAB_FILES/u/Lisette Rodriguez.zip",
+  "submission_dataset_uuid": "7758bf95-4486-43bd-a2cb-d3b91d58e759"
+}

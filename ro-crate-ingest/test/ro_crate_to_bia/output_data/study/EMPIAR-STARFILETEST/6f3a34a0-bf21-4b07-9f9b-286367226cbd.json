@@ -16,6 +16,7 @@
     }
   ],
   "accession_id": "EMPIAR-STARFILETEST",
+  "doi": null,
   "licence": "https://creativecommons.org/publicdomain/zero/1.0/",
   "author": [
     {
@@ -32,11 +33,18 @@
   "title": "Cryo-electron tomography of GEM2-labelled Mito-EGFP in HeLa cells",
   "release_date": "2023-09-05",
   "description": "",
-  "doi": null,
   "keyword": [],
   "acknowledgement": null,
   "see_also": [],
-  "related_publication": [],
+  "related_publication": [
+    {
+      "authors_name": null,
+      "title": null,
+      "publication_year": null,
+      "pubmed_id": null,
+      "doi": "https://doi.org/10.1038/s41592-023-02053-0"
+    }
+  ],
   "grant": [],
   "funding_statement": null
 }

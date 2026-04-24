@@ -1,0 +1,38 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "7812a0c6-2981-4b1b-b699-86c48a45a76c",
+  "version": 0,
+  "model": {
+    "type_name": "FileReference",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "folder1/file1.ome.zarr.zip24628037"
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "attributes_from_file_list",
+      "value": {
+        "path": "folder1/file1.ome.zarr.zip",
+        "size": 24628037,
+        "type": "file",
+        "dataset": "#Study%20Component-1",
+        "Genotype/Line": "; ubiCAAX-GFP/+ ; neuPH-RFP/+",
+        "Channel 1": "CAAX",
+        "sourceImage": null,
+        "http://schema.org/name": "folder1/file1.ome.zarr.zip",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": null
+      }
+    }
+  ],
+  "file_path": "folder1/file1.ome.zarr.zip",
+  "format": ".zip",
+  "size_in_bytes": 24628037,
+  "uri": "https://www.ebi.ac.uk/biostudies/files/S-BIADTEST_ANNOTATION_METHOD/folder1/file1.ome.zarr.zip",
+  "submission_dataset_uuid": "e5b1c9b0-a4d0-4eb2-aff1-4f9af8598cae"
+}

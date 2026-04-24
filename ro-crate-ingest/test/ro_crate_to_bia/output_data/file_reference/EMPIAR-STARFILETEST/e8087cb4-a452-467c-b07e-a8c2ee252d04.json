@@ -18,14 +18,21 @@
       "provenance": "bia_ingest",
       "name": "attributes_from_file_list",
       "value": {
-        "http://bia/filePath": "data/220330/tomograms/220330.star",
-        "http://bia/sizeInBytes": "0",
-        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "http://bia/AnnotationData",
-        "http://schema.org/name": "Coordinates from subtomogram averaging of GEM2 particles for dataset 2 (220330)",
-        "http://bia/sourceImageLabel": "['Tomogram TS_008', 'Tomogram TS_010', 'Tomogram TS_017']",
-        "http://bia/associatedSubject": "",
-        "http://bia/associatedAnnotationMethod": "_:DeePiCt and manual particle picking",
-        "http://bia/associatedProtocol": ""
+        "file_path": "data/220330/tomograms/220330.star",
+        "size_in_bytes": 0,
+        "dataset": "#Reconstructed%20tomograms%20for%20dataset%202%20%28220330%29%20data/220330/tomograms/",
+        "type": "http://bia/AnnotationData",
+        "label": "Coordinates from subtomogram averaging of GEM2 particles for dataset 2 (220330)",
+        "associated_source_image": [
+          "Tomogram TS_008",
+          "Tomogram TS_010",
+          "Tomogram TS_017"
+        ],
+        "associated_subject": null,
+        "associated_annotation_method": [
+          "#DeePiCt%20and%20manual%20particle%20picking"
+        ],
+        "associated_protocol": []
       }
     }
   ],

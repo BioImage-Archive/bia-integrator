@@ -1,4 +1,4 @@
-file_path	size_in_bytes	dataset	type	label	source_image_label	associated_specimen	associated_annotation_method	associated_protocol
+file_path	size_in_bytes	dataset	type	label	associated_source_image	associated_subject	associated_annotation_method	associated_protocol
 data/frames/image_sharing_specimen_01.tif	12	#Movie%20stacks%20data/frames/	http://bia/Image	Control condition frames 06_01		#Shared%20specimen		#Glucose%20control%20condition
 data/frames/image_sharing_specimen_02.tif	12	#Movie%20stacks%20data/frames/	http://bia/Image	Control condition frames 06_02		#Shared%20specimen		#Glucose%20control%20condition
 data/frames/image_sharing_specimen_03.tif	12	#Movie%20stacks%20data/frames/	http://bia/Image	Control condition frames 06_03		#Shared%20specimen		#Glucose%20control%20condition

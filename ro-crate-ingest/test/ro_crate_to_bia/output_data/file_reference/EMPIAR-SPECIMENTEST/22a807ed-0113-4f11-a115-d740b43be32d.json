@@ -18,14 +18,17 @@
       "provenance": "bia_ingest",
       "name": "attributes_from_file_list",
       "value": {
-        "http://bia/filePath": "data/frames/image_sharing_specimen_03.tif",
-        "http://bia/sizeInBytes": "12",
-        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "http://bia/Image",
-        "http://schema.org/name": "Control condition frames 06_03",
-        "http://bia/sourceImageLabel": "",
-        "http://bia/associatedSubject": "_:Shared specimen",
-        "http://bia/associatedAnnotationMethod": "",
-        "http://bia/associatedProtocol": "_:Glucose control condition"
+        "file_path": "data/frames/image_sharing_specimen_03.tif",
+        "size_in_bytes": 12,
+        "dataset": "#Movie%20stacks%20data/frames/",
+        "type": "http://bia/Image",
+        "label": "Control condition frames 06_03",
+        "associated_source_image": [],
+        "associated_subject": "#Shared%20specimen",
+        "associated_annotation_method": [],
+        "associated_protocol": [
+          "#Glucose%20control%20condition"
+        ]
       }
     }
   ],

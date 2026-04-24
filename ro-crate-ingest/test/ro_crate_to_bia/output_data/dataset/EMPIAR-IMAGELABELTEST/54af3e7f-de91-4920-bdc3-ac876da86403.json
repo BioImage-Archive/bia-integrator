@@ -1,0 +1,33 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "54af3e7f-de91-4920-bdc3-ac876da86403",
+  "version": 0,
+  "model": {
+    "type_name": "Dataset",
+    "version": 2
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "protocol_uuid",
+      "value": {
+        "protocol_uuid": [
+          "5e8f8f69-b09f-4740-8fd7-1eb4f7cfb9df"
+        ]
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Tilt series data/metadata"
+      }
+    }
+  ],
+  "title": "Tilt series",
+  "description": "Tilt series stacks (st files from Warp) from aligned frame stacks (in frames folder), tilt series alignment files (xf from etomo, IMOD) and acquisition metadata files modified to match tilt series stacks (in mdocs_modified) to reconstruct tomograms (in tomograms folder). Naming from TS_026 to TS_045 corresponds to TS_0011 to TS_0020 in the original publication.",
+  "analysis_method": [],
+  "correlation_method": [],
+  "example_image_uri": [],
+  "submitted_in_study_uuid": "5c5deb1d-8eef-48ce-aa5c-38ea59b6d765"
+}

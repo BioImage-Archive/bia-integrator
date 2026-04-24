@@ -1,0 +1,28 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "89881ff3-3b36-4f08-9605-8e5dc8a824a6",
+  "version": 0,
+  "model": {
+    "type_name": "AnnotationMethod",
+    "version": 4
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Annotation of ribosomes and fatty acid synthase (FAS) in defocus data"
+      }
+    }
+  ],
+  "title": "Annotation of ribosomes and fatty acid synthase (FAS) in defocus data",
+  "protocol_description": "A procedure similar to that used for VPP data was applied, except that: (i) the initial annotations for ribosomes were manually cleaned after template matching and initial FAS manual picking was incomplete; and (ii) in step 2 of the ribosomes ground truth construction, two of the three rounds of DeePiCt predictions were obtained using models trained on VPP data (first and second round of VPP ground truth construction; Supplementary Table 2).",
+  "annotation_criteria": null,
+  "annotation_coverage": null,
+  "transformation_description": null,
+  "spatial_information": null,
+  "method_type": [
+    "point_annotations"
+  ],
+  "annotation_source_indicator": null
+}

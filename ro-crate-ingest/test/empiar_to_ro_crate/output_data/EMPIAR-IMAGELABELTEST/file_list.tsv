@@ -1,4 +1,4 @@
-file_path	size_in_bytes	dataset	type	label	source_image_label	associated_specimen	associated_annotation_method	associated_protocol
+file_path	size_in_bytes	dataset	type	label	associated_source_image	associated_subject	associated_annotation_method	associated_protocol
 data/frames/TS_026_001_-0.0.tif	12	#Movie%20stacks%20data/frames/	http://bia/Image	TS_026_001_-0.0				
 data/frames/TS_026_002_2.0.tif	12	#Movie%20stacks%20data/frames/	http://bia/Image	TS_026_002_2.0				
 data/frames/TS_026_003_-2.0.tif	12	#Movie%20stacks%20data/frames/	http://bia/Image	TS_026_003_-2.0				

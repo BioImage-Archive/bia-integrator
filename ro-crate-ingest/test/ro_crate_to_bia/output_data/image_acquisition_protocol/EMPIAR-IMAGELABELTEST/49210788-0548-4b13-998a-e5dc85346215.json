@@ -1,0 +1,27 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "49210788-0548-4b13-998a-e5dc85346215",
+  "version": 0,
+  "model": {
+    "type_name": "ImageAcquisitionProtocol",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Cryo-electron tomography"
+      }
+    }
+  ],
+  "title": "Cryo-electron tomography",
+  "protocol_description": "Milled lamellae were loaded into a Titan Krios (Thermo Fisher Scientific) such that the axis of the pre-tilt introduced by FIB milling was aligned perpendicular to the tilt axis of the microscope. Tomograms were acquired on a K2 Summit direct detection camera (Gatan) operating in dose fractionation mode utilizing a Quantum post-column energy filter operated at zero-loss (Gatan). A calibrated pixel size of 3.45 Å was used for the NPC defocus* data and 3.37 Å for the remaining datasets. Up to 14 tilt series were collected on a single lamella in low dose mode using SerialEM. Starting from the lamella pre-tilt, images were acquired in 2° increments within a range of +58° to −40° using a dose-symmetric tilt scheme with a constant electron dose per tilt image. For ground truth data, a set of ten tilt series were either collected with a 70 μm objective aperture or a VPP56 (Thermo Fisher Scientific) with prior conditioning for 5 min. NPC data was collected as described in previous work, but at 1.5–4.5 μm defocus, with 3° increments and an effective tilt range of +50° to −50°.",
+  "imaging_instrument_description": "Titan Krios (Thermo Fisher Scientific) microscope with K2 Summit direct detection camera (Gatan) operating in dose fractionation mode utilizing a Quantum post-column energy filter operated at zero-loss (Gatan).",
+  "fbbi_id": [
+    "obo:FBbi_00000256"
+  ],
+  "imaging_method_name": [
+    "cryo-electron tomography"
+  ]
+}

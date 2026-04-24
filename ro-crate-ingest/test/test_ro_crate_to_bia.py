@@ -46,6 +46,9 @@ def get_empiar_to_ro_crate_path(accession_id) -> Path:
     return Path(__file__).parent / "empiar_to_ro_crate" / "output_data" / accession_id
 
 
+def get_minimal_to_ro_crate_path(accession_id) -> Path:
+    return Path(__file__).parent / "minimal_to_ro_crate" / "output_data" / accession_id
+
 def accession_id_from_path(ro_crate_path: Path) -> str:
     return ro_crate_path.name
 
@@ -73,18 +76,52 @@ def test_basic_ROCrate_api(get_bia_api_client):
 @pytest.mark.parametrize(
     "ro_crate_path,url_prefix",
     [
-        # (
-        #     get_biostudies_to_ro_crate_path("S-BIADTEST_AUTHOR_AFFILIATION"),
+        pytest.param(
+            get_biostudies_to_ro_crate_path("S-BIADTEST_AUTHOR_AFFILIATION"),
+            "biostudies",
+            id="S-BIADTEST_AUTHOR_AFFILIATION",
+        ),
+        pytest.param(
+            get_biostudies_to_ro_crate_path("S-BIADTEST_COMPLEX_BIOSAMPLE"),
+            "biostudies",
+            id="S-BIADTEST_COMPLEX_BIOSAMPLE",
+        ),
+        pytest.param(
+            get_biostudies_to_ro_crate_path("S-BIADTEST_ANNOTATION_METHOD"),
+            "biostudies",
+            id="S-BIADTEST_ANNOTATION_METHOD",
+        ),
+        # TODO: make multiply listing the same file invalid, or have a clear processing order.
+        # pytest.param(
+        #     get_biostudies_to_ro_crate_path("S-BIADTEST_COMBINE_FILELIST"),
         #     "biostudies",
+        #     id="S-BIADTEST_COMBINE_FILELIST",
         # ),
-        # (get_biostudies_to_ro_crate_path("S-BIADTEST_COMPLEX_BIOSAMPLE"), "biostudies"),
-        # (get_biostudies_to_ro_crate_path("S-BIADTEST_PROTOCOL_STUDY"), "biostudies"),
-        # (get_mock_ro_crate_path("S-BIAD1494"), None),
-        # (get_mock_ro_crate_path("S-BIAD843"), None),
-        # (get_mock_ro_crate_path("S-BIADWITHFILELIST"), None),
-        # (get_empiar_to_ro_crate_path("EMPIAR-IMAGEPATTERNTEST"), "empiar"),
-        # (get_empiar_to_ro_crate_path("EMPIAR-STARFILETEST"), "empiar"),
-        # (get_empiar_to_ro_crate_path("EMPIAR-SPECIMENTEST"), "empiar"),
+        pytest.param(
+            get_biostudies_to_ro_crate_path("S-BSST_PAGETAB_FILES"),
+            "biostudies",
+            id="S-BSST_PAGETAB_FILES",
+        ),
+        pytest.param(
+            get_empiar_to_ro_crate_path("EMPIAR-IMAGEPATTERNTEST"),
+            "empiar",
+            id="EMPIAR-IMAGEPATTERNTEST",
+        ),
+        pytest.param(
+            get_empiar_to_ro_crate_path("EMPIAR-IMAGELABELTEST"),
+            "empiar",
+            id="EMPIAR-IMAGELABELTEST",
+        ),
+        pytest.param(
+            get_empiar_to_ro_crate_path("EMPIAR-STARFILETEST"),
+            "empiar",
+            id="EMPIAR-STARFILETEST",
+        ),
+        pytest.param(
+            get_empiar_to_ro_crate_path("EMPIAR-SPECIMENTEST"),
+            "empiar",
+            id="EMPIAR-SPECIMENTEST",
+        ),
     ],
 )
 class TestGenericROCrateToAPI:
@@ -129,8 +166,17 @@ def ingest_local_test(
     )
 
     expected_files = sorted(get_expected_files(accession_id))
+    relative_expected = {Path(f).parts[-3:] for f in expected_files}
+    relative_actual = {Path(f).parts[-3:] for f in files_written}
 
-    assert len(files_written) == len(expected_files)
+    diff_expected = relative_expected - relative_actual
+    diff_actual = relative_actual - relative_expected
+
+    assert not (diff_expected or diff_actual), (
+        f"Mismatch in paths:\n"
+        f"Only in expected: {diff_expected}\n"
+        f"Only in actual: {diff_actual}"
+    )
 
     for file in expected_files:
         relative_file_path = Path(file).parts[-3:]

@@ -18,14 +18,15 @@
       "provenance": "bia_ingest",
       "name": "attributes_from_file_list",
       "value": {
-        "http://bia/filePath": "data/HeLa/tilt series/tiltimage 002 30.tif",
-        "http://bia/sizeInBytes": "12",
-        "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": "http://bia/Image",
-        "http://schema.org/name": "",
-        "http://bia/sourceImageLabel": "",
-        "http://bia/associatedSubject": "",
-        "http://bia/associatedAnnotationMethod": "",
-        "http://bia/associatedProtocol": ""
+        "file_path": "data/HeLa/tilt series/tiltimage 002 30.tif",
+        "size_in_bytes": 12,
+        "dataset": "#Cryo%20Serial%20FIB/SEM%20of%20HeLa%20cells%20data/HeLa/",
+        "type": "http://bia/Image",
+        "label": null,
+        "associated_source_image": [],
+        "associated_subject": null,
+        "associated_annotation_method": [],
+        "associated_protocol": []
       }
     }
   ],

@@ -1,0 +1,50 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "5c5deb1d-8eef-48ce-aa5c-38ea59b6d765",
+  "version": 0,
+  "model": {
+    "type_name": "Study",
+    "version": 3
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "EMPIAR-IMAGELABELTEST"
+      }
+    }
+  ],
+  "accession_id": "EMPIAR-IMAGELABELTEST",
+  "doi": null,
+  "licence": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "author": [
+    {
+      "rorid": null,
+      "address": null,
+      "website": null,
+      "orcid": null,
+      "display_name": "Test",
+      "affiliation": [],
+      "contact_email": null,
+      "role": []
+    }
+  ],
+  "title": "Defocus and Volta potential phase plate cryo-electron tomography of S. pombe cryo-FIB lamellae with comprehensive annotations of structures and macromolecules",
+  "release_date": "2022-11-17",
+  "description": "",
+  "keyword": [],
+  "acknowledgement": null,
+  "see_also": [],
+  "related_publication": [
+    {
+      "authors_name": null,
+      "title": null,
+      "publication_year": null,
+      "pubmed_id": null,
+      "doi": "https://doi.org/10.1038/s41592-022-01746-2"
+    }
+  ],
+  "grant": [],
+  "funding_statement": null
+}

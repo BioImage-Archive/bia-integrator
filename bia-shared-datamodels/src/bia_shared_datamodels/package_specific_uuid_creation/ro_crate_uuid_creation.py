@@ -40,7 +40,7 @@ def create_bio_sample_uuid(
 def create_protocol_uuid(
     study_uuid: str, ro_crate_id: str
 ) -> tuple[UUID, attribute_models.DocumentUUIDUniqueInputAttribute]:
-    unique_string = unencode_relative_id(ro_crate_id)
+    unique_string = unencode_relative_id(ro_crate_id.removeprefix("#_"))
     return (
         uuid_creation.create_protocol_uuid(
             study_uuid=study_uuid, unique_string=unique_string
@@ -67,7 +67,7 @@ def create_specimen_imaging_preparation_protocol_uuid(
     unique_string = unencode_relative_id(ro_crate_id)
     return (
         uuid_creation.create_specimen_imaging_preparation_protocol_uuid(
-            study_uuid=study_uuid, unique_string=f"{ro_crate_id}"
+            study_uuid=study_uuid, unique_string=f"{unique_string}"
         ),
         shared.create_unique_str_attribute(unique_string, Provenance.bia_ingest),
     )

@@ -1,0 +1,33 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "d2eef6cf-51cc-4b76-ad6b-48fd9c3477b1",
+  "version": 0,
+  "model": {
+    "type_name": "Dataset",
+    "version": 2
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "annotation_method_uuid",
+      "value": {
+        "annotation_method_uuid": [
+          "0550afe0-feb2-4827-a5a8-c69fc918e7b1"
+        ]
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Annotations-1"
+      }
+    }
+  ],
+  "title": "Segmentation masks",
+  "description": "Segmentation label of individual cells of Drosophila wing disc curated by experts from a model prediction",
+  "analysis_method": [],
+  "correlation_method": [],
+  "example_image_uri": [],
+  "submitted_in_study_uuid": "a20f6685-0195-4cc4-8bf9-8bfac3aac0e6"
+}

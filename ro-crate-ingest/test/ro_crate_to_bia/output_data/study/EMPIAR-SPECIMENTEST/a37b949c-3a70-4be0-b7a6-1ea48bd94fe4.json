@@ -36,7 +36,15 @@
   "keyword": [],
   "acknowledgement": null,
   "see_also": [],
-  "related_publication": [],
+  "related_publication": [
+    {
+      "authors_name": null,
+      "title": null,
+      "publication_year": null,
+      "pubmed_id": null,
+      "doi": "https://doi.org/10.1016/j.molcel.2024.06.024"
+    }
+  ],
   "grant": [],
   "funding_statement": null
 }

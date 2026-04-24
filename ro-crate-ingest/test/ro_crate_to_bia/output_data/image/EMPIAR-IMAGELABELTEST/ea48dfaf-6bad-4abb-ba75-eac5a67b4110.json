@@ -1,0 +1,24 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "ea48dfaf-6bad-4abb-ba75-eac5a67b4110",
+  "version": 0,
+  "model": {
+    "type_name": "Image",
+    "version": 2
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "46d5fb87-ca29-419c-ac70-264af9c63c34"
+      }
+    }
+  ],
+  "label": "TS_026 tomogram",
+  "submission_dataset_uuid": "3948e0a3-9b18-4b11-b1c2-096ff4395ffa",
+  "creation_process_uuid": "ca7bfdec-dc64-47d0-8b01-30c2c1f2070c",
+  "original_file_reference_uuid": [
+    "46d5fb87-ca29-419c-ac70-264af9c63c34"
+  ]
+}

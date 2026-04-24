@@ -1,0 +1,51 @@
+{
+  "object_creator": "bia_ingest",
+  "uuid": "5af52196-ec7f-40b0-84ee-ad1cd7b5e467",
+  "version": 0,
+  "model": {
+    "type_name": "Dataset",
+    "version": 2
+  },
+  "additional_metadata": [
+    {
+      "provenance": "bia_ingest",
+      "name": "image_acquisition_protocol_uuid",
+      "value": {
+        "image_acquisition_protocol_uuid": [
+          "a49dc918-4967-4900-8f6b-26ac49a99b3f"
+        ]
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "specimen_imaging_preparation_protocol_uuid",
+      "value": {
+        "specimen_imaging_preparation_protocol_uuid": [
+          "1ee8d07f-c88e-4a3e-89da-9cfb5b7cb913"
+        ]
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "bio_sample_uuid",
+      "value": {
+        "bio_sample_uuid": [
+          "d8b5a815-c118-4595-b1ef-07abcf1db389"
+        ]
+      }
+    },
+    {
+      "provenance": "bia_ingest",
+      "name": "uuid_unique_input",
+      "value": {
+        "uuid_unique_input": "Study Component-1"
+      }
+    }
+  ],
+  "title": "Component 1",
+  "description": "Has filelist with a set of columns that should be combined.",
+  "analysis_method": [],
+  "correlation_method": [],
+  "example_image_uri": [],
+  "submitted_in_study_uuid": "a20f6685-0195-4cc4-8bf9-8bfac3aac0e6"
+}
