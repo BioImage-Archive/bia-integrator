@@ -9,9 +9,9 @@ import pytest_check as check
 def test_parser_to_graph_equivalent():
     ro_crate = (
         Path(__file__).parent
-        / "ro_crate_to_bia"
+        / "validator"
         / "input_ro_crate"
-        / "typical_ro_crate"
+        / "test_typical_ro_crate"
     )
 
     parser = JSONLDMetadataParser(ro_crate)
