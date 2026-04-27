@@ -1,0 +1,44 @@
+rembis:
+  protocols:
+    - title: "Fluorescence imaging protocol"
+      protocol_description: "Widefield fluorescence microscopy of stained cells."
+    - title: "Phase contrast imaging protocol"
+      protocol_description: "Phase contrast imaging of live cells."
+
+  annotation_methods:
+    - title: "Cell segmentation"
+      protocol_description: "Semi-automated cell segmentation."
+      method_type:
+        - "Segmentation"
+
+  image_acquisition_protocols:
+    - title: "Widefield fluorescence microscope"
+      protocol_description: "Zeiss Axio Observer Z1 widefield fluorescence microscope."
+      imaging_instrument_description: "Zeiss Axio Observer Z1"
+      fbbi_id:
+        - "obo:FBbi_00000246"
+      imaging_method_name:
+        - "Fluorescence microscopy"
+
+datasets:
+  - name: "Fluorescence microscopy images"
+    associations:
+      image_acquisition_protocol_titles:
+        - "Widefield fluorescence microscope"
+    images:
+      patterns:
+        - "**/*.tif"
+        - "**/*.png"
+    image_groups:
+      - patterns: "**/*.tif"
+        protocol_titles:
+          - "Fluorescence imaging protocol"
+      - patterns: "**/*.png"
+        protocol_titles:
+          - "Phase contrast imaging protocol"
+    annotations:
+      - patterns: "**/annotations/*.csv"
+        annotation_method_titles:
+          - "Cell segmentation"
+        associated_source_image:
+          - "Cell 001 fluorescence image"

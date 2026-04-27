@@ -3,19 +3,21 @@ from pathlib import Path
 import pandas as pd
 
 from bia_ro_crate.models import ro_crate_models
-from bia_ro_crate.models.linked_data.ontology_terms import BIA, SCHEMA
+from bia_ro_crate.models.linked_data.ontology_terms import BIA
 from bia_ro_crate.core.bia_ro_crate_metadata import BIAROCrateMetadata
 from bia_ro_crate.core.file_list import FileList
-from ro_crate_ingest.ro_crate_modification.enrichment.utils import (
-    FILE_TYPE_ANNOTATION,
-    FILE_TYPE_IMAGE,
-    RDF_TYPE_PROPERTY,
-    refs,
-    get_or_add_associated_annotation_method_column_id,
+from ro_crate_ingest.ro_crate_modification.enrichment.file_list_utils import (
     get_dataset_column_id,
+    get_label_column_id,
+    get_or_add_associated_annotation_method_column_id,
     get_or_add_associated_source_image_column_id,
     get_or_add_type_column_id,
     get_path_column_id,
+)
+from ro_crate_ingest.ro_crate_modification.enrichment.utils import (
+    FILE_TYPE_ANNOTATION,
+    FILE_TYPE_IMAGE,
+    refs,
     match_patterns,
     resolve_dataset_id_by_name,
     title_to_id,
@@ -114,6 +116,214 @@ def assign_images_for_dataset(
         f"Dataset '{dataset_config.name}': {assigned} file(s) assigned as image(s)."
     )
 
+def _build_annotation_label(
+    annotation_config: AnnotationAssignmentConfig,
+    file_path: str,
+) -> str:
+    if len(annotation_config.patterns) == 1:
+        pattern = annotation_config.patterns[0]
+        if "*" not in pattern and "?" not in pattern and "[" not in pattern:
+            return Path(pattern).stem
+    return Path(file_path).stem
+
+
+def _apply_annotation_assignment(
+    file_list: FileList,
+    dataset_rows: pd.DataFrame,
+    annotation_config: AnnotationAssignmentConfig,
+    *,
+    path_col_id: str,
+    type_col_id: str,
+    label_col_id: str,
+    annotation_method_col_id: str,
+    associated_source_image_col_id: str,
+    dataset_name: str,
+) -> int:
+    match_mask = dataset_rows[path_col_id].apply(
+        lambda p: match_patterns(str(p), annotation_config.patterns)
+    )
+    matched_rows = dataset_rows[match_mask]
+    if matched_rows.empty:
+        logger.warning(
+            f"Dataset '{dataset_name}': annotation patterns "
+            f"{annotation_config.patterns} matched no files."
+        )
+        return 0
+
+    source_image_values = _as_scalar_or_list(annotation_config.associated_source_image)
+    annotation_method_values = [
+        title_to_id(title) for title in annotation_config.annotation_method_titles
+    ]
+
+    for index, row in matched_rows.iterrows():
+        file_path = str(row[path_col_id])
+        file_list.data.at[index, type_col_id] = FILE_TYPE_ANNOTATION
+        file_list.data.at[index, label_col_id] = _build_annotation_label(
+            annotation_config, file_path
+        )
+        file_list.data.at[index, annotation_method_col_id] = _as_scalar_or_list(
+            annotation_method_values
+        )
+        file_list.data.at[index, associated_source_image_col_id] = source_image_values
+
+    return len(matched_rows)
+
+
+def assign_annotations_for_dataset(
+    file_list: FileList,
+    ro_crate_metadata: BIAROCrateMetadata,
+    dataset_config: DatasetModificationConfig,
+) -> None:
+    dataset_id = resolve_dataset_id_by_name(ro_crate_metadata, dataset_config.name)
+    if dataset_id is None:
+        return
+
+    dataset_col_id = get_dataset_column_id(file_list)
+    path_col_id = get_path_column_id(file_list)
+    if dataset_col_id is None or path_col_id is None:
+        logger.warning(
+            f"Dataset '{dataset_config.name}': missing dataset or file path column. "
+            "Cannot apply annotation assignment."
+        )
+        return
+
+    type_col_id = get_or_add_type_column_id(file_list)
+    annotation_method_col_id = get_or_add_associated_annotation_method_column_id(file_list)
+    associated_source_image_col_id = get_or_add_associated_source_image_column_id(file_list)
+    label_col_id = get_label_column_id(file_list)
+
+    required_columns = {
+        "label": label_col_id,
+    }
+    missing_columns = [name for name, col_id in required_columns.items() if col_id is None]
+    if missing_columns:
+        logger.warning(
+            f"Dataset '{dataset_config.name}': missing required file list column(s) "
+            f"{missing_columns}. Skipping annotation assignment."
+        )
+        return
+
+    if file_list.data[label_col_id].dtype != object:
+        file_list.data[label_col_id] = file_list.data[label_col_id].astype(object)
+
+    dataset_rows = file_list.data[file_list.data[dataset_col_id] == dataset_id]
+    assigned_total = 0
+    dataset_entity = ro_crate_metadata.get_object(dataset_id)
+    if not isinstance(dataset_entity, ro_crate_models.Dataset):
+        logger.warning(
+            f"Entity '{dataset_id}' is not a Dataset; cannot apply annotation metadata."
+        )
+        return
+
+    for annotation_config in dataset_config.annotations:
+        assigned_total += _apply_annotation_assignment(
+            file_list,
+            dataset_rows,
+            annotation_config,
+            path_col_id=path_col_id,
+            type_col_id=type_col_id,
+            label_col_id=label_col_id,
+            annotation_method_col_id=annotation_method_col_id,
+            associated_source_image_col_id=associated_source_image_col_id,
+            dataset_name=dataset_config.name,
+        )
+
+    annotation_method_titles: list[str] = []
+    for annotation_config in dataset_config.annotations:
+        for title in annotation_config.annotation_method_titles:
+            if title not in annotation_method_titles:
+                annotation_method_titles.append(title)
+
+    updated_dataset = dataset_entity.model_copy(update={
+        "associatedAnnotationMethod": (
+            list(dataset_entity.associatedAnnotationMethod)
+            + [
+                ref
+                for ref in refs(annotation_method_titles)
+                if ref not in list(dataset_entity.associatedAnnotationMethod)
+            ]
+        )
+    })
+    ro_crate_metadata.update_entity(updated_dataset)
+
+    logger.info(
+        f"Dataset '{dataset_config.name}': {assigned_total} file(s) assigned as annotation data."
+    )
+
+
+def assign_image_group_protocols(
+    file_list: FileList,
+    ro_crate_metadata: BIAROCrateMetadata,
+    dataset_config: DatasetModificationConfig,
+) -> None:
+    """
+    For each ImageGroupConfig in dataset_config.image_groups, find the matching
+    image files in the dataset and write protocol @id(s) to the
+    associated_protocol column in the file list.
+
+    Files must already be assigned to the dataset and marked as images.
+    """
+    dataset_id = resolve_dataset_id_by_name(ro_crate_metadata, dataset_config.name)
+    if dataset_id is None:
+        return
+
+    dataset_col_id = get_dataset_column_id(file_list)
+    path_col_id = get_path_column_id(file_list)
+    type_col_id = get_or_add_type_column_id(file_list)
+
+    if path_col_id is None:
+        logger.warning(
+            f"Dataset '{dataset_config.name}': no file path column found. "
+            "Cannot apply image_groups protocol assignment."
+        )
+        return
+
+    protocol_col_id = file_list.get_column_id_by_property(str(BIA.associatedProtocol))
+    if protocol_col_id is None:
+        logger.warning(
+            f"Dataset '{dataset_config.name}': no associated_protocol column found in file list; "
+            "skipping image_groups protocol assignment."
+        )
+        return
+
+    if file_list.data[protocol_col_id].dtype != object:
+        file_list.data[protocol_col_id] = file_list.data[protocol_col_id].astype(object)
+
+    # Base mask: rows belonging to this dataset and marked as images
+    if dataset_col_id is not None:
+        dataset_mask = file_list.data[dataset_col_id] == dataset_id
+    else:
+        dataset_mask = pd.Series(True, index=file_list.data.index)
+
+    if type_col_id is not None:
+        image_mask = dataset_mask & (file_list.data[type_col_id] == FILE_TYPE_IMAGE)
+    else:
+        image_mask = dataset_mask
+
+    dataset_images = file_list.data[image_mask]
+
+    for group in dataset_config.image_groups:
+        group_mask = dataset_images[path_col_id].apply(
+            lambda p: match_patterns(str(p), group.patterns)
+        )
+        matched_indices = dataset_images[group_mask].index
+
+        if matched_indices.empty:
+            logger.warning(
+                f"Dataset '{dataset_config.name}': image_groups patterns "
+                f"{group.patterns} matched no image files."
+            )
+            continue
+
+        ids = [title_to_id(t) for t in group.protocol_titles]
+        value = str(ids) if len(ids) > 1 else ids[0]
+        file_list.data.loc[matched_indices, protocol_col_id] = value
+
+        logger.debug(
+            f"Dataset '{dataset_config.name}': wrote protocol(s) {ids} "
+            f"to {len(matched_indices)} file(s) via image_groups."
+        )
+
 
 def assign_additional_files_for_dataset(
     file_list: FileList,
@@ -210,215 +420,6 @@ def assign_additional_files_for_dataset(
             f"Dataset '{dataset_config.name}': {len(matched_indices)} additional file(s) "
             f"marked as image(s) with image_type={img_assignment.image_type!r}."
         )
-
-
-def assign_image_group_protocols(
-    file_list: FileList,
-    ro_crate_metadata: BIAROCrateMetadata,
-    dataset_config: DatasetModificationConfig,
-) -> None:
-    """
-    For each ImageGroupConfig in dataset_config.image_groups, find the matching
-    image files in the dataset and write protocol @id(s) to the
-    associated_protocol column in the file list.
-
-    Files must already be assigned to the dataset and marked as images.
-    """
-    dataset_id = resolve_dataset_id_by_name(ro_crate_metadata, dataset_config.name)
-    if dataset_id is None:
-        return
-
-    dataset_col_id = get_dataset_column_id(file_list)
-    path_col_id = get_path_column_id(file_list)
-    type_col_id = file_list.get_column_id_by_property(RDF_TYPE_PROPERTY)
-
-    if path_col_id is None:
-        logger.warning(
-            f"Dataset '{dataset_config.name}': no file path column found. "
-            "Cannot apply image_groups protocol assignment."
-        )
-        return
-
-    protocol_col_id = file_list.get_column_id_by_property(str(BIA.associatedProtocol))
-    if protocol_col_id is None:
-        logger.warning(
-            f"Dataset '{dataset_config.name}': no associated_protocol column found in file list; "
-            "skipping image_groups protocol assignment."
-        )
-        return
-
-    if file_list.data[protocol_col_id].dtype != object:
-        file_list.data[protocol_col_id] = file_list.data[protocol_col_id].astype(object)
-
-    # Base mask: rows belonging to this dataset and marked as images
-    if dataset_col_id is not None:
-        dataset_mask = file_list.data[dataset_col_id] == dataset_id
-    else:
-        dataset_mask = pd.Series(True, index=file_list.data.index)
-
-    if type_col_id is not None:
-        image_mask = dataset_mask & (file_list.data[type_col_id] == FILE_TYPE_IMAGE)
-    else:
-        image_mask = dataset_mask
-
-    dataset_images = file_list.data[image_mask]
-
-    for group in dataset_config.image_groups:
-        group_mask = dataset_images[path_col_id].apply(
-            lambda p: match_patterns(str(p), group.patterns)
-        )
-        matched_indices = dataset_images[group_mask].index
-
-        if matched_indices.empty:
-            logger.warning(
-                f"Dataset '{dataset_config.name}': image_groups patterns "
-                f"{group.patterns} matched no image files."
-            )
-            continue
-
-        ids = [title_to_id(t) for t in group.protocol_titles]
-        value = str(ids) if len(ids) > 1 else ids[0]
-        file_list.data.loc[matched_indices, protocol_col_id] = value
-
-        logger.debug(
-            f"Dataset '{dataset_config.name}': wrote protocol(s) {ids} "
-            f"to {len(matched_indices)} file(s) via image_groups."
-        )
-
-
-def _build_annotation_label(
-    annotation_config: AnnotationAssignmentConfig,
-    file_path: str,
-) -> str:
-    if len(annotation_config.patterns) == 1:
-        pattern = annotation_config.patterns[0]
-        if "*" not in pattern and "?" not in pattern and "[" not in pattern:
-            return Path(pattern).stem
-    return Path(file_path).stem
-
-
-def _apply_annotation_assignment(
-    file_list: FileList,
-    dataset_rows: pd.DataFrame,
-    annotation_config: AnnotationAssignmentConfig,
-    *,
-    path_col_id: str,
-    type_col_id: str,
-    label_col_id: str,
-    annotation_method_col_id: str,
-    associated_source_image_col_id: str,
-    dataset_name: str,
-) -> int:
-    match_mask = dataset_rows[path_col_id].apply(
-        lambda p: match_patterns(str(p), annotation_config.patterns)
-    )
-    matched_rows = dataset_rows[match_mask]
-    if matched_rows.empty:
-        logger.warning(
-            f"Dataset '{dataset_name}': annotation patterns "
-            f"{annotation_config.patterns} matched no files."
-        )
-        return 0
-
-    source_image_values = _as_scalar_or_list(annotation_config.associated_source_image)
-    annotation_method_values = [
-        title_to_id(title) for title in annotation_config.annotation_method_titles
-    ]
-
-    for index, row in matched_rows.iterrows():
-        file_path = str(row[path_col_id])
-        file_list.data.at[index, type_col_id] = FILE_TYPE_ANNOTATION
-        file_list.data.at[index, label_col_id] = _build_annotation_label(
-            annotation_config, file_path
-        )
-        file_list.data.at[index, annotation_method_col_id] = _as_scalar_or_list(
-            annotation_method_values
-        )
-        file_list.data.at[index, associated_source_image_col_id] = source_image_values
-
-    return len(matched_rows)
-
-
-def assign_annotations_for_dataset(
-    file_list: FileList,
-    ro_crate_metadata: BIAROCrateMetadata,
-    dataset_config: DatasetModificationConfig,
-) -> None:
-    dataset_id = resolve_dataset_id_by_name(ro_crate_metadata, dataset_config.name)
-    if dataset_id is None:
-        return
-
-    dataset_col_id = get_dataset_column_id(file_list)
-    path_col_id = get_path_column_id(file_list)
-    if dataset_col_id is None or path_col_id is None:
-        logger.warning(
-            f"Dataset '{dataset_config.name}': missing dataset or file path column. "
-            "Cannot apply annotation assignment."
-        )
-        return
-
-    type_col_id = get_or_add_type_column_id(file_list)
-    annotation_method_col_id = get_or_add_associated_annotation_method_column_id(file_list)
-    associated_source_image_col_id = get_or_add_associated_source_image_column_id(file_list)
-    label_col_id = file_list.get_column_id_by_property(str(SCHEMA.name))
-
-    required_columns = {
-        "label": label_col_id,
-    }
-    missing_columns = [name for name, col_id in required_columns.items() if col_id is None]
-    if missing_columns:
-        logger.warning(
-            f"Dataset '{dataset_config.name}': missing required file list column(s) "
-            f"{missing_columns}. Skipping annotation assignment."
-        )
-        return
-
-    if file_list.data[label_col_id].dtype != object:
-        file_list.data[label_col_id] = file_list.data[label_col_id].astype(object)
-
-    dataset_rows = file_list.data[file_list.data[dataset_col_id] == dataset_id]
-    assigned_total = 0
-    dataset_entity = ro_crate_metadata.get_object(dataset_id)
-    if not isinstance(dataset_entity, ro_crate_models.Dataset):
-        logger.warning(
-            f"Entity '{dataset_id}' is not a Dataset; cannot apply annotation metadata."
-        )
-        return
-
-    for annotation_config in dataset_config.annotations:
-        assigned_total += _apply_annotation_assignment(
-            file_list,
-            dataset_rows,
-            annotation_config,
-            path_col_id=path_col_id,
-            type_col_id=type_col_id,
-            label_col_id=label_col_id,
-            annotation_method_col_id=annotation_method_col_id,
-            associated_source_image_col_id=associated_source_image_col_id,
-            dataset_name=dataset_config.name,
-        )
-
-    annotation_method_titles: list[str] = []
-    for annotation_config in dataset_config.annotations:
-        for title in annotation_config.annotation_method_titles:
-            if title not in annotation_method_titles:
-                annotation_method_titles.append(title)
-
-    updated_dataset = dataset_entity.model_copy(update={
-        "associatedAnnotationMethod": (
-            list(dataset_entity.associatedAnnotationMethod)
-            + [
-                ref
-                for ref in refs(annotation_method_titles)
-                if ref not in list(dataset_entity.associatedAnnotationMethod)
-            ]
-        )
-    })
-    ro_crate_metadata.update_entity(updated_dataset)
-
-    logger.info(
-        f"Dataset '{dataset_config.name}': {assigned_total} file(s) assigned as annotation data."
-    )
 
 
 def assign_unassigned_to_default_dataset(

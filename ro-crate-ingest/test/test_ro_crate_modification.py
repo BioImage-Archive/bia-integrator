@@ -71,6 +71,12 @@ def specimens_outputs(tmp_path_factory):
     return _setup_and_run(tmp, "MODIFY-ROC-SPECIMENS")
 
 
+@pytest.fixture(scope="class")
+def annotations_outputs(tmp_path_factory):
+    tmp = tmp_path_factory.mktemp("annotations")
+    return _setup_and_run(tmp, "MODIFY-ROC-ANNOTATIONS")
+
+
 class TestImageGroups:
     """
     MODIFY-ROC-IMAGEGROUPS:
@@ -220,7 +226,7 @@ class TestSpecimenTracksWithAdditionalFiles:
         """Specimen 003 exists only because additional_files assigned ts_003."""
         assert title_to_id("Specimen_003") in self.graph
         row = self.df[self.df["file_path"] == "data/extra/ts_003.mrc.st"]
-        assert row.iloc[0]["associated_specimen"] == title_to_id("Specimen_003")
+        assert row.iloc[0]["associated_subject"] == title_to_id("Specimen_003")
 
     # --- Targeted: file list specimen track columns -------------------------
     def test_tilt_series_have_associated_specimen(self):
@@ -230,8 +236,8 @@ class TestSpecimenTracksWithAdditionalFiles:
             ("data/extra/ts_003.mrc.st", "003"),
         ]:
             row = self.df[self.df["file_path"] == path]
-            assert row.iloc[0]["associated_specimen"] == title_to_id(f"Specimen_{sid}"), (
-                f"{path}: unexpected associated_specimen {row.iloc[0]['associated_specimen']!r}"
+            assert row.iloc[0]["associated_subject"] == title_to_id(f"Specimen_{sid}"), (
+                f"{path}: unexpected associated_subject {row.iloc[0]['associated_subject']!r}"
             )
 
     def test_tomograms_have_associated_source_image(self):
@@ -251,3 +257,31 @@ class TestSpecimenTracksWithAdditionalFiles:
             f"Expected all tomograms to have protocol {expected!r}, "
             f"got:\n{tomo_rows[['file_path', 'associated_protocol']]}"
         )
+
+
+class TestAnnotations:
+    ACCESSION_ID = "MODIFY-ROC-ANNOTATIONS"
+
+    @pytest.fixture(autouse=True)
+    def load_outputs(self, annotations_outputs):
+        self.graph, self.df = annotations_outputs
+
+    def test_annotation_method_entity_created(self):
+        assert title_to_id("Cell segmentation") in self.graph
+
+    def test_annotation_row_gets_annotation_data_type(self):
+        row = self.df[self.df["file_path"] == "data/annotations/cell_001_mask.csv"]
+        assert len(row) == 1
+        assert row.iloc[0]["type"] == "http://bia/AnnotationData"
+
+    def test_annotation_row_gets_expected_metadata(self):
+        row = self.df[self.df["file_path"] == "data/annotations/cell_001_mask.csv"]
+        assert row.iloc[0]["label"] == "cell_001_mask"
+        assert row.iloc[0]["associated_annotation_method"] == title_to_id("Cell segmentation")
+        assert row.iloc[0]["associated_source_image"] == "Cell 001 fluorescence image"
+
+    def test_annotation_row_gets_associated_source_image_column(self):
+        assert "associated_source_image" in self.df.columns
+        assert "source_image_label" not in self.df.columns
+        row = self.df[self.df["file_path"] == "data/annotations/cell_001_mask.csv"]
+        assert row.iloc[0]["associated_source_image"] == "Cell 001 fluorescence image"

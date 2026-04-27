@@ -8,8 +8,8 @@ from pathlib import Path
 from ro_crate_ingest.save_utils import write_modified_file_list
 
 from ro_crate_ingest.ro_crate_modification.enrichment.enricher import apply_enrichment
-from ro_crate_ingest.ro_crate_modification.enrichment.utils import (
-    ASSOCIATED_SOURCE_IMAGE_PROPERTY,
+from ro_crate_ingest.ro_crate_modification.enrichment.file_list_utils import (
+    normalize_legacy_associated_source_image_column,
 )
 from ro_crate_ingest.ro_crate_modification.modification_config import ModificationConfig
 
@@ -46,29 +46,6 @@ def _sort_graph(entities):
     return sorted(entities, key=sort_key)
 
 
-def _normalize_legacy_source_image_column(ro_crate_metadata, file_list) -> None:
-    """
-    If the parsed minimal RO-Crate still carries the old file-list column
-    name/property ('source_image_label' / http://bia/sourceImageLabel), retarget
-    that existing column to the newer associated_source_image shape instead of
-    creating a duplicate column.
-    """
-    try:
-        id_to_name = file_list.get_column_names()
-    except Exception:
-        return
-
-    legacy_col_ids = [
-        col_id for col_id, name in id_to_name.items() if name == "source_image_label"
-    ]
-    for col_id in legacy_col_ids:
-        column = ro_crate_metadata.get_object(col_id)
-        if column is None:
-            continue
-        column.columnName = "associated_source_image"
-        column.propertyUrl = ASSOCIATED_SOURCE_IMAGE_PROPERTY
-
-
 def apply_modifications(
     ro_crate_path: Path, 
     modification_config_path: Path
@@ -93,7 +70,7 @@ def apply_modifications(
     )
 
     ro_crate_metadata, file_list = apply_enrichment(ro_crate_metadata, file_list, mod_config)
-    _normalize_legacy_source_image_column(ro_crate_metadata, file_list)
+    normalize_legacy_associated_source_image_column(ro_crate_metadata, file_list)
 
     graph_objects = [
         json.loads(entity.model_dump_json(by_alias=True))

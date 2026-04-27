@@ -11,17 +11,20 @@ from bia_ro_crate.models.linked_data.pydantic_ld.LDModel import ObjectReference
 from bia_ro_crate.core.bia_ro_crate_metadata import BIAROCrateMetadata
 from bia_ro_crate.core.file_list import FileList
 from ro_crate_ingest.ro_crate_modification.enrichment.image_types import ImageType
+from ro_crate_ingest.ro_crate_modification.enrichment.file_list_utils import (
+    RDF_TYPE_PROPERTY,
+    get_dataset_column_id,
+    get_or_add_associated_source_image_column_id,
+    get_or_add_associated_subject_column_id,
+    get_path_column_id,
+)
 from ro_crate_ingest.ro_crate_modification.enrichment.utils import (
-    FILE_TYPE_IMAGE, 
-    RDF_TYPE_PROPERTY, 
-    get_dataset_column_id, 
-    get_or_add_source_image_label_column_id, 
-    get_path_column_id, 
-    match_patterns, 
-    ref, 
-    resolve_dataset_id_by_name, 
-    title_to_id, 
-    type_for
+    FILE_TYPE_IMAGE,
+    match_patterns,
+    ref,
+    resolve_dataset_id_by_name,
+    title_to_id,
+    type_for,
 )
 from ro_crate_ingest.ro_crate_modification.modification_config import (
     IMAGE_ASSIGNMENT_TYPE_KEY,
@@ -695,7 +698,7 @@ def _write_source_image_labels(
     if path_col_id is None:
         return
 
-    source_label_col_id = get_or_add_source_image_label_column_id(file_list)
+    source_label_col_id = get_or_add_associated_source_image_column_id(file_list)
     if file_list.data[source_label_col_id].dtype != object:
         file_list.data[source_label_col_id] = file_list.data[source_label_col_id].astype(object)
 
@@ -727,7 +730,10 @@ def _write_source_image_labels(
         lambda p: path_to_source_label.get(str(p))
     )
     existing = file_list.data[source_label_col_id]
-    file_list.data[source_label_col_id] = existing.where(existing.notna(), labels)
+    has_existing_value = existing.apply(
+        lambda value: bool(value) if isinstance(value, list) else pd.notna(value)
+    )
+    file_list.data[source_label_col_id] = existing.where(has_existing_value, labels)
 
     written = int(labels.notna().sum())
     logger.info(f"Wrote associated_source_image for {written} file(s).")
@@ -738,19 +744,14 @@ def _write_associated_specimen(
     tracks: list[SpecimenTrack],
 ) -> None:
     """
-    Write the @id of the Specimen entity into the associated_specimen column
+    Write the @id of the Specimen entity into the associated_subject column
     for the first image file belonging to a track.
     """
     path_col_id = get_path_column_id(file_list)
     if path_col_id is None:
         return
 
-    specimen_col_id = file_list.get_column_id_by_property("http://bia/associatedSubject")
-    if specimen_col_id is None:
-        logger.warning("No associated_specimen column found in file list; skipping.")
-        return
-    if file_list.data[specimen_col_id].dtype != object:
-        file_list.data[specimen_col_id] = file_list.data[specimen_col_id].astype(object)
+    specimen_col_id = get_or_add_associated_subject_column_id(file_list)
 
     path_to_specimen_id: dict[str, str] = {}
 
@@ -783,7 +784,7 @@ def _write_associated_specimen(
     file_list.data[specimen_col_id] = values
 
     written = int(values.notna().sum())
-    logger.info(f"Wrote associated_specimen for {written} file(s).")
+    logger.info(f"Wrote associated_subject for {written} file(s).")
 
 
 def _write_associated_protocol(
@@ -871,7 +872,7 @@ def assign_specimen_tracks(
 ) -> None:
     """
     Identify specimen tracks across all datasets and write Specimen entities 
-    to the metadata graph, and labels, source_image_label, associated_specimen,
+    to the metadata graph, and labels, associated_source_image, associated_subject,
     and associated_protocol values to the file list.
     """
     # Datasets that contribute typed images to track identification, via either

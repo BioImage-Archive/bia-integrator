@@ -1,0 +1,7 @@
+file_path	size_in_bytes	dataset	type	label	associated_source_image	associated_subject	associated_annotation_method	associated_protocol
+data/images/cell_001.tif	1024	#Fluorescence%20microscopy%20images		Cell 001 fluorescence image				
+data/images/cell_002.tif	1024	#Fluorescence%20microscopy%20images		Cell 002 fluorescence image				
+data/overview/overview_001.png	512	#Fluorescence%20microscopy%20images						
+data/overview/overview_002.png	512	#Fluorescence%20microscopy%20images						
+data/annotations/cell_001_mask.csv	128	#Fluorescence%20microscopy%20images						
+data/README.txt	256						

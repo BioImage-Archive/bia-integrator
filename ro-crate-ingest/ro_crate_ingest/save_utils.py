@@ -17,6 +17,10 @@ import logging
 logger = logging.getLogger("__main__." + __name__)
 
 
+def _empty_list_to_none(value):
+    return None if isinstance(value, list) and not value else value
+
+
 class PersistenceMode(str, Enum):
     """
     Enum for the different persistence modes.
@@ -165,6 +169,7 @@ def write_modified_file_list(
         for col_id, name in id_to_name.items()
     }
     df = file_list.data.rename(columns=normalized_names)
+    df = df.map(_empty_list_to_none)
     if df.columns.duplicated().any():
         deduped = pd.DataFrame(index=df.index)
         for column_name in dict.fromkeys(df.columns):
@@ -174,7 +179,6 @@ def write_modified_file_list(
             else:
                 deduped[column_name] = same_name.bfill(axis=1).iloc[:, 0]
         df = deduped
-    df = df.map(lambda x: None if x == [] else x)
 
     df.sort_values(by=df.columns[0], inplace=True)
     df.to_csv(filelist_path, sep="\t", index=False)

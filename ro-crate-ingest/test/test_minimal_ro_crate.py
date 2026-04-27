@@ -1,6 +1,9 @@
 from pathlib import Path
 from typer.testing import CliRunner
 from ro_crate_ingest.cli import ro_crate_ingest
+from ro_crate_ingest.empiar_to_ro_crate.entity_conversion.file_list import (
+    expand_dataframe_metadata,
+)
 import pytest
 from .conftest import (
     expected_path_to_created_path,
@@ -10,6 +13,7 @@ from .conftest import (
 )
 import glob
 import pandas as pd
+import logging
 
 runner = CliRunner()
 
@@ -56,3 +60,21 @@ def test_minimal_ro_crate(accession_id: str, tmp_bia_data_dir: Path):
         ro_crate_ingest, ["validate", str(tmp_bia_data_dir / accession_id)]
     )
     assert validation_result.exit_code == 0
+
+
+def test_expand_dataframe_metadata_can_skip_premature_unassigned_debug(caplog):
+    file_df = pd.DataFrame(
+        [
+            {
+                "file_path": Path("data/raw_data/eer/TIR520_029_22.00_20230406_101156_EER.eer"),
+                "size_in_bytes": 123,
+            }
+        ]
+    )
+
+    with caplog.at_level(
+        logging.DEBUG, logger="__main__.ro_crate_ingest.empiar_to_ro_crate.entity_conversion.file_list"
+    ):
+        expand_dataframe_metadata([], file_df, report_unassigned=False)
+
+    assert "Unassigned file detected" not in caplog.text
