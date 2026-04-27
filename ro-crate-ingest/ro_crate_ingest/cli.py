@@ -26,7 +26,7 @@ ro_crate_ingest = typer.Typer()
 
 
 def configure_library_loggers() -> None:
-    # To keep third-party FTP wire logging quiet, even when --verbose is enabled.
+    # Third-party logging can get a bit hectic...
     logging.getLogger("aioftp").setLevel(logging.INFO)
     logging.getLogger("aioftp.client").setLevel(logging.INFO)
     logging.getLogger("urllib3").setLevel(logging.INFO)

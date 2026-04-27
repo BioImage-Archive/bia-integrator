@@ -4,8 +4,8 @@
 
 The modification pipeline takes a **minimal RO-Crate** — a lightweight
 intermediate format containing only a Study entry and a file list — and
-enriches it with study and REMBI metadata, image assignments, and 
-specimen track information, producing a fully-described RO-Crate 
+enriches it with study and REMBI metadata, image assignment, annotation
+assignment, and specimen track information, producing a fully-described RO-Crate
 suitable for ingest.
 
 The pipeline aims to be source-agnostic, but currently is geared toward, 
@@ -26,6 +26,7 @@ minimal RO-Crate  +  modification_config.yaml
         │       │       b. Assign additional unassigned files     [assignments.py]
         │       │       c. Assign images within the dataset       [assignments.py]
         │       │       d. Write image-group protocol refs        [assignments.py]
+        │       │       e. Assign annotations within the dataset  [assignments.py]
         │       ├── 4. Identify specimen tracks + assign         [specimens.py]
         │       └── 5. Create default dataset for unassigned     [assignments.py]
         │
@@ -52,6 +53,29 @@ ro-crate-ingest modify-roc <path/to/minimal/ro-crate> <path/to/modification_conf
 
 ## Further documentation
 Notes on modification scenarios and making an appropriate configuration are below; there is more detail available in [modification_configuration_reference](modification_configuration_reference.md) and [worked_examples](worked_examples.md).
+
+---
+
+## Enrichment order
+
+The current enrichment step is intentionally ordered so later operations can
+see the results of earlier ones:
+
+1. Add configured information to the Study entity.
+2. Add study-wide REMBI entities to the metadata graph.
+3. For each named dataset:
+   a. Apply explicit REMBI associations to the Dataset entity.
+   b. Assign `additional_files` that are still unassigned to that dataset,
+      optionally marking them as images.
+   c. Apply `images` assignment to files already in the dataset, including
+      files just added by `additional_files`.
+   d. Apply `image_groups` protocol associations to image rows.
+   e. Apply `annotations` assignment to annotation rows.
+4. If top-level `specimen_tracks` is configured, identify tracks, create
+   Specimen entities, and write track metadata to the file list.
+5. Run the default-dataset step. If any file rows are still unassigned, a
+   `"Default dataset"` entity is created if needed and those rows are assigned
+   to it. No YAML entry is needed for the default dataset.
 
 ---
 
@@ -92,8 +116,9 @@ datasets:
    column set to `bia:Image`.
 4. After all named datasets are processed, any files that remain unassigned
    (no dataset membership) are automatically collected into a new Dataset
-   entity titled `"Default dataset"`. This is unconditional and requires no
-   config entry.
+   entity titled `"Default dataset"`. The default-dataset step always runs,
+   but the entity is only created when unassigned files remain. No config entry
+   is needed.
 
 
 ### 1b. Assigning additional files to an existing dataset
@@ -178,6 +203,46 @@ Each `image_groups` entry has:
 `associations`, and `specimen_tracks` in the same dataset block.
 
 
+### 1d. Annotation assignment
+
+Annotation assignment marks matched files in an existing dataset as
+`bia:AnnotationData`, adds an annotation label, links the files to one or more
+AnnotationMethod entities, and records the source image label(s) consumed by
+downstream ingest.
+
+```yaml
+rembis:
+  annotation_methods:
+    - title: "Manual segmentation"
+      protocol_description: "Segmentations drawn by expert annotators."
+      method_type:
+        - "manual annotation"
+
+datasets:
+  - name: "Tomogram annotations"
+    annotations:
+      - patterns:
+          - "**/*_mask.json"
+        annotation_method_titles:
+          - "Manual segmentation"
+        associated_source_image:
+          - "Specimen_0001 tomogram"
+```
+
+Each `annotations` entry has:
+
+| Field | Required | Description |
+|---|---|---|
+| `patterns` | Yes | Glob patterns identifying annotation files within the dataset. |
+| `annotation_method_titles` | Yes | One or more AnnotationMethod titles. Values are resolved to `@id`s and written to `associated_annotation_method`; the Dataset also receives those AnnotationMethod associations. |
+| `associated_source_image` | Yes | One or more source image labels written to `associated_source_image`. |
+
+Annotation assignment runs after `additional_files`, `images`, and
+`image_groups` for the same dataset. It expects the file list to already have
+a label/name column; if that column is absent, annotation assignment is skipped
+for that dataset.
+
+
 ### 2. REMBI assignment and study metadata
 
 Used to add REMBI and study metadata to the RO-Crate graph. The `datasets` 
@@ -231,7 +296,9 @@ datasets:
 4. SIPP, IAP, and AnnotationMethod entities are added.
 5. If `datasets` blocks are present, their `associations` are written to
    the corresponding Dataset entities.
-6. No file list changes are made.
+6. No image, annotation, or specimen-track file-list changes are made by this
+   scenario. The final default-dataset step still runs and may assign any
+   remaining unassigned files.
 
 
 ### 3. REMBI + specimen track assignment (including images)
@@ -239,13 +306,14 @@ datasets:
 Specimen track assignment is effectively an extension of image assignment, 
 linking types of images. Files are assigned as images and then grouped
 into per-specimen tracks spanning multiple datasets. Specimen entities 
-are created in the metadata graph, and the `source_image_label` column is 
+are created in the metadata graph, and the `associated_source_image` column is
 populated in the file list to express the upstream relationship between 
 images in a track. Though a full set of REMBI metadata may not be required
 here, specimen tracks beget specimens, which should have a BioSample (which
 then might have a `growth_protocol`) and a SIPP. 
 
-Future work here is to link specimen tracks with pre-existing REMBI metadata.
+The generated Specimen entities reference BioSamples and SIPPs by title-derived
+IDs from `specimen_defaults` and any matching `specimen_groups`.
 
 ```yaml
 rembis:
@@ -314,8 +382,8 @@ datasets:
 2. For each named dataset, files matching the `by_type` patterns are marked
    as `bia:Image` in the file list.
 3. Specimen track identification:
-   a. Image-assigned rows from all datasets that have a `specimen_tracks`
-      block are collected.
+   a. Image-assigned rows from datasets with `images.by_type` or typed
+      `additional_files.images` entries are collected.
    b. The `by_type` patterns classify each file as a specific `ImageType`
       (e.g. `tilt_series`, `tomogram`) for track-identification purposes
       only — this classification is not written to the file list.
@@ -325,10 +393,13 @@ datasets:
       all datasets.
 4. Per-specimen metadata is resolved: `specimen_defaults` provides the
    baseline, overridden by any matching `specimen_groups` entries.
-5. For each specimen, a `Specimen` entity and a paired `CreationProcess`
-   entity are added to the metadata graph.
-6. The `source_image_label` column in the file list is populated: each
+5. For each specimen, a `Specimen` entity is added to the metadata graph.
+6. Track image labels are written to the file-list label/name column, and the
+   `associated_source_image` column is populated: each
    non-track-start image (e.g. a tomogram) receives the label of its
    upstream image (e.g. the tilt series for the same specimen).
-7. IAP and protocol references are added to each Dataset entity in the
-   graph from the per-dataset `specimen_tracks` config.
+7. `associated_subject` is written for the track-start image rows, pointing
+   to the generated Specimen entity.
+8. IAP and protocol references are added to each Dataset entity in the
+   graph from the per-dataset `specimen_tracks` config, and protocol
+   references may also be written to image rows where configured by image type.
