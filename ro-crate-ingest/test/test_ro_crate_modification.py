@@ -6,9 +6,15 @@ from urllib.parse import quote
 
 import pandas as pd
 import pytest
+from bia_ro_crate.core.file_list import FileList
+from bia_ro_crate.models import ro_crate_models
+from bia_ro_crate.models.linked_data.ontology_terms import BIA
 from typer.testing import CliRunner
 
 from ro_crate_ingest.cli import ro_crate_ingest
+from ro_crate_ingest.ro_crate_modification.enrichment.file_list_utils import (
+    get_or_add_associated_protocol_column_id,
+)
 
 runner = CliRunner()
 
@@ -57,6 +63,28 @@ def _setup_and_run(tmp_path: Path, accession_id: str) -> tuple[dict, pd.DataFram
     df = pd.read_csv(tsv_files[0], sep="\t", dtype=str)
 
     return graph_by_id, df
+
+
+def test_get_or_add_associated_protocol_column_id_creates_missing_column():
+    schema = {
+        "_:col0": ro_crate_models.Column(**{
+            "@id": "_:col0",
+            "@type": ["csvw:Column"],
+            "columnName": "file_path",
+            "propertyUrl": str(BIA.filePath),
+        })
+    }
+    file_list = FileList(
+        schema=schema,
+        data=pd.DataFrame({"file_path": ["data/image_001.tif"]}),
+    )
+
+    col_id = get_or_add_associated_protocol_column_id(file_list)
+
+    assert file_list.get_column_id_by_property(str(BIA.associatedProtocol)) == col_id
+    assert file_list.schema[col_id].columnName == "associated_protocol"
+    assert file_list.schema[col_id].propertyUrl == str(BIA.associatedProtocol)
+    assert col_id in file_list.data.columns
 
 
 @pytest.fixture(scope="class")
@@ -165,8 +193,10 @@ class TestSpecimenTracksWithAdditionalFiles:
     - Three specimen entities created (001, 002, 003), where 003 comes from
       the additional_files assignment of data/extra/ts_003.mrc.st.
     - Specimen group override: specimen 002 uses 'HeLa cells (mutant)'.
-    - source_image_label, associated_specimen, associated_protocol written
+    - associated_source_image, associated_subject, associated_protocol written
       correctly in the file list.
+    - Segmentation images are terminal track images linked to their upstream
+      tomogram, with multiple segmentations allowed for one specimen.
     """
     ACCESSION_ID = "MODIFY-ROC-SPECIMENS"
 
@@ -256,6 +286,51 @@ class TestSpecimenTracksWithAdditionalFiles:
         assert (tomo_rows["associated_protocol"] == expected).all(), (
             f"Expected all tomograms to have protocol {expected!r}, "
             f"got:\n{tomo_rows[['file_path', 'associated_protocol']]}"
+        )
+
+    def test_segmentations_are_images(self):
+        seg_rows = self.df[self.df["file_path"].str.endswith(".mrcseg")]
+        assert len(seg_rows) == 3
+        assert (seg_rows["type"] == "http://bia/Image").all()
+
+    def test_segmentations_link_to_upstream_tomogram(self):
+        expected = {
+            "data/tomo/tomo_001_segmentation_a.mrcseg": "Specimen_001 tomogram",
+            "data/tomo/tomo_001_segmentation_b.mrcseg": "Specimen_001 tomogram",
+            "data/tomo/tomo_002_segmentation.mrcseg": "Specimen_002 tomogram",
+        }
+        for path, source_image in expected.items():
+            row = self.df[self.df["file_path"] == path]
+            assert row.iloc[0]["associated_source_image"] == source_image, (
+                f"{path}: unexpected associated_source_image "
+                f"{row.iloc[0]['associated_source_image']!r}"
+            )
+
+    def test_multiple_segmentations_get_unique_labels(self):
+        labels = set(
+            self.df[self.df["file_path"].str.endswith(".mrcseg")]["label"].dropna()
+        )
+        assert "Specimen_001 segmentation_tomo_001_segmentation_a" in labels
+        assert "Specimen_001 segmentation_tomo_001_segmentation_b" in labels
+        assert "Specimen_002 segmentation" in labels
+
+    def test_segmentation_annotation_method_entity_created(self):
+        assert title_to_id("Manual tomogram segmentation") in self.graph
+
+    def test_segmentations_have_annotation_method(self):
+        seg_rows = self.df[self.df["file_path"].str.endswith(".mrcseg")]
+        expected = title_to_id("Manual tomogram segmentation")
+        assert (seg_rows["associated_annotation_method"] == expected).all(), (
+            f"Expected segmentations to have annotation method {expected!r}, "
+            f"got:\n{seg_rows[['file_path', 'associated_annotation_method']]}"
+        )
+
+    def test_segmentation_dataset_has_annotation_method_association(self):
+        dataset = self.graph[title_to_id("Reconstructed tomograms")]
+        expected = {"@id": title_to_id("Manual tomogram segmentation")}
+        assert expected in dataset.get("associatedAnnotationMethod", []), (
+            "Expected Reconstructed tomograms dataset to reference segmentation "
+            f"annotation method, got {dataset.get('associatedAnnotationMethod')}"
         )
 
 

@@ -10,3 +10,4 @@ class ImageType(str, Enum):
     ALIGNED_TILT_SERIES = "aligned_tilt_series"
     TOMOGRAM = "tomogram"
     DENOISED_TOMOGRAM = "denoised_tomogram"
+    SEGMENTATION = "segmentation"

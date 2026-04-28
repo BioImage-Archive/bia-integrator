@@ -287,9 +287,9 @@ class ImageAssignmentConfig(ClosedBaseModel):
 
     by_type
         A dict keyed by image type. Valid keys are the ImageType vocabulary
-        (frames, tilt_series, aligned_tilt_series, tomogram, denoised_tomogram)
-        plus 'image' for files that are images but do not belong to a specimen
-        track. 
+        (frames, tilt_series, aligned_tilt_series, tomogram, denoised_tomogram,
+        segmentation) plus 'image' for files that are images but do not belong
+        to a specimen track.
 
             images:
               by_type:
@@ -475,9 +475,10 @@ class SpecimenTrackAssignmentConfig(ClosedBaseModel):
     and per-specimen metadata overrides for this dataset. The cross-dataset
     ID extraction strategy is provided by the top-level specimen_tracks block.
 
-    image_acquisition_protocol_title and protocol_titles are keyed by
-    ImageType value (e.g. 'tilt_series', 'tomogram') or 'dataset' for a
-    dataset-level assignment — same conventions as in proposal gen.
+    image_acquisition_protocol_title, protocol_titles, and
+    annotation_method_titles are keyed by ImageType value (e.g. 'tilt_series',
+    'tomogram', 'segmentation') or 'dataset' for a dataset-level assignment
+    — same conventions as in proposal gen.
 
     Note: dataset-level IAP/protocol associations that do not need to be
     keyed by image type can instead be expressed more simply via the
@@ -485,6 +486,7 @@ class SpecimenTrackAssignmentConfig(ClosedBaseModel):
     """
     image_acquisition_protocol_title: dict[str, str | list[str]] | None = None
     protocol_titles: dict[str, str | list[str]] = Field(default_factory=dict)
+    annotation_method_titles: dict[str, str | list[str]] = Field(default_factory=dict)
     specimen_groups: list[SpecimenGroup] = Field(default_factory=list)
 
 
@@ -524,9 +526,9 @@ class DatasetModificationConfig(ClosedBaseModel):
         metadata for downstream ingest.
 
     specimen_tracks
-        Per-dataset IAP/protocol titles keyed by image type, and specimen
-        group overrides. Requires the top-level specimen_tracks block
-        to be present. For simple (non-type-keyed) associations, prefer
+        Per-dataset IAP/protocol/annotation-method titles keyed by image type,
+        and specimen group overrides. Requires the top-level specimen_tracks
+        block to be present. For simple (non-type-keyed) associations, prefer
         the associations block instead.
     """
     name: str

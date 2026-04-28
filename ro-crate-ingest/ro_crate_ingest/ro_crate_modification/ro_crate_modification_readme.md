@@ -343,6 +343,12 @@ rembis:
       fbbi_id: ["obo:FBbi_00000256"]
       imaging_method_name: ["Cryo-electron tomography"]
 
+  annotation_methods:
+    - title: "Manual segmentation"
+      protocol_description: "Manual segmentation of tomogram structures."
+      method_type:
+        - "segmentation"
+
 specimen_defaults:
   biosample_title: "Yeast cells"
   specimen_imaging_preparation_protocol_titles:
@@ -366,10 +372,14 @@ datasets:
     images:
       by_type:
         tomogram: "**/*.mrc"
+        segmentation: "**/*_segmentation.mrc"
     specimen_tracks:
       protocol_titles:
         tomogram:
           - "Tomogram reconstruction"
+      annotation_method_titles:
+        segmentation:
+          - "Manual segmentation"
       specimen_groups:
         - specimen_ids: ["0023", "0024"]
           biosample_title: "Yeast cells (mutant strain)"
@@ -385,8 +395,9 @@ datasets:
    a. Image-assigned rows from datasets with `images.by_type` or typed
       `additional_files.images` entries are collected.
    b. The `by_type` patterns classify each file as a specific `ImageType`
-      (e.g. `tilt_series`, `tomogram`) for track-identification purposes
-      only — this classification is not written to the file list.
+      (e.g. `tilt_series`, `tomogram`, `segmentation`) for
+      track-identification purposes only — this classification is not written
+      to the file list.
    c. The top-level `specimen_tracks` regex patterns (or alias mappings)
       extract a specimen ID from each file path.
    d. Files are grouped into per-specimen `SpecimenTrack` objects, spanning
@@ -403,3 +414,6 @@ datasets:
 8. IAP and protocol references are added to each Dataset entity in the
    graph from the per-dataset `specimen_tracks` config, and protocol
    references may also be written to image rows where configured by image type.
+9. AnnotationMethod references from `annotation_method_titles` are added to the
+   Dataset entity and written to `associated_annotation_method` for matching
+   image rows, such as segmentation images.

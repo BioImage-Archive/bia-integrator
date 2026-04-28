@@ -451,7 +451,11 @@
             "associatedCreationProcess": null,
             "associatedSourceImage": [],
             "associatedImageAcquisitionProtocol": [],
-            "associatedAnnotationMethod": [],
+            "associatedAnnotationMethod": [
+                {
+                    "@id": "#Manual%20tomogram%20segmentation"
+                }
+            ],
             "associatedImageAnalysisMethod": [],
             "associatedImageCorrelationMethod": [],
             "associatedProtocol": [
@@ -472,6 +476,20 @@
             "@type": "bia:Protocol",
             "title": "Tomogram reconstruction",
             "protocolDescription": "IMOD-based reconstruction."
+        },
+        {
+            "@id": "#Manual%20tomogram%20segmentation",
+            "@type": "bia:AnnotationMethod",
+            "title": "Manual tomogram segmentation",
+            "protocolDescription": "Manual segmentation of tomogram structures.",
+            "annotationCriteria": null,
+            "annotationCoverage": null,
+            "transformationDescription": null,
+            "spatialInformation": null,
+            "methodType": [
+                "segmentation"
+            ],
+            "annotationSourceIndicator": null
         },
         {
             "@id": "#Specimen_001",

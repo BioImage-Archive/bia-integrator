@@ -41,6 +41,12 @@ rembis:
       imaging_method_name:
         - "Cryo-electron tomography"
 
+  annotation_methods:
+    - title: "Manual tomogram segmentation"
+      protocol_description: "Manual segmentation of tomogram structures."
+      method_type:
+        - "segmentation"
+
 specimen_defaults:
   biosample_title: "HeLa cells (wild type)"
   specimen_imaging_preparation_protocol_titles:
@@ -70,10 +76,14 @@ datasets:
     images:
       by_type:
         tomogram: "**/*.mrc"
+        segmentation: "**/*.mrcseg"
     specimen_tracks:
       protocol_titles:
         tomogram:
           - "Tomogram reconstruction"
+      annotation_method_titles:
+        segmentation:
+          - "Manual tomogram segmentation"
       specimen_groups:
         - specimen_ids:
             - "002"

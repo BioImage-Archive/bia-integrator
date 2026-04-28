@@ -211,9 +211,9 @@ datasets:
 
   # --- Scenario 3: by_type image assignment + specimen tracks ---------------
   # 'by_type' assigns files to specific ImageType values. 'specimen_tracks'
-  # carries per-dataset IAP/protocol titles keyed by image type and specimen
-  # group overrides. The top-level 'specimen_tracks' block provides ID
-  # extraction. 'associations' can also be added here for any flat
+  # carries per-dataset IAP/protocol/annotation-method titles keyed by image
+  # type and specimen group overrides. The top-level 'specimen_tracks' block
+  # provides ID extraction. 'associations' can also be added here for any flat
   # dataset-level associations not needing image-type keying.
   - name: "Raw tilt series frames"
     images:
@@ -241,6 +241,7 @@ datasets:
     images:
       by_type:
         tomogram: "**/*.mrc"
+        segmentation: "**/*_segmentation.mrc"
     associations:
       biosample_titles:
         - "Human HeLa cells"
@@ -250,6 +251,9 @@ datasets:
       protocol_titles:
         tomogram:
           - "Tomogram reconstruction"
+      annotation_method_titles:
+        segmentation:
+          - "Manual segmentation of mitochondria"
       # Per-specimen metadata overrides for this dataset.
       specimen_groups:
         - specimen_ids:

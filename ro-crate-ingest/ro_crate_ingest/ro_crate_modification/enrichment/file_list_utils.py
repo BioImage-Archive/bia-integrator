@@ -18,6 +18,7 @@ RDF_TYPE_PROPERTY = str(RDF.type)
 ASSOCIATED_SOURCE_IMAGE_PROPERTY = str(BIA.associatedSourceImage)
 LEGACY_SOURCE_IMAGE_LABEL_PROPERTY = "http://bia/sourceImageLabel"
 ASSOCIATED_ANNOTATION_METHOD_PROPERTY = str(BIA.associatedAnnotationMethod)
+ASSOCIATED_PROTOCOL_PROPERTY = str(BIA.associatedProtocol)
 ASSOCIATED_SUBJECT_PROPERTY = str(BIA.associatedSubject)
 COLUMN_ID_PATTERN = re.compile(r"^_:col(\d+)$")
 
@@ -113,6 +114,33 @@ def get_or_add_associated_source_image_column_id(file_list: FileList) -> str:
     )
 
 
+def get_or_add_associated_annotation_method_column_id(file_list: FileList) -> str:
+    return _get_or_add_column_id(
+        file_list,
+        property_url=ASSOCIATED_ANNOTATION_METHOD_PROPERTY,
+        column_name="associated_annotation_method",
+        log_level="debug",
+    )
+
+
+def get_or_add_associated_protocol_column_id(file_list: FileList) -> str:
+    return _get_or_add_column_id(
+        file_list,
+        property_url=ASSOCIATED_PROTOCOL_PROPERTY,
+        column_name="associated_protocol",
+        log_level="debug",
+    )
+
+
+def get_or_add_associated_subject_column_id(file_list: FileList) -> str:
+    return _get_or_add_column_id(
+        file_list,
+        property_url=ASSOCIATED_SUBJECT_PROPERTY,
+        column_name="associated_subject",
+        log_level="debug",
+    )
+
+
 def _merge_column_values(file_list: FileList, target_col_id: str, source_col_id: str) -> None:
     target = file_list.data[target_col_id]
     source = file_list.data[source_col_id]
@@ -158,21 +186,3 @@ def normalize_legacy_associated_source_image_column(
 
     column.columnName = "associated_source_image"
     column.propertyUrl = ASSOCIATED_SOURCE_IMAGE_PROPERTY
-
-
-def get_or_add_associated_annotation_method_column_id(file_list: FileList) -> str:
-    return _get_or_add_column_id(
-        file_list,
-        property_url=ASSOCIATED_ANNOTATION_METHOD_PROPERTY,
-        column_name="associated_annotation_method",
-        log_level="debug",
-    )
-
-
-def get_or_add_associated_subject_column_id(file_list: FileList) -> str:
-    return _get_or_add_column_id(
-        file_list,
-        property_url=ASSOCIATED_SUBJECT_PROPERTY,
-        column_name="associated_subject",
-        log_level="debug",
-    )

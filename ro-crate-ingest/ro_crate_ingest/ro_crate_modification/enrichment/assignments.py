@@ -3,13 +3,13 @@ from pathlib import Path
 import pandas as pd
 
 from bia_ro_crate.models import ro_crate_models
-from bia_ro_crate.models.linked_data.ontology_terms import BIA
 from bia_ro_crate.core.bia_ro_crate_metadata import BIAROCrateMetadata
 from bia_ro_crate.core.file_list import FileList
 from ro_crate_ingest.ro_crate_modification.enrichment.file_list_utils import (
     get_dataset_column_id,
     get_label_column_id,
     get_or_add_associated_annotation_method_column_id,
+    get_or_add_associated_protocol_column_id,
     get_or_add_associated_source_image_column_id,
     get_or_add_type_column_id,
     get_path_column_id,
@@ -278,16 +278,7 @@ def assign_image_group_protocols(
         )
         return
 
-    protocol_col_id = file_list.get_column_id_by_property(str(BIA.associatedProtocol))
-    if protocol_col_id is None:
-        logger.warning(
-            f"Dataset '{dataset_config.name}': no associated_protocol column found in file list; "
-            "skipping image_groups protocol assignment."
-        )
-        return
-
-    if file_list.data[protocol_col_id].dtype != object:
-        file_list.data[protocol_col_id] = file_list.data[protocol_col_id].astype(object)
+    protocol_col_id = get_or_add_associated_protocol_column_id(file_list)
 
     # Base mask: rows belonging to this dataset and marked as images
     if dataset_col_id is not None:
