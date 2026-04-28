@@ -9,8 +9,37 @@ import json
 from pathlib import Path
 from typing import List, Type
 import logging
+import threading
+import time
+
 
 logger = logging.getLogger("__main__." + __name__)
+
+
+class RateLimiter:
+    def __init__(self, calls: int, period: float):
+        self.calls = calls
+        self.period = period
+        self.lock = threading.Lock()
+        self.timestamps = []
+
+    def acquire(self):
+        while True:
+            with self.lock:
+                now = time.monotonic()
+                cutoff = now - self.period
+                self.timestamps = [t for t in self.timestamps if t > cutoff]
+                if len(self.timestamps) < self.calls:
+                    self.timestamps.append(now)
+                    return
+
+                sleep_for = self.timestamps[0] + self.period - now
+
+            if sleep_for > 0:
+                time.sleep(sleep_for)
+
+
+api_rate_limiter = RateLimiter(calls=200, period=5.0)
 
 
 def get_source_directory(
@@ -96,6 +125,7 @@ def get_all_api_results(
     page_size_setting=20,
     aggregator_list: list[DocumentMixin] = None,
 ) -> list[DocumentMixin]:
+    api_rate_limiter.acquire()
     if not aggregator_list:
         aggregator_list: list[DocumentMixin] = []
         start_uuid = None
@@ -113,3 +143,8 @@ def get_all_api_results(
         return aggregator_list
     else:
         return get_all_api_results(uuid, api_method, page_size_setting, aggregator_list)
+
+
+def get_one_api_result(uuid: UUID | str, api_method):
+    api_rate_limiter.acquire()
+    return api_method(uuid)

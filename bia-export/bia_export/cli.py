@@ -4,7 +4,17 @@ import json
 from rich.logging import RichHandler
 from typing_extensions import Annotated
 from pathlib import Path
-from bia_export.website_export.export_all import get_study_ids, study_sort_key
+from bia_export.website_export.export_all import (
+    get_study_ids,
+    study_sort_key,
+    get_all_studies,
+    write_json,
+    write_elastic_bulk_ndjson_gz_chunks,
+)
+from bia_export.website_export.generic_object_retrieval import get_one_api_result
+
+from bia_export.website_export.studies.retrieve import retrieve_study, retrieve_datasets
+from bia_integrator_api.models import Study as apiStudy
 from .website_export.studies.transform import transform_study
 from .website_export.studies.models import StudyCLIContext, CacheUse
 from .website_export.images.transform import transform_images
@@ -14,12 +24,22 @@ from .website_export.website_models import CLIContext
 from typing import List, Optional, Type
 from uuid import UUID
 from .bia_client import api_client
-import json
-from .settings import Settings
 import os
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from rich.progress import (
+    Progress,
+    SpinnerColumn,
+    TextColumn,
+    BarColumn,
+    TaskProgressColumn,
+    TimeElapsedColumn,
+)
 
 logging.basicConfig(
-    level="NOTSET", format="%(message)s", datefmt="[%X]", handlers=[RichHandler()]
+    level=logging.WARNING,
+    format="%(message)s",
+    datefmt="[%X]",
+    handlers=[RichHandler(rich_tracebacks=True)],
 )
 logger = logging.getLogger()
 
@@ -31,6 +51,35 @@ app.add_typer(website, name="website")
 DEFAULT_WEBSITE_STUDY_FILE_NAME = "bia-study-metadata.json"
 DEFAULT_WEBSITE_IMAGE_FILE_NAME = "bia-image-metadata.json"
 DEFAULT_WEBSITE_DATASET_FOR_IMAGE_FILE_NAME = "bia-dataset-metadata-for-images.json"
+
+
+def process_study_for_generate_all(
+    study_or_id: str | apiStudy,
+    root_directory: Optional[Path],
+):
+    context_study = create_cli_context(
+        StudyCLIContext,
+        study_or_id=study_or_id,
+        root_directory=root_directory,
+    )
+    context_image = create_cli_context(
+        ImageCLIContext,
+        study_or_id=study_or_id,
+        root_directory=root_directory,
+    )
+
+    transformed_study = transform_study(context_study)
+    transformed_images, _ = transform_images(context_image)
+
+    return (
+        transformed_study.accession_id,
+        transformed_study.model_dump(mode="json"),
+        transformed_images,
+    )
+
+
+def generate_output_path(dir_path: Optional[Path], file_name: str) -> Path:
+    return dir_path / file_name if dir_path else Path(file_name)
 
 
 @website.command("all")
@@ -48,10 +97,7 @@ def generate_all(
     ] = None,
     output_directory: Annotated[
         Optional[Path],
-        typer.Option(
-            "--out_dir",
-            "-o",
-        ),
+        typer.Option("--out_dir", "-o"),
     ] = None,
     update_path: Annotated[
         Optional[Path],
@@ -61,55 +107,124 @@ def generate_all(
             help="If update path specified then update the files there (assuming files have the default naming)",
         ),
     ] = None,
+    max_workers: Annotated[
+        int,
+        typer.Option(
+            "--workers", "-w", help="Number of parallel workers", min=1, max=4
+        ),
+    ] = 2,
+    write_bulk_gzip: Annotated[
+        bool,
+        typer.Option("--bulk-gzip", "-c", help="Write gzipped Elastic bulk NDJSON"),
+    ] = False,
 ):
     validate_cli_inputs(id_list=id_list, update_path=update_path)
 
-    settings = Settings()
+    studies = resolve_studies(id_list=id_list, root_directory=root_directory)
 
-    if not id_list:
-        id_list = get_study_ids(root_directory)
+    studies_map = {}
+    image_map = {}
 
-    logger.info("Exporting study pages")
-    website_study(
-        id_list=id_list,
-        root_directory=root_directory,
-        output_filename=(
-            output_directory / DEFAULT_WEBSITE_STUDY_FILE_NAME
-            if output_directory
-            else Path(DEFAULT_WEBSITE_STUDY_FILE_NAME)
-        ),
-        update_file=(
-            update_path / DEFAULT_WEBSITE_STUDY_FILE_NAME if update_path else None
-        ),
+    update_file_study = (
+        generate_output_path(update_path, DEFAULT_WEBSITE_STUDY_FILE_NAME)
+        if update_path
+        else None
     )
-    logger.info("Exporting image pages")
-    website_image(
-        id_list=id_list,
-        root_directory=root_directory,
-        output_filename=(
-            output_directory / DEFAULT_WEBSITE_IMAGE_FILE_NAME
-            if output_directory
-            else Path(DEFAULT_WEBSITE_IMAGE_FILE_NAME)
-        ),
-        update_file=(
-            update_path / DEFAULT_WEBSITE_IMAGE_FILE_NAME if update_path else None
-        ),
+    if update_file_study:
+        studies_map |= file_data_to_update(update_file_study)
+
+    update_file_image = (
+        generate_output_path(update_path, DEFAULT_WEBSITE_IMAGE_FILE_NAME)
+        if update_path
+        else None
     )
-    logger.info("Exporting datasets for study pages")
-    datasets_for_website_image(
-        id_list=id_list,
-        root_directory=root_directory,
-        output_filename=(
-            output_directory / DEFAULT_WEBSITE_DATASET_FOR_IMAGE_FILE_NAME
-            if output_directory
-            else Path(DEFAULT_WEBSITE_DATASET_FOR_IMAGE_FILE_NAME)
-        ),
-        update_file=(
-            update_path / DEFAULT_WEBSITE_DATASET_FOR_IMAGE_FILE_NAME
-            if update_path
-            else None
-        ),
+    if update_file_image:
+        image_map |= file_data_to_update(update_file_image)
+
+    output_filename_study = generate_output_path(
+        output_directory, DEFAULT_WEBSITE_STUDY_FILE_NAME
     )
+    output_filename_image = generate_output_path(
+        output_directory, DEFAULT_WEBSITE_IMAGE_FILE_NAME
+    )
+
+    warnings_list: list[str] = []
+    errors_list: list[str] = []
+
+    with Progress(
+        SpinnerColumn(),
+        TextColumn("[progress.description]{task.description}"),
+        BarColumn(),
+        TaskProgressColumn(),
+        TimeElapsedColumn(),
+    ) as progress:
+        task_id = progress.add_task("Processing studies...", total=len(studies))
+
+        with ThreadPoolExecutor(max_workers=max_workers) as executor:
+            future_to_study = {
+                executor.submit(
+                    process_study_for_generate_all,
+                    study,
+                    root_directory,
+                ): study
+                for study in studies
+            }
+
+            for future in as_completed(future_to_study):
+                study_item = future_to_study[future]
+
+                study_label = (
+                    study_item.accession_id
+                    if isinstance(study_item, apiStudy)
+                    else str(study_item)
+                )
+
+                progress.update(task_id, description=f"Processing study {study_label}")
+
+                try:
+                    accession_id, study_json, transformed_images = future.result()
+                    studies_map[accession_id] = study_json
+                    image_map |= transformed_images
+                except Exception as exc:
+                    message = f"Failed to process study {study_label}: {exc}"
+                    logger.error(message)
+                    errors_list.append(message)
+                finally:
+                    progress.advance(task_id)
+
+    sorted_map = sort_studies(studies_map, should_sort=bool(id_list))
+    if write_bulk_gzip:
+        write_elastic_bulk_ndjson_gz_chunks(
+            output_prefix=generate_output_path(
+                output_directory, "api-study-metadata.bulk"
+            ),
+            documents=sorted_map,
+            index_name="test_index",
+            description="Elastic bulk study export",
+        )
+        write_elastic_bulk_ndjson_gz_chunks(
+            output_prefix=generate_output_path(
+                output_directory, "api-image-metadata.bulk"
+            ),
+            documents=image_map,
+            index_name="test_index_images",
+            description="Elastic bulk image export",
+        )
+    else:
+        write_json(
+            path=output_filename_study, data=sorted_map, description="study info"
+        )
+        write_json(
+            path=output_filename_image, data=image_map, description="website images"
+        )
+
+    if warnings_list:
+        logger.warning(f"{len(warnings_list)} warning(s) occurred")
+
+    if errors_list:
+        logger.error(f"{len(errors_list)} error(s) occurred")
+        for err in errors_list:
+            logger.error(err)
 
 
 @website.command("study")
@@ -143,35 +258,21 @@ def website_study(
 ):
     validate_cli_inputs(id_list=id_list, update_file=update_file)
 
-    settings = Settings()
-
-    if not id_list:
-        id_list = get_study_ids(root_directory)
+    studies = resolve_studies(id_list=id_list, root_directory=root_directory)
 
     studies_map = {}
 
     if update_file:
         studies_map |= file_data_to_update(update_file)
 
-    for id in id_list:
-        context = create_cli_context(StudyCLIContext, id, root_directory)
+    for study in studies:
+        context = create_cli_context(
+            StudyCLIContext, study_or_id=study, root_directory=root_directory
+        )
         study = transform_study(context)
         studies_map[study.accession_id] = study.model_dump(mode="json")
-
-    if id_list:
-        sorted_map = dict(
-            sorted(
-                studies_map.items(),
-                key=lambda item_tuple: study_sort_key(item_tuple[1]),
-                reverse=True,
-            )
-        )
-    else:
-        sorted_map = studies_map
-
-    logging.info(f"Writing study info to {output_filename.absolute()}")
-    with open(output_filename, "w") as output:
-        output.write(json.dumps(sorted_map, indent=4))
+    sorted_map = sort_studies(studies_map, bool(id_list))
+    write_json(path=output_filename, data=sorted_map, description="study info")
 
 
 @website.command("image")
@@ -205,22 +306,20 @@ def website_image(
 ):
     validate_cli_inputs(id_list=id_list, update_file=update_file)
 
-    settings = Settings()
-
-    if not id_list:
-        id_list = get_study_ids(root_directory)
+    studies = resolve_studies(id_list=id_list, root_directory=root_directory)
 
     image_map = {}
     if update_file:
         image_map |= file_data_to_update(update_file)
 
-    for id in id_list:
-        context = create_cli_context(ImageCLIContext, id, root_directory)
-        image_map |= transform_images(context)
+    for study in studies:
+        context = create_cli_context(
+            ImageCLIContext, study_or_id=study, root_directory=root_directory
+        )
+        transformed_images, image_format = transform_images(context)
+        image_map |= transformed_images
 
-    logging.info(f"Writing website images to {output_filename.absolute()}")
-    with open(output_filename, "w") as output:
-        output.write(json.dumps(image_map, indent=4))
+    write_json(path=output_filename, data=image_map, description="website images")
 
 
 @website.command("image-dataset")
@@ -254,47 +353,79 @@ def datasets_for_website_image(
 ):
     validate_cli_inputs(id_list=id_list, update_file=update_file)
 
-    settings = Settings()
-
-    if not id_list:
-        id_list = get_study_ids(root_directory)
+    id_list = resolve_study_ids(id_list=id_list, root_directory=root_directory)
 
     dataset_map = {}
     if update_file:
         dataset_map |= file_data_to_update(update_file)
 
     for id in id_list:
-        context = create_cli_context(CLIContext, id, root_directory)
+        context = create_cli_context(
+            CLIContext, id, root_directory, include_dataset=False
+        )
         dataset_map |= transform_datasets(context)
 
-    logging.info(f"Writing datasets for images to {output_filename.absolute()}")
-
-    with open(output_filename, "w") as output:
-        output.write(json.dumps(dataset_map, indent=4))
+    write_json(
+        path=output_filename, data=dataset_map, description="datasets for images"
+    )
 
 
 def create_cli_context(
     cli_type: Type[CLIContext],
-    id: str,
+    study_or_id: str | apiStudy,
     root_directory: Optional[Path],
     cache_use: Optional[CacheUse] = None,
+    include_dataset: bool = True,
 ):
     if root_directory:
-        abs_root = root_directory.resolve()
-        context = cli_type.model_validate(
-            {"root_directory": abs_root, "accession_id": id, "cache_use": cache_use}
+        accession_id = (
+            study_or_id.accession_id
+            if isinstance(study_or_id, apiStudy)
+            else study_or_id
         )
+        context = cli_type.model_validate(
+            {
+                "root_directory": root_directory.resolve(),
+                "accession_id": accession_id,
+                "cache_use": cache_use,
+                "study": None,
+                "dataset": None,
+            }
+        )
+        context.study = retrieve_study(context=context)
+        if include_dataset:
+            context.dataset = retrieve_datasets(context=context)
+        return context
+
+    if isinstance(study_or_id, apiStudy):
+        study = study_or_id
     else:
-        accession_id = None
-        if not is_uuid(id):
-            accession_id = id
-            id = get_uuid_from_accession_id(accession_id)
-        else:
-            accession_id = get_accession_id_from_uuid(id)
-        context = cli_type.model_validate(
-            {"study_uuid": id, "accession_id": accession_id, "cache_use": cache_use}
-        )
+        study = get_study_from_id(study_or_id)
+
+    context = cli_type.model_validate(
+        {
+            "study_uuid": str(study.uuid),
+            "accession_id": study.accession_id,
+            "cache_use": cache_use,
+            "study": study,
+            "dataset": None,
+        }
+    )
+    if include_dataset:
+        context.dataset = retrieve_datasets(context=context)
     return context
+
+
+def resolve_studies(
+    id_list: Optional[List[str]], root_directory: Optional[Path]
+) -> List[str] | List[apiStudy]:
+    return get_all_studies(root_directory) if not id_list else id_list
+
+
+def resolve_study_ids(
+    id_list: Optional[List[str]], root_directory: Optional[Path]
+) -> List[str]:
+    return get_study_ids(root_directory) if not id_list else id_list
 
 
 def is_uuid(id: str) -> bool:
@@ -305,24 +436,28 @@ def is_uuid(id: str) -> bool:
     return True
 
 
-def get_uuid_from_accession_id(accession_id: str) -> str:
-    study = api_client.search_study_by_accession(accession_id=accession_id)
-    if study:
-        return study.uuid
-    else:
-        logger.error(f"Could not find Study: {accession_id} in API")
-        raise RuntimeError(
-            f"Could not find Study with accession id: {accession_id} in API"
+def sort_studies(studies_map: dict, should_sort: bool) -> dict:
+    if not should_sort:
+        return studies_map
+    return dict(
+        sorted(
+            studies_map.items(),
+            key=lambda item: study_sort_key(item[1]),
+            reverse=True,
         )
+    )
 
 
-def get_accession_id_from_uuid(uuid: str) -> str:
-    study = api_client.get_study(uuid)
-    if study:
-        return study.accession_id
+def get_study_from_id(id: str) -> apiStudy:
+    if is_uuid(id):
+        study = get_one_api_result(id, api_client.get_study)
     else:
-        logger.error(f"Could not find Study: {uuid} in API")
-        raise RuntimeError(f"Could not find Study with uuid: {uuid} in API")
+        study = get_one_api_result(id, api_client.search_study_by_accession)
+    if study:
+        return study
+    else:
+        logger.error(f"Could not find Study: {id} in API")
+        raise RuntimeError(f"Could not find Study with id: {id} in API")
 
 
 def validate_cli_inputs(

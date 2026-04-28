@@ -40,16 +40,47 @@ class Dataset(models.Dataset, models.DatasetStats):
         description="""Other protocols followed in order to create the images in this dataset.""",
         default_factory=list,
     )
-    image: List[Image] = Field(
-        default_factory=list,
-        description="List of image associated with the dataset.",
-    )
 
 
 class Study(models.Study):
     dataset: Optional[List[Dataset]] = Field(
         default_factory=list,
         description="""A dataset that is associated with the study.""",
+    )
+    image: List[Image] = Field(
+        default_factory=list,
+        description="List of image associated with the study.",
+    )
+    image_format: list[str] = Field(
+        default_factory=list,
+        description="List of image formats.",
+    )
+    author_display_name: list[str] | None = Field(
+        description="""study authors""",
+    )
+    author_orcid: list[str] | None = Field(
+        description="""study authors""",
+    )
+    author_rorid: list[str] | None = Field(
+        description="""study authors""",
+    )
+    author_affiliation: list[str] | None = Field(
+        description="""study authors""",
+    )
+    example_image: list[str] | None = Field(
+        description="""study authors""",
+    )
+    organism_scientific_name: list[str] | None = Field(
+        description="""study authors""",
+    )
+    organism_common_name: list[str] | None = Field(
+        description="""study authors""",
+    )
+    imaging_method: list[str] | None = Field(
+        description="""study authors""",
+    )
+    annotation_type: list[str] | None = Field(
+        description="""study authors""",
     )
 
 
