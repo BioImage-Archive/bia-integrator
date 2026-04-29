@@ -253,6 +253,9 @@
                 },
                 {
                     "@id": "file_list.tsv"
+                },
+                {
+                    "@id": "#Default%20dataset"
                 }
             ],
             "accessionId": "MODIFY-ROC-IMAGEGROUPS",
@@ -328,7 +331,7 @@
             "@type": [
                 "csvw:Column"
             ],
-            "columnName": "source_image_label",
+            "columnName": "associated_source_image",
             "propertyUrl": "http://bia/associatedSourceImage"
         },
         {
@@ -336,7 +339,7 @@
             "@type": [
                 "csvw:Column"
             ],
-            "columnName": "associated_specimen",
+            "columnName": "associated_subject",
             "propertyUrl": "http://bia/associatedSubject"
         },
         {
@@ -428,7 +431,11 @@
                     "@id": "#Widefield%20fluorescence%20microscope"
                 }
             ],
-            "associatedAnnotationMethod": [],
+            "associatedAnnotationMethod": [
+                {
+                    "@id": "#Cell%20segmentation"
+                }
+            ],
             "associatedImageAnalysisMethod": [],
             "associatedImageCorrelationMethod": [],
             "associatedProtocol": [],
@@ -445,6 +452,20 @@
             "@type": "bia:Protocol",
             "title": "Phase contrast imaging protocol",
             "protocolDescription": "Phase contrast imaging of live cells."
+        },
+        {
+            "@id": "#Cell%20segmentation",
+            "@type": "bia:AnnotationMethod",
+            "title": "Cell segmentation",
+            "protocolDescription": "Semi-automated cell segmentation.",
+            "annotationCriteria": null,
+            "annotationCoverage": null,
+            "transformationDescription": null,
+            "spatialInformation": null,
+            "methodType": [
+                "point_annotations"
+            ],
+            "annotationSourceIndicator": null
         },
         {
             "@id": "#Widefield%20fluorescence%20microscope",

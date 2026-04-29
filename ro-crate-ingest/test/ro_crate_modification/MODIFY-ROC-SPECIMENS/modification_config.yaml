@@ -3,7 +3,8 @@
 # additional_files pulls unassigned data/extra/ts_003.mrc.st into the
 # tilt series dataset as a typed tilt_series image for specimen track
 # participation. Specimen 002 overrides to use a different biosample.
-# Unassigned files (README) go to the automatic default dataset.
+# Unassigned files (README) go to the automatic default dataset,
+# and moreover, its default label in file list is not overwritten.
 
 rembis:
   protocols:
@@ -37,9 +38,15 @@ rembis:
       protocol_description: "Tilt series collected on Titan Krios."
       imaging_instrument_description: "Thermo Fisher Titan Krios"
       fbbi_id:
-        - "obo:FBbi_00000256"
+        - "obo:FBbi_00100015"
       imaging_method_name:
-        - "Cryo-electron tomography"
+        - "cryogenic electron tomography"
+
+  annotation_methods:
+    - title: "Tomogram segmentation"
+      protocol_description: "Manual segmentation of reconstructed tomograms."
+      method_type:
+        - "point_annotations"
 
 specimen_defaults:
   biosample_title: "HeLa cells (wild type)"
@@ -70,6 +77,12 @@ datasets:
     images:
       by_type:
         tomogram: "**/*.mrc"
+    annotations:
+      - patterns: "**/annotations/tomo_001_segmentation.csv"
+        annotation_method_titles:
+          - "Tomogram segmentation"
+        associated_source_image:
+          - "Specimen_001 tomogram"
     specimen_tracks:
       protocol_titles:
         tomogram:

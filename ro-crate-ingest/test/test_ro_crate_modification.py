@@ -6,9 +6,23 @@ from urllib.parse import quote
 
 import pandas as pd
 import pytest
+from bia_ro_crate.core.file_list import FileList
+from bia_ro_crate.models import ro_crate_models
+from bia_ro_crate.models.linked_data.ontology_terms import BIA
+from rdflib import RDF
 from typer.testing import CliRunner
 
 from ro_crate_ingest.cli import ro_crate_ingest
+from ro_crate_ingest.ro_crate_modification.enrichment.assignments import (
+    ResultAssignmentContext,
+    _apply_result_assignment,
+)
+from ro_crate_ingest.ro_crate_modification.enrichment.file_list_utils import (
+    get_or_add_label_column_id,
+)
+from ro_crate_ingest.ro_crate_modification.enrichment.utils import (
+    file_list_association_value,
+)
 
 runner = CliRunner()
 
@@ -19,6 +33,113 @@ def title_to_id(title: str) -> str:
 
 def _fixture_root() -> Path:
     return Path(__file__).parent / "ro_crate_modification"
+
+
+@pytest.mark.parametrize(
+    ("values", "expected"),
+    [
+        ([], None),
+        (["#Protocol%20one"], "#Protocol%20one"),
+        (["#Protocol%20one", "#Protocol%20two"], "['#Protocol%20one', '#Protocol%20two']"),
+    ],
+)
+def test_file_list_association_value(values, expected):
+    assert file_list_association_value(values) == expected
+
+
+def test_result_assignment_warns_before_overwriting_type(caplog):
+    schema = {
+        "_:col0": ro_crate_models.Column(
+            **{
+                "@id": "_:col0",
+                "@type": ["csvw:Column"],
+                "columnName": "file_path",
+                "propertyUrl": str(BIA.filePath),
+            }
+        ),
+        "_:col1": ro_crate_models.Column(
+            **{
+                "@id": "_:col1",
+                "@type": ["csvw:Column"],
+                "columnName": "dataset",
+                "propertyUrl": "http://schema.org/isPartOf",
+            }
+        ),
+        "_:col2": ro_crate_models.Column(
+            **{
+                "@id": "_:col2",
+                "@type": ["csvw:Column"],
+                "columnName": "type",
+                "propertyUrl": str(RDF.type),
+            }
+        ),
+    }
+    file_list = FileList(
+        schema=schema,
+        data=pd.DataFrame(
+            {
+                "file_path": ["data/cell_001_mask.csv"],
+                "dataset": ["#Fluorescence%20microscopy%20images"],
+                "type": ["http://bia/Image"],
+            }
+        ),
+    )
+
+    context = ResultAssignmentContext(
+        file_list=file_list,
+        dataset_name="Fluorescence microscopy images",
+        dataset_id="#Fluorescence%20microscopy%20images",
+        dataset_col_id="_:col1",
+        path_col_id="_:col0",
+        type_col_id="_:col2",
+    )
+
+    count = _apply_result_assignment(
+        context,
+        assignment_name="annotation assignment",
+        patterns=["**/*.csv"],
+        result_type="http://bia/AnnotationData",
+    )
+
+    assert count == 1
+    assert file_list.data.at[0, "_:col2"] == "http://bia/AnnotationData"
+    assert "overwriting existing type" in caplog.text
+
+
+def test_get_or_add_label_column_id_creates_missing_column():
+    schema = {
+        "_:col0": ro_crate_models.Column(
+            **{
+                "@id": "_:col0",
+                "@type": ["csvw:Column"],
+                "columnName": "file_path",
+                "propertyUrl": str(BIA.filePath),
+            }
+        ),
+        "_:col1": ro_crate_models.Column(
+            **{
+                "@id": "_:col1",
+                "@type": ["csvw:Column"],
+                "columnName": "dataset",
+                "propertyUrl": "http://schema.org/isPartOf",
+            }
+        ),
+    }
+    file_list = FileList(
+        schema=schema,
+        data=pd.DataFrame(
+            {
+                "file_path": ["data/cell_001_mask.csv"],
+                "dataset": ["#Fluorescence%20microscopy%20images"],
+            }
+        ),
+    )
+
+    col_id = get_or_add_label_column_id(file_list)
+
+    assert file_list.schema[col_id].columnName == "label"
+    assert file_list.schema[col_id].propertyUrl == "http://schema.org/name"
+    assert col_id in file_list.data.columns
 
 
 def _setup_and_run(tmp_path: Path, accession_id: str) -> tuple[dict, pd.DataFrame]:
@@ -53,7 +174,9 @@ def _setup_and_run(tmp_path: Path, accession_id: str) -> tuple[dict, pd.DataFram
     graph_by_id = {e["@id"]: e for e in crate["@graph"]}
 
     tsv_files = list(output_dir.glob("*.tsv"))
-    assert len(tsv_files) == 1, f"Expected exactly one TSV in output, found: {tsv_files}"
+    assert (
+        len(tsv_files) == 1
+    ), f"Expected exactly one TSV in output, found: {tsv_files}"
     df = pd.read_csv(tsv_files[0], sep="\t", dtype=str)
 
     return graph_by_id, df
@@ -86,6 +209,7 @@ class TestImageGroups:
     - *.png files get associated_protocol: #Phase%20contrast%20imaging%20protocol
     - data/README.txt lands in the automatic Default dataset.
     """
+
     ACCESSION_ID = "MODIFY-ROC-IMAGEGROUPS"
 
     @pytest.fixture(autouse=True)
@@ -94,7 +218,9 @@ class TestImageGroups:
 
     # --- Full output comparison ---------------------------------------------
     def test_metadata_graph_matches_expected(self):
-        expected_path = _fixture_root() / self.ACCESSION_ID / "modified" / "ro-crate-metadata.json"
+        expected_path = (
+            _fixture_root() / self.ACCESSION_ID / "modified" / "ro-crate-metadata.json"
+        )
         with open(expected_path) as f:
             expected = json.load(f)
         expected_graph = {e["@id"]: e for e in expected["@graph"]}
@@ -111,7 +237,9 @@ class TestImageGroups:
             )
 
     def test_file_list_matches_expected(self):
-        expected_path = _fixture_root() / self.ACCESSION_ID / "modified" / "file_list.tsv"
+        expected_path = (
+            _fixture_root() / self.ACCESSION_ID / "modified" / "file_list.tsv"
+        )
         expected_df = pd.read_csv(expected_path, sep="\t", dtype=str)
         df_sorted = self.df.sort_values("file_path").reset_index(drop=True)
         expected_sorted = expected_df.sort_values("file_path").reset_index(drop=True)
@@ -136,25 +264,33 @@ class TestImageGroups:
 
     def test_different_image_types_get_different_protocols(self):
         """Core image_groups invariant: file type determines protocol."""
-        tif_protocol = self.df[self.df["file_path"].str.endswith(".tif")].iloc[0]["associated_protocol"]
-        png_protocol = self.df[self.df["file_path"].str.endswith(".png")].iloc[0]["associated_protocol"]
-        assert tif_protocol != png_protocol, (
-            "Expected .tif and .png files to receive different protocols"
-        )
+        tif_protocol = self.df[self.df["file_path"].str.endswith(".tif")].iloc[0][
+            "associated_protocol"
+        ]
+        png_protocol = self.df[self.df["file_path"].str.endswith(".png")].iloc[0][
+            "associated_protocol"
+        ]
+        assert (
+            tif_protocol != png_protocol
+        ), "Expected .tif and .png files to receive different protocols"
 
     # --- Targeted: default dataset ------------------------------------------
     def test_unassigned_file_goes_to_default_dataset(self):
         row = self.df[self.df["file_path"] == "data/README.txt"]
         assert len(row) == 1
-        assert row.iloc[0]["dataset"] == title_to_id("Default dataset"), (
-            f"Expected README.txt in Default dataset, got {row.iloc[0]['dataset']!r}"
-        )
+        assert row.iloc[0]["dataset"] == title_to_id(
+            "Default dataset"
+        ), f"Expected README.txt in Default dataset, got {row.iloc[0]['dataset']!r}"
+
+    def test_default_dataset_is_part_of_study(self):
+        study = self.graph["./"]
+        assert {"@id": title_to_id("Default dataset")} in study["hasPart"]
 
     def test_no_specimen_entities_created(self):
         specimen_ids = [k for k in self.graph if "Specimen_" in k]
-        assert specimen_ids == [], (
-            f"Expected no Specimen entities, found: {specimen_ids}"
-        )
+        assert (
+            specimen_ids == []
+        ), f"Expected no Specimen entities, found: {specimen_ids}"
 
 
 class TestSpecimenTracksWithAdditionalFiles:
@@ -165,9 +301,11 @@ class TestSpecimenTracksWithAdditionalFiles:
     - Three specimen entities created (001, 002, 003), where 003 comes from
       the additional_files assignment of data/extra/ts_003.mrc.st.
     - Specimen group override: specimen 002 uses 'HeLa cells (mutant)'.
-    - source_image_label, associated_specimen, associated_protocol written
+    - One annotation row points to the specimen-generated tomogram label.
+    - associated_source_image, associated_subject, associated_protocol written
       correctly in the file list.
     """
+
     ACCESSION_ID = "MODIFY-ROC-SPECIMENS"
 
     @pytest.fixture(autouse=True)
@@ -176,7 +314,9 @@ class TestSpecimenTracksWithAdditionalFiles:
 
     # --- Full output comparison ---------------------------------------------
     def test_metadata_graph_matches_expected(self):
-        expected_path = _fixture_root() / self.ACCESSION_ID / "modified" / "ro-crate-metadata.json"
+        expected_path = (
+            _fixture_root() / self.ACCESSION_ID / "modified" / "ro-crate-metadata.json"
+        )
         with open(expected_path) as f:
             expected = json.load(f)
         expected_graph = {e["@id"]: e for e in expected["@graph"]}
@@ -193,7 +333,9 @@ class TestSpecimenTracksWithAdditionalFiles:
             )
 
     def test_file_list_matches_expected(self):
-        expected_path = _fixture_root() / self.ACCESSION_ID / "modified" / "file_list.tsv"
+        expected_path = (
+            _fixture_root() / self.ACCESSION_ID / "modified" / "file_list.tsv"
+        )
         expected_df = pd.read_csv(expected_path, sep="\t", dtype=str)
         # Sort both by file_path for stable comparison
         df_sorted = self.df.sort_values("file_path").reset_index(drop=True)
@@ -229,16 +371,16 @@ class TestSpecimenTracksWithAdditionalFiles:
         assert row.iloc[0]["associated_subject"] == title_to_id("Specimen_003")
 
     # --- Targeted: file list specimen track columns -------------------------
-    def test_tilt_series_have_associated_specimen(self):
+    def test_tilt_series_have_associated_subject(self):
         for path, sid in [
             ("data/ts/ts_001.mrc.st", "001"),
             ("data/ts/ts_002.mrc.st", "002"),
             ("data/extra/ts_003.mrc.st", "003"),
         ]:
             row = self.df[self.df["file_path"] == path]
-            assert row.iloc[0]["associated_subject"] == title_to_id(f"Specimen_{sid}"), (
-                f"{path}: unexpected associated_subject {row.iloc[0]['associated_subject']!r}"
-            )
+            assert row.iloc[0]["associated_subject"] == title_to_id(
+                f"Specimen_{sid}"
+            ), f"{path}: unexpected associated_subject {row.iloc[0]['associated_subject']!r}"
 
     def test_tomograms_have_associated_source_image(self):
         for path, sid in [
@@ -246,9 +388,33 @@ class TestSpecimenTracksWithAdditionalFiles:
             ("data/tomo/tomo_002.mrc", "002"),
         ]:
             row = self.df[self.df["file_path"] == path]
-            assert row.iloc[0]["associated_source_image"] == f"Specimen_{sid} tilt_series", (
-                f"{path}: unexpected associated_source_image {row.iloc[0]['associated_source_image']!r}"
-            )
+            assert (
+                row.iloc[0]["associated_source_image"] == f"Specimen_{sid} tilt_series"
+            ), f"{path}: unexpected associated_source_image {row.iloc[0]['associated_source_image']!r}"
+
+    def test_annotation_points_to_generated_tomogram_label(self):
+        annotation_row = self.df[
+            self.df["file_path"] == "data/annotations/tomo_001_segmentation.csv"
+        ]
+        tomogram_row = self.df[self.df["file_path"] == "data/tomo/tomo_001.mrc"]
+
+        assert len(annotation_row) == 1
+        assert len(tomogram_row) == 1
+        assert annotation_row.iloc[0]["type"] == "http://bia/AnnotationData"
+        assert annotation_row.iloc[0]["associated_annotation_method"] == title_to_id(
+            "Tomogram segmentation"
+        )
+        assert (
+            annotation_row.iloc[0]["associated_source_image"]
+            == tomogram_row.iloc[0]["label"]
+        )
+        assert (
+            annotation_row.iloc[0]["associated_source_image"] == "Specimen_001 tomogram"
+        )
+
+    def test_non_track_labels_are_preserved(self):
+        row = self.df[self.df["file_path"] == "data/README.md"]
+        assert row.iloc[0]["label"] == "Readme label"
 
     def test_tomograms_have_reconstruction_protocol(self):
         tomo_rows = self.df[self.df["file_path"].str.endswith(".mrc")]
@@ -260,12 +426,49 @@ class TestSpecimenTracksWithAdditionalFiles:
 
 
 class TestAnnotations:
+    """
+    MODIFY-ROC-ANNOTATIONS:
+    Full comparison against expected output, plus targeted checks on annotation
+    assignment and image-group protocol assignment in a mixed image/annotation
+    dataset.
+    """
+
     ACCESSION_ID = "MODIFY-ROC-ANNOTATIONS"
 
     @pytest.fixture(autouse=True)
     def load_outputs(self, annotations_outputs):
         self.graph, self.df = annotations_outputs
 
+    # --- Full output comparison ---------------------------------------------
+    def test_metadata_graph_matches_expected(self):
+        expected_path = (
+            _fixture_root() / self.ACCESSION_ID / "modified" / "ro-crate-metadata.json"
+        )
+        with open(expected_path) as f:
+            expected = json.load(f)
+        expected_graph = {e["@id"]: e for e in expected["@graph"]}
+        assert sorted(self.graph.keys()) == sorted(expected_graph.keys()), (
+            f"Graph @id sets differ.\n"
+            f"  Extra in output:   {sorted(set(self.graph) - set(expected_graph))}\n"
+            f"  Missing in output: {sorted(set(expected_graph) - set(self.graph))}"
+        )
+        for eid, entity in expected_graph.items():
+            assert self.graph[eid] == entity, (
+                f"Entity {eid!r} differs from expected.\n"
+                f"  Expected: {entity}\n"
+                f"  Got:      {self.graph[eid]}"
+            )
+
+    def test_file_list_matches_expected(self):
+        expected_path = (
+            _fixture_root() / self.ACCESSION_ID / "modified" / "file_list.tsv"
+        )
+        expected_df = pd.read_csv(expected_path, sep="\t", dtype=str)
+        df_sorted = self.df.sort_values("file_path").reset_index(drop=True)
+        expected_sorted = expected_df.sort_values("file_path").reset_index(drop=True)
+        pd.testing.assert_frame_equal(df_sorted, expected_sorted)
+
+    # --- Targeted: annotation assignment -------------------------------------
     def test_annotation_method_entity_created(self):
         assert title_to_id("Cell segmentation") in self.graph
 
@@ -277,7 +480,9 @@ class TestAnnotations:
     def test_annotation_row_gets_expected_metadata(self):
         row = self.df[self.df["file_path"] == "data/annotations/cell_001_mask.csv"]
         assert row.iloc[0]["label"] == "cell_001_mask"
-        assert row.iloc[0]["associated_annotation_method"] == title_to_id("Cell segmentation")
+        assert row.iloc[0]["associated_annotation_method"] == title_to_id(
+            "Cell segmentation"
+        )
         assert row.iloc[0]["associated_source_image"] == "Cell 001 fluorescence image"
 
     def test_annotation_row_gets_associated_source_image_column(self):
@@ -285,3 +490,20 @@ class TestAnnotations:
         assert "source_image_label" not in self.df.columns
         row = self.df[self.df["file_path"] == "data/annotations/cell_001_mask.csv"]
         assert row.iloc[0]["associated_source_image"] == "Cell 001 fluorescence image"
+
+    # --- Targeted: image_groups protocol assignment -------------------------
+    def test_annotation_fixture_tif_images_get_protocol(self):
+        tif_rows = self.df[self.df["file_path"].str.endswith(".tif")]
+        expected = title_to_id("Fluorescence imaging protocol")
+        assert (tif_rows["associated_protocol"] == expected).all(), (
+            f"Expected annotation fixture .tif images to have protocol {expected!r}, "
+            f"got:\n{tif_rows[['file_path', 'associated_protocol']]}"
+        )
+
+    def test_annotation_fixture_png_images_get_protocol(self):
+        png_rows = self.df[self.df["file_path"].str.endswith(".png")]
+        expected = title_to_id("Phase contrast imaging protocol")
+        assert (png_rows["associated_protocol"] == expected).all(), (
+            f"Expected annotation fixture .png images to have protocol {expected!r}, "
+            f"got:\n{png_rows[['file_path', 'associated_protocol']]}"
+        )

@@ -256,6 +256,9 @@
                 },
                 {
                     "@id": "file_list.tsv"
+                },
+                {
+                    "@id": "#Default%20dataset"
                 }
             ],
             "accessionId": "MODIFY-ROC-SPECIMENS",
@@ -451,7 +454,11 @@
             "associatedCreationProcess": null,
             "associatedSourceImage": [],
             "associatedImageAcquisitionProtocol": [],
-            "associatedAnnotationMethod": [],
+            "associatedAnnotationMethod": [
+                {
+                    "@id": "#Tomogram%20segmentation"
+                }
+            ],
             "associatedImageAnalysisMethod": [],
             "associatedImageCorrelationMethod": [],
             "associatedProtocol": [
@@ -472,6 +479,20 @@
             "@type": "bia:Protocol",
             "title": "Tomogram reconstruction",
             "protocolDescription": "IMOD-based reconstruction."
+        },
+        {
+            "@id": "#Tomogram%20segmentation",
+            "@type": "bia:AnnotationMethod",
+            "title": "Tomogram segmentation",
+            "protocolDescription": "Manual segmentation of reconstructed tomograms.",
+            "annotationCriteria": null,
+            "annotationCoverage": null,
+            "transformationDescription": null,
+            "spatialInformation": null,
+            "methodType": [
+                "point_annotations"
+            ],
+            "annotationSourceIndicator": null
         },
         {
             "@id": "#Specimen_001",
@@ -529,10 +550,10 @@
             "protocolDescription": "Tilt series collected on Titan Krios.",
             "imagingInstrumentDescription": "Thermo Fisher Titan Krios",
             "imagingMethodName": [
-                "Cryo-electron tomography"
+                "cryogenic electron tomography"
             ],
             "fbbiId": [
-                "obo:FBbi_00000256"
+                "obo:FBbi_00100015"
             ]
         },
         {
