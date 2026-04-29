@@ -4,15 +4,15 @@ from bia_ro_crate.models import ro_crate_models
 from bia_ro_crate.models.linked_data.pydantic_ld.LDModel import ObjectReference
 from bia_ro_crate.core.bia_ro_crate_metadata import BIAROCrateMetadata
 from ro_crate_ingest.ro_crate_modification.enrichment.utils import (
-    ref, 
-    refs, 
-    resolve_dataset_id_by_name, 
-    title_to_id, 
-    type_for, 
+    entity_ref,
+    entity_refs,
+    resolve_dataset_id_by_name,
+    title_to_id,
+    type_for,
 )
 from ro_crate_ingest.ro_crate_modification.modification_config import (
     Biosample,
-    DatasetModificationConfig, 
+    DatasetModificationConfig,
     RembiByType,
 )
 
@@ -32,12 +32,14 @@ def _make_biosample_entities(
     taxon_refs = []
     for taxon in biosample.organism_classification:
         taxon_id = taxon.ncbi_id or title_to_id(taxon.scientific_name)
-        taxon_entity = ro_crate_models.Taxon(**{
-            "@id": taxon_id,
-            "@type": type_for(ro_crate_models.Taxon),
-            "commonName": taxon.common_name,
-            "scientificName": taxon.scientific_name,
-        })
+        taxon_entity = ro_crate_models.Taxon(
+            **{
+                "@id": taxon_id,
+                "@type": type_for(ro_crate_models.Taxon),
+                "commonName": taxon.common_name,
+                "scientificName": taxon.scientific_name,
+            }
+        )
         entities.append(taxon_entity)
         taxon_refs.append(ObjectReference(**{"@id": taxon_entity.id}))
 
@@ -49,16 +51,18 @@ def _make_biosample_entities(
                 f"but BioSample.growthProtocol accepts only one reference. "
                 f"Using '{biosample.growth_protocol_title[0]}'."
             )
-        growth_protocol_ref = ref(biosample.growth_protocol_title[0])
+        growth_protocol_ref = entity_ref(biosample.growth_protocol_title[0])
 
-    biosample_entity = ro_crate_models.BioSample(**{
-        "@id": title_to_id(biosample.title),
-        "@type": type_for(ro_crate_models.BioSample),
-        "title": biosample.title,
-        "biologicalEntityDescription": biosample.biological_entity_description,
-        "organismClassification": taxon_refs,
-        "growthProtocol": growth_protocol_ref,
-    })
+    biosample_entity = ro_crate_models.BioSample(
+        **{
+            "@id": title_to_id(biosample.title),
+            "@type": type_for(ro_crate_models.BioSample),
+            "title": biosample.title,
+            "biologicalEntityDescription": biosample.biological_entity_description,
+            "organismClassification": taxon_refs,
+            "growthProtocol": growth_protocol_ref,
+        }
+    )
     entities.append(biosample_entity)
     return entities
 
@@ -71,12 +75,14 @@ def add_rembi_entities(
     Add study-wide REMBI entities to the metadata graph.
     """
     for protocol in rembis.protocols:
-        entity = ro_crate_models.Protocol(**{
-            "@id": title_to_id(protocol.title),
-            "@type": type_for(ro_crate_models.Protocol),
-            "title": protocol.title,
-            "protocolDescription": protocol.protocol_description,
-        })
+        entity = ro_crate_models.Protocol(
+            **{
+                "@id": title_to_id(protocol.title),
+                "@type": type_for(ro_crate_models.Protocol),
+                "title": protocol.title,
+                "protocolDescription": protocol.protocol_description,
+            }
+        )
         ro_crate_metadata.add_entity(entity)
         logger.debug(f"Added Protocol: {entity.id}")
 
@@ -89,36 +95,42 @@ def add_rembi_entities(
             logger.debug(f"Added entity: {entity.id}")
 
     for sipp in rembis.specimen_imaging_preparation_protocols:
-        entity = ro_crate_models.SpecimenImagingPreparationProtocol(**{
-            "@id": title_to_id(sipp.title),
-            "@type": type_for(ro_crate_models.SpecimenImagingPreparationProtocol),
-            "title": sipp.title,
-            "protocolDescription": sipp.protocol_description,
-        })
+        entity = ro_crate_models.SpecimenImagingPreparationProtocol(
+            **{
+                "@id": title_to_id(sipp.title),
+                "@type": type_for(ro_crate_models.SpecimenImagingPreparationProtocol),
+                "title": sipp.title,
+                "protocolDescription": sipp.protocol_description,
+            }
+        )
         ro_crate_metadata.add_entity(entity)
         logger.debug(f"Added SpecimenImagingPreparationProtocol: {entity.id}")
 
     for iap in rembis.image_acquisition_protocols:
-        entity = ro_crate_models.ImageAcquisitionProtocol(**{
-            "@id": title_to_id(iap.title),
-            "@type": type_for(ro_crate_models.ImageAcquisitionProtocol),
-            "title": iap.title,
-            "protocolDescription": iap.protocol_description,
-            "imagingInstrumentDescription": iap.imaging_instrument_description,
-            "imagingMethodName": iap.imaging_method_name,
-            "fbbiId": iap.fbbi_id,
-        })
+        entity = ro_crate_models.ImageAcquisitionProtocol(
+            **{
+                "@id": title_to_id(iap.title),
+                "@type": type_for(ro_crate_models.ImageAcquisitionProtocol),
+                "title": iap.title,
+                "protocolDescription": iap.protocol_description,
+                "imagingInstrumentDescription": iap.imaging_instrument_description,
+                "imagingMethodName": iap.imaging_method_name,
+                "fbbiId": iap.fbbi_id,
+            }
+        )
         ro_crate_metadata.add_entity(entity)
         logger.debug(f"Added ImageAcquisitionProtocol: {entity.id}")
 
     for annotation_method in rembis.annotation_methods:
-        entity = ro_crate_models.AnnotationMethod(**{
-            "@id": title_to_id(annotation_method.title),
-            "@type": type_for(ro_crate_models.AnnotationMethod),
-            "title": annotation_method.title,
-            "protocolDescription": annotation_method.protocol_description,
-            "methodType": annotation_method.method_type,
-        })
+        entity = ro_crate_models.AnnotationMethod(
+            **{
+                "@id": title_to_id(annotation_method.title),
+                "@type": type_for(ro_crate_models.AnnotationMethod),
+                "title": annotation_method.title,
+                "protocolDescription": annotation_method.protocol_description,
+                "methodType": annotation_method.method_type,
+            }
+        )
         ro_crate_metadata.add_entity(entity)
         logger.debug(f"Added AnnotationMethod: {entity.id}")
 
@@ -150,32 +162,36 @@ def apply_dataset_associations(
         return
 
     assoc = dataset_config.associations
-    updated = entity.model_copy(update={
-        "associatedBiologicalEntity": (
-            list(entity.associatedBiologicalEntity) + refs(assoc.biosample_titles)
-        ),
-        "associatedImageAcquisitionProtocol": (
-            list(entity.associatedImageAcquisitionProtocol)
-            + refs(assoc.image_acquisition_protocol_titles)
-        ),
-        "associatedSpecimenImagingPreparationProtocol": (
-            list(entity.associatedSpecimenImagingPreparationProtocol)
-            + refs(assoc.specimen_imaging_preparation_protocol_titles)
-        ),
-        "associatedAnnotationMethod": (
-            list(entity.associatedAnnotationMethod) + refs(assoc.annotation_method_titles)
-        ),
-        "associatedProtocol": (
-            list(entity.associatedProtocol) + refs(assoc.protocol_titles)
-        ),
-        "associatedImageAnalysisMethod": (
-            list(entity.associatedImageAnalysisMethod)
-            + refs(assoc.image_analysis_method_titles)
-        ),
-        "associatedImageCorrelationMethod": (
-            list(entity.associatedImageCorrelationMethod)
-            + refs(assoc.image_correlation_method_titles)
-        ),
-    })
+    updated = entity.model_copy(
+        update={
+            "associatedBiologicalEntity": (
+                list(entity.associatedBiologicalEntity)
+                + entity_refs(assoc.biosample_titles)
+            ),
+            "associatedImageAcquisitionProtocol": (
+                list(entity.associatedImageAcquisitionProtocol)
+                + entity_refs(assoc.image_acquisition_protocol_titles)
+            ),
+            "associatedSpecimenImagingPreparationProtocol": (
+                list(entity.associatedSpecimenImagingPreparationProtocol)
+                + entity_refs(assoc.specimen_imaging_preparation_protocol_titles)
+            ),
+            "associatedAnnotationMethod": (
+                list(entity.associatedAnnotationMethod)
+                + entity_refs(assoc.annotation_method_titles)
+            ),
+            "associatedProtocol": (
+                list(entity.associatedProtocol) + entity_refs(assoc.protocol_titles)
+            ),
+            "associatedImageAnalysisMethod": (
+                list(entity.associatedImageAnalysisMethod)
+                + entity_refs(assoc.image_analysis_method_titles)
+            ),
+            "associatedImageCorrelationMethod": (
+                list(entity.associatedImageCorrelationMethod)
+                + entity_refs(assoc.image_correlation_method_titles)
+            ),
+        }
+    )
     ro_crate_metadata.update_entity(updated)
     logger.debug(f"Applied explicit associations to dataset '{dataset_config.name}'.")

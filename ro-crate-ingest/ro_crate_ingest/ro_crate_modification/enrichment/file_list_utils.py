@@ -18,23 +18,19 @@ RDF_TYPE_PROPERTY = str(RDF.type)
 ASSOCIATED_SOURCE_IMAGE_PROPERTY = str(BIA.associatedSourceImage)
 LEGACY_SOURCE_IMAGE_LABEL_PROPERTY = "http://bia/sourceImageLabel"
 ASSOCIATED_ANNOTATION_METHOD_PROPERTY = str(BIA.associatedAnnotationMethod)
+ASSOCIATED_PROTOCOL_PROPERTY = str(BIA.associatedProtocol)
 ASSOCIATED_SUBJECT_PROPERTY = str(BIA.associatedSubject)
 COLUMN_ID_PATTERN = re.compile(r"^_:col(\d+)$")
 
 
 def get_dataset_column_id(file_list: FileList) -> str | None:
-    """Return the required dataset column; do not create it if the input is malformed."""
+    """Return the dataset column."""
     return file_list.get_column_id_by_property(IS_PART_OF_PROPERTY)
 
 
 def get_path_column_id(file_list: FileList) -> str | None:
-    """Return the required file-path column; do not create it if the input is malformed."""
+    """Return the file-path column."""
     return file_list.get_column_id_by_property(FILE_PATH_PROPERTY)
-
-
-def get_label_column_id(file_list: FileList) -> str | None:
-    """Return the required label column; do not create it if the input is malformed."""
-    return file_list.get_column_id_by_property(NAME_PROPERTY)
 
 
 def _next_column_id(file_list: FileList) -> str:
@@ -74,12 +70,14 @@ def _get_or_add_column_id(
         return col_id
 
     column_id = _next_column_id(file_list)
-    new_col = ro_crate_models.Column(**{
-        "@id": column_id,
-        "@type": ["csvw:Column"],
-        "columnName": column_name,
-        "propertyUrl": property_url,
-    })
+    new_col = ro_crate_models.Column(
+        **{
+            "@id": column_id,
+            "@type": ["csvw:Column"],
+            "columnName": column_name,
+            "propertyUrl": property_url,
+        }
+    )
     file_list.add_column(new_col, pd.Series([None] * len(file_list.data)))
     getattr(logger, log_level)(f"Added '{column_name}' column to file list.")
     return new_col.id
@@ -94,13 +92,26 @@ def get_or_add_type_column_id(file_list: FileList) -> str:
     )
 
 
+def get_or_add_label_column_id(file_list: FileList) -> str:
+    return _get_or_add_column_id(
+        file_list,
+        property_url=NAME_PROPERTY,
+        column_name="label",
+        log_level="debug",
+    )
+
+
 def get_or_add_associated_source_image_column_id(file_list: FileList) -> str:
-    current_col_id = file_list.get_column_id_by_property(ASSOCIATED_SOURCE_IMAGE_PROPERTY)
+    current_col_id = file_list.get_column_id_by_property(
+        ASSOCIATED_SOURCE_IMAGE_PROPERTY
+    )
     if current_col_id is not None:
         _ensure_object_column(file_list, current_col_id)
         return current_col_id
 
-    legacy_col_id = file_list.get_column_id_by_property(LEGACY_SOURCE_IMAGE_LABEL_PROPERTY)
+    legacy_col_id = file_list.get_column_id_by_property(
+        LEGACY_SOURCE_IMAGE_LABEL_PROPERTY
+    )
     if legacy_col_id is not None:
         _ensure_object_column(file_list, legacy_col_id)
         return legacy_col_id
@@ -113,7 +124,36 @@ def get_or_add_associated_source_image_column_id(file_list: FileList) -> str:
     )
 
 
-def _merge_column_values(file_list: FileList, target_col_id: str, source_col_id: str) -> None:
+def get_or_add_associated_annotation_method_column_id(file_list: FileList) -> str:
+    return _get_or_add_column_id(
+        file_list,
+        property_url=ASSOCIATED_ANNOTATION_METHOD_PROPERTY,
+        column_name="associated_annotation_method",
+        log_level="debug",
+    )
+
+
+def get_or_add_associated_protocol_column_id(file_list: FileList) -> str:
+    return _get_or_add_column_id(
+        file_list,
+        property_url=ASSOCIATED_PROTOCOL_PROPERTY,
+        column_name="associated_protocol",
+        log_level="debug",
+    )
+
+
+def get_or_add_associated_subject_column_id(file_list: FileList) -> str:
+    return _get_or_add_column_id(
+        file_list,
+        property_url=ASSOCIATED_SUBJECT_PROPERTY,
+        column_name="associated_subject",
+        log_level="debug",
+    )
+
+
+def _merge_column_values(
+    file_list: FileList, target_col_id: str, source_col_id: str
+) -> None:
     target = file_list.data[target_col_id]
     source = file_list.data[source_col_id]
     has_target_value = target.apply(_has_value)
@@ -142,11 +182,15 @@ def normalize_legacy_associated_source_image_column(
     Retarget an existing legacy source_image_label column to the newer
     associated_source_image metadata shape.
     """
-    legacy_col_id = file_list.get_column_id_by_property(LEGACY_SOURCE_IMAGE_LABEL_PROPERTY)
+    legacy_col_id = file_list.get_column_id_by_property(
+        LEGACY_SOURCE_IMAGE_LABEL_PROPERTY
+    )
     if legacy_col_id is None:
         return
 
-    current_col_id = file_list.get_column_id_by_property(ASSOCIATED_SOURCE_IMAGE_PROPERTY)
+    current_col_id = file_list.get_column_id_by_property(
+        ASSOCIATED_SOURCE_IMAGE_PROPERTY
+    )
     if current_col_id is not None:
         _merge_column_values(file_list, current_col_id, legacy_col_id)
         _drop_column(ro_crate_metadata, file_list, legacy_col_id)
@@ -158,21 +202,3 @@ def normalize_legacy_associated_source_image_column(
 
     column.columnName = "associated_source_image"
     column.propertyUrl = ASSOCIATED_SOURCE_IMAGE_PROPERTY
-
-
-def get_or_add_associated_annotation_method_column_id(file_list: FileList) -> str:
-    return _get_or_add_column_id(
-        file_list,
-        property_url=ASSOCIATED_ANNOTATION_METHOD_PROPERTY,
-        column_name="associated_annotation_method",
-        log_level="debug",
-    )
-
-
-def get_or_add_associated_subject_column_id(file_list: FileList) -> str:
-    return _get_or_add_column_id(
-        file_list,
-        property_url=ASSOCIATED_SUBJECT_PROPERTY,
-        column_name="associated_subject",
-        log_level="debug",
-    )

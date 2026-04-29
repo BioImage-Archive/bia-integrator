@@ -9,7 +9,7 @@ rembis:
     - title: "Cell segmentation"
       protocol_description: "Semi-automated cell segmentation."
       method_type:
-        - "Segmentation"
+        - "point_annotations"
 
   image_acquisition_protocols:
     - title: "Widefield fluorescence microscope"

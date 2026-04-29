@@ -356,6 +356,43 @@ class AdditionalFileImageAssignment(ClosedBaseModel):
         return self
 
 
+class AnnotationAssignmentConfig(ClosedBaseModel):
+    """
+    Configuration for assigning annotation data.
+
+    patterns
+        Glob patterns identifying which files in this dataset are annotation
+        files.
+
+    annotation_method_titles
+        Titles of AnnotationMethod entities associated with the annotation
+        file(s).
+
+    associated_source_image
+        Label(s) of the source image result data consumed by downstream ingest
+        when constructing creation-process dependencies for AnnotationData.
+    """
+    patterns: Annotated[list[str], BeforeValidator(_string_to_list)]
+    annotation_method_titles: Annotated[list[str], BeforeValidator(_string_to_list)] = Field(
+        default_factory=list
+    )
+    associated_source_image: Annotated[list[str], BeforeValidator(_string_to_list)] = Field(
+        default_factory=list,
+    )
+
+    @model_validator(mode="after")
+    def validate_has_effect(self) -> Self:
+        if not self.annotation_method_titles:
+            raise ValueError(
+                "annotations entry: 'annotation_method_titles' must be non-empty."
+            )
+        if not self.associated_source_image:
+            raise ValueError(
+                "annotations entry: 'associated_source_image' must be non-empty."
+            )
+        return self
+
+
 class AdditionalFilesConfig(ClosedBaseModel):
     """
     Configuration for assigning currently-unassigned files to an existing named
@@ -431,43 +468,6 @@ class ImageGroupConfig(ClosedBaseModel):
         return self
 
 
-class AnnotationAssignmentConfig(ClosedBaseModel):
-    """
-    Configuration for assigning annotation data.
-
-    patterns
-        Glob patterns identifying which files in this dataset are annotation
-        files.
-
-    annotation_method_titles
-        Titles of AnnotationMethod entities associated with the annotation
-        file(s).
-
-    associated_source_image
-        Label(s) of the source image result data consumed by downstream ingest
-        when constructing creation-process dependencies for AnnotationData.
-    """
-    patterns: Annotated[list[str], BeforeValidator(_string_to_list)]
-    annotation_method_titles: Annotated[list[str], BeforeValidator(_string_to_list)] = Field(
-        default_factory=list
-    )
-    associated_source_image: Annotated[list[str], BeforeValidator(_string_to_list)] = Field(
-        default_factory=list,
-    )
-
-    @model_validator(mode="after")
-    def validate_has_effect(self) -> Self:
-        if not self.annotation_method_titles:
-            raise ValueError(
-                "annotations entry: 'annotation_method_titles' must be non-empty."
-            )
-        if not self.associated_source_image:
-            raise ValueError(
-                "annotations entry: 'associated_source_image' must be non-empty."
-            )
-        return self
-
-
 class SpecimenTrackAssignmentConfig(ClosedBaseModel):
     """
     Per-dataset configuration for the specimen track scenario.
@@ -477,7 +477,7 @@ class SpecimenTrackAssignmentConfig(ClosedBaseModel):
 
     image_acquisition_protocol_title and protocol_titles are keyed by
     ImageType value (e.g. 'tilt_series', 'tomogram') or 'dataset' for a
-    dataset-level assignment — same conventions as in proposal gen.
+    dataset-level assignment.
 
     Note: dataset-level IAP/protocol associations that do not need to be
     keyed by image type can instead be expressed more simply via the
