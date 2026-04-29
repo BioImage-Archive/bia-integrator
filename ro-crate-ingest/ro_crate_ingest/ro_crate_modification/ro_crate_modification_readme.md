@@ -75,7 +75,11 @@ see the results of earlier ones:
    Specimen entities, and write track metadata to the file list.
 5. Run the default-dataset step. If any file rows are still unassigned, a
    `"Default dataset"` entity is created if needed and those rows are assigned
-   to it. No YAML entry is needed for the default dataset.
+   to it. When created, it is also linked from the Study `hasPart` list.
+   No YAML entry is needed for the default dataset.
+
+If two pattern-based steps match the same file and write the same file-list
+column, the later step overwrites the earlier value and logs a warning.
 
 ---
 
@@ -117,8 +121,8 @@ datasets:
 4. After all named datasets are processed, any files that remain unassigned
    (no dataset membership) are automatically collected into a new Dataset
    entity titled `"Default dataset"`. The default-dataset step always runs,
-   but the entity is only created when unassigned files remain. No config entry
-   is needed.
+   but the entity is only created when unassigned files remain. When created,
+   it is linked from the Study `hasPart` list. No config entry is needed.
 
 
 ### 1b. Assigning additional files to an existing dataset
@@ -208,7 +212,8 @@ Each `image_groups` entry has:
 Annotation assignment marks matched files in an existing dataset as
 `bia:AnnotationData`, adds an annotation label, links the files to one or more
 AnnotationMethod entities, and records the source image label(s) consumed by
-downstream ingest.
+downstream ingest. The configured `associated_source_image` values should match
+image labels that exist after enrichment.
 
 ```yaml
 rembis:
@@ -222,9 +227,9 @@ datasets:
   - name: "Tomogram annotations"
     annotations:
       - patterns:
-          - "**/*_mask.json"
+          - "**/*_particles.star"
         annotation_method_titles:
-          - "Manual segmentation"
+          - "Particle picking"
         associated_source_image:
           - "Specimen_0001 tomogram"
 ```
@@ -235,12 +240,17 @@ Each `annotations` entry has:
 |---|---|---|
 | `patterns` | Yes | Glob patterns identifying annotation files within the dataset. |
 | `annotation_method_titles` | Yes | One or more AnnotationMethod titles. Values are resolved to `@id`s and written to `associated_annotation_method`; the Dataset also receives those AnnotationMethod associations. |
-| `associated_source_image` | Yes | One or more source image labels written to `associated_source_image`. |
+| `associated_source_image` | Yes | One or more source image labels written to `associated_source_image`. For specimen-track images, use generated labels such as `Specimen_001 tomogram` or `Specimen_001 denoised_tomogram`. |
 
 Annotation assignment runs after `additional_files`, `images`, and
-`image_groups` for the same dataset. It expects the file list to already have
-a label/name column; if that column is absent, annotation assignment is skipped
-for that dataset.
+`image_groups` for the same dataset. If the file list does not already have a
+label/name column, the modifier adds one before writing annotation labels. If
+an annotation pattern also matches image rows, annotation assignment overwrites
+their `type` value and logs a warning.
+
+The modifier writes `associated_source_image` values as file-list metadata.
+Downstream RO-Crate parsing is responsible for validating whether those labels
+resolve to sensible source image references.
 
 
 ### 2. REMBI assignment and study metadata
@@ -275,8 +285,8 @@ rembis:
     - title: "Cryo-electron tomography"
       protocol_description: "..."
       imaging_instrument_description: "Titan Krios G3i"
-      fbbi_id: ["obo:FBbi_00000256"]
-      imaging_method_name: ["Cryo-electron tomography"]
+      fbbi_id: ["obo:FBbi_00100015"]
+      imaging_method_name: ["cryogenic electron tomography"]
 
 datasets:
   - name: "Unaligned multi-frame micrographs"
@@ -340,8 +350,8 @@ rembis:
     - title: "Cryo-ET"
       protocol_description: "..."
       imaging_instrument_description: "Titan Krios"
-      fbbi_id: ["obo:FBbi_00000256"]
-      imaging_method_name: ["Cryo-electron tomography"]
+      fbbi_id: ["obo:FBbi_00100015"]
+      imaging_method_name: ["cryogenic electron tomography"]
 
 specimen_defaults:
   biosample_title: "Yeast cells"

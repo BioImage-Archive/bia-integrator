@@ -10,21 +10,21 @@ The minimal RO-Crate for EMPIAR-12345 contains:
 
 - A `Study` entity at `./`
 - Two `Dataset` entities, one per EMPIAR imageset:
-  - `@id: "#Tilt_series_stacks"`, `name: "Tilt series stacks"`
-  - `@id: "#Reconstructed_tomograms"`, `name: "Reconstructed tomograms"`
+  - `@id: "#Tilt%20series%20stacks"`, `name: "Tilt series stacks"`
+  - `@id: "#Reconstructed%20tomograms"`, `name: "Reconstructed tomograms"`
 - A `FileList` entity pointing to `file_list.tsv`
 
 The file list (`file_list.tsv`) has these columns at the minimal stage:
 
 | file_path | size_in_bytes | dataset |
 |---|---|---|
-| `data/TS/tomo_0042.mrc.st` | 4200000 | `#Tilt_series_stacks` |
-| `data/Tomo/tomo_0042.mrc` | 18000000 | `#Reconstructed_tomograms` |
-| `data/TS/tomo_0023.mrc.st` | 4100000 | `#Tilt_series_stacks` |
-| `data/Tomo/tomo_0023.mrc` | 17500000 | `#Reconstructed_tomograms` |
+| `data/TS/tomo_0042.mrc.st` | 4200000 | `#Tilt%20series%20stacks` |
+| `data/Tomo/tomo_0042.mrc` | 18000000 | `#Reconstructed%20tomograms` |
+| `data/TS/tomo_0023.mrc.st` | 4100000 | `#Tilt%20series%20stacks` |
+| `data/Tomo/tomo_0023.mrc` | 17500000 | `#Reconstructed%20tomograms` |
 | `data/README.txt` | 1200 | _(null)_ |
 
-No `type` or `source_image_label` columns exist yet.
+No `type` or `associated_source_image` columns exist yet.
 
 
 ### Step 1: REMBI entities added
@@ -34,18 +34,18 @@ The enricher processes `rembis` in order: protocols first, then biosamples.
 The following entities are added to the RO-Crate metadata graph:
 
 ```
-Protocol         @id: "#Yeast_culture_protocol"
-Protocol         @id: "#Tomogram_reconstruction"
-Taxon            @id: "#Saccharomyces_cerevisiae"
-BioSample        @id: "#Yeast_cells"
+Protocol         @id: "#Yeast%20culture%20protocol"
+Protocol         @id: "#Tomogram%20reconstruction"
+Taxon            @id: "#Saccharomyces%20cerevisiae"
+BioSample        @id: "#Yeast%20cells"
                    biologicalEntityDescription: "S. cerevisiae BY4741"
-                   organismClassification: [{"@id": "#Saccharomyces_cerevisiae"}]
-                   growthProtocol: {"@id": "#Yeast_culture_protocol"}
+                   organismClassification: [{"@id": "#Saccharomyces%20cerevisiae"}]
+                   growthProtocol: {"@id": "#Yeast%20culture%20protocol"}
 SIPP             @id: "#Cryo-vitrification"
 IAP              @id: "#Cryo-ET"
 ```
 
-The `#Yeast_culture_protocol` entity is added before `#Yeast_cells` so
+The `#Yeast%20culture%20protocol` entity is added before `#Yeast%20cells` so
 that the `growthProtocol` reference is valid when the BioSample is added.
 
 
@@ -62,8 +62,8 @@ The config for this dataset is:
 
 The enricher:
 
-1. Resolves `"Tilt series stacks"` → `@id: "#Tilt_series_stacks"`.
-2. Filters the file list to rows where `dataset == "#Tilt_series_stacks"`.
+1. Resolves `"Tilt series stacks"` → `@id: "#Tilt%20series%20stacks"`.
+2. Filters the file list to rows where `dataset == "#Tilt%20series%20stacks"`.
 3. Adds a `type` column to the file list (it didn't exist yet).
 4. Both files match `**/*.mrc.st` → `type` set to `bia:Image`.
 
@@ -71,10 +71,10 @@ File list after this step:
 
 | file_path | size_in_bytes | dataset | type |
 |---|---|---|---|
-| `data/TS/tomo_0042.mrc.st` | 4200000 | `#Tilt_series_stacks` | `bia:Image` |
-| `data/Tomo/tomo_0042.mrc` | 18000000 | `#Reconstructed_tomograms` | _(null)_ |
-| `data/TS/tomo_0023.mrc.st` | 4100000 | `#Tilt_series_stacks` | `bia:Image` |
-| `data/Tomo/tomo_0023.mrc` | 17500000 | `#Reconstructed_tomograms` | _(null)_ |
+| `data/TS/tomo_0042.mrc.st` | 4200000 | `#Tilt%20series%20stacks` | `bia:Image` |
+| `data/Tomo/tomo_0042.mrc` | 18000000 | `#Reconstructed%20tomograms` | _(null)_ |
+| `data/TS/tomo_0023.mrc.st` | 4100000 | `#Tilt%20series%20stacks` | `bia:Image` |
+| `data/Tomo/tomo_0023.mrc` | 17500000 | `#Reconstructed%20tomograms` | _(null)_ |
 | `data/README.txt` | 1200 | _(null)_ | _(null)_ |
 
 
@@ -87,10 +87,10 @@ File list after this step:
 
 | file_path | size_in_bytes | dataset | type |
 |---|---|---|---|
-| `data/TS/tomo_0042.mrc.st` | 4200000 | `#Tilt_series_stacks` | `bia:Image` |
-| `data/Tomo/tomo_0042.mrc` | 18000000 | `#Reconstructed_tomograms` | `bia:Image` |
-| `data/TS/tomo_0023.mrc.st` | 4100000 | `#Tilt_series_stacks` | `bia:Image` |
-| `data/Tomo/tomo_0023.mrc` | 17500000 | `#Reconstructed_tomograms` | `bia:Image` |
+| `data/TS/tomo_0042.mrc.st` | 4200000 | `#Tilt%20series%20stacks` | `bia:Image` |
+| `data/Tomo/tomo_0042.mrc` | 18000000 | `#Reconstructed%20tomograms` | `bia:Image` |
+| `data/TS/tomo_0023.mrc.st` | 4100000 | `#Tilt%20series%20stacks` | `bia:Image` |
+| `data/Tomo/tomo_0023.mrc` | 17500000 | `#Reconstructed%20tomograms` | `bia:Image` |
 | `data/README.txt` | 1200 | _(null)_ | _(null)_ |
 
 `README.txt` is untouched: it belongs to no dataset and matches no pattern.
@@ -100,17 +100,18 @@ File list after this step:
 
 After all named datasets are processed, `README.txt` is still unassigned.
 A `"Default dataset"` entity is created automatically and `README.txt` is
-assigned to it.
+assigned to it. The default dataset is also added to the Study entity's
+`hasPart` list.
 
 Final file list after default assignment:
 
 | file_path | size_in_bytes | dataset | type |
 |---|---|---|---|
-| `data/TS/tomo_0042.mrc.st` | 4200000 | `#Tilt_series_stacks` | `bia:Image` |
-| `data/Tomo/tomo_0042.mrc` | 18000000 | `#Reconstructed_tomograms` | `bia:Image` |
-| `data/TS/tomo_0023.mrc.st` | 4100000 | `#Tilt_series_stacks` | `bia:Image` |
-| `data/Tomo/tomo_0023.mrc` | 17500000 | `#Reconstructed_tomograms` | `bia:Image` |
-| `data/README.txt` | 1200 | `#Default_dataset` | _(null)_ |
+| `data/TS/tomo_0042.mrc.st` | 4200000 | `#Tilt%20series%20stacks` | `bia:Image` |
+| `data/Tomo/tomo_0042.mrc` | 18000000 | `#Reconstructed%20tomograms` | `bia:Image` |
+| `data/TS/tomo_0023.mrc.st` | 4100000 | `#Tilt%20series%20stacks` | `bia:Image` |
+| `data/Tomo/tomo_0023.mrc` | 17500000 | `#Reconstructed%20tomograms` | `bia:Image` |
+| `data/README.txt` | 1200 | `#Default%20dataset` | _(null)_ |
 
 (Specimen track steps follow — see below.)
 
@@ -187,7 +188,7 @@ For specimen `"0042"`:
 
 ```json
 {"@id": "#Specimen_0042", "@type": "bia:Specimen",
- "biologicalEntity": [{"@id": "#Yeast_cells"}],
+ "biologicalEntity": [{"@id": "#Yeast%20cells"}],
  "imagingPreparationProtocol": [{"@id": "#Cryo-vitrification"}]}
 
 {"@id": "#CreationProcess_Specimen_0042", "@type": "bia:CreationProcess",
@@ -198,59 +199,62 @@ For specimen `"0023"`, `biosample_title` is overridden:
 
 ```json
 {"@id": "#Specimen_0023", "@type": "bia:Specimen",
- "biologicalEntity": [{"@id": "#Yeast_cells__mutant_strain_"}],
+ "biologicalEntity": [{"@id": "#Yeast%20cells%20%28mutant%20strain%29"}],
  "imagingPreparationProtocol": [{"@id": "#Cryo-vitrification"}]}
 ```
 
-Note: `"Yeast cells (mutant strain)"` → `#Yeast_cells__mutant_strain_`
-via the `title_to_id` slug. The referenced BioSample entity must itself
+Note: `"Yeast cells (mutant strain)"` → `#Yeast%20cells%20%28mutant%20strain%29`
+via `title_to_id` URL quoting. The referenced BioSample entity must itself
 exist in the graph — declare it under `rembis.biosamples` if it differs
 from the default.
 
 
-### Step 5f: source_image_label written to file list
+### Step 5f: associated_source_image written to file list
 
 For `tomogram` entries, the upstream is the tilt series (or frames if
 present). Tilt series are track starts here, so they receive no label.
 
 Final file list:
 
-| file_path | size_in_bytes | dataset | type | source_image_label |
+| file_path | size_in_bytes | dataset | type | associated_source_image |
 |---|---|---|---|---|
-| `data/TS/tomo_0042.mrc.st` | 4200000 | `#Tilt_series_stacks` | `bia:Image` | _(null)_ |
-| `data/Tomo/tomo_0042.mrc` | 18000000 | `#Reconstructed_tomograms` | `bia:Image` | `Specimen_0042 tilt_series` |
-| `data/TS/tomo_0023.mrc.st` | 4100000 | `#Tilt_series_stacks` | `bia:Image` | _(null)_ |
-| `data/Tomo/tomo_0023.mrc` | 17500000 | `#Reconstructed_tomograms` | `bia:Image` | `Specimen_0023 tilt_series` |
-| `data/README.txt` | 1200 | `#Default_dataset` | _(null)_ | _(null)_ |
+| `data/TS/tomo_0042.mrc.st` | 4200000 | `#Tilt%20series%20stacks` | `bia:Image` | _(null)_ |
+| `data/Tomo/tomo_0042.mrc` | 18000000 | `#Reconstructed%20tomograms` | `bia:Image` | `Specimen_0042 tilt_series` |
+| `data/TS/tomo_0023.mrc.st` | 4100000 | `#Tilt%20series%20stacks` | `bia:Image` | _(null)_ |
+| `data/Tomo/tomo_0023.mrc` | 17500000 | `#Reconstructed%20tomograms` | `bia:Image` | `Specimen_0023 tilt_series` |
+| `data/README.txt` | 1200 | `#Default%20dataset` | _(null)_ | _(null)_ |
 
 
 ### Step 5g: Dataset entities updated with IAP and protocol references
 
 `"Tilt series stacks"` → `associatedImageAcquisitionProtocol: [{"@id": "#Cryo-ET"}]`
 
-`"Reconstructed tomograms"` → `associatedProtocol: [{"@id": "#Tomogram_reconstruction"}]`
+`"Reconstructed tomograms"` → `associatedProtocol: [{"@id": "#Tomogram%20reconstruction"}]`
 
 
 ### Final RO-Crate metadata graph (new entities only)
 
 ```
-Protocol                  #Yeast_culture_protocol
-Protocol                  #Tomogram_reconstruction
-Taxon                     #Saccharomyces_cerevisiae
-BioSample                 #Yeast_cells
+Protocol                  #Yeast%20culture%20protocol
+Protocol                  #Tomogram%20reconstruction
+Taxon                     #Saccharomyces%20cerevisiae
+BioSample                 #Yeast%20cells
 SIPP                      #Cryo-vitrification
 IAP                       #Cryo-ET
 Specimen                  #Specimen_0042
 Specimen                  #Specimen_0023
-Dataset                   #Default_dataset
+Dataset                   #Default%20dataset
 ```
 
 Plus updates to existing entities:
 
 ```
-Dataset #Tilt_series_stacks
+Dataset #Tilt%20series%20stacks
   → associatedImageAcquisitionProtocol: [#Cryo-ET]
 
-Dataset #Reconstructed_tomograms
-  → associatedProtocol: [#Tomogram_reconstruction]
+Dataset #Reconstructed%20tomograms
+  → associatedProtocol: [#Tomogram%20reconstruction]
+
+Study ./
+  → hasPart includes #Default%20dataset
 ```

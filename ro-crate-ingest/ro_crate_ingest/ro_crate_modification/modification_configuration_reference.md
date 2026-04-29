@@ -30,6 +30,8 @@ Configuration is applied in this order:
 The order matters. For example, `additional_files` runs before `images`, so
 newly assigned files can be marked as images in the same dataset block, and
 `image_groups` runs after image assignment so it can match image rows.
+If two pattern-based steps match the same file and write the same file-list
+column, the later step overwrites the earlier value and logs a warning.
 
 
 ### `study_metadata`
@@ -122,7 +124,8 @@ Dataset names must be unique within a config file.
 After all named datasets have been processed, any remaining unassigned
 files are automatically placed into a `"Default dataset"` entity. The
 default-dataset step always runs, but the entity is only created if
-unassigned files remain. No YAML entry is needed or supported for it.
+unassigned files remain. When created, it is also added to the Study
+entity's `hasPart` list. No YAML entry is needed or supported for it.
 
 
 ### `datasets[].images`
@@ -226,7 +229,8 @@ pattern and writes annotation metadata into the file list:
 - `label`/name is set from the matched file stem, unless the pattern is a
   single literal path, in which case that path stem is used
 - `associated_annotation_method` is written from `annotation_method_titles`
-- `associated_source_image` is written from `associated_source_image`
+- `associated_source_image` is written from `associated_source_image`; values
+  should be labels of image rows that exist after enrichment
 
 The Dataset entity is also updated with the unique AnnotationMethod
 references named by the annotation entries.
@@ -234,32 +238,40 @@ references named by the annotation entries.
 ```yaml
 annotations:
   - patterns:
-      - "**/*_mask.json"
+      - "**/*_particles.star"
     annotation_method_titles:
-      - "Manual segmentation"
+      - "Particle picking"
     associated_source_image:
-      - "HeLa_tomogram_001"
+      - "Specimen_001 tomogram"
   - patterns:
-      - "**/*_labels.csv"
+      - "**/*_mito_labels.csv"
     annotation_method_titles:
-      - "Manual segmentation"
+      - "Particle picking"
     associated_source_image:
-      - "HeLa_tomogram_002"
-      - "HeLa_tomogram_003"
+      - "Specimen_002 tomogram"
+      - "Specimen_003 tomogram"
 ```
 
 | Field | Required | Description |
 |---|---|---|
 | `patterns` | Yes | Glob patterns identifying annotation files in the dataset. |
 | `annotation_method_titles` | Yes | AnnotationMethod titles to write to `associated_annotation_method`. Must be non-empty. |
-| `associated_source_image` | Yes | Source image label(s) to write to `associated_source_image`. Must be non-empty. |
+| `associated_source_image` | Yes | Source image label(s) to write to `associated_source_image`. Must be non-empty, and should match image labels present after enrichment. |
+
+For specimen-track cryoET data, generated image labels use the specimen ID and
+image type, such as `Specimen_001 tomogram` or `Specimen_001 denoised_tomogram`.
+Use those generated labels when an annotation file refers to a track image. The
+modifier writes the configured values as file-list metadata; downstream
+RO-Crate parsing validates whether the references resolve sensibly.
 
 `annotations` can be combined with `images`, `additional_files`,
 `image_groups`, `associations`, and/or `specimen_tracks` in the same dataset block.
+Because annotation assignment runs after `images`, an annotation pattern that
+also matches image rows will overwrite their `type` value and log a warning.
 
-Annotation assignment requires the file list to contain a label/name column.
-If the dataset or file path column is absent, or if the label/name column is
-absent, annotation assignment is skipped for that dataset.
+If the file list does not already have a label/name column, annotation
+assignment adds one before writing annotation labels. If the dataset or file
+path column is absent, annotation assignment is skipped for that dataset.
 
 
 ### `datasets[].associations`
