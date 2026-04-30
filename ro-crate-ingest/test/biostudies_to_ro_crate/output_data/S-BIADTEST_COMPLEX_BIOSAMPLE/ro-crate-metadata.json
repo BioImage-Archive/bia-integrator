@@ -327,15 +327,52 @@
             "website": null
         },
         {
-            "@id": "combined_file_list.tsv",
+            "@id": "_:col5",
             "@type": [
-                "File",
-                "bia:FileList",
-                "csvw:Table"
+                "csvw:Column"
             ],
-            "tableSchema": {
-                "@id": "_:ts0"
-            }
+            "columnName": "Channel 1",
+            "propertyUrl": null
+        },
+        {
+            "@id": "_:col4",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "Genotype/Line",
+            "propertyUrl": null
+        },
+        {
+            "@id": "_:col3",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "biostudies_type",
+            "propertyUrl": null
+        },
+        {
+            "@id": "_:col2",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "dataset",
+            "propertyUrl": "http://schema.org/isPartOf"
+        },
+        {
+            "@id": "_:col1",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "size",
+            "propertyUrl": "http://bia/sizeInBytes"
+        },
+        {
+            "@id": "_:col0",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "path",
+            "propertyUrl": "http://bia/filePath"
         },
         {
             "@id": "_:ts0",
@@ -364,52 +401,15 @@
             ]
         },
         {
-            "@id": "_:col5",
+            "@id": "combined_file_list.tsv",
             "@type": [
-                "csvw:Column"
+                "File",
+                "bia:FileList",
+                "csvw:Table"
             ],
-            "columnName": "Channel 1",
-            "propertyUrl": null
-        },
-        {
-            "@id": "_:col4",
-            "@type": [
-                "csvw:Column"
-            ],
-            "columnName": "Genotype/Line",
-            "propertyUrl": null
-        },
-        {
-            "@id": "_:col3",
-            "@type": [
-                "csvw:Column"
-            ],
-            "columnName": "dataset",
-            "propertyUrl": "http://schema.org/isPartOf"
-        },
-        {
-            "@id": "_:col2",
-            "@type": [
-                "csvw:Column"
-            ],
-            "columnName": "type",
-            "propertyUrl": null
-        },
-        {
-            "@id": "_:col1",
-            "@type": [
-                "csvw:Column"
-            ],
-            "columnName": "size",
-            "propertyUrl": "http://bia/sizeInBytes"
-        },
-        {
-            "@id": "_:col0",
-            "@type": [
-                "csvw:Column"
-            ],
-            "columnName": "path",
-            "propertyUrl": "http://bia/filePath"
+            "tableSchema": {
+                "@id": "_:ts0"
+            }
         },
         {
             "@id": "#Study%20Component-4",
@@ -564,6 +564,15 @@
             ]
         },
         {
+            "@id": "#Specimen-1",
+            "@type": [
+                "bia:SpecimenImagingPreparationProtocol"
+            ],
+            "title": "Specimen without growth protocol",
+            "protocolDescription": "Followed step 1, 2 and 3",
+            "signalChannelInformation": []
+        },
+        {
             "@id": "#Specimen-3",
             "@type": [
                 "bia:SpecimenImagingPreparationProtocol"
@@ -580,40 +589,6 @@
             "title": "Specimen with growth protocol",
             "protocolDescription": "Followed step 1, 2 and 3",
             "signalChannelInformation": []
-        },
-        {
-            "@id": "#Specimen-1",
-            "@type": [
-                "bia:SpecimenImagingPreparationProtocol"
-            ],
-            "title": "Specimen without growth protocol",
-            "protocolDescription": "Followed step 1, 2 and 3",
-            "signalChannelInformation": []
-        },
-        {
-            "@id": "#Biosample-4",
-            "@type": [
-                "bia:BioSample"
-            ],
-            "title": "Second Biosample with organism subsection without ncbi id",
-            "biologicalEntityDescription": "Specific part of fish.",
-            "experimentalVariableDescription": [],
-            "extrinsicVariableDescription": [],
-            "intrinsicVariableDescription": [],
-            "organismClassification": [
-                {
-                    "@id": "#tx1"
-                }
-            ],
-            "growthProtocol": null
-        },
-        {
-            "@id": "#tx1",
-            "@type": [
-                "bia:Taxon"
-            ],
-            "commonName": "zebra fish",
-            "scientificName": "Danio  rerio"
         },
         {
             "@id": "#Biosample-3",
@@ -650,33 +625,6 @@
             "growthProtocol": null
         },
         {
-            "@id": "#tx0",
-            "@type": [
-                "bia:Taxon"
-            ],
-            "commonName": "Homo sapiens",
-            "scientificName": "Human"
-        },
-        {
-            "@id": "#Biosample-1%209094eed1-c332-4f45-add1-dc6e153ceb56",
-            "@type": [
-                "bia:BioSample"
-            ],
-            "title": "Biosample with organism subsection",
-            "biologicalEntityDescription": "Specific part of fly.",
-            "experimentalVariableDescription": [],
-            "extrinsicVariableDescription": [],
-            "intrinsicVariableDescription": [],
-            "organismClassification": [
-                {
-                    "@id": "NCBI:txid7227"
-                }
-            ],
-            "growthProtocol": {
-                "@id": "#_Specimen-2"
-            }
-        },
-        {
             "@id": "#Biosample-1",
             "@type": [
                 "bia:BioSample"
@@ -700,6 +648,58 @@
             ],
             "commonName": "fruit fly",
             "scientificName": "Drosophila melanogaster"
+        },
+        {
+            "@id": "#Biosample-4",
+            "@type": [
+                "bia:BioSample"
+            ],
+            "title": "Second Biosample with organism subsection without ncbi id",
+            "biologicalEntityDescription": "Specific part of fish.",
+            "experimentalVariableDescription": [],
+            "extrinsicVariableDescription": [],
+            "intrinsicVariableDescription": [],
+            "organismClassification": [
+                {
+                    "@id": "#tx1"
+                }
+            ],
+            "growthProtocol": null
+        },
+        {
+            "@id": "#Biosample-1%209094eed1-c332-4f45-add1-dc6e153ceb56",
+            "@type": [
+                "bia:BioSample"
+            ],
+            "title": "Biosample with organism subsection",
+            "biologicalEntityDescription": "Specific part of fly.",
+            "experimentalVariableDescription": [],
+            "extrinsicVariableDescription": [],
+            "intrinsicVariableDescription": [],
+            "organismClassification": [
+                {
+                    "@id": "NCBI:txid7227"
+                }
+            ],
+            "growthProtocol": {
+                "@id": "#_Specimen-2"
+            }
+        },
+        {
+            "@id": "#tx0",
+            "@type": [
+                "bia:Taxon"
+            ],
+            "commonName": "Homo sapiens",
+            "scientificName": "Human"
+        },
+        {
+            "@id": "#tx1",
+            "@type": [
+                "bia:Taxon"
+            ],
+            "commonName": "zebra fish",
+            "scientificName": "Danio  rerio"
         },
         {
             "@id": "#_Specimen-2",

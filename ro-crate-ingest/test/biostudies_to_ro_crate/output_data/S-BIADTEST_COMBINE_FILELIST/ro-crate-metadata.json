@@ -324,52 +324,6 @@
             "website": null
         },
         {
-            "@id": "combined_file_list.tsv",
-            "@type": [
-                "File",
-                "bia:FileList",
-                "csvw:Table"
-            ],
-            "tableSchema": {
-                "@id": "_:ts0"
-            }
-        },
-        {
-            "@id": "_:ts0",
-            "@type": [
-                "csvw:Schema"
-            ],
-            "column": [
-                {
-                    "@id": "_:col0"
-                },
-                {
-                    "@id": "_:col1"
-                },
-                {
-                    "@id": "_:col2"
-                },
-                {
-                    "@id": "_:col3"
-                },
-                {
-                    "@id": "_:col4"
-                },
-                {
-                    "@id": "_:col5"
-                },
-                {
-                    "@id": "_:col6"
-                },
-                {
-                    "@id": "_:col7"
-                },
-                {
-                    "@id": "_:col8"
-                }
-            ]
-        },
-        {
             "@id": "_:col8",
             "@type": [
                 "csvw:Column"
@@ -414,16 +368,16 @@
             "@type": [
                 "csvw:Column"
             ],
-            "columnName": "dataset",
-            "propertyUrl": "http://schema.org/isPartOf"
+            "columnName": "biostudies_type",
+            "propertyUrl": null
         },
         {
             "@id": "_:col2",
             "@type": [
                 "csvw:Column"
             ],
-            "columnName": "type",
-            "propertyUrl": null
+            "columnName": "dataset",
+            "propertyUrl": "http://schema.org/isPartOf"
         },
         {
             "@id": "_:col1",
@@ -440,6 +394,52 @@
             ],
             "columnName": "path",
             "propertyUrl": "http://bia/filePath"
+        },
+        {
+            "@id": "_:ts0",
+            "@type": [
+                "csvw:Schema"
+            ],
+            "column": [
+                {
+                    "@id": "_:col0"
+                },
+                {
+                    "@id": "_:col1"
+                },
+                {
+                    "@id": "_:col2"
+                },
+                {
+                    "@id": "_:col3"
+                },
+                {
+                    "@id": "_:col4"
+                },
+                {
+                    "@id": "_:col5"
+                },
+                {
+                    "@id": "_:col6"
+                },
+                {
+                    "@id": "_:col7"
+                },
+                {
+                    "@id": "_:col8"
+                }
+            ]
+        },
+        {
+            "@id": "combined_file_list.tsv",
+            "@type": [
+                "File",
+                "bia:FileList",
+                "csvw:Table"
+            ],
+            "tableSchema": {
+                "@id": "_:ts0"
+            }
         },
         {
             "@id": "#Annotations-1",
@@ -561,20 +561,20 @@
             "annotationSourceIndicator": null
         },
         {
-            "@id": "#Specimen-2",
-            "@type": [
-                "bia:SpecimenImagingPreparationProtocol"
-            ],
-            "title": "Specimen with growth protocol",
-            "protocolDescription": "Followed step 1, 2 and 3",
-            "signalChannelInformation": []
-        },
-        {
             "@id": "#Specimen-1",
             "@type": [
                 "bia:SpecimenImagingPreparationProtocol"
             ],
             "title": "Specimen without growth protocol",
+            "protocolDescription": "Followed step 1, 2 and 3",
+            "signalChannelInformation": []
+        },
+        {
+            "@id": "#Specimen-2",
+            "@type": [
+                "bia:SpecimenImagingPreparationProtocol"
+            ],
+            "title": "Specimen with growth protocol",
             "protocolDescription": "Followed step 1, 2 and 3",
             "signalChannelInformation": []
         },

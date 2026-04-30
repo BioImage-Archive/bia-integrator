@@ -20,7 +20,7 @@
       "value": {
         "path": "u/Lisette Rodriguez.zip",
         "size": 3508061759,
-        "type": "file",
+        "biostudies_type": "file",
         "dataset": "#Default%20template.%20No%20Study%20Components",
         "Description": "SEM images",
         "http://schema.org/name": "u/Lisette Rodriguez.zip",

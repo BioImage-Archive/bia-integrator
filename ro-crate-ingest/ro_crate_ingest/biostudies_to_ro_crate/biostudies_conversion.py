@@ -18,9 +18,10 @@ from ro_crate_ingest.biostudies_to_ro_crate.entity_conversion import (
     dataset,
     external_reference,
     file_list,
-    pagetab_file,
     study,
 )
+from ro_crate_ingest.biostudies_to_ro_crate.entity_conversion import dataset
+from ro_crate_ingest.biostudies_to_ro_crate.entity_conversion import file_list
 from ro_crate_ingest.biostudies_to_ro_crate.entity_conversion.rembi_mifa_mapping import (
     AnnotationMethodMapper,
     BioSampleTaxonMapper,
@@ -88,35 +89,14 @@ def convert_biostudies_to_ro_crate(
     )
     graph += ProtocolMapper().get_mapped_objects(submission, association_map)
 
-    roc_datasets = dataset.get_datasets_by_accno(submission, association_map)
+    dataset_mapper = dataset.DatasetMapper()
+    datasets = dataset_mapper.get_mapped_objects(submission, association_map)
+    graph += datasets
 
-    (
-        column_list,
-        schema_list,
-        combined_file_list,
-    ) = file_list.create_combined_file_list_for_study(
-        ro_crate_dir, submission, roc_datasets
+    file_list_mapper = file_list.FileListMapper(ro_crate_dir)
+    graph += file_list_mapper.get_mapped_objects(
+        submission, dataset_mapper.get_accno_lookup(), dataset_mapper.get_type_lookup()
     )
-    if roc_datasets:
-        roc_file_list_schema_objects = (
-            column_list + schema_list + [combined_file_list]
-            if combined_file_list
-            else list(schema_list) + list(column_list)
-        )
-
-        graph += roc_datasets.values()
-        graph += roc_file_list_schema_objects
-
-    # TODO - Assume in this case only one filelist is present - no need to combine. However, add dataset_id column?
-    if submission.section.files and len(submission.section.files) > 0:
-        # create a default dataset for the files that are part of the pagetab, rather than referenced via filelist
-        default_dataset = pagetab_file.create_root_dataset_for_submission(submission)
-        graph.append(default_dataset)
-
-        file_list_and_dependencies = pagetab_file.create_file_list_from_pagetab_files(
-            submission.section.files, ro_crate_dir, default_dataset.id
-        )
-        graph += file_list_and_dependencies
 
     roc_affiliation_by_accno = affiliation.get_affiliations_by_accno(submission)
     graph += roc_affiliation_by_accno.values()
@@ -133,8 +113,8 @@ def convert_biostudies_to_ro_crate(
     roc_study = study.get_study(
         submission,
         roc_contributors,
-        roc_datasets.values(),
-        combined_file_list,
+        datasets,
+        file_list_mapper.COMBINED_FILE_LIST_ID,
         roc_external_references,
     )
     graph.append(roc_study)

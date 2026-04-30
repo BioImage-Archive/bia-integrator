@@ -20,8 +20,8 @@
       "value": {
         "path": "folder1/file2.ome.zarr.zip",
         "size": 13161534,
-        "type": "file",
-        "dataset": "#Annotations-1",
+        "dataset": "#Study%20Component-1",
+        "biostudies_type": "file",
         "Genotype/Line": "; ubiCAAX-GFP/+ ; neuPH-RFP/+",
         "Channel 1": "CAAX",
         "Channel 2": null,
@@ -36,5 +36,5 @@
   "format": ".zip",
   "size_in_bytes": 13161534,
   "uri": "https://www.ebi.ac.uk/biostudies/files/S-BIADTEST_COMBINE_FILELIST/folder1/file2.ome.zarr.zip",
-  "submission_dataset_uuid": "d2eef6cf-51cc-4b76-ad6b-48fd9c3477b1"
+  "submission_dataset_uuid": "5af52196-ec7f-40b0-84ee-ad1cd7b5e467"
 }

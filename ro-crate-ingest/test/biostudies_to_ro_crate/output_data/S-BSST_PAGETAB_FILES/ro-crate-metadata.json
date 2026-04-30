@@ -258,6 +258,9 @@
             "acknowledgement": null,
             "hasPart": [
                 {
+                    "@id": "#Default%20template.%20No%20Study%20Components"
+                },
+                {
                     "@id": "combined_file_list.tsv"
                 }
             ],
@@ -279,15 +282,44 @@
             "contactEmail": "jagalar92@gmail.com"
         },
         {
-            "@id": "combined_file_list.tsv",
+            "@id": "_:col4",
             "@type": [
-                "File",
-                "bia:FileList",
-                "csvw:Table"
+                "csvw:Column"
             ],
-            "tableSchema": {
-                "@id": "_:ts0"
-            }
+            "columnName": "Description",
+            "propertyUrl": null
+        },
+        {
+            "@id": "_:col3",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "biostudies_type",
+            "propertyUrl": null
+        },
+        {
+            "@id": "_:col2",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "dataset",
+            "propertyUrl": "http://schema.org/isPartOf"
+        },
+        {
+            "@id": "_:col1",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "size",
+            "propertyUrl": "http://bia/sizeInBytes"
+        },
+        {
+            "@id": "_:col0",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "path",
+            "propertyUrl": "http://bia/filePath"
         },
         {
             "@id": "_:ts0",
@@ -313,44 +345,15 @@
             ]
         },
         {
-            "@id": "_:col4",
+            "@id": "combined_file_list.tsv",
             "@type": [
-                "csvw:Column"
+                "File",
+                "bia:FileList",
+                "csvw:Table"
             ],
-            "columnName": "Description",
-            "propertyUrl": null
-        },
-        {
-            "@id": "_:col3",
-            "@type": [
-                "csvw:Column"
-            ],
-            "columnName": "dataset",
-            "propertyUrl": "http://schema.org/isPartOf"
-        },
-        {
-            "@id": "_:col2",
-            "@type": [
-                "csvw:Column"
-            ],
-            "columnName": "type",
-            "propertyUrl": null
-        },
-        {
-            "@id": "_:col1",
-            "@type": [
-                "csvw:Column"
-            ],
-            "columnName": "size",
-            "propertyUrl": "http://bia/sizeInBytes"
-        },
-        {
-            "@id": "_:col0",
-            "@type": [
-                "csvw:Column"
-            ],
-            "columnName": "path",
-            "propertyUrl": "http://bia/filePath"
+            "tableSchema": {
+                "@id": "_:ts0"
+            }
         },
         {
             "@id": "#Default%20template.%20No%20Study%20Components",

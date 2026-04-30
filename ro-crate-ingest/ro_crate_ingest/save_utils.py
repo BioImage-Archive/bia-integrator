@@ -127,7 +127,7 @@ def round_trip_object_class_from_client_to_datamodel(api_object):
 
 def write_filelist(
     output_ro_crate_path: Path, filelist_id: str, filelist_dataframe: pd.DataFrame
-) -> None:
+) -> Path:
     filelist_path = ro_crate_data_entity_id_to_path(output_ro_crate_path, filelist_id)
     if not os.path.exists(filelist_path.parent):
         os.makedirs(filelist_path.parent)
@@ -136,6 +136,8 @@ def write_filelist(
         axis=0, by=filelist_dataframe.columns[0], inplace=True
     )
     filelist_dataframe.to_csv(filelist_path, sep="\t", index=False)
+
+    return filelist_path
 
 
 def write_modified_file_list(
