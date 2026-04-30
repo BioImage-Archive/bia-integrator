@@ -236,23 +236,20 @@
                 "Dataset",
                 "bia:Study"
             ],
-            "name": "Test specimen tracks study",
+            "name": "Test image groups study",
             "contributor": [
                 {
                     "@id": "#c0"
                 }
             ],
-            "description": "Minimal test crate for specimen track identification with additional_files.",
+            "description": "Minimal test crate for image group protocol assignment.",
             "license": "https://creativecommons.org/licenses/by/4.0/",
             "datePublished": "2024-01-01",
             "keyword": [],
             "acknowledgement": null,
             "hasPart": [
                 {
-                    "@id": "#Raw%20tilt%20series"
-                },
-                {
-                    "@id": "#Reconstructed%20tomograms"
+                    "@id": "#Fluorescence%20microscopy%20images"
                 },
                 {
                     "@id": "file_list.tsv"
@@ -261,7 +258,7 @@
                     "@id": "#Default%20dataset"
                 }
             ],
-            "accessionId": "MODIFY-ROC-SPECIMENS",
+            "accessionId": "MODIFY-ROC-IMAGEGROUPS",
             "seeAlso": [],
             "relatedPublication": []
         },
@@ -417,12 +414,12 @@
             "hasPart": []
         },
         {
-            "@id": "#Raw%20tilt%20series",
+            "@id": "#Fluorescence%20microscopy%20images",
             "@type": [
                 "Dataset",
                 "bia:Dataset"
             ],
-            "name": "Raw tilt series",
+            "name": "Fluorescence microscopy images",
             "description": "",
             "associatedBiologicalEntity": [],
             "associatedSpecimenImagingPreparationProtocol": [],
@@ -431,60 +428,36 @@
             "associatedSourceImage": [],
             "associatedImageAcquisitionProtocol": [
                 {
-                    "@id": "#Cryo-electron%20tomography"
+                    "@id": "#Widefield%20fluorescence%20microscope"
                 }
             ],
-            "associatedAnnotationMethod": [],
+            "associatedAnnotationMethod": [
+                {
+                    "@id": "#Cell%20segmentation"
+                }
+            ],
             "associatedImageAnalysisMethod": [],
             "associatedImageCorrelationMethod": [],
             "associatedProtocol": [],
             "hasPart": []
         },
         {
-            "@id": "#Reconstructed%20tomograms",
-            "@type": [
-                "Dataset",
-                "bia:Dataset"
-            ],
-            "name": "Reconstructed tomograms",
-            "description": "",
-            "associatedBiologicalEntity": [],
-            "associatedSpecimenImagingPreparationProtocol": [],
-            "associatedSpecimen": null,
-            "associatedCreationProcess": null,
-            "associatedSourceImage": [],
-            "associatedImageAcquisitionProtocol": [],
-            "associatedAnnotationMethod": [
-                {
-                    "@id": "#Tomogram%20segmentation"
-                }
-            ],
-            "associatedImageAnalysisMethod": [],
-            "associatedImageCorrelationMethod": [],
-            "associatedProtocol": [
-                {
-                    "@id": "#Tomogram%20reconstruction"
-                }
-            ],
-            "hasPart": []
-        },
-        {
-            "@id": "#Sample%20preparation",
+            "@id": "#Fluorescence%20imaging%20protocol",
             "@type": "bia:Protocol",
-            "title": "Sample preparation",
-            "protocolDescription": "Standard cryo preparation."
+            "title": "Fluorescence imaging protocol",
+            "protocolDescription": "Widefield fluorescence microscopy of stained cells."
         },
         {
-            "@id": "#Tomogram%20reconstruction",
+            "@id": "#Phase%20contrast%20imaging%20protocol",
             "@type": "bia:Protocol",
-            "title": "Tomogram reconstruction",
-            "protocolDescription": "IMOD-based reconstruction."
+            "title": "Phase contrast imaging protocol",
+            "protocolDescription": "Phase contrast imaging of live cells."
         },
         {
-            "@id": "#Tomogram%20segmentation",
+            "@id": "#Cell%20segmentation",
             "@type": "bia:AnnotationMethod",
-            "title": "Tomogram segmentation",
-            "protocolDescription": "Manual segmentation of reconstructed tomograms.",
+            "title": "Cell segmentation",
+            "protocolDescription": "Semi-automated cell segmentation.",
             "annotationCriteria": null,
             "annotationCoverage": null,
             "transformationDescription": null,
@@ -495,106 +468,17 @@
             "annotationSourceIndicator": null
         },
         {
-            "@id": "#Specimen_001",
-            "@type": "bia:Specimen",
-            "biologicalEntity": [
-                {
-                    "@id": "#HeLa%20cells%20%28wild%20type%29"
-                }
-            ],
-            "imagingPreparationProtocol": [
-                {
-                    "@id": "#Cryo-vitrification"
-                }
-            ]
-        },
-        {
-            "@id": "#Specimen_002",
-            "@type": "bia:Specimen",
-            "biologicalEntity": [
-                {
-                    "@id": "#HeLa%20cells%20%28mutant%29"
-                }
-            ],
-            "imagingPreparationProtocol": [
-                {
-                    "@id": "#Cryo-vitrification"
-                }
-            ]
-        },
-        {
-            "@id": "#Specimen_003",
-            "@type": "bia:Specimen",
-            "biologicalEntity": [
-                {
-                    "@id": "#HeLa%20cells%20%28wild%20type%29"
-                }
-            ],
-            "imagingPreparationProtocol": [
-                {
-                    "@id": "#Cryo-vitrification"
-                }
-            ]
-        },
-        {
-            "@id": "#Cryo-vitrification",
-            "@type": "bia:SpecimenImagingPreparationProtocol",
-            "title": "Cryo-vitrification",
-            "protocolDescription": "Plunge-frozen in liquid ethane.",
-            "signalChannelInformation": []
-        },
-        {
-            "@id": "#Cryo-electron%20tomography",
+            "@id": "#Widefield%20fluorescence%20microscope",
             "@type": "bia:ImageAcquisitionProtocol",
-            "title": "Cryo-electron tomography",
-            "protocolDescription": "Tilt series collected on Titan Krios.",
-            "imagingInstrumentDescription": "Thermo Fisher Titan Krios",
+            "title": "Widefield fluorescence microscope",
+            "protocolDescription": "Zeiss Axio Observer Z1 widefield fluorescence microscope.",
+            "imagingInstrumentDescription": "Zeiss Axio Observer Z1",
             "imagingMethodName": [
-                "cryogenic electron tomography"
+                "Fluorescence microscopy"
             ],
             "fbbiId": [
-                "obo:FBbi_00100015"
+                "obo:FBbi_00000246"
             ]
-        },
-        {
-            "@id": "NCBI:txid9606",
-            "@type": "bia:Taxon",
-            "commonName": "human",
-            "scientificName": "Homo sapiens"
-        },
-        {
-            "@id": "#HeLa%20cells%20%28mutant%29",
-            "@type": "bia:BioSample",
-            "title": "HeLa cells (mutant)",
-            "biologicalEntityDescription": "HeLa cervical cancer cell line, mutant strain.",
-            "experimentalVariableDescription": [],
-            "extrinsicVariableDescription": [],
-            "intrinsicVariableDescription": [],
-            "organismClassification": [
-                {
-                    "@id": "NCBI:txid9606"
-                }
-            ],
-            "growthProtocol": {
-                "@id": "#Sample%20preparation"
-            }
-        },
-        {
-            "@id": "#HeLa%20cells%20%28wild%20type%29",
-            "@type": "bia:BioSample",
-            "title": "HeLa cells (wild type)",
-            "biologicalEntityDescription": "HeLa cervical cancer cell line, wild-type.",
-            "experimentalVariableDescription": [],
-            "extrinsicVariableDescription": [],
-            "intrinsicVariableDescription": [],
-            "organismClassification": [
-                {
-                    "@id": "NCBI:txid9606"
-                }
-            ],
-            "growthProtocol": {
-                "@id": "#Sample%20preparation"
-            }
         }
     ]
 }

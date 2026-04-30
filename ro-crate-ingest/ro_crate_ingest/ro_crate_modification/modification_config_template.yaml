@@ -187,6 +187,30 @@ datasets:
       annotation_method_titles:
         - "Manual segmentation of mitochondria"
 
+  # --- Scenario 2: annotation file assignment --------------------------------
+  # 'annotations' marks matched files as AnnotationData and writes:
+  # - associated_annotation_method
+  # - associated_source_image
+  # Both 'annotation_method_titles' and 'associated_source_image' are required and
+  # must be non-empty for each annotations entry. 'associated_source_image'
+  # should name image labels that exist after enrichment. For specimen-track
+  # tomograms, those labels are generated as e.g. "Specimen_001 tomogram".
+  - name: "Tomogram annotation files"
+    annotations:
+      - patterns:
+          - "**/*_particles.star"
+        annotation_method_titles:
+          - "Manual segmentation of mitochondria"
+        associated_source_image:
+          - "Specimen_001 tomogram"
+      - patterns:
+          - "**/*_mito_labels.csv"
+        annotation_method_titles:
+          - "Manual segmentation of mitochondria"
+        associated_source_image:
+          - "Specimen_002 tomogram"
+          - "Specimen_003 tomogram"
+
   # --- Scenario 3: by_type image assignment + specimen tracks ---------------
   # 'by_type' assigns files to specific ImageType values. 'specimen_tracks'
   # carries per-dataset IAP/protocol titles keyed by image type and specimen

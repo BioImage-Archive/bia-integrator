@@ -12,6 +12,48 @@
 | `pruning` | No | Placeholder; not yet implemented. |
 
 
+### Enrichment order
+
+Configuration is applied in this order:
+
+1. `study_metadata`
+2. top-level `rembis`
+3. each named dataset, in config order:
+   a. `associations`
+   b. `additional_files`
+   c. `images`
+   d. `image_groups`
+   e. `annotations`
+4. top-level `specimen_tracks`, if configured
+5. default-dataset assignment for any remaining unassigned files
+
+The order matters. For example, `additional_files` runs before `images`, so
+newly assigned files can be marked as images in the same dataset block, and
+`image_groups` runs after image assignment so it can match image rows.
+If two pattern-based steps match the same file and write the same file-list
+column, the later step overwrites the earlier value and logs a warning.
+
+
+### `study_metadata`
+
+Optional additions to the Study entity at `./`.
+
+```yaml
+study_metadata:
+  description: "Updated study description."
+  see_also:
+    - "https://example.org/related-resource"
+  related_publication:
+    - "https://doi.org/10.1234/example"
+```
+
+| Field | Required | Description |
+|---|---|---|
+| `description` | No | Replaces the existing Study description when provided. |
+| `see_also` | No | Appended to existing `seeAlso` values. |
+| `related_publication` | No | DOI/identifier values used to create Publication entities and merge `relatedPublication` references. |
+
+
 ### `rembis`
 
 All sub-keys are optional lists. Entities are added in this order:
@@ -49,6 +91,28 @@ ID. This makes `patterns` suitable for datasets where different files use
 different naming conventions — as long as each convention can be expressed
 as a distinct regex.
 
+When top-level `specimen_tracks` is present, `specimen_defaults` is required
+and must include both a `biosample_title` and at least one
+`specimen_imaging_preparation_protocol_titles` value.
+
+
+### `specimen_defaults`
+
+Default metadata for every Specimen generated during specimen-track
+assignment.
+
+```yaml
+specimen_defaults:
+  biosample_title: "Yeast cells"
+  specimen_imaging_preparation_protocol_titles:
+    - "Cryo-vitrification"
+```
+
+| Field | Required | Description |
+|---|---|---|
+| `biosample_title` | Yes, when top-level `specimen_tracks` is present | BioSample title to reference from each generated Specimen unless a matching `specimen_group` overrides it. |
+| `specimen_imaging_preparation_protocol_titles` | Yes, when top-level `specimen_tracks` is present | One or more SIPP titles to reference from each generated Specimen unless a matching `specimen_group` overrides them. |
+
 
 ### `datasets[].name`
 
@@ -58,8 +122,10 @@ in the minimal RO-Crate exactly.
 Dataset names must be unique within a config file.
 
 After all named datasets have been processed, any remaining unassigned
-files are automatically placed into a `"Default dataset"` entity. This
-is unconditional — no YAML entry is needed or supported for it.
+files are automatically placed into a `"Default dataset"` entity. The
+default-dataset step always runs, but the entity is only created if
+unassigned files remain. When created, it is also added to the Study
+entity's `hasPart` list. No YAML entry is needed or supported for it.
 
 
 ### `datasets[].images`
@@ -154,6 +220,60 @@ image_groups:
 `associations`, and `specimen_tracks` in the same dataset block.
 
 
+### `datasets[].annotations`
+
+Assign annotation files within a dataset. Each entry matches files by glob
+pattern and writes annotation metadata into the file list:
+
+- file `type` is set to `bia:AnnotationData`
+- `label`/name is set from the matched file stem, unless the pattern is a
+  single literal path, in which case that path stem is used
+- `associated_annotation_method` is written from `annotation_method_titles`
+- `associated_source_image` is written from `associated_source_image`; values
+  should be labels of image rows that exist after enrichment
+
+The Dataset entity is also updated with the unique AnnotationMethod
+references named by the annotation entries.
+
+```yaml
+annotations:
+  - patterns:
+      - "**/*_particles.star"
+    annotation_method_titles:
+      - "Particle picking"
+    associated_source_image:
+      - "Specimen_001 tomogram"
+  - patterns:
+      - "**/*_mito_labels.csv"
+    annotation_method_titles:
+      - "Particle picking"
+    associated_source_image:
+      - "Specimen_002 tomogram"
+      - "Specimen_003 tomogram"
+```
+
+| Field | Required | Description |
+|---|---|---|
+| `patterns` | Yes | Glob patterns identifying annotation files in the dataset. |
+| `annotation_method_titles` | Yes | AnnotationMethod titles to write to `associated_annotation_method`. Must be non-empty. |
+| `associated_source_image` | Yes | Source image label(s) to write to `associated_source_image`. Must be non-empty, and should match image labels present after enrichment. |
+
+For specimen-track cryoET data, generated image labels use the specimen ID and
+image type, such as `Specimen_001 tomogram` or `Specimen_001 denoised_tomogram`.
+Use those generated labels when an annotation file refers to a track image. The
+modifier writes the configured values as file-list metadata; downstream
+RO-Crate parsing validates whether the references resolve sensibly.
+
+`annotations` can be combined with `images`, `additional_files`,
+`image_groups`, `associations`, and/or `specimen_tracks` in the same dataset block.
+Because annotation assignment runs after `images`, an annotation pattern that
+also matches image rows will overwrite their `type` value and log a warning.
+
+If the file list does not already have a label/name column, annotation
+assignment adds one before writing annotation labels. If the dataset or file
+path column is absent, annotation assignment is skipped for that dataset.
+
+
 ### `datasets[].associations`
 
 Explicit REMBI associations written to the Dataset entity. All fields are
@@ -181,9 +301,9 @@ associations:
 
 ### `datasets[].specimen_tracks`
 
-Only meaningful when the top-level `specimen_tracks` block is also present.
-Provides per-dataset IAP/protocol title assignments and per-specimen
-metadata overrides.
+Processed during the top-level `specimen_tracks` enrichment step. Provides
+per-dataset IAP/protocol title assignments and per-specimen metadata
+overrides.
 
 `image_acquisition_protocol_title` and `protocol_titles` are keyed by
 either `dataset` (applies to the dataset as a whole) or an `ImageType`
@@ -197,9 +317,11 @@ of `biosample_title` or `specimen_imaging_preparation_protocol_titles`.
 
 A dataset block that has `images.by_type`, `specimen_groups`, or typed
 `additional_files` images requires the top-level `specimen_tracks` block
-to be present (validation enforces this). A dataset block that only
-carries IAP/protocol titles in `specimen_tracks` without those features
-does not.
+to be present (validation enforces this). A dataset block that only carries
+IAP/protocol titles in `specimen_tracks` without those features may pass
+validation, but those titles are only applied when the top-level
+`specimen_tracks` step runs. For simple dataset-level associations, use
+`associations` instead.
 
 A dataset block with no `specimen_tracks` block at all simply participates
 in image assignment but contributes no track metadata — its images are

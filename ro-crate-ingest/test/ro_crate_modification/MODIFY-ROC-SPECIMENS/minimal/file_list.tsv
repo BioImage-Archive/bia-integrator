@@ -1,7 +1,8 @@
-file_path	size_in_bytes	dataset	type	label	associated_source_image	associated_specimen	associated_annotation_method	associated_protocol
+file_path	size_in_bytes	dataset	type	label	associated_source_image	associated_subject	associated_annotation_method	associated_protocol
 data/ts/ts_001.mrc.st	4096000	#Raw%20tilt%20series						
 data/ts/ts_002.mrc.st	4096000	#Raw%20tilt%20series						
 data/tomo/tomo_001.mrc	18000000	#Reconstructed%20tomograms						
 data/tomo/tomo_002.mrc	18000000	#Reconstructed%20tomograms						
+data/annotations/tomo_001_segmentation.csv	2048	#Reconstructed%20tomograms						
 data/extra/ts_003.mrc.st	4096000							
-data/README.md	1024
+data/README.md	1024			Readme label				

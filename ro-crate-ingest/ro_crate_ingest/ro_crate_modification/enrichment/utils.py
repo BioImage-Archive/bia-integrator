@@ -4,87 +4,50 @@ import re
 from pathlib import Path
 from urllib.parse import quote
 
-import pandas as pd
-from rdflib import RDF
-
 from bia_ro_crate.models import ro_crate_models
-from bia_ro_crate.models.linked_data.ontology_terms import BIA, SCHEMA
+from bia_ro_crate.models.linked_data.ontology_terms import BIA
 from bia_ro_crate.models.linked_data.pydantic_ld.LDModel import ObjectReference
 from bia_ro_crate.core.bia_ro_crate_metadata import BIAROCrateMetadata
-from bia_ro_crate.core.file_list import FileList
 
 logger = logging.getLogger(__name__)
 
-
-RDF_TYPE_PROPERTY = str(RDF.type)
-IS_PART_OF_PROPERTY = str(SCHEMA.isPartOf)
-FILE_PATH_PROPERTY = str(BIA.filePath)
-ASSOCIATED_SOURCE_IMAGE_PROPERTY = str(BIA.associatedSourceImage)
-
 FILE_TYPE_IMAGE = str(BIA.Image)
+FILE_TYPE_ANNOTATION = str(BIA.AnnotationData)
 
 
 def title_to_id(title: str) -> str:
     return f"#{quote(title)}"
 
 
-def ref(title: str) -> ObjectReference:
-    """Convenience: build an ObjectReference pointing to a title-derived @id."""
+def entity_ref(title: str) -> ObjectReference:
+    """Build an ObjectReference pointing to the entity with this title-derived @id."""
     return ObjectReference(**{"@id": title_to_id(title)})
 
 
-def refs(titles: list[str]) -> list[ObjectReference]:
-    """Build a list of ObjectReferences from a list of titles."""
-    return [ref(t) for t in titles]
+def entity_refs(titles: list[str]) -> list[ObjectReference]:
+    """Build ObjectReferences pointing to entities with these title-derived @ids."""
+    return [entity_ref(title) for title in titles]
+
+
+def file_list_association_value(values: list[str]) -> str | None:
+    """
+    Format values for multivalued file-list association columns.
+
+    The TSV parser expands these columns back to lists on read. 
+    Single values are written as plain scalars and multiple values are written
+    as a stringified list.
+    """
+    if not values:
+        return None
+    return str(values) if len(values) > 1 else values[0]
 
 
 def type_for(model_cls) -> str:
     full_uri = str(model_cls.model_config["model_type"])
     bia_prefix = str(BIA)
     if full_uri.startswith(bia_prefix):
-        return "bia:" + full_uri[len(bia_prefix):]
+        return "bia:" + full_uri[len(bia_prefix) :]
     return full_uri
-
-
-# TODO: which columns are always present? Same for source image, below.
-def get_or_add_type_column_id(file_list: FileList) -> str:
-    col_id = file_list.get_column_id_by_property(RDF_TYPE_PROPERTY)
-    if col_id is not None:
-        if file_list.data[col_id].dtype != object:
-            file_list.data[col_id] = file_list.data[col_id].astype(object)
-        return col_id
-    new_col = ro_crate_models.Column(**{
-        "@id": "_:col_type",
-        "@type": ["csvw:Column"],
-        "columnName": "type",
-        "propertyUrl": RDF_TYPE_PROPERTY,
-    })
-    file_list.add_column(new_col, pd.Series([None] * len(file_list.data)))
-    logger.info("Added 'type' column to file list.")
-    return new_col.id
-
-
-def get_or_add_source_image_label_column_id(file_list: FileList) -> str:
-    col_id = file_list.get_column_id_by_property(ASSOCIATED_SOURCE_IMAGE_PROPERTY)
-    if col_id is not None:
-        return col_id
-    new_col = ro_crate_models.Column(**{
-        "@id": "_:col_associated_source_image",
-        "@type": ["csvw:Column"],
-        "columnName": "associated_source_image",
-        "propertyUrl": ASSOCIATED_SOURCE_IMAGE_PROPERTY,
-    })
-    file_list.add_column(new_col, pd.Series([None] * len(file_list.data)))
-    logger.debug("Added 'source_image_label' column to file list.")
-    return new_col.id
-
-
-def get_dataset_column_id(file_list: FileList) -> str | None:
-    return file_list.get_column_id_by_property(IS_PART_OF_PROPERTY)
-
-
-def get_path_column_id(file_list: FileList) -> str | None:
-    return file_list.get_column_id_by_property(FILE_PATH_PROPERTY)
 
 
 def resolve_dataset_id_by_name(

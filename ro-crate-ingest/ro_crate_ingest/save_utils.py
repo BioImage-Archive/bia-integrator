@@ -17,6 +17,10 @@ import logging
 logger = logging.getLogger("__main__." + __name__)
 
 
+def _empty_list_to_none(value):
+    return None if isinstance(value, list) and not value else value
+
+
 class PersistenceMode(str, Enum):
     """
     Enum for the different persistence modes.
@@ -156,8 +160,25 @@ def write_modified_file_list(
     filelist_path.parent.mkdir(parents=True, exist_ok=True)
 
     id_to_name = file_list.get_column_names()
-    df = file_list.data.rename(columns=id_to_name)
-    df = df.map(lambda x: None if x == [] else x)
+    normalized_names = {
+        col_id: (
+            "associated_source_image"
+            if name == "source_image_label"
+            else name
+        )
+        for col_id, name in id_to_name.items()
+    }
+    df = file_list.data.rename(columns=normalized_names)
+    df = df.map(_empty_list_to_none)
+    if df.columns.duplicated().any():
+        deduped = pd.DataFrame(index=df.index)
+        for column_name in dict.fromkeys(df.columns):
+            same_name = df.loc[:, df.columns == column_name]
+            if same_name.shape[1] == 1:
+                deduped[column_name] = same_name.iloc[:, 0]
+            else:
+                deduped[column_name] = same_name.bfill(axis=1).iloc[:, 0]
+        df = deduped
 
     df.sort_values(by=df.columns[0], inplace=True)
     df.to_csv(filelist_path, sep="\t", index=False)

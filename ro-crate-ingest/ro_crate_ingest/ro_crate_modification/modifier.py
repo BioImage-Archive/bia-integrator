@@ -8,6 +8,9 @@ from pathlib import Path
 from ro_crate_ingest.save_utils import write_modified_file_list
 
 from ro_crate_ingest.ro_crate_modification.enrichment.enricher import apply_enrichment
+from ro_crate_ingest.ro_crate_modification.enrichment.file_list_utils import (
+    normalize_legacy_associated_source_image_column,
+)
 from ro_crate_ingest.ro_crate_modification.modification_config import ModificationConfig
 
 logger = logging.getLogger(__name__)
@@ -18,20 +21,21 @@ _TYPE_ORDER = {
     ro_crate_models.Study: 1,
     ro_crate_models.Contributor: 2,
     ro_crate_models.Affiliaton: 3,
-    ro_crate_models.FileList: 4,
-    ro_crate_models.Column: 5,
-    ro_crate_models.TableSchema: 6,
-    ro_crate_models.Dataset: 7,
-    ro_crate_models.Protocol: 8,
-    ro_crate_models.ImageAnalysisMethod: 9,
-    ro_crate_models.ImageCorrelationMethod: 10,
-    ro_crate_models.AnnotationMethod: 11,
-    ro_crate_models.Specimen: 12,
-    ro_crate_models.CreationProcess: 13,
-    ro_crate_models.SpecimenImagingPreparationProtocol: 14,
-    ro_crate_models.ImageAcquisitionProtocol: 15,
-    ro_crate_models.Taxon: 16,
-    ro_crate_models.BioSample: 17,
+    ro_crate_models.Publication: 4,
+    ro_crate_models.FileList: 5,
+    ro_crate_models.Column: 6,
+    ro_crate_models.TableSchema: 7,
+    ro_crate_models.Dataset: 8,
+    ro_crate_models.Protocol: 9,
+    ro_crate_models.ImageAnalysisMethod: 10,
+    ro_crate_models.ImageCorrelationMethod: 11,
+    ro_crate_models.AnnotationMethod: 12,
+    ro_crate_models.Specimen: 13,
+    ro_crate_models.CreationProcess: 14,
+    ro_crate_models.SpecimenImagingPreparationProtocol: 15,
+    ro_crate_models.ImageAcquisitionProtocol: 16,
+    ro_crate_models.Taxon: 17,
+    ro_crate_models.BioSample: 18,
 }
 
 
@@ -66,6 +70,7 @@ def apply_modifications(
     )
 
     ro_crate_metadata, file_list = apply_enrichment(ro_crate_metadata, file_list, mod_config)
+    normalize_legacy_associated_source_image_column(ro_crate_metadata, file_list)
 
     graph_objects = [
         json.loads(entity.model_dump_json(by_alias=True))

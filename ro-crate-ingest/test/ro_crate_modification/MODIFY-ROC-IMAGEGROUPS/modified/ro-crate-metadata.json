@@ -253,6 +253,9 @@
                 },
                 {
                     "@id": "file_list.tsv"
+                },
+                {
+                    "@id": "#Default%20dataset"
                 }
             ],
             "accessionId": "MODIFY-ROC-IMAGEGROUPS",

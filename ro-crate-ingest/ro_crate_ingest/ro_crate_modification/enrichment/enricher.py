@@ -24,11 +24,16 @@ def apply_enrichment(
     1. Add information to the study object.
     2. Add study-wide REMBI entities to the metadata graph.
     3. For each named dataset:
-       a. Apply explicit REMBI associations.
-       b. Assign additional unassigned files to the dataset (with optional
+        a. Apply explicit REMBI associations.
+        b. Assign additional unassigned files to the dataset (with optional
           image marking, including typed images for specimen tracks).
-       c. Apply image assignment for files already in the dataset.
-       d. Write image-group protocol associations.
+        c. Assign "result data":
+            i. Apply image assignment for files in the dataset.
+                (Including those assigned in b.)
+            ii. Write image-group protocol associations.
+            iii. Apply annotation assignment for files in the dataset,
+              including writing annotation method associations.
+                (And including files assigned in b.)
     4. Identify and assign specimen tracks (if specimen_tracks configured).
     5. Create the default dataset and assign any remaining unassigned files.
 
@@ -51,11 +56,8 @@ def apply_enrichment(
                 file_list, ro_crate_metadata, dataset_config
             )
 
-        if dataset_config.images:
-            assignments.assign_images_for_dataset(file_list, ro_crate_metadata, dataset_config)
-
-        if dataset_config.image_groups:
-            assignments.assign_image_group_protocols(
+        if dataset_config.images or dataset_config.image_groups or dataset_config.annotations:
+            assignments.assign_result_data_for_dataset(
                 file_list, ro_crate_metadata, dataset_config
             )
 
