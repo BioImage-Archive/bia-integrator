@@ -29,19 +29,6 @@ def entity_refs(titles: list[str]) -> list[ObjectReference]:
     return [entity_ref(title) for title in titles]
 
 
-def file_list_association_value(values: list[str]) -> str | None:
-    """
-    Format values for multivalued file-list association columns.
-
-    The TSV parser expands these columns back to lists on read. 
-    Single values are written as plain scalars and multiple values are written
-    as a stringified list.
-    """
-    if not values:
-        return None
-    return str(values) if len(values) > 1 else values[0]
-
-
 def type_for(model_cls) -> str:
     full_uri = str(model_cls.model_config["model_type"])
     bia_prefix = str(BIA)

@@ -457,6 +457,9 @@
             "associatedAnnotationMethod": [
                 {
                     "@id": "#Tomogram%20segmentation"
+                },
+                {
+                    "@id": "#Manual%20tomogram%20segmentation"
                 }
             ],
             "associatedImageAnalysisMethod": [],
@@ -479,6 +482,20 @@
             "@type": "bia:Protocol",
             "title": "Tomogram reconstruction",
             "protocolDescription": "IMOD-based reconstruction."
+        },
+        {
+            "@id": "#Manual%20tomogram%20segmentation",
+            "@type": "bia:AnnotationMethod",
+            "title": "Manual tomogram segmentation",
+            "protocolDescription": "Manual segmentation image generation.",
+            "annotationCriteria": null,
+            "annotationCoverage": null,
+            "transformationDescription": null,
+            "spatialInformation": null,
+            "methodType": [
+                "segmentation_mask"
+            ],
+            "annotationSourceIndicator": null
         },
         {
             "@id": "#Tomogram%20segmentation",

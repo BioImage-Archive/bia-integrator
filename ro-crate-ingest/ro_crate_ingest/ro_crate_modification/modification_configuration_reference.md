@@ -143,9 +143,9 @@ images:
 
 **Keyed (Scenario 3):** a `by_type` dict. Valid keys are the `ImageType`
 vocabulary (`frames`, `tilt_series`, `aligned_tilt_series`, `tomogram`,
-`denoised_tomogram`) plus `image` for files that are images but do not
-belong to a specimen track. All matches still receive `bia:Image` in the
-file list; the key is used only during specimen track classification.
+`denoised_tomogram`, `segmentation`) plus `image` for files that are images
+but do not belong to a specimen track. All matches still receive `bia:Image`
+in the file list; the key is used only during specimen track classification.
 
 ```yaml
 images:
@@ -154,6 +154,7 @@ images:
     tomogram:
       - "**/*.rec.mrc"
       - "**/*.mrc"
+    segmentation: "**/*.mrcseg"
     image: "**/*_overview.png"
 ```
 
@@ -302,13 +303,32 @@ associations:
 ### `datasets[].specimen_tracks`
 
 Processed during the top-level `specimen_tracks` enrichment step. Provides
-per-dataset IAP/protocol title assignments and per-specimen metadata
-overrides.
+per-dataset IAP/protocol/annotation-method title assignments and per-specimen
+metadata overrides.
 
-`image_acquisition_protocol_title` and `protocol_titles` are keyed by
-either `dataset` (applies to the dataset as a whole) or an `ImageType`
-value (applies only to images of that type). For simple flat associations
-not needing image-type keying, prefer the `associations` block instead.
+`image_acquisition_protocol_title`, `protocol_titles`, and
+`annotation_method_titles` are keyed by either `dataset` (applies to the
+dataset as a whole) or an `ImageType` value (applies only to images of that
+type). `annotation_method_titles` is useful for segmentation images, which
+remain `bia:Image` rows but can carry an annotation-method association. For
+simple flat associations not needing image-type keying, prefer the
+`associations` block instead.
+
+`source_image_types` is valid only for the `segmentation` target key. Its value
+names the preferred upstream `ImageType` to write to `associated_source_image`
+for segmentation rows. When omitted, segmentations prefer `tomogram`; if that
+source is absent, the modifier falls back first to `denoised_tomogram`, then to
+available upstream image labels in the order `aligned_tilt_series`,
+`tilt_series`, `frames`.
+
+```yaml
+specimen_tracks:
+  annotation_method_titles:
+    segmentation:
+      - "Manual segmentation"
+  source_image_types:
+    segmentation: "denoised_tomogram"
+```
 
 `specimen_groups` entries override `specimen_defaults` for specific
 specimens, identified by explicit ID list (`specimen_ids`) or by regex
@@ -318,10 +338,10 @@ of `biosample_title` or `specimen_imaging_preparation_protocol_titles`.
 A dataset block that has `images.by_type`, `specimen_groups`, or typed
 `additional_files` images requires the top-level `specimen_tracks` block
 to be present (validation enforces this). A dataset block that only carries
-IAP/protocol titles in `specimen_tracks` without those features may pass
-validation, but those titles are only applied when the top-level
-`specimen_tracks` step runs. For simple dataset-level associations, use
-`associations` instead.
+IAP/protocol/annotation-method titles in `specimen_tracks` without those
+features may pass validation, but those titles are only applied when the
+top-level `specimen_tracks` step runs. For simple dataset-level associations,
+use `associations` instead.
 
 A dataset block with no `specimen_tracks` block at all simply participates
 in image assignment but contributes no track metadata — its images are

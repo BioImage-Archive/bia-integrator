@@ -9,6 +9,7 @@ from bia_ro_crate.models import ro_crate_models
 from bia_ro_crate.core.bia_ro_crate_metadata import BIAROCrateMetadata
 from bia_ro_crate.core.file_list import FileList
 from ro_crate_ingest.ro_crate_modification.enrichment.file_list_utils import (
+    file_list_association_value,
     get_dataset_column_id,
     get_or_add_associated_annotation_method_column_id,
     get_or_add_associated_protocol_column_id,
@@ -22,7 +23,6 @@ from ro_crate_ingest.ro_crate_modification.enrichment.utils import (
     FILE_TYPE_IMAGE,
     entity_ref,
     entity_refs,
-    file_list_association_value,
     match_patterns,
     resolve_dataset_id_by_name,
     title_to_id,

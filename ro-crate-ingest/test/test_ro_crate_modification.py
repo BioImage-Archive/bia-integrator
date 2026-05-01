@@ -18,10 +18,18 @@ from ro_crate_ingest.ro_crate_modification.enrichment.assignments import (
     _apply_result_assignment,
 )
 from ro_crate_ingest.ro_crate_modification.enrichment.file_list_utils import (
+    file_list_association_value,
     get_or_add_label_column_id,
 )
-from ro_crate_ingest.ro_crate_modification.enrichment.utils import (
-    file_list_association_value,
+from ro_crate_ingest.ro_crate_modification.enrichment.specimens import (
+    SpecimenTrack,
+    _generate_labels,
+    _write_associated_protocol,
+    _write_source_image_labels,
+)
+from ro_crate_ingest.ro_crate_modification.modification_config import (
+    DatasetModificationConfig,
+    SpecimenTrackAssignmentConfig,
 )
 
 runner = CliRunner()
@@ -40,7 +48,10 @@ def _fixture_root() -> Path:
     [
         ([], None),
         (["#Protocol%20one"], "#Protocol%20one"),
-        (["#Protocol%20one", "#Protocol%20two"], "['#Protocol%20one', '#Protocol%20two']"),
+        (
+            ["#Protocol%20one", "#Protocol%20two"],
+            "['#Protocol%20one', '#Protocol%20two']",
+        ),
     ],
 )
 def test_file_list_association_value(values, expected):
@@ -140,6 +151,204 @@ def test_get_or_add_label_column_id_creates_missing_column():
     assert file_list.schema[col_id].columnName == "label"
     assert file_list.schema[col_id].propertyUrl == "http://schema.org/name"
     assert col_id in file_list.data.columns
+
+
+def test_segmentation_source_image_type_can_use_denoised_tomogram():
+    schema = {
+        "_:col0": ro_crate_models.Column(
+            **{
+                "@id": "_:col0",
+                "@type": ["csvw:Column"],
+                "columnName": "file_path",
+                "propertyUrl": str(BIA.filePath),
+            }
+        )
+    }
+    file_list = FileList(
+        schema=schema,
+        data=pd.DataFrame(
+            {
+                "file_path": [
+                    "data/tomo/tomo_001.mrc",
+                    "data/tomo/tomo_001_denoised.mrc",
+                    "data/tomo/tomo_001_segmentation.mrcseg",
+                ]
+            }
+        ),
+    )
+    track = SpecimenTrack(
+        specimen_id="001",
+        tomogram=Path("data/tomo/tomo_001.mrc"),
+        denoised_tomogram=Path("data/tomo/tomo_001_denoised.mrc"),
+        segmentations=[Path("data/tomo/tomo_001_segmentation.mrcseg")],
+        dataset_for_path={
+            "data/tomo/tomo_001_segmentation.mrcseg": "Reconstructed tomograms"
+        },
+    )
+    dataset_config = DatasetModificationConfig(
+        name="Reconstructed tomograms",
+        specimen_tracks=SpecimenTrackAssignmentConfig(
+            source_image_types={"segmentation": "denoised_tomogram"}
+        ),
+    )
+
+    _write_source_image_labels(
+        file_list=file_list,
+        tracks=[track],
+        path_to_label=_generate_labels([track]),
+        dataset_configs=[dataset_config],
+    )
+
+    source_col = file_list.get_column_id_by_property(str(BIA.associatedSourceImage))
+    seg_row = file_list.data[
+        file_list.data["_:col0"] == "data/tomo/tomo_001_segmentation.mrcseg"
+    ]
+    assert seg_row.iloc[0][source_col] == "Specimen_001 denoised_tomogram"
+
+
+def test_missing_configured_segmentation_source_logs_warning(caplog):
+    schema = {
+        "_:col0": ro_crate_models.Column(
+            **{
+                "@id": "_:col0",
+                "@type": ["csvw:Column"],
+                "columnName": "file_path",
+                "propertyUrl": str(BIA.filePath),
+            }
+        )
+    }
+    file_list = FileList(
+        schema=schema,
+        data=pd.DataFrame(
+            {
+                "file_path": [
+                    "data/tomo/tomo_001.mrc",
+                    "data/tomo/tomo_001_segmentation.mrcseg",
+                ]
+            }
+        ),
+    )
+    track = SpecimenTrack(
+        specimen_id="001",
+        tomogram=Path("data/tomo/tomo_001.mrc"),
+        segmentations=[Path("data/tomo/tomo_001_segmentation.mrcseg")],
+        dataset_for_path={
+            "data/tomo/tomo_001_segmentation.mrcseg": "Reconstructed tomograms"
+        },
+    )
+    dataset_config = DatasetModificationConfig(
+        name="Reconstructed tomograms",
+        specimen_tracks=SpecimenTrackAssignmentConfig(
+            source_image_types={"segmentation": "denoised_tomogram"}
+        ),
+    )
+
+    _write_source_image_labels(
+        file_list=file_list,
+        tracks=[track],
+        path_to_label=_generate_labels([track]),
+        dataset_configs=[dataset_config],
+    )
+
+    source_col = file_list.get_column_id_by_property(str(BIA.associatedSourceImage))
+    seg_row = file_list.data[
+        file_list.data["_:col0"] == "data/tomo/tomo_001_segmentation.mrcseg"
+    ]
+    assert seg_row.iloc[0][source_col] == "Specimen_001 tomogram"
+    assert (
+        "configured segmentation source 'denoised_tomogram' was not available"
+        in caplog.text
+    )
+
+
+def test_segmentation_source_image_falls_back_to_denoised_tomogram():
+    schema = {
+        "_:col0": ro_crate_models.Column(
+            **{
+                "@id": "_:col0",
+                "@type": ["csvw:Column"],
+                "columnName": "file_path",
+                "propertyUrl": str(BIA.filePath),
+            }
+        )
+    }
+    file_list = FileList(
+        schema=schema,
+        data=pd.DataFrame(
+            {
+                "file_path": [
+                    "data/tomo/tomo_001_denoised.mrc",
+                    "data/tomo/tomo_001_segmentation.mrcseg",
+                ]
+            }
+        ),
+    )
+    track = SpecimenTrack(
+        specimen_id="001",
+        denoised_tomogram=Path("data/tomo/tomo_001_denoised.mrc"),
+        segmentations=[Path("data/tomo/tomo_001_segmentation.mrcseg")],
+        dataset_for_path={
+            "data/tomo/tomo_001_segmentation.mrcseg": "Reconstructed tomograms"
+        },
+    )
+    dataset_config = DatasetModificationConfig(
+        name="Reconstructed tomograms",
+        specimen_tracks=SpecimenTrackAssignmentConfig(),
+    )
+
+    _write_source_image_labels(
+        file_list=file_list,
+        tracks=[track],
+        path_to_label=_generate_labels([track]),
+        dataset_configs=[dataset_config],
+    )
+
+    source_col = file_list.get_column_id_by_property(str(BIA.associatedSourceImage))
+    seg_row = file_list.data[
+        file_list.data["_:col0"] == "data/tomo/tomo_001_segmentation.mrcseg"
+    ]
+    assert seg_row.iloc[0][source_col] == "Specimen_001 denoised_tomogram"
+
+
+def test_source_image_types_only_accepts_segmentation_target():
+    with pytest.raises(ValueError, match="Valid targets: \\['segmentation'\\]"):
+        SpecimenTrackAssignmentConfig(
+            source_image_types={"tomogram": "aligned_tilt_series"}
+        )
+
+
+def test_track_metadata_requires_dataset_for_path():
+    schema = {
+        "_:col0": ro_crate_models.Column(
+            **{
+                "@id": "_:col0",
+                "@type": ["csvw:Column"],
+                "columnName": "file_path",
+                "propertyUrl": str(BIA.filePath),
+            }
+        )
+    }
+    file_list = FileList(
+        schema=schema,
+        data=pd.DataFrame({"file_path": ["data/tomo/tomo_001.mrc"]}),
+    )
+    track = SpecimenTrack(
+        specimen_id="001",
+        tomogram=Path("data/tomo/tomo_001.mrc"),
+    )
+    dataset_config = DatasetModificationConfig(
+        name="Reconstructed tomograms",
+        specimen_tracks=SpecimenTrackAssignmentConfig(
+            protocol_titles={"tomogram": "Tomogram reconstruction"}
+        ),
+    )
+
+    with pytest.raises(ValueError, match="no dataset recorded"):
+        _write_associated_protocol(
+            file_list=file_list,
+            tracks=[track],
+            dataset_configs=[dataset_config],
+        )
 
 
 def _setup_and_run(tmp_path: Path, accession_id: str) -> tuple[dict, pd.DataFrame]:
@@ -302,6 +511,8 @@ class TestSpecimenTracksWithAdditionalFiles:
       the additional_files assignment of data/extra/ts_003.mrc.st.
     - Specimen group override: specimen 002 uses 'HeLa cells (mutant)'.
     - One annotation row points to the specimen-generated tomogram label.
+    - Segmentation image rows are typed as images, labelled, linked to their
+      upstream tomograms, and associated with an AnnotationMethod.
     - associated_source_image, associated_subject, associated_protocol written
       correctly in the file list.
     """
@@ -422,6 +633,52 @@ class TestSpecimenTracksWithAdditionalFiles:
         assert (tomo_rows["associated_protocol"] == expected).all(), (
             f"Expected all tomograms to have protocol {expected!r}, "
             f"got:\n{tomo_rows[['file_path', 'associated_protocol']]}"
+        )
+
+    def test_segmentations_are_images(self):
+        seg_rows = self.df[self.df["file_path"].str.endswith(".mrcseg")]
+        assert len(seg_rows) == 3
+        assert (seg_rows["type"] == "http://bia/Image").all()
+
+    def test_segmentations_link_to_upstream_tomogram(self):
+        expected = {
+            "data/tomo/tomo_001_segmentation_a.mrcseg": "Specimen_001 tomogram",
+            "data/tomo/tomo_001_segmentation_b.mrcseg": "Specimen_001 tomogram",
+            "data/tomo/tomo_002_segmentation.mrcseg": "Specimen_002 tomogram",
+        }
+        for path, source_image in expected.items():
+            row = self.df[self.df["file_path"] == path]
+            assert row.iloc[0]["associated_source_image"] == source_image, (
+                f"{path}: unexpected associated_source_image "
+                f"{row.iloc[0]['associated_source_image']!r}"
+            )
+
+    def test_multiple_segmentations_get_unique_labels(self):
+        labels = set(
+            self.df[self.df["file_path"].str.endswith(".mrcseg")]["label"].dropna()
+        )
+        assert "Specimen_001 segmentation_tomo_001_segmentation_a" in labels
+        assert "Specimen_001 segmentation_tomo_001_segmentation_b" in labels
+        assert "Specimen_002 segmentation" in labels
+
+    def test_segmentation_annotation_method_entity_created(self):
+        annotation_method = self.graph[title_to_id("Manual tomogram segmentation")]
+        assert annotation_method["methodType"] == ["segmentation_mask"]
+
+    def test_segmentations_have_annotation_method(self):
+        seg_rows = self.df[self.df["file_path"].str.endswith(".mrcseg")]
+        expected = title_to_id("Manual tomogram segmentation")
+        assert (seg_rows["associated_annotation_method"] == expected).all(), (
+            f"Expected segmentations to have annotation method {expected!r}, "
+            f"got:\n{seg_rows[['file_path', 'associated_annotation_method']]}"
+        )
+
+    def test_segmentation_dataset_has_annotation_method_association(self):
+        dataset = self.graph[title_to_id("Reconstructed tomograms")]
+        expected = {"@id": title_to_id("Manual tomogram segmentation")}
+        assert expected in dataset.get("associatedAnnotationMethod", []), (
+            "Expected Reconstructed tomograms dataset to reference segmentation "
+            f"annotation method, got {dataset.get('associatedAnnotationMethod')}"
         )
 
 

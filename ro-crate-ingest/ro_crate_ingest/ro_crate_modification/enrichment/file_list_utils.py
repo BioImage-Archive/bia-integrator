@@ -151,6 +151,19 @@ def get_or_add_associated_subject_column_id(file_list: FileList) -> str:
     )
 
 
+def file_list_association_value(values: list[str]) -> str | None:
+    """
+    Format values for multivalued file-list association columns.
+
+    The TSV parser expands these columns back to lists on read.
+    Single values are written as plain scalars and multiple values are written
+    as a stringified list.
+    """
+    if not values:
+        return None
+    return str(values) if len(values) > 1 else values[0]
+
+
 def _merge_column_values(
     file_list: FileList, target_col_id: str, source_col_id: str
 ) -> None:

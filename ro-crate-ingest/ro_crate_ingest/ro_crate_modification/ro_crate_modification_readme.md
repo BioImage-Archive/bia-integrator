@@ -255,9 +255,9 @@ resolve to sensible source image references.
 
 ### 2. REMBI assignment and study metadata
 
-Used to add REMBI and study metadata to the RO-Crate graph. The `datasets` 
-block is optional; include it only to attach IAP or protocol references 
-to specific Dataset entities via `associations`.
+Used to add REMBI and study metadata to the RO-Crate graph. The `datasets`
+block is optional; include it only to attach IAP, protocol, or
+annotation-method references to specific Dataset entities via `associations`.
 
 ```yaml
 study_metadata:
@@ -376,10 +376,16 @@ datasets:
     images:
       by_type:
         tomogram: "**/*.mrc"
+        segmentation: "**/*.mrcseg"
     specimen_tracks:
       protocol_titles:
         tomogram:
           - "Tomogram reconstruction"
+      annotation_method_titles:
+        segmentation:
+          - "Manual segmentation"
+      source_image_types:
+        segmentation: "tomogram"
       specimen_groups:
         - specimen_ids: ["0023", "0024"]
           biosample_title: "Yeast cells (mutant strain)"
@@ -395,8 +401,9 @@ datasets:
    a. Image-assigned rows from datasets with `images.by_type` or typed
       `additional_files.images` entries are collected.
    b. The `by_type` patterns classify each file as a specific `ImageType`
-      (e.g. `tilt_series`, `tomogram`) for track-identification purposes
-      only — this classification is not written to the file list.
+      (e.g. `tilt_series`, `tomogram`, `segmentation`) for
+      track-identification purposes only — this classification is not written
+      to the file list.
    c. The top-level `specimen_tracks` regex patterns (or alias mappings)
       extract a specimen ID from each file path.
    d. Files are grouped into per-specimen `SpecimenTrack` objects, spanning
@@ -413,3 +420,12 @@ datasets:
 8. IAP and protocol references are added to each Dataset entity in the
    graph from the per-dataset `specimen_tracks` config, and protocol
    references may also be written to image rows where configured by image type.
+9. AnnotationMethod references from `annotation_method_titles` are added to
+   Dataset entities and written to matching image rows. This is intended for
+   image-like segmentation results, which remain `bia:Image` rows.
+10. Segmentation rows use the same specimen's tomogram as
+    `associated_source_image` by default. Use `source_image_types` with the
+    `segmentation` target key to prefer another source image type, such as
+    `denoised_tomogram`. If the default tomogram is absent, the fallback order
+    is `denoised_tomogram`, `aligned_tilt_series`, `tilt_series`, then
+    `frames`.
