@@ -47,7 +47,26 @@
       },
       {
         "name": "Channel 1",
-        "value": "CAAX"
+        "value": "OTHER METADATA"
+      }
+    ],
+    "type": "file"
+  },
+  {
+    "path": "folder1/file2_segmentation.png",
+    "size": 13161534,
+    "attributes": [
+      {
+        "name": "Genotype/Line",
+        "value": null
+      },
+      {
+        "name": "Channel 1",
+        "value": null
+      },
+      {
+        "name": "Source Image",
+        "value": "folder1/file2.ome.zarr.zip"
       }
     ],
     "type": "file"

@@ -23,7 +23,7 @@
         "dataset": "#Study%20Component-1",
         "biostudies_type": "file",
         "Genotype/Line": "; ubiCAAX-GFP/+ ; neuPH-RFP/+",
-        "Channel 1": "CAAX",
+        "Channel 1": "['CAAX', 'OTHER METADATA']",
         "Channel 2": null,
         "Channel 3": null,
         "sourceImage": null,
