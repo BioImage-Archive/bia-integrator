@@ -47,6 +47,10 @@ rembis:
       protocol_description: "Manual segmentation of reconstructed tomograms."
       method_type:
         - "point_annotations"
+    - title: "Manual tomogram segmentation"
+      protocol_description: "Manual segmentation image generation."
+      method_type:
+        - "segmentation_mask"
 
 specimen_defaults:
   biosample_title: "HeLa cells (wild type)"
@@ -77,6 +81,7 @@ datasets:
     images:
       by_type:
         tomogram: "**/*.mrc"
+        segmentation: "**/*.mrcseg"
     annotations:
       - patterns: "**/annotations/tomo_001_segmentation.csv"
         annotation_method_titles:
@@ -87,6 +92,9 @@ datasets:
       protocol_titles:
         tomogram:
           - "Tomogram reconstruction"
+      annotation_method_titles:
+        segmentation:
+          - "Manual tomogram segmentation"
       specimen_groups:
         - specimen_ids:
             - "002"

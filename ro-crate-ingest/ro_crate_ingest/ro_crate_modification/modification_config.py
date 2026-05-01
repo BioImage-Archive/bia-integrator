@@ -15,7 +15,9 @@ from ro_crate_ingest.ro_crate_modification.enrichment.image_types import ImageTy
 # non-track-aware "image" sentinel for files that are images but don't belong
 # to a specimen track.
 IMAGE_ASSIGNMENT_TYPE_KEY = "image"
-_VALID_BY_TYPE_KEYS: frozenset[str] = frozenset(t.value for t in ImageType) | {IMAGE_ASSIGNMENT_TYPE_KEY}
+_VALID_BY_TYPE_KEYS: frozenset[str] = frozenset(t.value for t in ImageType) | {
+    IMAGE_ASSIGNMENT_TYPE_KEY
+}
 
 
 def _string_to_list(value):
@@ -33,7 +35,7 @@ def _validate_regex(pattern: str, location: str) -> None:
 
 def _validate_regex_has_capture_group(pattern: str, location: str) -> None:
     _validate_regex(pattern, location)
-    if not re.search(r'\((?!\?(?::|!|=|<!|<=))', pattern):
+    if not re.search(r"\((?!\?(?::|!|=|<!|<=))", pattern):
         raise ValueError(
             f"{location}: regex '{pattern}' has no capturing group. "
             "Specimen ID extraction requires at least one."
@@ -56,7 +58,6 @@ class StudyMetadata(ClosedBaseModel):
 # ---------------------------------------------------------------------------
 # REMBI component models — study-wide, not dataset-specific
 # ---------------------------------------------------------------------------
-
 class Taxon(ClosedBaseModel):
     common_name: str
     scientific_name: str
@@ -67,9 +68,9 @@ class Biosample(ClosedBaseModel):
     title: str
     biological_entity_description: str
     organism_classification: list[Taxon]
-    growth_protocol_title: Annotated[list[str], BeforeValidator(_string_to_list)] = Field(
-        default_factory=list
-    )
+    growth_protocol_title: Annotated[
+        list[str], BeforeValidator(_string_to_list)
+    ] = Field(default_factory=list)
 
 
 class ImageAcquisitionProtocol(ClosedBaseModel):
@@ -98,16 +99,19 @@ class AnnotationMethod(ClosedBaseModel):
 
 class RembiByType(ClosedBaseModel):
     """
-    Study-wide REMBI components to add to the RO-Crate metadata. Not inherently 
+    Study-wide REMBI components to add to the RO-Crate metadata. Not inherently
     tied to any specific dataset. Specimens are handled separately via SpecimenDefaults
     and SpecimenGroup, as they are generated from tracks and reference these
     components by title.
     """
+
     biosamples: list[Biosample] = Field(default_factory=list)
-    image_acquisition_protocols: list[ImageAcquisitionProtocol] = Field(default_factory=list)
-    specimen_imaging_preparation_protocols: list[SpecimenImagingPreparationProtocol] = Field(
+    image_acquisition_protocols: list[ImageAcquisitionProtocol] = Field(
         default_factory=list
     )
+    specimen_imaging_preparation_protocols: list[
+        SpecimenImagingPreparationProtocol
+    ] = Field(default_factory=list)
     protocols: list[Protocol] = Field(default_factory=list)
     annotation_methods: list[AnnotationMethod] = Field(default_factory=list)
 
@@ -115,7 +119,6 @@ class RembiByType(ClosedBaseModel):
 # ---------------------------------------------------------------------------
 # Specimen metadata models — top-level, cross-dataset
 # ---------------------------------------------------------------------------
-
 class SpecimenDefaults(ClosedBaseModel):
     """
     Default metadata applied to every specimen discovered via track
@@ -151,11 +154,13 @@ class SpecimenTrackConfig(ClosedBaseModel):
 
     @model_validator(mode="after")
     def validate_strategies(self) -> Self:
-        active = sum([
-            bool(self.patterns),
-            bool(self.pattern_alias_mappings),
-            bool(self.literal_alias_mappings),
-        ])
+        active = sum(
+            [
+                bool(self.patterns),
+                bool(self.pattern_alias_mappings),
+                bool(self.literal_alias_mappings),
+            ]
+        )
         if active > 1:
             raise ValueError(
                 "specimen_tracks: only one of 'patterns', 'pattern_alias_mappings', "
@@ -169,7 +174,7 @@ class SpecimenTrackConfig(ClosedBaseModel):
             _validate_regex_has_capture_group(
                 canonical, f"specimen_tracks.pattern_alias_mappings key '{canonical}'"
             )
-            if not re.search(r'\\d\{\d+\}', canonical):
+            if not re.search(r"\\d\{\d+\}", canonical):
                 raise ValueError(
                     f"specimen_tracks.pattern_alias_mappings: canonical pattern '{canonical}' "
                     r"must contain a \d{N} group for zero-padding transformation."
@@ -212,9 +217,8 @@ class SpecimenGroup(ClosedBaseModel):
                 "'specimen_id_pattern' must be provided."
             )
 
-        has_override = (
-            self.biosample_title is not None
-            or bool(self.specimen_imaging_preparation_protocol_titles)
+        has_override = self.biosample_title is not None or bool(
+            self.specimen_imaging_preparation_protocol_titles
         )
         if not has_override:
             raise ValueError(
@@ -224,7 +228,9 @@ class SpecimenGroup(ClosedBaseModel):
             )
 
         if has_pattern:
-            _validate_regex(self.specimen_id_pattern, "specimen_groups.specimen_id_pattern")
+            _validate_regex(
+                self.specimen_id_pattern, "specimen_groups.specimen_id_pattern"
+            )
 
         return self
 
@@ -232,7 +238,6 @@ class SpecimenGroup(ClosedBaseModel):
 # ---------------------------------------------------------------------------
 # Dataset-level modification models
 # ---------------------------------------------------------------------------
-
 class DatasetAssociations(ClosedBaseModel):
     """
     Explicit REMBI associations for a dataset, expressed as lists of entity
@@ -243,30 +248,30 @@ class DatasetAssociations(ClosedBaseModel):
     The referenced entities must be declared in the top-level rembis block
     (or already exist in the minimal RO-Crate).
 
-    Used for REMBI associations, and optionally alongside 
+    Used for REMBI associations, and optionally alongside
     image assignment and specimen tracks.
     """
     biosample_titles: Annotated[list[str], BeforeValidator(_string_to_list)] = Field(
         default_factory=list
     )
-    image_acquisition_protocol_titles: Annotated[list[str], BeforeValidator(_string_to_list)] = Field(
-        default_factory=list
-    )
-    specimen_imaging_preparation_protocol_titles: Annotated[list[str], BeforeValidator(_string_to_list)] = Field(
-        default_factory=list
-    )
-    annotation_method_titles: Annotated[list[str], BeforeValidator(_string_to_list)] = Field(
-        default_factory=list
-    )
+    image_acquisition_protocol_titles: Annotated[
+        list[str], BeforeValidator(_string_to_list)
+    ] = Field(default_factory=list)
+    specimen_imaging_preparation_protocol_titles: Annotated[
+        list[str], BeforeValidator(_string_to_list)
+    ] = Field(default_factory=list)
+    annotation_method_titles: Annotated[
+        list[str], BeforeValidator(_string_to_list)
+    ] = Field(default_factory=list)
     protocol_titles: Annotated[list[str], BeforeValidator(_string_to_list)] = Field(
         default_factory=list
     )
-    image_analysis_method_titles: Annotated[list[str], BeforeValidator(_string_to_list)] = Field(
-        default_factory=list
-    )
-    image_correlation_method_titles: Annotated[list[str], BeforeValidator(_string_to_list)] = Field(
-        default_factory=list
-    )
+    image_analysis_method_titles: Annotated[
+        list[str], BeforeValidator(_string_to_list)
+    ] = Field(default_factory=list)
+    image_correlation_method_titles: Annotated[
+        list[str], BeforeValidator(_string_to_list)
+    ] = Field(default_factory=list)
 
 
 class ImageAssignmentConfig(ClosedBaseModel):
@@ -287,9 +292,9 @@ class ImageAssignmentConfig(ClosedBaseModel):
 
     by_type
         A dict keyed by image type. Valid keys are the ImageType vocabulary
-        (frames, tilt_series, aligned_tilt_series, tomogram, denoised_tomogram)
-        plus 'image' for files that are images but do not belong to a specimen
-        track. 
+        (frames, tilt_series, aligned_tilt_series, tomogram, denoised_tomogram,
+        segmentation) plus 'image' for files that are images but do not belong
+        to a specimen track.
 
             images:
               by_type:
@@ -313,9 +318,7 @@ class ImageAssignmentConfig(ClosedBaseModel):
                 "images: only one of 'patterns' or 'by_type' may be provided."
             )
         if not has_patterns and not has_by_type:
-            raise ValueError(
-                "images: one of 'patterns' or 'by_type' must be provided."
-            )
+            raise ValueError("images: one of 'patterns' or 'by_type' must be provided.")
 
         if has_by_type:
             bad_keys = set(self.by_type) - _VALID_BY_TYPE_KEYS
@@ -372,11 +375,14 @@ class AnnotationAssignmentConfig(ClosedBaseModel):
         Label(s) of the source image result data consumed by downstream ingest
         when constructing creation-process dependencies for AnnotationData.
     """
+
     patterns: Annotated[list[str], BeforeValidator(_string_to_list)]
-    annotation_method_titles: Annotated[list[str], BeforeValidator(_string_to_list)] = Field(
-        default_factory=list
-    )
-    associated_source_image: Annotated[list[str], BeforeValidator(_string_to_list)] = Field(
+    annotation_method_titles: Annotated[
+        list[str], BeforeValidator(_string_to_list)
+    ] = Field(default_factory=list)
+    associated_source_image: Annotated[
+        list[str], BeforeValidator(_string_to_list)
+    ] = Field(
         default_factory=list,
     )
 
@@ -471,13 +477,19 @@ class ImageGroupConfig(ClosedBaseModel):
 class SpecimenTrackAssignmentConfig(ClosedBaseModel):
     """
     Per-dataset configuration for the specimen track scenario.
-    Provides IAP/protocol title assignments keyed by image type or 'dataset',
-    and per-specimen metadata overrides for this dataset. The cross-dataset
-    ID extraction strategy is provided by the top-level specimen_tracks block.
+    Provides IAP/protocol/annotation-method title assignments keyed by image
+    type or 'dataset', and per-specimen metadata overrides for this dataset.
+    The cross-dataset ID extraction strategy is provided by the top-level
+    specimen_tracks block.
 
-    image_acquisition_protocol_title and protocol_titles are keyed by
-    ImageType value (e.g. 'tilt_series', 'tomogram') or 'dataset' for a
-    dataset-level assignment.
+    image_acquisition_protocol_title, protocol_titles, and
+    annotation_method_titles are keyed by ImageType value (e.g. 'tilt_series',
+    'tomogram', 'segmentation') or 'dataset' for a dataset-level assignment.
+
+    source_image_types is currently valid only for the 'segmentation' target
+    key. Its value names the preferred upstream ImageType to write to
+    associated_source_image for segmentation rows, which default to tomogram
+    when omitted.
 
     Note: dataset-level IAP/protocol associations that do not need to be
     keyed by image type can instead be expressed more simply via the
@@ -485,7 +497,35 @@ class SpecimenTrackAssignmentConfig(ClosedBaseModel):
     """
     image_acquisition_protocol_title: dict[str, str | list[str]] | None = None
     protocol_titles: dict[str, str | list[str]] = Field(default_factory=dict)
+    annotation_method_titles: dict[str, str | list[str]] = Field(default_factory=dict)
+    source_image_types: dict[str, str] = Field(default_factory=dict)
     specimen_groups: list[SpecimenGroup] = Field(default_factory=list)
+
+    @model_validator(mode="after")
+    def validate_source_image_types(self) -> Self:
+        if not self.source_image_types:
+            return self
+
+        valid_target_keys = frozenset({ImageType.SEGMENTATION.value})
+        valid_source_values = frozenset(
+            t.value for t in ImageType if t != ImageType.SEGMENTATION
+        )
+
+        bad_targets = set(self.source_image_types) - valid_target_keys
+        if bad_targets:
+            raise ValueError(
+                "specimen_tracks.source_image_types: unknown target image type(s) "
+                f"{sorted(bad_targets)}. Valid targets: {sorted(valid_target_keys)}"
+            )
+
+        bad_sources = set(self.source_image_types.values()) - valid_source_values
+        if bad_sources:
+            raise ValueError(
+                "specimen_tracks.source_image_types: unknown source image type(s) "
+                f"{sorted(bad_sources)}. Valid sources: {sorted(valid_source_values)}"
+            )
+
+        return self
 
 
 class DatasetModificationConfig(ClosedBaseModel):
@@ -524,9 +564,9 @@ class DatasetModificationConfig(ClosedBaseModel):
         metadata for downstream ingest.
 
     specimen_tracks
-        Per-dataset IAP/protocol titles keyed by image type, and specimen
-        group overrides. Requires the top-level specimen_tracks block
-        to be present. For simple (non-type-keyed) associations, prefer
+        Per-dataset IAP/protocol/annotation-method titles keyed by image type,
+        and specimen group overrides. Requires the top-level specimen_tracks
+        block to be present. For simple (non-type-keyed) associations, prefer
         the associations block instead.
     """
     name: str
@@ -550,7 +590,7 @@ class ModificationConfig(ClosedBaseModel):
         during track identification. Required when specimen_tracks is present.
 
     specimen_tracks
-        Cross-dataset specimen ID extraction strategy. Must be present if 
+        Cross-dataset specimen ID extraction strategy. Must be present if
         any dataset block defines a specimen_tracks section with
         specimen_groups or by_type image classification.
 
@@ -587,8 +627,9 @@ class ModificationConfig(ClosedBaseModel):
         The top-level specimen_tracks block (ID extraction strategy) is
         required only when a dataset block uses specimen_tracks for actual
         track identification — i.e. has specimen_groups or uses by_type image
-        classification. A dataset block that only carries IAP/protocol titles
-        in specimen_tracks without those features does not require it.
+        classification. A dataset block that only carries IAP/protocol/
+        annotation-method titles in specimen_tracks without those features
+        does not require it.
 
         Additionally, any AdditionalFileImageAssignment with a typed image_type
         (i.e. an ImageType, not 'image') participates in track identification
@@ -603,15 +644,20 @@ class ModificationConfig(ClosedBaseModel):
 
             if d.additional_files is not None:
                 typed_images = [
-                    img for img in d.additional_files.images
-                    if img.image_type is not None and img.image_type != IMAGE_ASSIGNMENT_TYPE_KEY
+                    img
+                    for img in d.additional_files.images
+                    if img.image_type is not None
+                    and img.image_type != IMAGE_ASSIGNMENT_TYPE_KEY
                 ]
                 if typed_images:
                     return True
 
             return False
 
-        if any(_needs_top_level_tracks(d) for d in self.datasets) and self.specimen_tracks is None:
+        if (
+            any(_needs_top_level_tracks(d) for d in self.datasets)
+            and self.specimen_tracks is None
+        ):
             raise ValueError(
                 "One or more datasets use specimen track identification "
                 "(specimen_groups, by_type image classification, or typed additional_files images), "
