@@ -1,17 +1,17 @@
 fields_map = {
     "study": {
-        "facet.organism": "dataset.biological_entity.organism_classification.scientific_name.keyword",
-        "facet.imaging_method": "dataset.acquisition_process.imaging_method_name.keyword",
+        "facet.organism": "organism_scientific_name.keyword",
+        "facet.imaging_method": "imaging_method.keyword",
         "facet.year": "release_date",
         "facet.licence": "licence",
-        "facet.annotation_method": "dataset.annotation_process.method_type.keyword",
+        "facet.annotation_method": "annotation_type.keyword",
         "has":
-         {"thumbnail": "dataset.example_image_uri"}
+         {"thumbnail": "example_image"}
     },
     "image": {
-        "facet.organism": "creation_process.subject.sample_of.organism_classification.scientific_name.keyword",
-        "facet.imaging_method": "creation_process.acquisition_process.imaging_method_name.keyword",
-        "facet.annotation_method": "creation_process.annotation_method.method_type.keyword",
+        "facet.organism": "organism_scientific_name.keyword",
+        "facet.imaging_method": "imaging_method.keyword",
+        "facet.annotation_method": "annotation_type.keyword",
         "facet.image_format": "representation.image_format",
         "numeric": {
             "size_x": "representation.size_x",
@@ -99,4 +99,5 @@ aggregations["image"]["all_stats"] = {
     "aggs": {k: {"stats": {"field": f}} for k, f in numeric_aggs.items()},
 }
 
-study_browse_card_field_l = ["uuid", "accession_id", "title", "description", "release_date", " licence", "keyword"]
+study_browse_card_field_l = ["uuid", "accession_id", "title", "description", "release_date", " licence", "keyword", "imaging_method", "annotation_type", "image_format", "organism_scientific_name", "organism_common_name", "example_image"]
+image_browse_card_field_l = ["uuid", "accession_id", "title", "description", "release_date", " licence", "additional_metadata", "total_physical_size_x", "total_physical_size_y", "total_physical_size_z", "imaging_method", "annotation_type", "organism_scientific_name", "organism_common_name", "representation"]

@@ -10,7 +10,7 @@ from api.utils import (
     build_params_as_list,
     aggregations,
 )
-from api.resources import study_browse_card_field_l
+from api.resources import study_browse_card_field_l, image_browse_card_field_l
 
 router = APIRouter(prefix="/website")
 
@@ -52,6 +52,18 @@ async def get_study_cards(
 @router.get("/browse/image")
 async def get_image_cards(
     elastic: Annotated[Elastic, Depends(get_elastic)],
-    uuid: Annotated[str, Query(min_length=1, max_length=500)],
+    request: Request,
+    filters: ImageSearchFilters = Depends(),
+    query: Annotated[str | None, Query()] = None,
+    page: Annotated[int, Query(ge=1, alias="pagination.page", le=1000)] = 1,
+    page_size: Annotated[int, Query(ge=1, le=100, alias="pagination.page_size")] = 50,
 ) -> dict:
-    return {}
+    pagination = build_pagination(page, page_size)
+    return await get_query_results(
+        request=request,
+        elastic=elastic,
+        query=query,
+        index_type="image",
+        pagination=pagination,
+        view_fields=image_browse_card_field_l,
+    )

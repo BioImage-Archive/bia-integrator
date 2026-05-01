@@ -45,12 +45,11 @@ async def get_query_results(request: Request,
     index_type: str, 
     view_fields: list[str] | None = None
 ) -> dict:
-    include_nested_author = True if index_type == "study" else False
     elastic_index = elastic.index_study if index_type == "study" else elastic.index_image
     params = build_params_as_list(request)
     qb = QueryBuilder(text_query=query)
     qb.parse_params(
-        query=query, params=params, index_type=index_type, include_nested_author=include_nested_author
+        query=query, params=params, index_type=index_type
     )
     rsp = await qb.search(
         client=elastic.client,

@@ -169,7 +169,6 @@ def test_study_browse_card(api_client: TestClient):
     )
     assert rsp.status_code == 200
     body = rsp.json()
-    print(len(body["hits"]["hits"]))
     assert len(body["hits"]["hits"]) == 4
 
 
@@ -243,7 +242,7 @@ def test_fts_highlight(api_client: TestClient):
     assert rsp.status_code == 200
     body = rsp.json()
     assert len(body["hits"]["hits"][0]["highlight"]) == 1
-    assert len(body["hits"]["hits"][0]["highlight"]["author.display_name"]) == 1
-    assert {"author.display_name": ["__HIT__Amir__/HIT__ Arabzade"]} == body["hits"][
+    assert len(body["hits"]["hits"][0]["highlight"]["author_display_name"]) == 1
+    assert {"author_display_name": ["__HIT__Amir__/HIT__ Arabzade"]} == body["hits"][
         "hits"
     ][0]["highlight"]

@@ -75,43 +75,49 @@ class Image(api_models.Image):
         description="""study doi""",
     )
     author_display_name: list[str] | None = Field(
-        description="""study authors""",
+        description="""study authors display name""",
     )
     author_orcid: list[str] | None = Field(
-        description="""study authors""",
+        description="""study authors orcid""",
     )
     author_rorid: list[str] | None = Field(
-        description="""study authors""",
+        description="""study authors rorid""",
     )
     author_affiliation: list[str] | None = Field(
-        description="""study authors""",
+        description="""study authors affiliation""",
+    )
+    author_affiliation_rorid: list[str] | None = Field(
+        description="""study authors affiliation rorid""",
     )
     dataset_description: str | None = Field(
         description="""dataset description""",
     )
     dataset_title: str | None = Field(
-        description="""dataset description""",
+        description="""dataset title""",
     )
     publication: list[dict] | None = Field(
         description="""study publication""",
     )
     total_size_in_bytes: float | None = Field(
-        description="""dataset description""",
+        description="""image file size""",
     )
     file_path: list[str] | None = Field(
-        description="""dataset description""",
+        description="""file path""",
     )
     organism_scientific_name: list[str] | None = Field(
-        description="""study authors""",
+        description="""organism scientific name""",
     )
     organism_common_name: list[str] | None = Field(
-        description="""study authors""",
+        description="""organism common name""",
+    )
+    organism_ncbi_id: list[str] | None = Field(
+        description="""organism ncbi id in the study""",
     )
     imaging_method: list[str] | None = Field(
-        description="""study authors""",
+        description="""imaging method""",
     )
     annotation_type: list[str] | None = Field(
-        description="""study authors""",
+        description="""annotation method""",
     )
 
 

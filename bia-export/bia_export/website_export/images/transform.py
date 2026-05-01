@@ -76,9 +76,11 @@ def transform_image(
         "author.orcid": "author_orcid",
         "author.rorid": "author_rorid",
         "author.affiliation.display_name": "author_affiliation",
+        "author.affiliation.rorid": "author_affiliation_rorid",
         "related_publication": "publication",
         "subject.sample_of.organism_classification.scientific_name": "organism_scientific_name",
         "subject.sample_of.organism_classification.common_name": "organism_common_name",
+        "subject.sample_of.organism_classification.ncbi_id": "organism_ncbi_id",
         "acquisition_process.imaging_method_name": "imaging_method",
         "annotation_method.method_type": "annotation_type",
     }

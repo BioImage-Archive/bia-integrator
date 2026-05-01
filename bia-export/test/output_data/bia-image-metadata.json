@@ -35,6 +35,7 @@
             "Test College 1",
             "Test College 2"
         ],
+        "author_affiliation_rorid": null,
         "dataset_description": null,
         "dataset_title": "Annotations and segmentation masks",
         "publication": [],
@@ -86,6 +87,7 @@
         "representation": [],
         "organism_scientific_name": null, 
         "organism_common_name": null, 
+        "organism_ncbi_id": null,
         "imaging_method": null,
         "annotation_type": ["other"]
     },
@@ -293,11 +295,13 @@
             "Test College 1",
             "Test College 2"
         ],
+        "author_affiliation_rorid": null,
         "dataset_description": "Description of study component 1",
         "dataset_title": "Study Component 1",
         "publication": [],
         "organism_scientific_name": ["Homo sapiens"], 
         "organism_common_name": ["human"], 
+        "organism_ncbi_id": null,
         "imaging_method": ["confocal microscopy"], 
         "annotation_type": null
     }

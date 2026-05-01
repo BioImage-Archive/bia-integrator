@@ -84,21 +84,32 @@ curl -k -X PUT "${ELASTIC_URL}/${ELASTIC_INDEX}" \
 					"type": "keyword", "doc_values": "false"
 				},
 				"acknowledgement": { "type": "text", "analyzer": "analyzerStandard" },
-				"author": {
-					"type": "nested",
-					"dynamic": false,
-					"properties": {
-						"display_name": { "type": "text", "analyzer": "analyzerCaseInsensitive" },
-						"orcid": {"type": "keyword", "doc_values": "false"},
-						"rorid": {"type": "keyword", "doc_values": "false"},
-						"affiliation": {
-							"type": "nested",
-							"dynamic": false,
-							"properties": {
-								"display_name": { "type": "keyword", "normalizer": "lowercase_norm", "doc_values": "false" },
-								"rorid": {"type": "keyword", "doc_values": "false"}
-							}
-						}
+				"author_display_name" : { "type": "text", "analyzer": "analyzerCaseInsensitive" },
+				"author_orcid": {"type": "keyword", "doc_values": "false"},
+				"author_rorid": {"type": "keyword", "doc_values": "false"},
+				"author_affiliation": { "type": "keyword", "normalizer": "lowercase_norm", "doc_values": "false" },
+				"author_affiliation_rorid": {"type": "keyword", "doc_values": "false"},
+				"example_image": {"type": "keyword", "index": "false", "doc_values": "true"},
+				"organism_scientific_name": {
+					"type": "text", 
+					"analyzer": "analyzerCaseInsensitive",
+					"fields": {
+						"keyword": { "type": "keyword", "normalizer": "lowercase_norm" }
+					}
+				},
+				"organism_common_name": { "type": "text", "analyzer": "analyzerCaseInsensitive" },
+				"imaging_method": {
+					"type": "text", 
+					"analyzer": "analyzerCaseInsensitive",
+					"fields": {
+						"keyword": { "type": "keyword", "normalizer": "lowercase_norm" }
+					}
+				},
+				"annotation_type": {
+					"type": "text", 
+					"analyzer": "analyzerCaseInsensitive",
+					"fields": {
+						"keyword": { "type": "keyword", "normalizer": "annotation_type_norm" }
 					}
 				},
 				"grant": {
@@ -116,39 +127,7 @@ curl -k -X PUT "${ELASTIC_URL}/${ELASTIC_INDEX}" \
 								"organism_classification": {
 									"type": "object",
 									"properties": {
-										"scientific_name": {
-											"type": "text", 
-											"analyzer": "analyzerCaseInsensitive",
-											"fields": {
-												"keyword": { "type": "keyword", "normalizer": "lowercase_norm" }
-											}
-										},
-										"common_name": { "type": "text", "analyzer": "analyzerCaseInsensitive" },
 										"ncbi_id": { "type": "keyword", "doc_values": "false" }
-									}
-								}
-							}
-						},
-						"acquisition_process": {
-							"type": "object",
-							"properties": {
-								"imaging_method_name": {
-									"type": "text", 
-									"analyzer": "analyzerCaseInsensitive",
-									"fields": {
-										"keyword": { "type": "keyword", "normalizer": "lowercase_norm" }
-									}
-								}
-							}
-						},
-						"annotation_process" : {
-							"type": "object",
-							"properties": {
-								"method_type": {
-									"type": "text", 
-									"analyzer": "analyzerCaseInsensitive",
-									"fields": {
-										"keyword": { "type": "keyword", "normalizer": "annotation_type_norm" }
 									}
 								}
 							}
@@ -171,7 +150,7 @@ for f in ${EXPORT_JSON_OUT_DIR}api-study-metadata.bulk.part-*.ndjson.gz; do
     	-H "Content-Type: application/x-ndjson" \
     	-XPOST "${ELASTIC_URL}/_bulk?pretty&error_trace=true" \
     	--data-binary @- | jq '.items[] | select(.index.status != 201)'
-	rm -rf $f
+	#rm -rf $f
 
 done
 curl -k -u "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -X POST "${ELASTIC_URL}/${ELASTIC_INDEX}/_refresh"
@@ -247,51 +226,44 @@ curl -k -X PUT "${ELASTIC_URL}/${ELASTIC_INDEX_IMAGES}" \
 					"voxel_physical_size_z": {"type": "float"}
                 }
             },
+			"author_display_name" : { "type": "text", "analyzer": "analyzerCaseInsensitive" },
+			"author_orcid": {"type": "keyword", "doc_values": "false"},
+			"author_rorid": {"type": "keyword", "doc_values": "false"},
+			"author_affiliation": { "type": "keyword", "normalizer": "lowercase_norm", "doc_values": "false" },
+			"author_affiliation_rorid": {"type": "keyword", "doc_values": "false"},
+			"organism_scientific_name": {
+				"type": "text", 
+				"analyzer": "analyzerCaseInsensitive",
+				"fields": {
+					"keyword": { "type": "keyword", "normalizer": "lowercase_norm" }
+				}
+			},
+			"organism_common_name": { "type": "text", "analyzer": "analyzerCaseInsensitive" },
+			"imaging_method": {
+				"type": "text", 
+				"analyzer": "analyzerCaseInsensitive",
+				"fields": {
+					"keyword": { "type": "keyword", "normalizer": "lowercase_norm" }
+				}
+			},
+			"annotation_type": {
+				"type": "text", 
+				"analyzer": "analyzerCaseInsensitive",
+				"fields": {
+					"keyword": { "type": "keyword", "normalizer": "annotation_type_norm" }
+				}
+			},
 			"creation_process": {
 				"type": "object",
 				"properties": {
 					"input_image_uuid": { "type": "keyword", "doc_values": "false" },
-					"acquisition_process": {
-						"type": "object",
-						"properties": {
-							"imaging_method_name": { 
-								"type": "text", 
-								"analyzer": "analyzerCaseInsensitive",
-								"fields": { "keyword": { "type": "keyword", "normalizer": "lowercase_norm" } }
-							}
-						}
-					},
-					"annotation_method": {
-						"type": "object",
-						"properties": {
-							"method_type": { 
-								"type": "text", 
-								"analyzer": "analyzerCaseInsensitive",
-								"fields": { "keyword": { "type": "keyword", "normalizer": "annotation_type_norm" } }
-							}
-						}
-					},
 					"subject": {
 						"type": "object",
 						"properties": {
 							"sample_of": {
 								"type": "object",
 								"properties": {
-									"biological_entity_description": { "type": "text", "analyzer": "analyzerCaseInsensitive" },
-									"organism_classification": {
-										"type": "object",
-										"properties": {
-											"common_name": { "type": "text", "analyzer": "analyzerCaseInsensitive"},
-											"ncbi_id": { "type": "keyword", "doc_values": "false" },
-											"scientific_name": { 
-												"type": "text", 
-												"analyzer": "analyzerCaseInsensitive",
-												"fields": {
-													"keyword": { "type": "keyword", "normalizer": "lowercase_norm" }
-												}
-											}			
-										}
-									}
+									"biological_entity_description": { "type": "text", "analyzer": "analyzerCaseInsensitive" }
 								}
 							}
 						}
@@ -309,7 +281,7 @@ for f in ${EXPORT_JSON_OUT_DIR}api-image-metadata.bulk.part-*.ndjson.gz; do
 		-H "Content-Type: application/x-ndjson" \
 		-XPOST "${ELASTIC_URL}/_bulk?pretty&error_trace=true" \
 		--data-binary @- | jq '.items[] | select(.index.status != 201)'
-	rm -rf $f
+	#rm -rf $f
 done
 
 curl -k -u "${ELASTIC_USERNAME}:${ELASTIC_PASSWORD}" -X POST "${ELASTIC_URL}/${ELASTIC_INDEX_IMAGES}/_refresh"
