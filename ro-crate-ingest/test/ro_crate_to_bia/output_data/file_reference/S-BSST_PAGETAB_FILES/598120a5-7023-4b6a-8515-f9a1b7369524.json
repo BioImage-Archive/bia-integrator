@@ -20,7 +20,7 @@
       "value": {
         "path": "u/Cryo-SEM.zip",
         "size": 1620870640,
-        "type": "file",
+        "biostudies_type": "file",
         "dataset": "#Default%20template.%20No%20Study%20Components",
         "Description": "Cryo-SEM images",
         "http://schema.org/name": "u/Cryo-SEM.zip",

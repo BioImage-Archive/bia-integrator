@@ -91,12 +91,11 @@ def test_basic_ROCrate_api(get_bia_api_client):
             "biostudies",
             id="S-BIADTEST_ANNOTATION_METHOD",
         ),
-        # TODO: make multiply listing the same file invalid, or have a clear processing order.
-        # pytest.param(
-        #     get_biostudies_to_ro_crate_path("S-BIADTEST_COMBINE_FILELIST"),
-        #     "biostudies",
-        #     id="S-BIADTEST_COMBINE_FILELIST",
-        # ),
+        pytest.param(
+            get_biostudies_to_ro_crate_path("S-BIADTEST_COMBINE_FILELIST"),
+            "biostudies",
+            id="S-BIADTEST_COMBINE_FILELIST",
+        ),
         pytest.param(
             get_biostudies_to_ro_crate_path("S-BSST_PAGETAB_FILES"),
             "biostudies",

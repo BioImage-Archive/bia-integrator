@@ -1,3 +1,3 @@
-path	size	type	dataset	Description
-u/Cryo-SEM.zip	1620870640	file	#Default%20template.%20No%20Study%20Components	Cryo-SEM images
-u/Lisette Rodriguez.zip	3508061759	file	#Default%20template.%20No%20Study%20Components	SEM images
+path	size	dataset	biostudies_type	Description
+u/Cryo-SEM.zip	1620870640	#Default%20template.%20No%20Study%20Components	file	Cryo-SEM images
+u/Lisette Rodriguez.zip	3508061759	#Default%20template.%20No%20Study%20Components	file	SEM images

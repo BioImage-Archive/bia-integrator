@@ -20,15 +20,15 @@ def get_study(
     submission: Submission,
     contributors: list[ro_crate_models.Contributor],
     datasets: Iterable[ro_crate_models.Dataset],
-    combined_file_list: ro_crate_models.FileList,
+    combined_file_list_id: str,
     external_refernces: list[ro_crate_models.ExternalReference],
 ) -> ro_crate_models.Study:
     submission_attributes = attributes_to_dict(submission.attributes)
     study_attributes = attributes_to_dict(submission.section.attributes)
 
     has_part_ids = [{"@id": d.id} for d in datasets]
-    if combined_file_list:
-        has_part_ids.append({"@id": combined_file_list.id})
+    if combined_file_list_id:
+        has_part_ids.append({"@id": combined_file_list_id})
 
     study_dict = {
         "@id": "./",
@@ -44,7 +44,7 @@ def get_study(
         "contributor": [{"@id": c.id} for c in contributors],
         "hasPart": has_part_ids,
         "associationFileMetadata": (
-            {"@id": combined_file_list.id} if combined_file_list else None
+            {"@id": combined_file_list_id} if combined_file_list_id else None
         ),
         "seeAlso": [{"@id": external_ref.id} for external_ref in external_refernces],
         # TODO handle grants & funding statements

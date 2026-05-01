@@ -321,15 +321,60 @@
             "website": null
         },
         {
-            "@id": "combined_file_list.tsv",
+            "@id": "_:col6",
             "@type": [
-                "File",
-                "bia:FileList",
-                "csvw:Table"
+                "csvw:Column"
             ],
-            "tableSchema": {
-                "@id": "_:ts0"
-            }
+            "columnName": "sourceImage",
+            "propertyUrl": "http://bia/sourceImagePath"
+        },
+        {
+            "@id": "_:col5",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "Channel 1",
+            "propertyUrl": null
+        },
+        {
+            "@id": "_:col4",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "Genotype/Line",
+            "propertyUrl": null
+        },
+        {
+            "@id": "_:col3",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "biostudies_type",
+            "propertyUrl": null
+        },
+        {
+            "@id": "_:col2",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "dataset",
+            "propertyUrl": "http://schema.org/isPartOf"
+        },
+        {
+            "@id": "_:col1",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "size",
+            "propertyUrl": "http://bia/sizeInBytes"
+        },
+        {
+            "@id": "_:col0",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "path",
+            "propertyUrl": "http://bia/filePath"
         },
         {
             "@id": "_:ts0",
@@ -361,60 +406,15 @@
             ]
         },
         {
-            "@id": "_:col6",
+            "@id": "combined_file_list.tsv",
             "@type": [
-                "csvw:Column"
+                "File",
+                "bia:FileList",
+                "csvw:Table"
             ],
-            "columnName": "sourceImage",
-            "propertyUrl": "http://bia/sourceImagePath"
-        },
-        {
-            "@id": "_:col5",
-            "@type": [
-                "csvw:Column"
-            ],
-            "columnName": "Channel 1",
-            "propertyUrl": null
-        },
-        {
-            "@id": "_:col4",
-            "@type": [
-                "csvw:Column"
-            ],
-            "columnName": "Genotype/Line",
-            "propertyUrl": null
-        },
-        {
-            "@id": "_:col3",
-            "@type": [
-                "csvw:Column"
-            ],
-            "columnName": "dataset",
-            "propertyUrl": "http://schema.org/isPartOf"
-        },
-        {
-            "@id": "_:col2",
-            "@type": [
-                "csvw:Column"
-            ],
-            "columnName": "type",
-            "propertyUrl": null
-        },
-        {
-            "@id": "_:col1",
-            "@type": [
-                "csvw:Column"
-            ],
-            "columnName": "size",
-            "propertyUrl": "http://bia/sizeInBytes"
-        },
-        {
-            "@id": "_:col0",
-            "@type": [
-                "csvw:Column"
-            ],
-            "columnName": "path",
-            "propertyUrl": "http://bia/filePath"
+            "tableSchema": {
+                "@id": "_:ts0"
+            }
         },
         {
             "@id": "#Annotation-1",

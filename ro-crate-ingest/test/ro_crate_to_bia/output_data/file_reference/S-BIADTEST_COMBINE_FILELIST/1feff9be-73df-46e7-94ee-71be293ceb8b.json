@@ -20,8 +20,8 @@
       "value": {
         "path": "folder2/file2.ome.zarr.zip",
         "size": 13161534,
-        "type": "file",
         "dataset": "#Study%20Component-2",
+        "biostudies_type": "file",
         "Genotype/Line": "; ubiCAAX-GFP/+ ; neuPH-RFP/+",
         "Channel 1": null,
         "Channel 2": "CAAX",
