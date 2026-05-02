@@ -76,6 +76,7 @@ def test_fts_image_use_facet_image_format(api_client: TestClient):
     )
     assert rsp.status_code == 200
     body = rsp.json()
+    print(body)
     assert len(body["hits"]["hits"]) == 1
 
 

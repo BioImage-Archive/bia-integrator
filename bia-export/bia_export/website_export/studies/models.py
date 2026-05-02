@@ -56,31 +56,37 @@ class Study(models.Study):
         description="List of image formats.",
     )
     author_display_name: list[str] | None = Field(
-        description="""study authors""",
+        description="""study authors display name""",
     )
     author_orcid: list[str] | None = Field(
-        description="""study authors""",
+        description="""study authors orcid""",
     )
     author_rorid: list[str] | None = Field(
-        description="""study authors""",
+        description="""study authors rorid""",
     )
     author_affiliation: list[str] | None = Field(
-        description="""study authors""",
+        description="""study authors affiliation""",
+    )
+    author_affiliation_rorid: list[str] | None = Field(
+        description="""study authors affiliation rorid""",
     )
     example_image: list[str] | None = Field(
-        description="""study authors""",
+        description="""study example image""",
     )
     organism_scientific_name: list[str] | None = Field(
-        description="""study authors""",
+        description="""organism scientific names in the study""",
     )
     organism_common_name: list[str] | None = Field(
-        description="""study authors""",
+        description="""organism common names in the study""",
+    )
+    organism_ncbi_id: list[str] | None = Field(
+        description="""organism ncbi id in the study""",
     )
     imaging_method: list[str] | None = Field(
-        description="""study authors""",
+        description="""imaging methods in the study""",
     )
     annotation_type: list[str] | None = Field(
-        description="""study authors""",
+        description="""annotation methods in the study""",
     )
 
 

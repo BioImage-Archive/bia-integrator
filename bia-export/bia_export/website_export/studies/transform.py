@@ -55,9 +55,11 @@ def transform_study(context: StudyCLIContext) -> Study:
         "author.orcid": "author_orcid",
         "author.rorid": "author_rorid",
         "author.affiliation.display_name": "author_affiliation",
+        "author.affiliation.rorid": "author_affiliation_rorid",
         "dataset.example_image_uri": "example_image",
         "dataset.biological_entity.organism_classification.scientific_name": "organism_scientific_name",
         "dataset.biological_entity.organism_classification.common_name": "organism_common_name",
+        "dataset.biological_entity.organism_classification.ncbi_id": "organism_ncbi_id",
         "dataset.acquisition_process.imaging_method_name": "imaging_method",
         "dataset.annotation_process.method_type": "annotation_type",
     }
