@@ -223,7 +223,7 @@ datasets:
         frames: "**/*.tif"
     specimen_tracks:
       image_acquisition_protocol_title:
-        dataset:
+        frames:
           - "Cryo-electron tomography"
 
   - name: "Unaligned tilt stacks"

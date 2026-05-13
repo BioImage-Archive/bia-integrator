@@ -4,6 +4,7 @@ import pandas as pd
 import re
 from pathlib import Path
 from pydantic import BaseModel, computed_field, Field
+from typing import Iterable
 
 from bia_ro_crate.models import ro_crate_models
 from bia_ro_crate.models.linked_data.pydantic_ld.LDModel import ObjectReference
@@ -15,6 +16,7 @@ from ro_crate_ingest.ro_crate_modification.enrichment.file_list_utils import (
     file_list_association_value,
     get_dataset_column_id,
     get_or_add_associated_annotation_method_column_id,
+    get_or_add_associated_image_acquisition_protocol_column_id,
     get_or_add_label_column_id,
     get_or_add_associated_protocol_column_id,
     get_or_add_associated_source_image_column_id,
@@ -507,6 +509,32 @@ def _make_specimen_entities(
     return specimen
 
 
+def _collect_unique_refs(
+    track_dict: dict | None,
+    existing_refs: Iterable,
+) -> list[ObjectReference]:
+    """
+    Build a deduplicated list of ObjectReferences from a track config dict
+    (values are str or list[str]), excluding titles already present in
+    existing_refs.
+    """
+    if not track_dict:
+        return []
+
+    existing_ids: set[str] = {ref.id for ref in existing_refs}
+    seen: set[str] = set(existing_ids)
+    refs: list[ObjectReference] = []
+
+    for titles in track_dict.values():
+        for t in ([titles] if isinstance(titles, str) else titles):
+            t_ref = entity_ref(t)
+            if t_ref.id not in seen:
+                refs.append(t_ref)
+                seen.add(t_ref.id)
+
+    return refs
+
+
 def _apply_dataset_track_metadata(
     ro_crate_metadata: BIAROCrateMetadata,
     dataset_config: DatasetModificationConfig,
@@ -533,32 +561,18 @@ def _apply_dataset_track_metadata(
 
     track_config = dataset_config.specimen_tracks
 
-    iap_refs: list[ObjectReference] = []
-    if track_config.image_acquisition_protocol_title:
-        seen: set[str] = set()
-        for titles in track_config.image_acquisition_protocol_title.values():
-            for t in [titles] if isinstance(titles, str) else titles:
-                if t not in seen:
-                    iap_refs.append(entity_ref(t))
-                    seen.add(t)
-
-    protocol_refs: list[ObjectReference] = []
-    if track_config.protocol_titles:
-        seen = set()
-        for titles in track_config.protocol_titles.values():
-            for t in [titles] if isinstance(titles, str) else titles:
-                if t not in seen:
-                    protocol_refs.append(entity_ref(t))
-                    seen.add(t)
-
-    annotation_method_refs: list[ObjectReference] = []
-    if track_config.annotation_method_titles:
-        seen = set()
-        for titles in track_config.annotation_method_titles.values():
-            for t in [titles] if isinstance(titles, str) else titles:
-                if t not in seen:
-                    annotation_method_refs.append(entity_ref(t))
-                    seen.add(t)
+    iap_refs = _collect_unique_refs(
+        track_config.image_acquisition_protocol_title,
+        entity.associatedImageAcquisitionProtocol,
+    )
+    protocol_refs = _collect_unique_refs(
+        track_config.protocol_titles,
+        entity.associatedProtocol,
+    )
+    annotation_method_refs = _collect_unique_refs(
+        track_config.annotation_method_titles,
+        entity.associatedAnnotationMethod,
+    )
 
     updated = entity.model_copy(
         update={
@@ -935,6 +949,9 @@ def _write_associated_specimen(
 
 
 def _iter_track_images_for_metadata(track: SpecimenTrack):
+    for frame_path in track.frames:
+        yield ImageType.FRAMES, frame_path
+
     for image_type in [
         ImageType.TILT_SERIES,
         ImageType.ALIGNED_TILT_SERIES,
@@ -1018,6 +1035,56 @@ def _write_associated_protocol(
     logger.info(f"Wrote associated_protocol for {written} file(s).")
 
 
+def _write_associated_image_acquisition_protocol(
+    file_list: FileList,
+    tracks: list[SpecimenTrack],
+    dataset_configs: list[DatasetModificationConfig],
+) -> None:
+    """
+    Write the @id(s) of ImageAcquisitionProtocol entities into the
+    associated_image_acquisition_protocol column for image files whose image
+    type is mapped to a protocol in the per-dataset
+    specimen_tracks.image_acquisition_protocol_title config.
+    """
+    path_col_id = get_path_column_id(file_list)
+    if path_col_id is None:
+        return
+
+    dataset_iap_map: dict[str, dict[str, str | list[str]]] = {}
+    for dc in dataset_configs:
+        if dc.specimen_tracks and dc.specimen_tracks.image_acquisition_protocol_title:
+            dataset_iap_map[
+                dc.name
+            ] = dc.specimen_tracks.image_acquisition_protocol_title
+
+    if not dataset_iap_map:
+        return
+
+    iap_col_id = get_or_add_associated_image_acquisition_protocol_column_id(
+        file_list
+    )
+
+    path_to_iap: dict[str, str | None] = {}
+
+    for track in tracks:
+        for image_type, file_path in _iter_track_images_for_metadata(track):
+            dataset_name = _dataset_name_for_track_path(track, image_type, file_path)
+
+            iap_titles_by_type = dataset_iap_map.get(dataset_name, {})
+            raw = iap_titles_by_type.get(image_type.value)
+            if raw is None:
+                continue
+
+            path_to_iap[str(file_path)] = _value_for_titles(raw)
+
+    values = file_list.data[path_col_id].apply(lambda p: path_to_iap.get(str(p)))
+    existing = file_list.data[iap_col_id]
+    file_list.data[iap_col_id] = existing.where(values.isna(), values)
+
+    written = int(values.notna().sum())
+    logger.info(f"Wrote associated_image_acquisition_protocol for {written} file(s).")
+
+
 def _write_associated_annotation_method(
     file_list: FileList,
     tracks: list[SpecimenTrack],
@@ -1080,6 +1147,7 @@ def _write_specimen_metadata_to_file_list(
     _write_label_column(file_list, path_to_label)
     _write_source_image_labels(file_list, tracks, path_to_label, dataset_configs)
     _write_associated_specimen(file_list, tracks)
+    _write_associated_image_acquisition_protocol(file_list, tracks, dataset_configs)
     _write_associated_protocol(file_list, tracks, dataset_configs)
     _write_associated_annotation_method(file_list, tracks, dataset_configs)
 

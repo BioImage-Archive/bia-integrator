@@ -307,12 +307,10 @@ per-dataset IAP/protocol/annotation-method title assignments and per-specimen
 metadata overrides.
 
 `image_acquisition_protocol_title`, `protocol_titles`, and
-`annotation_method_titles` are keyed by either `dataset` (applies to the
-dataset as a whole) or an `ImageType` value (applies only to images of that
-type). `annotation_method_titles` is useful for segmentation images, which
-remain `bia:Image` rows but can carry an annotation-method association. For
-simple flat associations not needing image-type keying, prefer the
-`associations` block instead.
+`annotation_method_titles` are keyed by an `ImageType` value (applies only to
+images of that type). `annotation_method_titles` is useful for segmentation
+images, which remain `bia:Image` rows but can carry an annotation-method
+association. Use the `associations` block for dataset-level metadata.
 
 `source_image_types` is valid only for the `segmentation` target key. Its value
 names the preferred upstream `ImageType` to write to `associated_source_image`

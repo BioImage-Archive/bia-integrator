@@ -267,6 +267,12 @@ def _ensure_object_columns(file_list: FileList, column_ids: list[str]) -> None:
             file_list.data[col_id] = file_list.data[col_id].astype(object)
 
 
+def _path_label(path: str | Path) -> str:
+    parts = Path(path).parts
+    stem = Path(parts[-1]).stem
+    return f"{parts[-2]}_{stem}" if len(parts) >= 2 else stem
+
+
 def _build_annotation_label(
     annotation_config: AnnotationAssignmentConfig,
     file_path: str,
@@ -274,8 +280,8 @@ def _build_annotation_label(
     if len(annotation_config.patterns) == 1:
         pattern = annotation_config.patterns[0]
         if "*" not in pattern and "?" not in pattern and "[" not in pattern:
-            return Path(pattern).stem
-    return Path(file_path).stem
+            return _path_label(pattern)
+    return _path_label(file_path)
 
 
 def _update_dataset_annotation_methods(

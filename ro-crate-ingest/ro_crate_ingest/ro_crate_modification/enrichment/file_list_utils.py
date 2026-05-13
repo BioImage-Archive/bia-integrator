@@ -1,12 +1,15 @@
 import logging
 import re
+import ast
 
 import pandas as pd
 from rdflib import RDF
 
+from bia_ro_crate.core.bia_ro_crate_metadata import BIAROCrateMetadata
 from bia_ro_crate.core.file_list import FileList
 from bia_ro_crate.models import ro_crate_models
 from bia_ro_crate.models.linked_data.ontology_terms import BIA, SCHEMA
+from bia_ro_crate.models.linked_data.pydantic_ld.LDModel import ObjectReference
 
 logger = logging.getLogger(__name__)
 
@@ -17,7 +20,14 @@ NAME_PROPERTY = str(SCHEMA.name)
 RDF_TYPE_PROPERTY = str(RDF.type)
 ASSOCIATED_SOURCE_IMAGE_PROPERTY = str(BIA.associatedSourceImage)
 LEGACY_SOURCE_IMAGE_LABEL_PROPERTY = "http://bia/sourceImageLabel"
+ASSOCIATED_BIOLOGICAL_ENTITY_PROPERTY = str(BIA.associatedBiologicalEntity)
+ASSOCIATED_IMAGING_PREPARATION_PROTOCOL_PROPERTY = str(
+    BIA.associatedImagingPreparationProtocol
+)
 ASSOCIATED_ANNOTATION_METHOD_PROPERTY = str(BIA.associatedAnnotationMethod)
+ASSOCIATED_IMAGE_ACQUISITION_PROTOCOL_PROPERTY = str(
+    BIA.associatedImageAcquisitionProtocol
+)
 ASSOCIATED_PROTOCOL_PROPERTY = str(BIA.associatedProtocol)
 ASSOCIATED_SUBJECT_PROPERTY = str(BIA.associatedSubject)
 COLUMN_ID_PATTERN = re.compile(r"^_:col(\d+)$")
@@ -54,6 +64,8 @@ def _ensure_object_column(file_list: FileList, col_id: str) -> None:
 def _has_value(value) -> bool:
     if isinstance(value, list):
         return bool(value)
+    if isinstance(value, str) and value == "":
+        return False
     return pd.notna(value)
 
 
@@ -133,6 +145,37 @@ def get_or_add_associated_annotation_method_column_id(file_list: FileList) -> st
     )
 
 
+def get_or_add_associated_biological_entity_column_id(file_list: FileList) -> str:
+    return _get_or_add_column_id(
+        file_list,
+        property_url=ASSOCIATED_BIOLOGICAL_ENTITY_PROPERTY,
+        column_name="associated_biological_entity",
+        log_level="debug",
+    )
+
+
+def get_or_add_associated_imaging_preparation_protocol_column_id(
+    file_list: FileList,
+) -> str:
+    return _get_or_add_column_id(
+        file_list,
+        property_url=ASSOCIATED_IMAGING_PREPARATION_PROTOCOL_PROPERTY,
+        column_name="associated_imaging_preparation_protocol",
+        log_level="debug",
+    )
+
+
+def get_or_add_associated_image_acquisition_protocol_column_id(
+    file_list: FileList,
+) -> str:
+    return _get_or_add_column_id(
+        file_list,
+        property_url=ASSOCIATED_IMAGE_ACQUISITION_PROTOCOL_PROPERTY,
+        column_name="associated_image_acquisition_protocol",
+        log_level="debug",
+    )
+
+
 def get_or_add_associated_protocol_column_id(file_list: FileList) -> str:
     return _get_or_add_column_id(
         file_list,
@@ -164,6 +207,31 @@ def file_list_association_value(values: list[str]) -> str | None:
     return str(values) if len(values) > 1 else values[0]
 
 
+def _association_value_ids(value) -> list[str]:
+    if isinstance(value, list):
+        return [v for v in value if _has_value(v)]
+    if not _has_value(value):
+        return []
+    if isinstance(value, str) and value.startswith("["):
+        try:
+            parsed = ast.literal_eval(value)
+        except (SyntaxError, ValueError):
+            return [value]
+        if isinstance(parsed, list):
+            return [v for v in parsed if _has_value(v)]
+    return [value]
+
+
+def merge_file_list_association_value(existing, additions: list[str]) -> str | None:
+    merged = _association_value_ids(existing)
+    seen = set(merged)
+    for addition in additions:
+        if addition not in seen:
+            merged.append(addition)
+            seen.add(addition)
+    return file_list_association_value(merged)
+
+
 def _merge_column_values(
     file_list: FileList, target_col_id: str, source_col_id: str
 ) -> None:
@@ -171,6 +239,42 @@ def _merge_column_values(
     source = file_list.data[source_col_id]
     has_target_value = target.apply(_has_value)
     file_list.data[target_col_id] = target.where(has_target_value, source)
+
+
+def sync_new_columns_to_metadata(
+    ro_crate_metadata: BIAROCrateMetadata,
+    file_list: FileList,
+) -> None:
+    """
+    Register any columns that were added to file_list.schema during enrichment
+    but are absent from the RO-Crate metadata graph.
+
+    add_column() only updates the in-memory FileList; this function performs
+    the complementary step of adding each new column entity to the metadata
+    graph and appending a reference to it in the TableSchema.column list, so
+    that the output ro-crate-metadata.json reflects all columns in the file list.
+    """
+    file_list_entity = ro_crate_metadata.get_file_list_entity()
+    table_schema = ro_crate_metadata.get_object(file_list_entity.tableSchema.id)
+    if table_schema is None:
+        logger.warning(
+            "TableSchema entity not found in RO-Crate metadata; cannot sync new columns."
+        )
+        return
+    
+    new_refs: list[ObjectReference] = []
+    for col_id, column in file_list.schema.items():
+        if ro_crate_metadata.get_object(col_id) is not None:
+            continue
+
+        ro_crate_metadata.add_entity_if_absent(column)
+        new_refs.append(ObjectReference(**{"@id": col_id}))
+        logger.debug(
+                f"Registered new column '{column.columnName}' in RO-Crate metadata."
+            )
+
+    if new_refs:
+        table_schema.column = list(table_schema.column) + new_refs
 
 
 def _drop_column(ro_crate_metadata, file_list: FileList, col_id: str) -> None:

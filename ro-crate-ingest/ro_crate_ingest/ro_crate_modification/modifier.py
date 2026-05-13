@@ -10,6 +10,7 @@ from ro_crate_ingest.save_utils import write_modified_file_list
 from ro_crate_ingest.ro_crate_modification.enrichment.enricher import apply_enrichment
 from ro_crate_ingest.ro_crate_modification.enrichment.file_list_utils import (
     normalize_legacy_associated_source_image_column,
+    sync_new_columns_to_metadata,
 )
 from ro_crate_ingest.ro_crate_modification.modification_config import ModificationConfig
 
@@ -71,6 +72,7 @@ def apply_modifications(
 
     ro_crate_metadata, file_list = apply_enrichment(ro_crate_metadata, file_list, mod_config)
     normalize_legacy_associated_source_image_column(ro_crate_metadata, file_list)
+    sync_new_columns_to_metadata(ro_crate_metadata, file_list)
 
     graph_objects = [
         json.loads(entity.model_dump_json(by_alias=True))

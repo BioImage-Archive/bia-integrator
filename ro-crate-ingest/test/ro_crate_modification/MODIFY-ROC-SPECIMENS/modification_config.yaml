@@ -74,7 +74,7 @@ datasets:
           image_type: "tilt_series"
     specimen_tracks:
       image_acquisition_protocol_title:
-        dataset:
+        tilt_series:
           - "Cryo-electron tomography"
 
   - name: "Reconstructed tomograms"

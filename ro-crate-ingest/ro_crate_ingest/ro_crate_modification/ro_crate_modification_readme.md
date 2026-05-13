@@ -369,7 +369,7 @@ datasets:
         tilt_series: "**/*.mrc.st"
     specimen_tracks:
       image_acquisition_protocol_title:
-        dataset:
+        tilt_series:
           - "Cryo-ET"
 
   - name: "Reconstructed tomograms"
