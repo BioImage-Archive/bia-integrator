@@ -6,6 +6,7 @@ from urllib.parse import quote
 
 import pandas as pd
 import pytest
+from bia_ro_crate.core.bia_ro_crate_metadata import BIAROCrateMetadata
 from bia_ro_crate.core.file_list import FileList
 from bia_ro_crate.models import ro_crate_models
 from bia_ro_crate.models.linked_data.ontology_terms import BIA
@@ -21,6 +22,9 @@ from ro_crate_ingest.ro_crate_modification.enrichment.file_list_utils import (
     file_list_association_value,
     get_or_add_label_column_id,
 )
+from ro_crate_ingest.ro_crate_modification.enrichment.rembis import (
+    add_dataset_associations_to_file_list,
+)
 from ro_crate_ingest.ro_crate_modification.enrichment.specimens import (
     SpecimenTrack,
     _generate_labels,
@@ -28,6 +32,7 @@ from ro_crate_ingest.ro_crate_modification.enrichment.specimens import (
     _write_source_image_labels,
 )
 from ro_crate_ingest.ro_crate_modification.modification_config import (
+    DatasetAssociations,
     DatasetModificationConfig,
     SpecimenTrackAssignmentConfig,
 )
@@ -151,6 +156,103 @@ def test_get_or_add_label_column_id_creates_missing_column():
     assert file_list.schema[col_id].columnName == "label"
     assert file_list.schema[col_id].propertyUrl == "http://schema.org/name"
     assert col_id in file_list.data.columns
+
+
+def test_dataset_associations_add_only_existing_columns():
+    schema = {
+        "_:col0": ro_crate_models.Column(
+            **{
+                "@id": "_:col0",
+                "@type": ["csvw:Column"],
+                "columnName": "file_path",
+                "propertyUrl": str(BIA.filePath),
+            }
+        ),
+        "_:col1": ro_crate_models.Column(
+            **{
+                "@id": "_:col1",
+                "@type": ["csvw:Column"],
+                "columnName": "dataset",
+                "propertyUrl": "http://schema.org/isPartOf",
+            }
+        ),
+        "_:col2": ro_crate_models.Column(
+            **{
+                "@id": "_:col2",
+                "@type": ["csvw:Column"],
+                "columnName": "associated_image_acquisition_protocol",
+                "propertyUrl": str(BIA.associatedImageAcquisitionProtocol),
+            }
+        ),
+    }
+    file_list = FileList(
+        schema=schema,
+        data=pd.DataFrame(
+            {
+                "file_path": ["data/a.tif", "data/b.tif"],
+                "dataset": ["#Images", "#Images"],
+                "associated_image_acquisition_protocol": [
+                    None,
+                    "#Row-specific%20IAP",
+                ],
+            }
+        ),
+    )
+    metadata = BIAROCrateMetadata(
+        graph_bia_entities={
+            "file_list.tsv": ro_crate_models.FileList(
+                **{
+                    "@id": "file_list.tsv",
+                    "@type": ["bia:FileList"],
+                    "tableSchema": {"@id": "_:ts0"},
+                }
+            ),
+            "_:ts0": ro_crate_models.TableSchema(
+                **{
+                    "@id": "_:ts0",
+                    "@type": ["csvw:Schema"],
+                    "column": [
+                        {"@id": "_:col0"},
+                        {"@id": "_:col1"},
+                        {"@id": "_:col2"},
+                    ],
+                }
+            ),
+            "#Images": ro_crate_models.Dataset(
+                **{
+                    "@id": "#Images",
+                    "@type": ["bia:Dataset"],
+                    "name": "Images",
+                }
+            ),
+        },
+        context=None,
+        base_path=Path("."),
+        file_list_id="file_list.tsv",
+    )
+
+    add_dataset_associations_to_file_list(
+        file_list=file_list,
+        ro_crate_metadata=metadata,
+        dataset_configs=[
+            DatasetModificationConfig(
+                name="Images",
+                associations=DatasetAssociations(
+                    image_acquisition_protocol_titles=["Dataset IAP"],
+                    protocol_titles=["Dataset protocol"],
+                ),
+            )
+        ],
+    )
+
+    iap_col = file_list.get_column_id_by_property(
+        str(BIA.associatedImageAcquisitionProtocol)
+    )
+    assert file_list.get_column_id_by_property(str(BIA.associatedProtocol)) is None
+    assert file_list.data.iloc[0][iap_col] == title_to_id("Dataset IAP")
+    assert file_list.data.iloc[1][iap_col] == str(
+        ["#Row-specific%20IAP", title_to_id("Dataset IAP")]
+    )
 
 
 def test_segmentation_source_image_type_can_use_denoised_tomogram():
@@ -314,6 +416,16 @@ def test_source_image_types_only_accepts_segmentation_target():
     with pytest.raises(ValueError, match="Valid targets: \\['segmentation'\\]"):
         SpecimenTrackAssignmentConfig(
             source_image_types={"tomogram": "aligned_tilt_series"}
+        )
+
+
+def test_specimen_track_metadata_keys_must_be_image_types():
+    with pytest.raises(
+        ValueError,
+        match="Use the dataset 'associations' block for dataset-level metadata",
+    ):
+        SpecimenTrackAssignmentConfig(
+            image_acquisition_protocol_title={"dataset": "Cryo-electron tomography"}
         )
 
 
@@ -513,8 +625,8 @@ class TestSpecimenTracksWithAdditionalFiles:
     - One annotation row points to the specimen-generated tomogram label.
     - Segmentation image rows are typed as images, labelled, linked to their
       upstream tomograms, and associated with an AnnotationMethod.
-    - associated_source_image, associated_subject, associated_protocol written
-      correctly in the file list.
+    - associated_source_image, associated_subject, associated_image_acquisition_protocol,
+      associated_protocol written correctly in the file list.
     """
 
     ACCESSION_ID = "MODIFY-ROC-SPECIMENS"
@@ -592,6 +704,25 @@ class TestSpecimenTracksWithAdditionalFiles:
             assert row.iloc[0]["associated_subject"] == title_to_id(
                 f"Specimen_{sid}"
             ), f"{path}: unexpected associated_subject {row.iloc[0]['associated_subject']!r}"
+
+    def test_tilt_series_have_image_acquisition_protocol(self):
+        expected = title_to_id("Cryo-electron tomography")
+        tilt_rows = self.df[self.df["file_path"].str.endswith(".mrc.st")]
+        assert (tilt_rows["associated_image_acquisition_protocol"] == expected).all(), (
+            "Expected all tilt series to have acquisition protocol "
+            f"{expected!r}, got:\n"
+            f"{tilt_rows[['file_path', 'associated_image_acquisition_protocol']]}"
+        )
+
+    def test_file_list_schema_contains_image_acquisition_protocol_column(self):
+        file_list = self.graph["file_list.tsv"]
+        table_schema_id = file_list["tableSchema"]["@id"]
+        column_ids = [col["@id"] for col in self.graph[table_schema_id]["column"]]
+        assert "_:col9" in column_ids
+        assert (
+            self.graph["_:col9"]["columnName"]
+            == "associated_image_acquisition_protocol"
+        )
 
     def test_tomograms_have_associated_source_image(self):
         for path, sid in [
@@ -736,7 +867,7 @@ class TestAnnotations:
 
     def test_annotation_row_gets_expected_metadata(self):
         row = self.df[self.df["file_path"] == "data/annotations/cell_001_mask.csv"]
-        assert row.iloc[0]["label"] == "cell_001_mask"
+        assert row.iloc[0]["label"] == "annotations_cell_001_mask"
         assert row.iloc[0]["associated_annotation_method"] == title_to_id(
             "Cell segmentation"
         )

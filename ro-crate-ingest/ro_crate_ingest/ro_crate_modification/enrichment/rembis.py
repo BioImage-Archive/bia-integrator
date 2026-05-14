@@ -1,8 +1,18 @@
 import logging
 
 from bia_ro_crate.models import ro_crate_models
+from bia_ro_crate.core.file_list import FileList
 from bia_ro_crate.models.linked_data.pydantic_ld.LDModel import ObjectReference
 from bia_ro_crate.core.bia_ro_crate_metadata import BIAROCrateMetadata
+from ro_crate_ingest.ro_crate_modification.enrichment.file_list_utils import (
+    ASSOCIATED_ANNOTATION_METHOD_PROPERTY,
+    ASSOCIATED_BIOLOGICAL_ENTITY_PROPERTY,
+    ASSOCIATED_IMAGE_ACQUISITION_PROTOCOL_PROPERTY,
+    ASSOCIATED_IMAGING_PREPARATION_PROTOCOL_PROPERTY,
+    ASSOCIATED_PROTOCOL_PROPERTY,
+    get_dataset_column_id,
+    merge_file_list_association_value,
+)
 from ro_crate_ingest.ro_crate_modification.enrichment.utils import (
     entity_ref,
     entity_refs,
@@ -195,3 +205,69 @@ def apply_dataset_associations(
     )
     ro_crate_metadata.update_entity(updated)
     logger.debug(f"Applied explicit associations to dataset '{dataset_config.name}'.")
+
+
+def add_dataset_associations_to_file_list(
+    file_list: FileList,
+    ro_crate_metadata: BIAROCrateMetadata,
+    dataset_configs: list[DatasetModificationConfig],
+) -> None:
+    """
+    Write explicit dataset associations into matching file-list columns.
+
+    Downstream RO-Crate-to-BIA conversion treats these dataset-level associations
+    as defaults for individual result-data rows only when the corresponding
+    file-list column is absent. When a column already exists, blank cells would
+    suppress that fallback, so materialise the dataset association there without
+    adding otherwise unnecessary columns.
+    """
+    dataset_col_id = get_dataset_column_id(file_list)
+
+    association_columns = [
+        (
+            "biosample_titles",
+            ASSOCIATED_BIOLOGICAL_ENTITY_PROPERTY,
+        ),
+        (
+            "specimen_imaging_preparation_protocol_titles",
+            ASSOCIATED_IMAGING_PREPARATION_PROTOCOL_PROPERTY,
+        ),
+        (
+            "image_acquisition_protocol_titles",
+            ASSOCIATED_IMAGE_ACQUISITION_PROTOCOL_PROPERTY,
+        ),
+        (
+            "annotation_method_titles",
+            ASSOCIATED_ANNOTATION_METHOD_PROPERTY,
+        ),
+        (
+            "protocol_titles",
+            ASSOCIATED_PROTOCOL_PROPERTY,
+        ),
+    ]
+
+    for dataset_config in dataset_configs:
+        if dataset_config.associations is None:
+            continue
+
+        dataset_id = resolve_dataset_id_by_name(ro_crate_metadata, dataset_config.name)
+
+        row_mask = file_list.data[dataset_col_id] == dataset_id
+
+        for title_field, property_url in association_columns:
+            titles = getattr(dataset_config.associations, title_field)
+            if not titles:
+                continue
+
+            col_id = file_list.get_column_id_by_property(property_url)
+            if col_id is None:
+                continue
+
+            association_ids = [title_to_id(title) for title in titles]
+            file_list.data.loc[row_mask, col_id] = file_list.data.loc[
+                row_mask, col_id
+            ].apply(
+                lambda existing: merge_file_list_association_value(
+                    existing, association_ids
+                )
+            )

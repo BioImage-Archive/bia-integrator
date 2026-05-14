@@ -7,7 +7,7 @@ from ro_crate_ingest.ro_crate_modification.enrichment import (
     assignments,
     rembis,
     study,
-    specimens
+    specimens,
 )
 
 logger = logging.getLogger(__name__)
@@ -36,6 +36,7 @@ def apply_enrichment(
                 (And including files assigned in b.)
     4. Identify and assign specimen tracks (if specimen_tracks configured).
     5. Create the default dataset and assign any remaining unassigned files.
+    6. Add dataset associations to file list, if necessary. 
 
     The default dataset is created automatically — no YAML entry is needed.
 
@@ -56,7 +57,11 @@ def apply_enrichment(
                 file_list, ro_crate_metadata, dataset_config
             )
 
-        if dataset_config.images or dataset_config.image_groups or dataset_config.annotations:
+        if (
+            dataset_config.images
+            or dataset_config.image_groups
+            or dataset_config.annotations
+        ):
             assignments.assign_result_data_for_dataset(
                 file_list, ro_crate_metadata, dataset_config
             )
@@ -65,5 +70,8 @@ def apply_enrichment(
         specimens.assign_specimen_tracks(ro_crate_metadata, file_list, config)
 
     assignments.assign_unassigned_to_default_dataset(file_list, ro_crate_metadata)
+    rembis.add_dataset_associations_to_file_list(
+        file_list, ro_crate_metadata, config.datasets
+    )
 
     return ro_crate_metadata, file_list

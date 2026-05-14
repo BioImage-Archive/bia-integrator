@@ -362,6 +362,14 @@
             "propertyUrl": "http://bia/associatedProtocol"
         },
         {
+            "@id": "_:col9",
+            "@type": [
+                "csvw:Column"
+            ],
+            "columnName": "associated_image_acquisition_protocol",
+            "propertyUrl": "http://bia/associatedImageAcquisitionProtocol"
+        },
+        {
             "@id": "_:ts0",
             "@type": [
                 "csvw:Schema"
@@ -393,6 +401,9 @@
                 },
                 {
                     "@id": "_:col8"
+                },
+                {
+                    "@id": "_:col9"
                 }
             ]
         },

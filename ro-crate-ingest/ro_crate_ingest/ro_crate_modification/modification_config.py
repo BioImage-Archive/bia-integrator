@@ -478,21 +478,20 @@ class SpecimenTrackAssignmentConfig(ClosedBaseModel):
     """
     Per-dataset configuration for the specimen track scenario.
     Provides IAP/protocol/annotation-method title assignments keyed by image
-    type or 'dataset', and per-specimen metadata overrides for this dataset.
+    type, and per-specimen metadata overrides for this dataset.
     The cross-dataset ID extraction strategy is provided by the top-level
     specimen_tracks block.
 
     image_acquisition_protocol_title, protocol_titles, and
-    annotation_method_titles are keyed by ImageType value (e.g. 'tilt_series',
-    'tomogram', 'segmentation') or 'dataset' for a dataset-level assignment.
+    annotation_method_titles are keyed by ImageType value (e.g. 'frames',
+    'tilt_series', 'tomogram', 'segmentation').
 
     source_image_types is currently valid only for the 'segmentation' target
     key. Its value names the preferred upstream ImageType to write to
     associated_source_image for segmentation rows, which default to tomogram
     when omitted.
 
-    Note: dataset-level IAP/protocol associations that do not need to be
-    keyed by image type can instead be expressed more simply via the
+    Dataset-level associations should be expressed via the
     DatasetModificationConfig.associations block.
     """
     image_acquisition_protocol_title: dict[str, str | list[str]] | None = None
@@ -502,7 +501,27 @@ class SpecimenTrackAssignmentConfig(ClosedBaseModel):
     specimen_groups: list[SpecimenGroup] = Field(default_factory=list)
 
     @model_validator(mode="after")
-    def validate_source_image_types(self) -> Self:
+    def validate_image_type_keys(self) -> Self:
+        valid_image_type_keys = frozenset(t.value for t in ImageType)
+        keyed_fields = [
+            "image_acquisition_protocol_title",
+            "protocol_titles",
+            "annotation_method_titles",
+        ]
+
+        for field_name in keyed_fields:
+            value = getattr(self, field_name)
+            if not value:
+                continue
+
+            bad_keys = set(value) - valid_image_type_keys
+            if bad_keys:
+                raise ValueError(
+                    f"specimen_tracks.{field_name}: unknown image type key(s) "
+                    f"{sorted(bad_keys)}. Valid keys: {sorted(valid_image_type_keys)}. "
+                    "Use the dataset 'associations' block for dataset-level metadata."
+                )
+
         if not self.source_image_types:
             return self
 
