@@ -400,7 +400,7 @@
                 "bia:Dataset"
             ],
             "name": "Default dataset",
-            "description": null,
+            "description": "A default dataset for unassigned files.",
             "associatedBiologicalEntity": [],
             "associatedSpecimenImagingPreparationProtocol": [],
             "associatedSpecimen": null,
