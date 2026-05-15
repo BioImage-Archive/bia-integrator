@@ -1,7 +1,5 @@
-from enum import Enum
-
 import logging
-
+from enum import Enum
 
 logger = logging.getLogger("__main__." + __name__)
 

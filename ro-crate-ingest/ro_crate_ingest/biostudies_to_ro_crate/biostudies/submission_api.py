@@ -1,10 +1,11 @@
 from __future__ import annotations
+
 import logging
 import pathlib
 from typing import Annotated
 
 import requests
-from pydantic import BaseModel, BeforeValidator, ConfigDict, model_validator, Field
+from pydantic import BaseModel, BeforeValidator, ConfigDict, Field, model_validator
 
 from ro_crate_ingest.settings import get_settings
 

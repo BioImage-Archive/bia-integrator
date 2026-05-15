@@ -147,9 +147,9 @@ def convert_publication(
 ) -> APIModels.Publication:
     
     publication_dict = {
-        "title": publication.title, 
+        "title": publication.name, 
         "authors_name": publication.authorNames, 
-        "publication_year": publication.publicationYear,
+        "publication_year": publication.yearPublished,
         "pubmed_id": publication.pubmedId,
         "doi": publication.doi,
     }

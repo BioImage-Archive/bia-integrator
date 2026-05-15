@@ -169,6 +169,36 @@
         ]
       },
       {
+        "type": "Publication",
+        "attributes": [
+          {
+            "name": "Title",
+            "value": "Precision-cut tumor tissue slices, a novel tool to study the tumor microenvironment interactions with chimeric antigen receptor (CAR) T cells"
+          },
+          {
+            "name": "Authors",
+            "value": " Valeria Durante, Alina Wittwer, Benjamin Theek, Manuel Martinez-Osuna, Emmanuel Donnadieu, Olaf Hardt, Dominik Eckardt, Andreas Bosio, Sonja Schallenberg, Christoph Herbel"
+          },
+          {
+            "name": "DOI",
+            "value": "https://dx.doi.org/10.17504/protocols.io.rm7vz7qx8lx1/v1"
+          }
+        ]
+      },
+      {
+        "type": "Funding",
+        "attributes": [
+          {
+            "name": "Agency",
+            "value": "European Union’s Horizon 2020 research and innovation program "
+          },
+          {
+            "name": "grant_id",
+            "value": "955575"
+          }
+        ]
+      },
+      {
         "accno": "Biosample-1",
         "type": "Biosample",
         "attributes": [

@@ -1,6 +1,6 @@
-from collections import defaultdict
 import logging
 import re
+from collections import defaultdict
 from urllib.parse import quote
 
 from bia_ro_crate.models import ro_crate_models
@@ -50,7 +50,11 @@ class BioSampleTaxonMapper(Mapper):
 
             attr_dict = attributes_to_dict(section.attributes)
 
-            association_ref: str = attr_dict["title"]
+            association_ref = attr_dict["title"]
+            if not association_ref or not isinstance(association_ref, str):
+                raise TypeError(
+                    "title required in biosample sections to map to association references"
+                )
 
             mapped_specimens = specimen_info[association_ref]
 
@@ -83,6 +87,9 @@ class BioSampleTaxonMapper(Mapper):
         accession_id: str,
     ) -> ro_crate_models.BioSample:
         attr_dict = attributes_to_dict(section.attributes)
+
+        if not section.accno:
+            raise ValueError("Missing accession id for biosample: cannot proccess.")
 
         if growth_protocol_id:
             study_uuid = str(shared.create_study_uuid(accession_id)[0])

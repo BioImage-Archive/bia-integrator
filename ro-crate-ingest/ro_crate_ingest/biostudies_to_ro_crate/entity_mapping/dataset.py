@@ -14,10 +14,12 @@ from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_parsing_utils 
     find_sections_with_filelists_recursive,
 )
 
+from .base_mapper import Mapper
+
 logger = logging.getLogger("__main__." + __name__)
 
 
-class DatasetMapper:
+class DatasetMapper(Mapper):
 
     study_component_dataset: dict[str, ro_crate_models.Dataset]
     annotation_dataset: dict[str, ro_crate_models.Dataset]
@@ -53,11 +55,14 @@ class DatasetMapper:
         self._get_dataset_from_generic_filelist_section(submission, association_map)
 
         if not self.has_mapped_objects():
-            self._create_root_dataset_for_submission(submission)
+            self._create_root_dataset_for_submission(submission, association_map)
 
     def get_mapped_objects(
-        self, submission: Submission, association_map: dict[type, dict[str, str]]
-    ) -> list[ro_crate_models.Dataset]:
+        self,
+        submission: Submission,
+        association_map: dict[type, dict[str, str]],
+        unique: bool = True,
+    ):
         if not self.has_mapped_objects():
             self.map(submission, association_map)
 
@@ -68,7 +73,10 @@ class DatasetMapper:
         if self.generated_dataset:
             mapped_objects.append(self.generated_dataset)
 
-        return mapped_objects
+        if unique:
+            return list(set(mapped_objects))
+        else:
+            return mapped_objects
 
     def get_accno_lookup(self) -> dict[str | None, str]:
         lookup = {}
@@ -131,6 +139,7 @@ class DatasetMapper:
             self.study_component_dataset[section.accno] = ro_crate_models.Dataset(
                 **model_dict
             )
+            self._add_dataset_association(section, association_map, model_dict["@id"])
 
     def _get_dataset_from_annotation_component(
         self,
@@ -163,6 +172,7 @@ class DatasetMapper:
             self.annotation_dataset[section.accno] = ro_crate_models.Dataset(
                 **model_dict
             )
+            self._add_dataset_association(section, association_map, model_dict["@id"])
 
     def _get_dataset_from_generic_filelist_section(
         self,
@@ -199,6 +209,7 @@ class DatasetMapper:
             self.file_list_dataset[section.accno] = ro_crate_models.Dataset(
                 **model_dict
             )
+            self._add_dataset_association(section, association_map, model_dict["@id"])
 
     @staticmethod
     def _get_association_fields(
@@ -277,7 +288,9 @@ class DatasetMapper:
                     association_ro_crate_reference
                 )
 
-    def _create_root_dataset_for_submission(self, submission: Submission):
+    def _create_root_dataset_for_submission(
+        self, submission: Submission, association_map
+    ):
         section_name = "Default template. No Study Components"
         id = f"#{quote(section_name)}"
 
@@ -296,3 +309,13 @@ class DatasetMapper:
         }
 
         self.generated_dataset = ro_crate_models.Dataset(**model_dict)
+        self._add_dataset_association(None, association_map, model_dict["@id"])
+
+    @staticmethod
+    def _add_dataset_association(
+        section: Section | None, association: dict[type, dict[str, str]], id: str
+    ):
+        if section and section.accno:
+            association[ro_crate_models.Dataset][section.accno] = id
+        else:
+            association[ro_crate_models.Dataset]["generated_default_dataset"] = id

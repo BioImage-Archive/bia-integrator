@@ -23,7 +23,7 @@ from ro_crate_ingest.graph_utils import ro_crate_data_entity_id_to_path
 from ro_crate_ingest.save_utils import write_filelist
 
 
-class FileListMapper:
+class FileListGenerator:
 
     COMBINED_FILE_LIST_ID = "combined_file_list.tsv"
     PATH_COLUMN_NAME = "path"
@@ -56,7 +56,7 @@ class FileListMapper:
         self.file_list = None
         self.combined_file_list_headers = {}
 
-    def map(
+    def create_file_list(
         self,
         submission: Submission,
         dataset_id_lookup: dict[str | None, str] | None = None,
@@ -81,7 +81,7 @@ class FileListMapper:
 
         self._create_ro_crate_objects()
 
-    def get_mapped_objects(
+    def get_ro_crate_objects(
         self,
         submission: Submission,
         dataset_id_lookup: dict[str | None, str] | None = None,
@@ -89,7 +89,7 @@ class FileListMapper:
     ) -> list[ROCrateModel]:
 
         if not all((self.file_list, self.schema, self.columns)):
-            self.map(submission, dataset_id_lookup, dataset_id_by_type)
+            self.create_file_list(submission, dataset_id_lookup, dataset_id_by_type)
 
         ro_crate_objects = [self.file_list, self.schema]
         ro_crate_objects += self.columns
@@ -107,7 +107,7 @@ class FileListMapper:
         find_sections_with_filelists_recursive(submission.section, dataset_sections)
 
         for dataset_section in dataset_sections:
-            file_list_name = FileListMapper._get_filelist_name_from_dataset(
+            file_list_name = FileListGenerator._get_filelist_name_from_dataset(
                 dataset_section
             )
             file_list = load_filelist(submission.accno, file_list_name)
@@ -121,10 +121,10 @@ class FileListMapper:
     def _write_list_of_files_to_file_list(
         self, tmp_dir: Path, dataset_id: str, file_list_name, list_of_files
     ):
-        dataframe_filelist = FileListMapper._convert_filelist_to_dataframe(
+        dataframe_filelist = FileListGenerator._convert_filelist_to_dataframe(
             list_of_files, dataset_id
         )
-        FileListMapper._normalise_headers(dataframe_filelist)
+        FileListGenerator._normalise_headers(dataframe_filelist)
         self.collect_headers(dataframe_filelist.columns.tolist())
         file_path = write_filelist(tmp_dir, file_list_name, dataframe_filelist)
         self.partial_filelists.append(file_path)
@@ -187,7 +187,9 @@ class FileListMapper:
 
         rows = []
         for _, group in file_list_df.groupby("path", sort=False):
-            rows.append(FileListMapper.resolve_duplicate_row(group, dataset_id_by_type))
+            rows.append(
+                FileListGenerator.resolve_duplicate_row(group, dataset_id_by_type)
+            )
 
         result = pd.DataFrame(rows)
         result.to_csv(self.output_path, sep="\t", index=False)
@@ -199,7 +201,7 @@ class FileListMapper:
         if len(group) == 1:
             return group.iloc[0]
 
-        selected_dataset = FileListMapper.pick_dataset(group, dataset_id_by_type)
+        selected_dataset = FileListGenerator.pick_dataset(group, dataset_id_by_type)
 
         # Check if identical except dataset
         compare = group.drop(columns=["dataset"])
