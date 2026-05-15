@@ -262,6 +262,9 @@
                 },
                 {
                     "@id": "#Cryo%20Serial%20FIB/SEM%20of%20HeLa%20cells%20data/HeLa/"
+                },
+                {
+                    "@id": "#Default%20dataset"
                 }
             ],
             "accessionId": "EMPIAR-IMAGEPATTERNTEST",
@@ -398,6 +401,26 @@
                     "@id": "_:col8"
                 }
             ]
+        },
+        {
+            "@id": "#Default%20dataset",
+            "@type": [
+                "Dataset",
+                "bia:Dataset"
+            ],
+            "name": "Default dataset",
+            "description": "A default dataset for unassigned files.",
+            "associatedBiologicalEntity": [],
+            "associatedSpecimenImagingPreparationProtocol": [],
+            "associatedSpecimen": null,
+            "associatedCreationProcess": null,
+            "associatedSourceImage": [],
+            "associatedImageAcquisitionProtocol": [],
+            "associatedAnnotationMethod": [],
+            "associatedImageAnalysisMethod": [],
+            "associatedImageCorrelationMethod": [],
+            "associatedProtocol": [],
+            "hasPart": []
         },
         {
             "@id": "#Cryo%20Serial%20FIB/SEM%20of%20HeLa%20cells%20data/HeLa/",
