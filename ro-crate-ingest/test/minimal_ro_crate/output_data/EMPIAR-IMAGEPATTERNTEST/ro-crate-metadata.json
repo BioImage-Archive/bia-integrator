@@ -233,7 +233,6 @@
                 "@id": "bia:yearPublished"
             }
         }
-    }
 ],
 "@graph": [
     {
@@ -259,6 +258,7 @@
             }
         ],
         "description": "",
+        "funding": [],
         "license": "https://creativecommons.org/publicdomain/zero/1.0/",
         "datePublished": "2023-02-28",
         "keyword": [],
