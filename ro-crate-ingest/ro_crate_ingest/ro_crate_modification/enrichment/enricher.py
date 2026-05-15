@@ -35,10 +35,8 @@ def apply_enrichment(
               including writing annotation method associations.
                 (And including files assigned in b.)
     4. Identify and assign specimen tracks (if specimen_tracks configured).
-    5. Create the default dataset and assign any remaining unassigned files.
-    6. Add dataset associations to file list, if necessary. 
-
-    The default dataset is created automatically — no YAML entry is needed.
+    5. Add dataset associations to file list, if necessary.
+    6. Remove the upstream default dataset if it is left empty after reassignment.
 
     Returns the modified (ro_crate_metadata, file_list) pair.
     """
@@ -69,9 +67,10 @@ def apply_enrichment(
     if config.specimen_tracks:
         specimens.assign_specimen_tracks(ro_crate_metadata, file_list, config)
 
-    assignments.assign_unassigned_to_default_dataset(file_list, ro_crate_metadata)
     rembis.add_dataset_associations_to_file_list(
         file_list, ro_crate_metadata, config.datasets
     )
+    if assignments.warn_if_default_dataset_empty(file_list, ro_crate_metadata):
+        assignments.remove_default_dataset_entity_from_metadata(ro_crate_metadata)
 
     return ro_crate_metadata, file_list
