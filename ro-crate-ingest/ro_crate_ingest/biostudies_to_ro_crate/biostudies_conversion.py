@@ -12,27 +12,25 @@ from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_parsing_utils 
     find_section_types_recursive,
     find_sections_recursive,
 )
-from ro_crate_ingest.biostudies_to_ro_crate.entity_conversion import (
-    affiliation,
-    contributor,
-    dataset,
-    external_reference,
-    file_list,
-    study,
-)
-from ro_crate_ingest.biostudies_to_ro_crate.entity_conversion import dataset
-from ro_crate_ingest.biostudies_to_ro_crate.entity_conversion import file_list
-from ro_crate_ingest.biostudies_to_ro_crate.entity_conversion.rembi_mifa_mapping import (
+from ro_crate_ingest.biostudies_to_ro_crate.entity_mapping import (
+    AffiliationMapper,
     AnnotationMethodMapper,
     BioSampleTaxonMapper,
+    ContributorMapper,
+    DatasetMapper,
+    ExternalReferenceMapper,
+    GrantMapper,
     GrowthProtocolMapper,
     ImageAcquisitionProtocolMapper,
     ImageAnalysisMethodMapper,
     ImageCorrelationMethodMapper,
     ProtocolMapper,
+    PublicationMapper,
     SpecimenImagingPreprationProtocolMapper,
+    StudyMapper,
     utils,
 )
+from ro_crate_ingest.biostudies_to_ro_crate.file_list_generator import FileListGenerator
 from ro_crate_ingest.ro_crate_defaults import (
     create_ro_crate_folder,
     get_default_context,
@@ -89,35 +87,21 @@ def convert_biostudies_to_ro_crate(
     )
     graph += ProtocolMapper().get_mapped_objects(submission, association_map)
 
-    dataset_mapper = dataset.DatasetMapper()
+    dataset_mapper = DatasetMapper()
     datasets = dataset_mapper.get_mapped_objects(submission, association_map)
     graph += datasets
 
-    file_list_mapper = file_list.FileListMapper(ro_crate_dir)
-    graph += file_list_mapper.get_mapped_objects(
+    file_list_generator = FileListGenerator(ro_crate_dir)
+    graph += file_list_generator.get_ro_crate_objects(
         submission, dataset_mapper.get_accno_lookup(), dataset_mapper.get_type_lookup()
     )
 
-    roc_affiliation_by_accno = affiliation.get_affiliations_by_accno(submission)
-    graph += roc_affiliation_by_accno.values()
-
-    roc_contributors = contributor.get_contributors(
-        submission,
-        roc_affiliation_by_accno,
-    )
-    graph += roc_contributors
-
-    roc_external_references = external_reference.get_external_references(submission)
-    graph += roc_external_references
-
-    roc_study = study.get_study(
-        submission,
-        roc_contributors,
-        datasets,
-        file_list_mapper.COMBINED_FILE_LIST_ID,
-        roc_external_references,
-    )
-    graph.append(roc_study)
+    graph += AffiliationMapper().get_mapped_objects(submission, association_map)
+    graph += ContributorMapper().get_mapped_objects(submission, association_map)
+    graph += ExternalReferenceMapper().get_mapped_objects(submission, association_map)
+    graph += PublicationMapper().get_mapped_objects(submission, association_map)
+    graph += GrantMapper().get_mapped_objects(submission, association_map)
+    graph += StudyMapper().get_mapped_objects(submission, association_map)
 
     graph.append(ROCrateCreativeWork())
     context = get_default_context()
@@ -146,6 +130,8 @@ def get_unprocessed_section_types(submission: Submission) -> list[tuple]:
             "Protocol",
             "Study",
             "Organism",
+            "Funding",
+            "Publication"
         ]
     ]
     section_types_in_submission = set(find_section_types_recursive(submission.section))

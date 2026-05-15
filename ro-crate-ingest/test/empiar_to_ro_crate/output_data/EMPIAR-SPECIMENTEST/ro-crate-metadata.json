@@ -8,6 +8,9 @@
             "acknowledgement": {
                 "@id": "bia:acknowledgement"
             },
+            "additionalType": {
+                "@id": "schema:additionalType"
+            },
             "address": {
                 "@id": "schema:address"
             },
@@ -119,11 +122,20 @@
             "fiducialsUsed": {
                 "@id": "bia:fiducialsUsed"
             },
+            "funder": {
+                "@id": "schema:funder"
+            },
+            "funding": {
+                "@id": "schema:funding"
+            },
             "growthProtocol": {
                 "@id": "bia:growthProtocol"
             },
             "hasPart": {
                 "@id": "schema:hasPart"
+            },
+            "identifier": {
+                "@id": "dc:identifier"
             },
             "imageAcquisitionProtocol": {
                 "@id": "bia:imageAcquisitionProtocol"
@@ -152,12 +164,6 @@
             "license": {
                 "@id": "schema:license"
             },
-            "link": {
-                "@id": "schema:url"
-            },
-            "linkDescription": {
-                "@id": "schema:description"
-            },
             "methodType": {
                 "@id": "bia:annotationMethodType"
             },
@@ -175,9 +181,6 @@
             },
             "protocolDescription": {
                 "@id": "schema:description"
-            },
-            "publicationYear": {
-                "@id": "bia:publicationYear"
             },
             "pubmedId": {
                 "@id": "bia:pubmedId"
@@ -197,7 +200,7 @@
                 "@id": "http://rs.tdwg.org/dwc/terms/scientificName"
             },
             "seeAlso": {
-                "@id": "rdfs:seeAlso"
+                "@id": "http://www.w3.org/2000/01/rdf-schema#seeAlso"
             },
             "signalChannelInformation": {
                 "@id": "bia:signalChannelInformation"
@@ -225,6 +228,9 @@
             },
             "website": {
                 "@id": "bia:website"
+            },
+            "yearPublished": {
+                "@id": "bia:yearPublished"
             }
         }
     ],
@@ -252,6 +258,7 @@
                 }
             ],
             "description": "",
+            "funding": [],
             "license": "https://creativecommons.org/publicdomain/zero/1.0/",
             "datePublished": "2025-02-04",
             "keyword": [],
@@ -278,9 +285,9 @@
                 "ScholarlyArticle",
                 "bia:Publication"
             ],
-            "title": null,
+            "name": null,
             "authorNames": null,
-            "publicationYear": null,
+            "yearPublished": null,
             "pubmedId": null,
             "doi": "10.1016/j.molcel.2024.06.024"
         },

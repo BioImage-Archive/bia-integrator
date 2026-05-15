@@ -1,5 +1,4 @@
 import logging
-from urllib.parse import quote
 
 from bia_ro_crate.models import ro_crate_models
 
@@ -11,16 +10,18 @@ from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_parsing_utils 
     find_sections_recursive,
 )
 
-from .simple_mapper import SimpleMapper
+from .base_rembi_mifa_section_mapper import RembiMifaSectionMapper
 
 logger = logging.getLogger("__main__." + __name__)
 
 
-class ImageAcquisitionProtocolMapper(SimpleMapper):
+class ImageAcquisitionProtocolMapper(RembiMifaSectionMapper):
 
     section_type = "Image acquisition"
 
-    def get_mapped_object(self, section: Section) -> ro_crate_models.ROCrateModel:
+    def get_mapped_object(
+        self, section: Section, association_map
+    ) -> ro_crate_models.ROCrateModel:
         attr_dict = attributes_to_dict(section.attributes)
 
         if "imaging method" not in attr_dict:
@@ -35,7 +36,7 @@ class ImageAcquisitionProtocolMapper(SimpleMapper):
             fbbi_id = []
 
         model_dict = {
-            "@id": f"#{quote(section.accno)}",
+            "@id": self.create_id(section),
             "@type": ["bia:ImageAcquisitionProtocol"],
             "title": attr_dict["title"],
             "protocolDescription": attr_dict.get("image acquisition parameters", ""),

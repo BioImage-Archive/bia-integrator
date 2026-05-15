@@ -36,9 +36,7 @@ class Mapper(ABC):
         if unique:
             try:
                 return list(set(self.mapped_object))
-            # Account for objects that cannot be hashed (e.g. Taxon)
             except TypeError as e:
-                raise (e)
                 logging.debug(f"Cannot create set -> {e}. Not checking for uniqueness")
                 return self.mapped_object
         else:
