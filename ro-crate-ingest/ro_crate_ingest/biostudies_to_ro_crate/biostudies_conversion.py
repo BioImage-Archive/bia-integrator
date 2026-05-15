@@ -130,6 +130,8 @@ def get_unprocessed_section_types(submission: Submission) -> list[tuple]:
             "Protocol",
             "Study",
             "Organism",
+            "Funding",
+            "Publication"
         ]
     ]
     section_types_in_submission = set(find_section_types_recursive(submission.section))
