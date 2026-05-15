@@ -8,6 +8,9 @@ from urllib.parse import quote
 logger = logging.getLogger("__main__." + __name__)
 
 
+DEFAULT_DATASET_TITLE = "Default dataset"
+
+
 def get_datasets_by_imageset_title(
     empiar_api_entry: Entry,
     yaml_file: dict | None = None,
@@ -55,6 +58,24 @@ def get_minimal_dataset(
         "description": imageset.details,
     }
     return ro_crate_models.Dataset(**model_dict)
+
+
+def add_default_dataset(
+    datasets_map: dict[str, ro_crate_models.Dataset]
+) -> dict[str, ro_crate_models.Dataset]:
+    """
+    Add a default dataset to the datasets map
+    """
+    id = f"#{quote(DEFAULT_DATASET_TITLE)}"
+    model_dict = {
+        "@id": id,
+        "@type": ["Dataset", "bia:Dataset"],
+        "name": DEFAULT_DATASET_TITLE,
+        "description": "A default dataset for unassigned files.",
+    }
+    datasets_map[DEFAULT_DATASET_TITLE] = ro_crate_models.Dataset(**model_dict)
+
+    return datasets_map
 
 
 def get_dataset(

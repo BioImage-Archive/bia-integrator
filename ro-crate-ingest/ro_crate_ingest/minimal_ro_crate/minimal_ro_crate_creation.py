@@ -38,11 +38,11 @@ def make_minimal_ro_crate(accession_id: str, crate_path: Path | None = None):
     roc_dataset_title_map = dataset.get_datasets_by_imageset_title(
         empiar_api_entry=empiar_api_entry,
     )
-    graph += roc_dataset_title_map.values()
-
-    roc_file_lists_objects = file_list.create_file_list(
+    roc_file_lists_objects, roc_dataset_title_map = file_list.create_file_list(
         ro_crate_dir, empiar_api_entry, roc_dataset_title_map, accession_id=accession_id
     )
+
+    graph += roc_dataset_title_map.values()
     graph += roc_file_lists_objects
 
     roc_contributors = contributor.get_contributors(empiar_api_entry)

@@ -14,11 +14,18 @@ from ro_crate_ingest.save_utils import write_filelist
 from typing import Optional
 from urllib.parse import quote
 
+from ro_crate_ingest.empiar_to_ro_crate.entity_conversion.dataset import (
+    DEFAULT_DATASET_TITLE, 
+    add_default_dataset, 
+)
+
 logger = logging.getLogger("__main__." + __name__)
 
 # Avoid debug logging for every attempted parse.
 requests_logger = logging.getLogger("parse")
 requests_logger.setLevel(logging.INFO)
+
+
 
 
 @dataclass
@@ -36,8 +43,9 @@ def create_file_list(
     datasets_map: dict[str, ro_crate_models.Dataset],
     yaml_file: dict | None = None,
     accession_id: str | None = None,
-) -> list[
-    ro_crate_models.FileList | ro_crate_models.TableSchema | ro_crate_models.Column
+) -> tuple[
+    list[ro_crate_models.FileList | ro_crate_models.TableSchema | ro_crate_models.Column], 
+    dict[str, ro_crate_models.Dataset],
 ]:
     """
     Unlike biostudies, all EMPIAR file lists have the same schema.
@@ -74,6 +82,9 @@ def create_file_list(
         file_list_df = assign_datasets_in_minimal_rocrate(
             file_list_df, empiar_api_entry, datasets_map
         )
+        file_list_df, datasets_map = _assign_unassigned_to_default_dataset(
+            file_list_df, datasets_map
+        )
 
     ro_crate_objects: list = [schema]
     ro_crate_objects.extend(columns)
@@ -83,7 +94,7 @@ def create_file_list(
 
     write_filelist(output_ro_crate_path, file_list_id, file_list_df)
 
-    return ro_crate_objects
+    return ro_crate_objects, datasets_map
 
 
 # TODO: can refactor in proposal-based route to use this function where appropriate
@@ -405,6 +416,35 @@ def separate_and_report_unassigned_files(
     )
 
     return assigned_files_df
+
+
+def _assign_unassigned_to_default_dataset(
+    file_list_df: pd.DataFrame,
+    datasets_map: dict[str, ro_crate_models.Dataset],
+) -> tuple[pd.DataFrame, dict[str, ro_crate_models.Dataset]]:
+    """
+    Collect any files that are unassigned and place them in a new 
+    'Default dataset'.
+
+    The default dataset is only added if there are actually unassigned
+    files — if everything has been accounted for, nothing is written.
+    """
+    unassigned_mask = file_list_df["dataset"].isna()
+    unassigned_count = int(unassigned_mask.sum())
+    if unassigned_count == 0:
+        logger.debug("All files are assigned to a dataset; no default dataset needed.")
+        return file_list_df
+
+    file_list_df.loc[unassigned_mask, "dataset"] = f"#{quote(DEFAULT_DATASET_TITLE)}"
+
+    dataset_title_map = add_default_dataset(datasets_map)
+
+    logger.info(
+        f"Default dataset: {unassigned_count} unassigned file(s) assigned to "
+        f"'{DEFAULT_DATASET_TITLE}'."
+    )
+
+    return file_list_df, dataset_title_map
 
 
 def get_ro_crate_filelist(
