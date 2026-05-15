@@ -133,7 +133,7 @@ class DatasetMapper(Mapper):
                 "@id": roc_id,
                 "@type": ["Dataset", "bia:Dataset"],
                 "name": attr_dict["name"],
-                "description": attr_dict["description"],
+                "description": attr_dict.get("description"),
             }
 
             self.study_component_dataset[section.accno] = ro_crate_models.Dataset(
