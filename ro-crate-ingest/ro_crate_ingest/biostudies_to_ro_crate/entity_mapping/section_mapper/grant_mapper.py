@@ -52,4 +52,4 @@ class GrantMapper(SectionMapper):
                 ro_crate_models.FundingBody(**grant_funder),
             ]
         else:
-            ro_crate_models.Grant(**grant_dict)
+            return ro_crate_models.Grant(**grant_dict)

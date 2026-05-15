@@ -22,13 +22,10 @@ class RembiMifaSectionMapper(SectionMapper, ABC):
         return title or super().get_biostudies_reference(section, ro_crate_object)
 
     @staticmethod
-    def create_id(section: Section, prefix: str | None = None) -> str:
+    def create_id(section: Section, prefix: str = "") -> str:
         if not section.accno:
             raise KeyError(
                 "Missing accno for rembi/mifa object, which is required for ID generation."
             )
-
-        if not prefix:
-            prefix = ""
 
         return f"#{prefix}{quote(section.accno)}"

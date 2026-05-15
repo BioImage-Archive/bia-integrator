@@ -17,7 +17,8 @@ from ..base_mapper import Mapper
 
 class SectionMapper(Mapper, ABC):
     """
-    Superclass of the basic mappers from sections where we only need 1 mapping function fall all sections that correspond to the section_type
+    Superclass of the basic mappers from sections where we only need 1 mapping function for all sections that correspond to the section_type.
+    I.e. the mapping function is 1 section -> 1+ rocrate objects.
 
     Subclasses need to define the section_type with which to filter classes
     """
