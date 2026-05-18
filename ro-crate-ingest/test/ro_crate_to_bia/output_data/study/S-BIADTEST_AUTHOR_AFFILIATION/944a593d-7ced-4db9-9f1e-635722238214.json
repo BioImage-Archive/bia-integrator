@@ -121,7 +121,15 @@
   "keyword": [],
   "acknowledgement": null,
   "see_also": [],
-  "related_publication": [],
+  "related_publication": [
+    {
+      "authors_name": " Valeria Durante, Alina Wittwer, Benjamin Theek, Manuel Martinez-Osuna, Emmanuel Donnadieu, Olaf Hardt, Dominik Eckardt, Andreas Bosio, Sonja Schallenberg, Christoph Herbel",
+      "title": "Precision-cut tumor tissue slices, a novel tool to study the tumor microenvironment interactions with chimeric antigen receptor (CAR) T cells",
+      "publication_year": null,
+      "pubmed_id": null,
+      "doi": "https://doi.org/10.17504/protocols.io.rm7vz7qx8lx1/v1"
+    }
+  ],
   "grant": [],
   "funding_statement": null
 }

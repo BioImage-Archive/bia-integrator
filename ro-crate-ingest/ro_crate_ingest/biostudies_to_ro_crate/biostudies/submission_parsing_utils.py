@@ -1,9 +1,8 @@
 import logging
 
-from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_api import (
+from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_api import (  # TODO Need to refactor to remove this import and use section.attributes_dict instead
     Section,
     Submission,
-    # TODO Need to refactor to remove this import and use section.attributes_dict instead
     attributes_to_dict,
 )
 

@@ -1,5 +1,4 @@
 import logging
-from urllib.parse import quote
 
 from bia_ro_crate.models import ro_crate_models
 
@@ -10,12 +9,12 @@ from ro_crate_ingest.biostudies_to_ro_crate.biostudies.submission_parsing_utils 
     attributes_to_dict,
 )
 
-from .simple_mapper import SimpleMapper
+from .base_rembi_mifa_section_mapper import RembiMifaSectionMapper
 
 logger = logging.getLogger("__main__." + __name__)
 
 
-class ProtocolMapper(SimpleMapper):
+class ProtocolMapper(RembiMifaSectionMapper):
 
     section_type = "Protocol"
 
@@ -25,11 +24,12 @@ class ProtocolMapper(SimpleMapper):
     def get_mapped_object(
         self,
         section: Section,
+        association_map,
     ) -> ro_crate_models.Protocol:
         attr_dict = attributes_to_dict(section.attributes)
 
         model_dict = {
-            "@id": f"#{quote(section.accno)}",
+            "@id": self.create_id(section),
             "@type": ["bia:Protocol"],
             "title": f"{section.accno}",
             "protocolDescription": attr_dict.get("description", ""),

@@ -8,6 +8,9 @@
             "acknowledgement": {
                 "@id": "bia:acknowledgement"
             },
+            "additionalType": {
+                "@id": "schema:additionalType"
+            },
             "address": {
                 "@id": "schema:address"
             },
@@ -119,11 +122,20 @@
             "fiducialsUsed": {
                 "@id": "bia:fiducialsUsed"
             },
+            "funder": {
+                "@id": "schema:funder"
+            },
+            "funding": {
+                "@id": "schema:funding"
+            },
             "growthProtocol": {
                 "@id": "bia:growthProtocol"
             },
             "hasPart": {
                 "@id": "schema:hasPart"
+            },
+            "identifier": {
+                "@id": "dc:identifier"
             },
             "imageAcquisitionProtocol": {
                 "@id": "bia:imageAcquisitionProtocol"
@@ -152,12 +164,6 @@
             "license": {
                 "@id": "schema:license"
             },
-            "link": {
-                "@id": "schema:url"
-            },
-            "linkDescription": {
-                "@id": "schema:description"
-            },
             "methodType": {
                 "@id": "bia:annotationMethodType"
             },
@@ -175,9 +181,6 @@
             },
             "protocolDescription": {
                 "@id": "schema:description"
-            },
-            "publicationYear": {
-                "@id": "bia:publicationYear"
             },
             "pubmedId": {
                 "@id": "bia:pubmedId"
@@ -197,7 +200,7 @@
                 "@id": "http://rs.tdwg.org/dwc/terms/scientificName"
             },
             "seeAlso": {
-                "@id": "rdfs:seeAlso"
+                "@id": "http://www.w3.org/2000/01/rdf-schema#seeAlso"
             },
             "signalChannelInformation": {
                 "@id": "bia:signalChannelInformation"
@@ -225,6 +228,9 @@
             },
             "website": {
                 "@id": "bia:website"
+            },
+            "yearPublished": {
+                "@id": "bia:yearPublished"
             }
         }
     ],
@@ -252,6 +258,7 @@
                 }
             ],
             "description": "Cellular division is a fundamental source of variability between individual cells, and while studies of transcript and protein abundances have revealed several hundred genes that are regulated by the cell cycle, none provide single-cell resolution of protein expression. Here, we present the first comprehensive map of spatiotemporal heterogeneity of the human proteome by integrating proteomics at subcellular resolution, single-cell transcriptomics, and pseudotime measurements of individual cells within the cell cycle. We identify that 18% of the human proteome displays cell-to-cell variability, of which 27% is correlated to cell cycle progression, and we present the first evidence of cell cycle association for 301 proteins. Only 15% of proteomic cell cycle regulation is due to transcriptomic cycling, which points to other means of regulation such as post-translational modifications. For proteins regulated at the transcript level, we observe a 8.6 hour delay between peak expression of transcript and protein on average. This spatially resolved proteomic map of the cell cycle has been integrated into the Human Protein Atlas and serves as a valuable resource for accelerating molecular studies of the human cell cycle and cell proliferation.",
+            "funding": [],
             "license": "https://creativecommons.org/publicdomain/zero/1.0/",
             "datePublished": "2020-12-17",
             "keyword": [],
@@ -270,7 +277,23 @@
                     "@id": "https://www.proteinatlas.org/humanproteome/cell/cell+cycle+dependent"
                 }
             ],
-            "relatedPublication": []
+            "relatedPublication": [
+                {
+                    "@id": "_:p0"
+                }
+            ]
+        },
+        {
+            "@id": "_:p0",
+            "@type": [
+                "ScholarlyArticle",
+                "bia:Publication"
+            ],
+            "authorNames": "Diana Mahdessian, Anthony J. Cesnik, Christian Gnann, Frida Danielsson, Lovisa Stenström, Muhammad Arif, Cheng Zhang, Trang Le, Fredric Johansson, Rutger Shutten, Anna Bäckström, Ulrika Axelsson, Peter Thul, Nathan H. Cho, Oana Carja, Mathias Uhlén, Adil Mardinoglu, Charlotte Stadler, Cecilia Lindskog, Burcu Ayoglu, Manuel D. Leonetti, Fredrik Pontén, Devin Sullivan, Emma Lundberg",
+            "doi": null,
+            "yearPublished": null,
+            "pubmedId": null,
+            "name": "Spatiotemporal dissection of the cell cycle with single-cell proteogenomics"
         },
         {
             "@id": "https://www.proteinatlas.org/humanproteome/cell/cell+cycle+dependent",
