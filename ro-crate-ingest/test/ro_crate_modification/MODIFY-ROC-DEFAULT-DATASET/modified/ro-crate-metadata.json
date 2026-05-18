@@ -8,6 +8,9 @@
             "acknowledgement": {
                 "@id": "bia:acknowledgement"
             },
+            "additionalType": {
+                "@id": "schema:additionalType"
+            },
             "address": {
                 "@id": "schema:address"
             },
@@ -101,6 +104,9 @@
             "displayName": {
                 "@id": "schema:name"
             },
+            "doi": {
+                "@id": "schema:identifier"
+            },
             "experimentalVariableDescription": {
                 "@id": "bia:experimentalVariableDescription"
             },
@@ -116,11 +122,20 @@
             "fiducialsUsed": {
                 "@id": "bia:fiducialsUsed"
             },
+            "funder": {
+                "@id": "schema:funder"
+            },
+            "funding": {
+                "@id": "schema:funding"
+            },
             "growthProtocol": {
                 "@id": "bia:growthProtocol"
             },
             "hasPart": {
                 "@id": "schema:hasPart"
+            },
+            "identifier": {
+                "@id": "dc:identifier"
             },
             "imageAcquisitionProtocol": {
                 "@id": "bia:imageAcquisitionProtocol"
@@ -149,12 +164,6 @@
             "license": {
                 "@id": "schema:license"
             },
-            "link": {
-                "@id": "schema:url"
-            },
-            "linkDescription": {
-                "@id": "schema:description"
-            },
             "methodType": {
                 "@id": "bia:annotationMethodType"
             },
@@ -173,6 +182,9 @@
             "protocolDescription": {
                 "@id": "schema:description"
             },
+            "pubmedId": {
+                "@id": "bia:pubmedId"
+            },
             "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
             "relatedPublication": {
                 "@id": "bia:relatedPublication"
@@ -188,7 +200,7 @@
                 "@id": "http://rs.tdwg.org/dwc/terms/scientificName"
             },
             "seeAlso": {
-                "@id": "rdfs:seeAlso"
+                "@id": "http://www.w3.org/2000/01/rdf-schema#seeAlso"
             },
             "signalChannelInformation": {
                 "@id": "bia:signalChannelInformation"
@@ -216,6 +228,9 @@
             },
             "website": {
                 "@id": "bia:website"
+            },
+            "yearPublished": {
+                "@id": "bia:yearPublished"
             }
         }
     ],
@@ -257,7 +272,8 @@
             ],
             "accessionId": "MODIFY-ROC-DEFAULT-DATASET",
             "seeAlso": [],
-            "relatedPublication": []
+            "relatedPublication": [],
+            "funding": []
         },
         {
             "@id": "#c0",
