@@ -271,7 +271,7 @@
                     "@id": "file_list.tsv"
                 },
                 {
-                    "@id": "#Default%20dataset"
+                    "@id": "#d0"
                 }
             ],
             "accessionId": "MODIFY-ROC-IMAGEGROUPS",
@@ -410,7 +410,7 @@
             ]
         },
         {
-            "@id": "#Default%20dataset",
+            "@id": "#d0",
             "@type": [
                 "Dataset",
                 "bia:Dataset"

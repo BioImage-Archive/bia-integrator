@@ -257,7 +257,7 @@
                 {"@id": "#Raw%20tilt%20series"},
                 {"@id": "#Reconstructed%20tomograms"},
                 {"@id": "file_list.tsv"},
-                {"@id": "#Default%20dataset"}
+                {"@id": "#d0"}
             ],
             "seeAlso": [],
             "relatedPublication": []
@@ -307,7 +307,7 @@
             "hasPart": []
         },
         {
-            "@id": "#Default%20dataset",
+            "@id": "#d0",
             "@type": ["Dataset", "bia:Dataset"],
             "name": "Default dataset",
             "description": "A default dataset for unassigned files.",

@@ -7,7 +7,11 @@ from urllib.parse import quote
 
 from bia_ro_crate.core.bia_ro_crate_metadata import BIAROCrateMetadata
 from bia_ro_crate.core.file_list import FileList
-from ro_crate_ingest.empiar_to_ro_crate.entity_conversion.file_list import DEFAULT_DATASET_TITLE
+from bia_ro_crate.models.linked_data.pydantic_ld.LDModel import ObjectReference
+from ro_crate_ingest.empiar_to_ro_crate.entity_conversion.dataset import (
+    DEFAULT_DATASET_ID,
+    DEFAULT_DATASET_TITLE,
+)
 from ro_crate_ingest.ro_crate_modification.enrichment.file_list_utils import (
     file_list_association_value,
     get_dataset_column_id,
@@ -314,7 +318,7 @@ def _add_default_dataset_to_study_has_part(
 ) -> None:
     study_entity = ro_crate_metadata.get_object("./")
 
-    default_dataset_ref = entity_ref(DEFAULT_DATASET_TITLE)
+    default_dataset_ref = ObjectReference(**{"@id": DEFAULT_DATASET_ID})
     existing_refs = list(study_entity.hasPart)
     if any(existing_ref.id == default_dataset_ref.id for existing_ref in existing_refs):
         return
@@ -358,7 +362,7 @@ def assign_additional_files_for_dataset(
         return
 
     default_dataset_mask = (
-        file_list.data[dataset_col_id] == title_to_id(DEFAULT_DATASET_TITLE)
+        file_list.data[dataset_col_id] == DEFAULT_DATASET_ID
     )
     candidate_rows = file_list.data[default_dataset_mask]
 
@@ -545,7 +549,7 @@ def warn_if_default_dataset_empty(
     but no file-list row belongs to it after modification reassignments.
     Returns True when the default dataset exists and is empty.
     """
-    default_dataset_id = title_to_id(DEFAULT_DATASET_TITLE)
+    default_dataset_id = DEFAULT_DATASET_ID
     if ro_crate_metadata.get_object(default_dataset_id) is None:
         return False
 
@@ -571,7 +575,7 @@ def remove_default_dataset_entity_from_metadata(
     Remove the default dataset entity and its root Study hasPart
     reference from RO-Crate metadata.
     """
-    default_dataset_id = title_to_id(DEFAULT_DATASET_TITLE)
+    default_dataset_id = DEFAULT_DATASET_ID
 
     study_entity = ro_crate_metadata.get_object("./")
     

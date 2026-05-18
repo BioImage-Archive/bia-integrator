@@ -272,7 +272,7 @@
                     "@id": "file_list.tsv"
                 },
                 {
-                    "@id": "#Default%20dataset"
+                    "@id": "#d0"
                 }
             ],
             "seeAlso": [],
@@ -312,7 +312,7 @@
             "hasPart": []
         },
         {
-            "@id": "#Default%20dataset",
+            "@id": "#d0",
             "@type": [
                 "Dataset",
                 "bia:Dataset"

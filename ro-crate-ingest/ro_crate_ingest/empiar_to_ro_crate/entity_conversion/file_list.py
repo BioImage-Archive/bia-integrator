@@ -15,6 +15,7 @@ from typing import Optional
 from urllib.parse import quote
 
 from ro_crate_ingest.empiar_to_ro_crate.entity_conversion.dataset import (
+    DEFAULT_DATASET_ID,
     DEFAULT_DATASET_TITLE, 
     add_default_dataset, 
 )
@@ -435,7 +436,7 @@ def _assign_unassigned_to_default_dataset(
         logger.debug("All files are assigned to a dataset; no default dataset needed.")
         return file_list_df
 
-    file_list_df.loc[unassigned_mask, "dataset"] = f"#{quote(DEFAULT_DATASET_TITLE)}"
+    file_list_df.loc[unassigned_mask, "dataset"] = DEFAULT_DATASET_ID
 
     dataset_title_map = add_default_dataset(datasets_map)
 

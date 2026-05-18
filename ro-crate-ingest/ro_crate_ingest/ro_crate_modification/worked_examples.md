@@ -111,7 +111,7 @@ Final file list after default assignment:
 | `data/Tomo/tomo_0042.mrc` | 18000000 | `#Reconstructed%20tomograms` | `bia:Image` |
 | `data/TS/tomo_0023.mrc.st` | 4100000 | `#Tilt%20series%20stacks` | `bia:Image` |
 | `data/Tomo/tomo_0023.mrc` | 17500000 | `#Reconstructed%20tomograms` | `bia:Image` |
-| `data/README.txt` | 1200 | `#Default%20dataset` | _(null)_ |
+| `data/README.txt` | 1200 | `#d0` | _(null)_ |
 
 (Specimen track steps follow — see below.)
 
@@ -222,7 +222,7 @@ Final file list:
 | `data/Tomo/tomo_0042.mrc` | 18000000 | `#Reconstructed%20tomograms` | `bia:Image` | `Specimen_0042 tilt_series` |
 | `data/TS/tomo_0023.mrc.st` | 4100000 | `#Tilt%20series%20stacks` | `bia:Image` | _(null)_ |
 | `data/Tomo/tomo_0023.mrc` | 17500000 | `#Reconstructed%20tomograms` | `bia:Image` | `Specimen_0023 tilt_series` |
-| `data/README.txt` | 1200 | `#Default%20dataset` | _(null)_ | _(null)_ |
+| `data/README.txt` | 1200 | `#d0` | _(null)_ | _(null)_ |
 
 
 ### Step 5g: Dataset entities updated with IAP and protocol references
@@ -243,7 +243,7 @@ SIPP                      #Cryo-vitrification
 IAP                       #Cryo-ET
 Specimen                  #Specimen_0042
 Specimen                  #Specimen_0023
-Dataset                   #Default%20dataset
+Dataset                   #d0
 ```
 
 Plus updates to existing entities:
@@ -256,5 +256,5 @@ Dataset #Reconstructed%20tomograms
   → associatedProtocol: [#Tomogram%20reconstruction]
 
 Study ./
-  → hasPart includes #Default%20dataset
+  → hasPart includes #d0
 ```

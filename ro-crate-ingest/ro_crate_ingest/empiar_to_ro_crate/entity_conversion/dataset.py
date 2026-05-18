@@ -9,6 +9,7 @@ logger = logging.getLogger("__main__." + __name__)
 
 
 DEFAULT_DATASET_TITLE = "Default dataset"
+DEFAULT_DATASET_ID = "#d0"
 
 
 def get_datasets_by_imageset_title(
@@ -66,9 +67,8 @@ def add_default_dataset(
     """
     Add a default dataset to the datasets map
     """
-    id = f"#{quote(DEFAULT_DATASET_TITLE)}"
     model_dict = {
-        "@id": id,
+        "@id": DEFAULT_DATASET_ID,
         "@type": ["Dataset", "bia:Dataset"],
         "name": DEFAULT_DATASET_TITLE,
         "description": "A default dataset for unassigned files.",

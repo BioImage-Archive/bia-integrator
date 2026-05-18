@@ -36,6 +36,9 @@ from ro_crate_ingest.ro_crate_modification.modification_config import (
     DatasetModificationConfig,
     SpecimenTrackAssignmentConfig,
 )
+from ro_crate_ingest.empiar_to_ro_crate.entity_conversion.dataset import (
+    DEFAULT_DATASET_ID,
+)
 
 runner = CliRunner()
 
@@ -64,7 +67,7 @@ def test_modification_minimal_fixture_uses_default_dataset(accession_id):
     """
     fixture_dir = _fixture_root() / accession_id / "minimal"
     file_list = pd.read_csv(fixture_dir / "file_list.tsv", sep="\t", dtype=str)
-    default_dataset_id = title_to_id("Default dataset")
+    default_dataset_id = DEFAULT_DATASET_ID
 
     assert file_list["dataset"].notna().all()
     assert (file_list["dataset"] == default_dataset_id).any()
@@ -676,9 +679,9 @@ class TestDefaultDatasetReassignment:
         pd.testing.assert_frame_equal(df_sorted, expected_sorted)
 
     def test_default_dataset_entity_removed(self):
-        assert title_to_id("Default dataset") not in self.graph
+        assert DEFAULT_DATASET_ID not in self.graph
         study = self.graph["./"]
-        assert {"@id": title_to_id("Default dataset")} not in study["hasPart"]
+        assert {"@id": DEFAULT_DATASET_ID} not in study["hasPart"]
 
     def test_readme_reassigned_to_existing_dataset(self):
         row = self.df[self.df["file_path"] == "data/README.txt"]

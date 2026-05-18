@@ -271,7 +271,7 @@
                     "@id": "#Cryo%20Serial%20FIB/SEM%20of%20HeLa%20cells%20data/HeLa/"
                 },
                 {
-                    "@id": "#Default%20dataset"
+                    "@id": "#d0"
                 }
             ],
             "accessionId": "EMPIAR-IMAGEPATTERNTEST",
@@ -410,7 +410,7 @@
             ]
         },
         {
-            "@id": "#Default%20dataset",
+            "@id": "#d0",
             "@type": [
                 "Dataset",
                 "bia:Dataset"
