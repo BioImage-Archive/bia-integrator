@@ -270,6 +270,9 @@
                 },
                 {
                     "@id": "file_list.tsv"
+                },
+                {
+                    "@id": "#d0"
                 }
             ],
             "seeAlso": [],
@@ -296,6 +299,26 @@
             ],
             "name": "Fluorescence microscopy images",
             "description": "",
+            "associatedBiologicalEntity": [],
+            "associatedSpecimenImagingPreparationProtocol": [],
+            "associatedSpecimen": null,
+            "associatedCreationProcess": null,
+            "associatedSourceImage": [],
+            "associatedImageAcquisitionProtocol": [],
+            "associatedAnnotationMethod": [],
+            "associatedImageAnalysisMethod": [],
+            "associatedImageCorrelationMethod": [],
+            "associatedProtocol": [],
+            "hasPart": []
+        },
+        {
+            "@id": "#d0",
+            "@type": [
+                "Dataset",
+                "bia:Dataset"
+            ],
+            "name": "Default dataset",
+            "description": "A default dataset for unassigned files.",
             "associatedBiologicalEntity": [],
             "associatedSpecimenImagingPreparationProtocol": [],
             "associatedSpecimen": null,

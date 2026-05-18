@@ -36,6 +36,9 @@ from ro_crate_ingest.ro_crate_modification.modification_config import (
     DatasetModificationConfig,
     SpecimenTrackAssignmentConfig,
 )
+from ro_crate_ingest.empiar_to_ro_crate.entity_conversion.dataset import (
+    DEFAULT_DATASET_ID,
+)
 
 runner = CliRunner()
 
@@ -46,6 +49,35 @@ def title_to_id(title: str) -> str:
 
 def _fixture_root() -> Path:
     return Path(__file__).parent / "ro_crate_modification"
+
+
+@pytest.mark.parametrize(
+    "accession_id",
+    [
+        "MODIFY-ROC-IMAGEGROUPS",
+        "MODIFY-ROC-DEFAULT-DATASET",
+        "MODIFY-ROC-SPECIMENS",
+        "MODIFY-ROC-ANNOTATIONS",
+    ],
+)
+def test_modification_minimal_fixture_uses_default_dataset(accession_id):
+    """
+    Modification fixtures should reflect the minimal RO-Crate contract:
+    fallback files are already assigned to Default dataset, not left unassigned.
+    """
+    fixture_dir = _fixture_root() / accession_id / "minimal"
+    file_list = pd.read_csv(fixture_dir / "file_list.tsv", sep="\t", dtype=str)
+    default_dataset_id = DEFAULT_DATASET_ID
+
+    assert file_list["dataset"].notna().all()
+    assert (file_list["dataset"] == default_dataset_id).any()
+
+    with open(fixture_dir / "ro-crate-metadata.json") as f:
+        crate = json.load(f)
+    graph = {e["@id"]: e for e in crate["@graph"]}
+
+    assert default_dataset_id in graph
+    assert {"@id": default_dataset_id} in graph["./"]["hasPart"]
 
 
 @pytest.mark.parametrize(
@@ -510,6 +542,12 @@ def imagegroups_outputs(tmp_path_factory):
 
 
 @pytest.fixture(scope="class")
+def defaultdataset_outputs(tmp_path_factory):
+    tmp = tmp_path_factory.mktemp("defaultdataset")
+    return _setup_and_run(tmp, "MODIFY-ROC-DEFAULT-DATASET")
+
+
+@pytest.fixture(scope="class")
 def specimens_outputs(tmp_path_factory):
     tmp = tmp_path_factory.mktemp("specimens")
     return _setup_and_run(tmp, "MODIFY-ROC-SPECIMENS")
@@ -595,23 +633,62 @@ class TestImageGroups:
             tif_protocol != png_protocol
         ), "Expected .tif and .png files to receive different protocols"
 
-    # --- Targeted: default dataset ------------------------------------------
-    def test_unassigned_file_goes_to_default_dataset(self):
+
+class TestDefaultDatasetReassignment:
+    """
+    MODIFY-ROC-DEFAULT-DATASET:
+    Full comparison against expected output, plus targeted checks for default
+    dataset cleanup:
+    - data/README.txt starts in Default dataset in the minimal fixture.
+    - additional_files reassigns it to Fluorescence microscopy images.
+    - the now-empty Default dataset entity is removed from metadata.
+    """
+
+    ACCESSION_ID = "MODIFY-ROC-DEFAULT-DATASET"
+
+    @pytest.fixture(autouse=True)
+    def load_outputs(self, defaultdataset_outputs):
+        self.graph, self.df = defaultdataset_outputs
+
+    def test_metadata_graph_matches_expected(self):
+        expected_path = (
+            _fixture_root() / self.ACCESSION_ID / "modified" / "ro-crate-metadata.json"
+        )
+        with open(expected_path) as f:
+            expected = json.load(f)
+        expected_graph = {e["@id"]: e for e in expected["@graph"]}
+        assert sorted(self.graph.keys()) == sorted(expected_graph.keys()), (
+            f"Graph @id sets differ.\n"
+            f"  Extra in output:   {sorted(set(self.graph) - set(expected_graph))}\n"
+            f"  Missing in output: {sorted(set(expected_graph) - set(self.graph))}"
+        )
+        for eid, entity in expected_graph.items():
+            assert self.graph[eid] == entity, (
+                f"Entity {eid!r} differs from expected.\n"
+                f"  Expected: {entity}\n"
+                f"  Got:      {self.graph[eid]}"
+            )
+
+    def test_file_list_matches_expected(self):
+        expected_path = (
+            _fixture_root() / self.ACCESSION_ID / "modified" / "file_list.tsv"
+        )
+        expected_df = pd.read_csv(expected_path, sep="\t", dtype=str)
+        df_sorted = self.df.sort_values("file_path").reset_index(drop=True)
+        expected_sorted = expected_df.sort_values("file_path").reset_index(drop=True)
+        pd.testing.assert_frame_equal(df_sorted, expected_sorted)
+
+    def test_default_dataset_entity_removed(self):
+        assert DEFAULT_DATASET_ID not in self.graph
+        study = self.graph["./"]
+        assert {"@id": DEFAULT_DATASET_ID} not in study["hasPart"]
+
+    def test_readme_reassigned_to_existing_dataset(self):
         row = self.df[self.df["file_path"] == "data/README.txt"]
         assert len(row) == 1
         assert row.iloc[0]["dataset"] == title_to_id(
-            "Default dataset"
-        ), f"Expected README.txt in Default dataset, got {row.iloc[0]['dataset']!r}"
-
-    def test_default_dataset_is_part_of_study(self):
-        study = self.graph["./"]
-        assert {"@id": title_to_id("Default dataset")} in study["hasPart"]
-
-    def test_no_specimen_entities_created(self):
-        specimen_ids = [k for k in self.graph if "Specimen_" in k]
-        assert (
-            specimen_ids == []
-        ), f"Expected no Specimen entities, found: {specimen_ids}"
+            "Fluorescence microscopy images"
+        )
 
 
 class TestSpecimenTracksWithAdditionalFiles:

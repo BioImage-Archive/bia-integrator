@@ -1,13 +1,17 @@
 import logging
+import pandas as pd
 from collections.abc import Callable
 from dataclasses import dataclass
 from pathlib import Path
+from urllib.parse import quote
 
-import pandas as pd
-
-from bia_ro_crate.models import ro_crate_models
 from bia_ro_crate.core.bia_ro_crate_metadata import BIAROCrateMetadata
 from bia_ro_crate.core.file_list import FileList
+from bia_ro_crate.models.linked_data.pydantic_ld.LDModel import ObjectReference
+from ro_crate_ingest.empiar_to_ro_crate.entity_conversion.dataset import (
+    DEFAULT_DATASET_ID,
+    DEFAULT_DATASET_TITLE,
+)
 from ro_crate_ingest.ro_crate_modification.enrichment.file_list_utils import (
     file_list_association_value,
     get_dataset_column_id,
@@ -26,7 +30,6 @@ from ro_crate_ingest.ro_crate_modification.enrichment.utils import (
     match_patterns,
     resolve_dataset_id_by_name,
     title_to_id,
-    type_for,
 )
 from ro_crate_ingest.ro_crate_modification.modification_config import (
     AnnotationAssignmentConfig,
@@ -37,7 +40,6 @@ from ro_crate_ingest.ro_crate_modification.modification_config import (
 
 logger = logging.getLogger(__name__)
 
-DEFAULT_DATASET_TITLE = "Default dataset"
 MAX_WARNING_PATHS = 5
 
 
@@ -316,7 +318,7 @@ def _add_default_dataset_to_study_has_part(
 ) -> None:
     study_entity = ro_crate_metadata.get_object("./")
 
-    default_dataset_ref = entity_ref(DEFAULT_DATASET_TITLE)
+    default_dataset_ref = ObjectReference(**{"@id": DEFAULT_DATASET_ID})
     existing_refs = list(study_entity.hasPart)
     if any(existing_ref.id == default_dataset_ref.id for existing_ref in existing_refs):
         return
@@ -333,11 +335,10 @@ def assign_additional_files_for_dataset(
     dataset_config: DatasetModificationConfig,
 ) -> None:
     """
-    Assign currently-unassigned files to an existing named dataset, with
-    optional image marking (including typed image assignment for specimen
-    track participation).
+    Assign files to an existing named dataset, with optional image marking 
+    (including typed image assignment for specimen track participation).
 
-    Only files with no existing dataset assignment are considered. The search
+    Only files in the default dataset are considered. The search
     pool is first narrowed by data_directories (if given), then optionally
     filtered by patterns. Within the matched set, each AdditionalFileImageAssignment
     entry marks a subset as images, with an optional image type recorded in the
@@ -360,8 +361,10 @@ def assign_additional_files_for_dataset(
     ):
         return
 
-    unassigned_mask = file_list.data[dataset_col_id].isna()
-    candidate_rows = file_list.data[unassigned_mask]
+    default_dataset_mask = (
+        file_list.data[dataset_col_id] == DEFAULT_DATASET_ID
+    )
+    candidate_rows = file_list.data[default_dataset_mask]
 
     additional_files = dataset_config.additional_files
 
@@ -537,54 +540,54 @@ def assign_result_data_for_dataset(
         )
 
 
-def assign_unassigned_to_default_dataset(
+def warn_if_default_dataset_empty(
     file_list: FileList,
+    ro_crate_metadata: BIAROCrateMetadata,
+) -> bool:
+    """
+    Warn when the upstream minimal RO-Crate default dataset remains in metadata
+    but no file-list row belongs to it after modification reassignments.
+    Returns True when the default dataset exists and is empty.
+    """
+    default_dataset_id = DEFAULT_DATASET_ID
+    if ro_crate_metadata.get_object(default_dataset_id) is None:
+        return False
+
+    dataset_col_id = get_dataset_column_id(file_list)
+
+    default_dataset_rows = file_list.data[
+        file_list.data[dataset_col_id] == default_dataset_id
+    ]
+    if not default_dataset_rows.empty:
+        return False
+
+    logger.warning(
+        f"Default dataset '{default_dataset_id}' is present in the RO-Crate "
+        "metadata, but no files in the file list refer to it."
+    )
+    return True
+
+
+def remove_default_dataset_entity_from_metadata(
     ro_crate_metadata: BIAROCrateMetadata,
 ) -> None:
     """
-    After all named dataset enrichment is complete, collect any files that
-    remain unassigned and place them in a new 'Default dataset' entity.
-
-    The default dataset entity is only created if there are actually unassigned
-    files — if everything has been accounted for, nothing is written.
+    Remove the default dataset entity and its root Study hasPart
+    reference from RO-Crate metadata.
     """
-    dataset_col_id = get_dataset_column_id(file_list)
-    if not _require_columns(
-        dataset_name=DEFAULT_DATASET_TITLE,
-        assignment_name="unassigned_files assignment",
-        columns={"dataset": dataset_col_id},
-    ):
-        return
+    default_dataset_id = DEFAULT_DATASET_ID
 
-    unassigned_mask = file_list.data[dataset_col_id].isna()
-    unassigned_count = int(unassigned_mask.sum())
-
-    if unassigned_count == 0:
-        logger.debug("All files are assigned to a dataset; no default dataset needed.")
-        return
-
-    # Guard against the entity already existing (e.g. idempotency re-runs)
-    default_dataset_id = title_to_id(DEFAULT_DATASET_TITLE)
-    if ro_crate_metadata.get_object(default_dataset_id) is not None:
-        logger.warning(
-            f"Default dataset entity '{default_dataset_id}' already exists; "
-            "skipping creation but still assigning unassigned files to it."
+    study_entity = ro_crate_metadata.get_object("./")
+    
+    existing_refs = list(study_entity.hasPart)
+    updated_refs = [
+        ref for ref in existing_refs if ref.id != default_dataset_id
+    ]
+    if len(updated_refs) != len(existing_refs):
+        ro_crate_metadata.update_entity(
+            study_entity.model_copy(update={"hasPart": updated_refs})
         )
-    else:
-        default_dataset = ro_crate_models.Dataset(
-            **{
-                "@id": default_dataset_id,
-                "@type": ["Dataset", type_for(ro_crate_models.Dataset)],
-                "name": DEFAULT_DATASET_TITLE,
-            }
-        )
-        ro_crate_metadata.add_entity(default_dataset)
-        logger.info(f"Created default dataset entity: {default_dataset_id}")
 
-    _add_default_dataset_to_study_has_part(ro_crate_metadata)
-
-    file_list.data.loc[unassigned_mask, dataset_col_id] = default_dataset_id
-    logger.info(
-        f"Default dataset: {unassigned_count} unassigned file(s) assigned to "
-        f"'{DEFAULT_DATASET_TITLE}'."
-    )
+    removed = ro_crate_metadata.get_object_lookup().pop(default_dataset_id, None)
+    if removed is not None:
+        logger.info(f"Removed default dataset entity: {default_dataset_id}")

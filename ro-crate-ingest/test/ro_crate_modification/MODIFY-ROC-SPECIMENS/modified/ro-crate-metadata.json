@@ -274,7 +274,7 @@
                     "@id": "file_list.tsv"
                 },
                 {
-                    "@id": "#Default%20dataset"
+                    "@id": "#d0"
                 }
             ],
             "accessionId": "MODIFY-ROC-SPECIMENS",
@@ -424,13 +424,13 @@
             ]
         },
         {
-            "@id": "#Default%20dataset",
+            "@id": "#d0",
             "@type": [
                 "Dataset",
                 "bia:Dataset"
             ],
             "name": "Default dataset",
-            "description": null,
+            "description": "A default dataset for unassigned files.",
             "associatedBiologicalEntity": [],
             "associatedSpecimenImagingPreparationProtocol": [],
             "associatedSpecimen": null,
