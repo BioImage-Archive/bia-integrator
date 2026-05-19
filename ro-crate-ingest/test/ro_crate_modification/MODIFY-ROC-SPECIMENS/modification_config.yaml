@@ -65,7 +65,8 @@ datasets:
   - name: "Raw tilt series"
     images:
       by_type:
-        tilt_series: "**/*.mrc.st"
+        tilt_series:
+          patterns: "**/*.mrc.st"
     additional_files:
       data_directories:
         - "data/extra/"
@@ -80,8 +81,10 @@ datasets:
   - name: "Reconstructed tomograms"
     images:
       by_type:
-        tomogram: "**/*.mrc"
-        segmentation: "**/*.mrcseg"
+        tomogram:
+          patterns: "**/*.mrc"
+        segmentation:
+          patterns: "**/*.mrcseg"
     annotations:
       - patterns: "**/annotations/tomo_001_segmentation.csv"
         annotation_method_titles:

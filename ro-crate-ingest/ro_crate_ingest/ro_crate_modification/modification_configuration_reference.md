@@ -132,11 +132,16 @@ entity's `hasPart` list. No YAML entry is needed or supported for it.
 
 Two mutually exclusive forms:
 
-**Flat (Scenario 1):** a glob pattern list under `images.patterns:`. All
-matches receive `bia:Image` in the file list.
+**Flat (Scenario 1):** an exact path list under `images.paths:` and/or a
+glob pattern list under `images.patterns:`. All matches receive `bia:Image`
+in the file list. Use `paths` when a value should be interpreted literally,
+especially when file names contain characters that are meaningful to glob
+matching such as `*`, `?`, `[`, or `]`.
 
 ```yaml
 images:
+  paths:
+    - "data/tomograms/tomo[01].mrc"
   patterns:
     - "**/*.tif"
 ```
@@ -150,14 +155,19 @@ in the file list; the key is used only during specimen track classification.
 ```yaml
 images:
   by_type:
-    tilt_series: "**/*.mrc.st"
+    tilt_series:
+      patterns: "**/*.mrc.st"
     tomogram:
-      - "**/*.rec.mrc"
-      - "**/*.mrc"
-    segmentation: "**/*.mrcseg"
-    image: "**/*_overview.png"
+      paths:
+        - "data/tomograms/tomo_0001_rec.mrc"
+      patterns:
+        - "**/*.rec.mrc"
+        - "**/*.mrc"
+    segmentation:
+      patterns: "**/*.mrcseg"
+    image:
+      patterns: "**/*_overview.png"
 ```
-
 
 ### `datasets[].additional_files`
 
@@ -172,6 +182,8 @@ additional_files:
   patterns:
     - "**/*.tif"
   images:
+    - paths:
+        - "data/extra/specific_image.tif"
     - patterns: "**/*.tif"
       image_type: "tilt_series"
 ```
@@ -186,7 +198,8 @@ Each `images` entry:
 
 | Field | Required | Description |
 |---|---|---|
-| `patterns` | Yes | Glob patterns identifying which assigned files are images. |
+| `paths` | One of these | Exact file-list paths identifying which assigned files are images. |
+| `patterns` | One of these | Glob patterns identifying which assigned files are images. |
 | `image_type` | No | `ImageType` value for track participation, or `image` for a plain image. Omit for plain images. |
 
 `additional_files` runs before the `images` block within the same dataset
@@ -238,8 +251,8 @@ references named by the annotation entries.
 
 ```yaml
 annotations:
-  - patterns:
-      - "**/*_particles.star"
+  - paths:
+      - "data/annotations/tomo_001_particles.star"
     annotation_method_titles:
       - "Particle picking"
     associated_source_image:
@@ -255,7 +268,8 @@ annotations:
 
 | Field | Required | Description |
 |---|---|---|
-| `patterns` | Yes | Glob patterns identifying annotation files in the dataset. |
+| `paths` | One of these | Exact file-list paths identifying annotation files in the dataset. |
+| `patterns` | One of these | Glob patterns identifying annotation files in the dataset. |
 | `annotation_method_titles` | Yes | AnnotationMethod titles to write to `associated_annotation_method`. Must be non-empty. |
 | `associated_source_image` | Yes | Source image label(s) to write to `associated_source_image`. Must be non-empty, and should match image labels present after enrichment. |
 
@@ -267,7 +281,7 @@ RO-Crate parsing validates whether the references resolve sensibly.
 
 `annotations` can be combined with `images`, `additional_files`,
 `image_groups`, `associations`, and/or `specimen_tracks` in the same dataset block.
-Because annotation assignment runs after `images`, an annotation pattern that
+Because annotation assignment runs after `images`, an annotation selector that
 also matches image rows will overwrite their `type` value and log a warning.
 
 If the file list does not already have a label/name column, annotation

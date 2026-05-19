@@ -6,7 +6,7 @@ from pydantic import (
     Field,
     model_validator,
 )
-from typing import Annotated, Self
+from typing import Annotated, ClassVar, Self
 
 from ro_crate_ingest.ro_crate_modification.enrichment.image_types import ImageType
 
@@ -274,51 +274,88 @@ class DatasetAssociations(ClosedBaseModel):
     ] = Field(default_factory=list)
 
 
-class ImageAssignmentConfig(ClosedBaseModel):
+class FileSelector(ClosedBaseModel):
+    """
+    Explicit file selector used where a config needs to distinguish exact file
+    paths from glob patterns.
+
+    paths
+        Exact file-list paths to match.
+
+    patterns
+        Glob patterns to match against file-list paths.
+    """
+    paths: Annotated[list[str], BeforeValidator(_string_to_list)] = Field(
+        default_factory=list
+    )
+    patterns: Annotated[list[str], BeforeValidator(_string_to_list)] = Field(
+        default_factory=list
+    )
+    allow_empty_selector: ClassVar[bool] = False
+
+    @model_validator(mode="after")
+    def validate_has_selector(self) -> Self:
+        if not self.allow_empty_selector and not self.paths and not self.patterns:
+            raise ValueError(
+                "file selector: at least one of 'paths' or 'patterns' must be provided."
+            )
+        return self
+
+
+class ImageAssignmentConfig(FileSelector):
     """
     Configuration for marking files within a dataset as images.
 
     Two mutually exclusive forms:
 
+    paths
+        A flat list of exact file-list paths. All matched files are assigned
+        the non-track-aware type 'image'. Use this when you want literal path
+        matching rather than using globs.
+
     patterns
         A flat list of glob patterns. All matched files are assigned the
         non-track-aware type 'image'. Typical for Scenario 1.
 
-        In YAML, provide a bare list directly under the 'images:' key:
+        In YAML, provide a list under the 'patterns:' key:
 
             images:
-              - "**/*.tif"
-              - "**/*.ome.tiff"
+              patterns:
+                - "**/*.tif"
+                - "**/*.ome.tiff"
 
     by_type
         A dict keyed by image type. Valid keys are the ImageType vocabulary
         (frames, tilt_series, aligned_tilt_series, tomogram, denoised_tomogram,
         segmentation) plus 'image' for files that are images but do not belong
-        to a specimen track.
+        to a specimen track. Values are selectors with paths and/or patterns.
 
             images:
               by_type:
-                tilt_series: "**/*.mrc.st"
+                tilt_series:
+                  patterns: "**/*.mrc.st"
                 tomogram:
-                  - "**/*.rec.mrc"
-                  - "**/*.mrc"
+                  paths:
+                    - "data/tomograms/tomo_0001_rec.mrc"
     """
-    patterns: Annotated[list[str], BeforeValidator(_string_to_list)] = Field(
-        default_factory=list
-    )
-    by_type: dict[str, str | list[str]] = Field(default_factory=dict)
+    allow_empty_selector: ClassVar[bool] = True
+    by_type: dict[str, FileSelector] = Field(default_factory=dict)
 
     @model_validator(mode="after")
     def validate_form(self) -> Self:
+        has_paths = bool(self.paths)
         has_patterns = bool(self.patterns)
         has_by_type = bool(self.by_type)
 
-        if has_patterns and has_by_type:
+        if has_by_type and (has_paths or has_patterns):
             raise ValueError(
-                "images: only one of 'patterns' or 'by_type' may be provided."
+                "images: provide either top-level 'paths'/'patterns' or 'by_type', "
+                "not both."
             )
-        if not has_patterns and not has_by_type:
-            raise ValueError("images: one of 'patterns' or 'by_type' must be provided.")
+        if not has_paths and not has_patterns and not has_by_type:
+            raise ValueError(
+                "images: one of 'paths', 'patterns', or 'by_type' must be provided."
+            )
 
         if has_by_type:
             bad_keys = set(self.by_type) - _VALID_BY_TYPE_KEYS
@@ -331,10 +368,14 @@ class ImageAssignmentConfig(ClosedBaseModel):
         return self
 
 
-class AdditionalFileImageAssignment(ClosedBaseModel):
+class AdditionalFileImageAssignment(FileSelector):
     """
     Marks a subset of additionally-assigned files as images, with an optional
     image type for specimen track participation.
+
+    paths
+        Exact file-list paths identifying which of the additionally-assigned
+        files are images.
 
     patterns
         Glob patterns identifying which of the additionally-assigned files are
@@ -346,11 +387,10 @@ class AdditionalFileImageAssignment(ClosedBaseModel):
         the file participates in specimen track identification using this type.
         When absent (or 'image'), the file is a plain image with no track stage.
     """
-    patterns: Annotated[list[str], BeforeValidator(_string_to_list)]
     image_type: str | None = None
 
     @model_validator(mode="after")
-    def validate_image_type(self) -> Self:
+    def validate_assignment(self) -> Self:
         if self.image_type is not None and self.image_type not in _VALID_BY_TYPE_KEYS:
             raise ValueError(
                 f"additional_files.images: unknown image_type '{self.image_type}'. "
@@ -359,9 +399,13 @@ class AdditionalFileImageAssignment(ClosedBaseModel):
         return self
 
 
-class AnnotationAssignmentConfig(ClosedBaseModel):
+class AnnotationAssignmentConfig(FileSelector):
     """
     Configuration for assigning annotation data.
+
+    paths
+        Exact file-list paths identifying which files in this dataset are
+        annotation files.
 
     patterns
         Glob patterns identifying which files in this dataset are annotation
@@ -376,7 +420,6 @@ class AnnotationAssignmentConfig(ClosedBaseModel):
         when constructing creation-process dependencies for AnnotationData.
     """
 
-    patterns: Annotated[list[str], BeforeValidator(_string_to_list)]
     annotation_method_titles: Annotated[
         list[str], BeforeValidator(_string_to_list)
     ] = Field(default_factory=list)

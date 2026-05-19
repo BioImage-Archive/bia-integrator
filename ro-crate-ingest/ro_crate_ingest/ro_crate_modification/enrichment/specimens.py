@@ -23,10 +23,12 @@ from ro_crate_ingest.ro_crate_modification.enrichment.file_list_utils import (
     get_or_add_associated_subject_column_id,
     get_path_column_id,
 )
+from ro_crate_ingest.ro_crate_modification.enrichment.file_selection import (
+    match_selection,
+)
 from ro_crate_ingest.ro_crate_modification.enrichment.utils import (
     FILE_TYPE_IMAGE,
     entity_ref,
-    match_patterns,
     resolve_dataset_id_by_name,
     title_to_id,
     type_for,
@@ -117,7 +119,7 @@ def _transform_to_canonical_id(raw_id: str, canonical_pattern: str) -> str:
 
 def _classify_file_by_type(
     path: Path,
-    by_type: dict[str, str | list[str]],
+    by_type: dict,
     dataset_name: str,
 ) -> str | None:
     """
@@ -126,9 +128,8 @@ def _classify_file_by_type(
     or if the key is the plain 'image' sentinel (which is not a track stage).
     """
     matched: list[str] = []
-    for type_key, raw_patterns in by_type.items():
-        patterns = [raw_patterns] if isinstance(raw_patterns, str) else raw_patterns
-        if match_patterns(str(path), patterns):
+    for type_key, selection in by_type.items():
+        if match_selection(str(path), selection):
             matched.append(type_key)
 
     if len(matched) > 1:
@@ -170,7 +171,7 @@ def _classify_file_by_additional_images(
             or img_assignment.image_type == IMAGE_ASSIGNMENT_TYPE_KEY
         ):
             continue
-        if match_patterns(str(path), img_assignment.patterns):
+        if match_selection(str(path), img_assignment):
             matched_typed.append(img_assignment.image_type)
 
     if len(matched_typed) > 1:

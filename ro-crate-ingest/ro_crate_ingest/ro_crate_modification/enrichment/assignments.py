@@ -1,16 +1,16 @@
 import logging
-import pandas as pd
 from collections.abc import Callable
 from dataclasses import dataclass
 from pathlib import Path
-from urllib.parse import quote
+from types import SimpleNamespace
+
+import pandas as pd
 
 from bia_ro_crate.core.bia_ro_crate_metadata import BIAROCrateMetadata
 from bia_ro_crate.core.file_list import FileList
 from bia_ro_crate.models.linked_data.pydantic_ld.LDModel import ObjectReference
 from ro_crate_ingest.empiar_to_ro_crate.entity_conversion.dataset import (
-    DEFAULT_DATASET_ID,
-    DEFAULT_DATASET_TITLE,
+    DEFAULT_DATASET_ID
 )
 from ro_crate_ingest.ro_crate_modification.enrichment.file_list_utils import (
     file_list_association_value,
@@ -22,10 +22,13 @@ from ro_crate_ingest.ro_crate_modification.enrichment.file_list_utils import (
     get_or_add_type_column_id,
     get_path_column_id,
 )
+from ro_crate_ingest.ro_crate_modification.enrichment.file_selection import (
+    flatten_selections,
+    match_selection,
+)
 from ro_crate_ingest.ro_crate_modification.enrichment.utils import (
     FILE_TYPE_ANNOTATION,
     FILE_TYPE_IMAGE,
-    entity_ref,
     entity_refs,
     match_patterns,
     resolve_dataset_id_by_name,
@@ -75,22 +78,20 @@ def _require_columns(
     return False
 
 
-def _patterns_from_image_config(images_config: ImageAssignmentConfig) -> list[str]:
-    if images_config.patterns:
-        return images_config.patterns
+def _selections_from_image_config(images_config: ImageAssignmentConfig) -> list:
+    if images_config.paths or images_config.patterns:
+        return [images_config]
 
-    all_patterns: list[str] = []
-    for raw_patterns in images_config.by_type.values():
-        if isinstance(raw_patterns, str):
-            all_patterns.append(raw_patterns)
-        else:
-            all_patterns.extend(raw_patterns)
-    return all_patterns
+    return flatten_selections(list(images_config.by_type.values()))
+
+
+def _selector_from_patterns(patterns: list[str]) -> object:
+    return SimpleNamespace(paths=[], patterns=patterns)
 
 
 def _matching_rows(
     assignment_context: ResultAssignmentContext,
-    patterns: list[str],
+    selections: list,
     rows: pd.DataFrame | None = None,
 ) -> pd.DataFrame:
     if rows is None:
@@ -98,7 +99,9 @@ def _matching_rows(
 
     path_col_id = assignment_context.path_col_id
     match_mask = rows[path_col_id].apply(
-        lambda path: match_patterns(str(path), patterns)
+        lambda path: any(
+            match_selection(str(path), selection) for selection in selections
+        )
     )
     return rows[match_mask]
 
@@ -145,14 +148,14 @@ def _warn_before_overwriting_values(
 def _apply_result_assignment(
     assignment_context: ResultAssignmentContext,
     assignment_name: str,
-    patterns: list[str],
     result_type: str,
+    selections: list,
     label_col_id: str | None = None,
     label_builder: Callable[[str], str] | None = None,
     extra_column_values: dict[str, str | list[str]] | None = None,
 ) -> int:
     """
-    Shared pattern-based assignment for dataset result objects.
+    Shared selector-based assignment for dataset result objects.
 
     Image and annotation assignments differ in the result type and associated
     metadata they write, but share the mechanics of matching files, writing the
@@ -160,12 +163,12 @@ def _apply_result_assignment(
     """
     matched_rows = _matching_rows(
         assignment_context=assignment_context,
-        patterns=patterns,
+        selections=selections,
     )
     if matched_rows.empty:
         logger.warning(
-            f"Dataset '{assignment_context.dataset_name}': {assignment_name} patterns "
-            f"{patterns} matched no files."
+            f"Dataset '{assignment_context.dataset_name}': {assignment_name} "
+            f"selectors {selections} matched no files."
         )
         return 0
 
@@ -233,7 +236,7 @@ def _assign_image_group_protocols(
     for group in image_groups:
         matched_indices = _matching_rows(
             assignment_context=assignment_context,
-            patterns=group.patterns,
+            selections=[_selector_from_patterns(group.patterns)],
             rows=dataset_images,
         )
         matched_indices = matched_indices.index
@@ -279,7 +282,10 @@ def _build_annotation_label(
     annotation_config: AnnotationAssignmentConfig,
     file_path: str,
 ) -> str:
-    if len(annotation_config.patterns) == 1:
+    if len(annotation_config.paths) == 1 and not annotation_config.patterns:
+        return _path_label(annotation_config.paths[0])
+
+    if len(annotation_config.patterns) == 1 and not annotation_config.paths:
         pattern = annotation_config.patterns[0]
         if "*" not in pattern and "?" not in pattern and "[" not in pattern:
             return _path_label(pattern)
@@ -407,8 +413,8 @@ def assign_additional_files_for_dataset(
     for img_assignment in additional_files.images:
         matched_rows = candidate_rows[
             candidate_rows[path_col_id].apply(
-                lambda path, patterns=img_assignment.patterns: match_patterns(
-                    str(path), patterns
+                lambda path, selection=img_assignment: match_selection(
+                    str(path), selection
                 )
             )
         ]
@@ -416,8 +422,8 @@ def assign_additional_files_for_dataset(
 
         if matched_indices.empty:
             logger.warning(
-                f"Dataset '{dataset_config.name}': additional_files image patterns "
-                f"{img_assignment.patterns} matched no files."
+                f"Dataset '{dataset_config.name}': additional_files image selectors "
+                f"{img_assignment} matched no files."
             )
             continue
 
@@ -475,8 +481,8 @@ def assign_result_data_for_dataset(
         assigned_images = _apply_result_assignment(
             assignment_context=assignment_context,
             assignment_name="image assignment",
-            patterns=_patterns_from_image_config(dataset_config.images),
             result_type=FILE_TYPE_IMAGE,
+            selections=_selections_from_image_config(dataset_config.images),
         )
         if assigned_images:
             logger.debug(
@@ -520,8 +526,8 @@ def assign_result_data_for_dataset(
             assigned_annotations += _apply_result_assignment(
                 assignment_context=assignment_context,
                 assignment_name="annotation assignment",
-                patterns=annotation_config.patterns,
                 result_type=FILE_TYPE_ANNOTATION,
+                selections=[annotation_config],
                 label_col_id=label_col_id,
                 label_builder=lambda file_path, config=annotation_config: (
                     _build_annotation_label(config, file_path)
