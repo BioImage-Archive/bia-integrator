@@ -111,10 +111,13 @@ specimen_tracks:
 datasets:
 
   # --- Scenario 1: flat image assignment ------------------------------------
-  # A bare list of glob patterns under 'images:'. All matches are assigned
-  # type 'bia:Image' (non-track-aware). No REMBI or specimen config needed.
+  # Exact file-list paths go under 'paths'; glob patterns go under 'patterns'.
+  # All matches are assigned type 'bia:Image' (non-track-aware). No REMBI or
+  # specimen config needed.
   - name: "Fluorescence images of HeLa cells"
     images:
+      paths:
+        - "data/images/cell[01].tif"
       patterns:
         - "**/*.tif"
         - "**/*.ome.tiff"
@@ -135,6 +138,8 @@ datasets:
         - "**/*.tif"
         - "**/*.mrc"
       images:
+        - paths:
+            - "data/extra/specific_image.tif"
         - patterns: "**/*.tif"
           # image_type omitted → plain 'bia:Image', not track-aware
         - patterns: "**/*.mrc"
@@ -197,8 +202,8 @@ datasets:
   # tomograms, those labels are generated as e.g. "Specimen_001 tomogram".
   - name: "Tomogram annotation files"
     annotations:
-      - patterns:
-          - "**/*_particles.star"
+      - paths:
+          - "data/annotations/tomo_001_particles.star"
         annotation_method_titles:
           - "Manual segmentation of mitochondria"
         associated_source_image:
@@ -220,7 +225,8 @@ datasets:
   - name: "Raw tilt series frames"
     images:
       by_type:
-        frames: "**/*.tif"
+        frames:
+          patterns: "**/*.tif"
     specimen_tracks:
       image_acquisition_protocol_title:
         frames:
@@ -229,8 +235,10 @@ datasets:
   - name: "Unaligned tilt stacks"
     images:
       by_type:
-        tilt_series: "**/*.mrc.st"
-        aligned_tilt_series: "**/*.ali.mrc"
+        tilt_series:
+          patterns: "**/*.mrc.st"
+        aligned_tilt_series:
+          patterns: "**/*.ali.mrc"
     specimen_tracks:
       image_acquisition_protocol_title:
         tilt_series:
@@ -242,8 +250,12 @@ datasets:
   - name: "Reconstructed tomograms"
     images:
       by_type:
-        tomogram: "**/*.mrc"
-        segmentation: "**/*.mrcseg"
+        tomogram:
+          paths:
+            - "data/tomograms/tomo_0001_rec.mrc"
+          patterns: "**/*.mrc"
+        segmentation:
+          patterns: "**/*.mrcseg"
     associations:
       biosample_titles:
         - "Human HeLa cells"
@@ -277,5 +289,7 @@ datasets:
   - name: "Overview images"
     images:
       by_type:
-        image: "**/*_overview.png"
-        tomogram: "**/*.mrc"
+        image:
+          patterns: "**/*_overview.png"
+        tomogram:
+          patterns: "**/*.mrc"

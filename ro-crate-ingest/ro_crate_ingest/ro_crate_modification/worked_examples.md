@@ -57,7 +57,8 @@ The config for this dataset is:
 - name: "Tilt series stacks"
   images:
     by_type:
-      tilt_series: "**/*.mrc.st"
+      tilt_series:
+        patterns: "**/*.mrc.st"
 ```
 
 The enricher:

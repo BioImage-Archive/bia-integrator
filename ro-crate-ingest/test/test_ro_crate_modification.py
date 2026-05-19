@@ -27,13 +27,17 @@ from ro_crate_ingest.ro_crate_modification.enrichment.rembis import (
 )
 from ro_crate_ingest.ro_crate_modification.enrichment.specimens import (
     SpecimenTrack,
+    _classify_file_by_type,
     _generate_labels,
     _write_associated_protocol,
     _write_source_image_labels,
 )
 from ro_crate_ingest.ro_crate_modification.modification_config import (
+    AnnotationAssignmentConfig,
     DatasetAssociations,
     DatasetModificationConfig,
+    FileSelector,
+    ImageAssignmentConfig,
     SpecimenTrackAssignmentConfig,
 )
 from ro_crate_ingest.empiar_to_ro_crate.entity_conversion.dataset import (
@@ -145,13 +149,122 @@ def test_result_assignment_warns_before_overwriting_type(caplog):
     count = _apply_result_assignment(
         context,
         assignment_name="annotation assignment",
-        patterns=["**/*.csv"],
         result_type="http://bia/AnnotationData",
+        selections=[FileSelector(patterns=["**/*.csv"])],
     )
 
     assert count == 1
     assert file_list.data.at[0, "_:col2"] == "http://bia/AnnotationData"
     assert "overwriting existing type" in caplog.text
+
+
+def test_image_assignment_accepts_exact_paths_without_glob_semantics():
+    schema = {
+        "_:col0": ro_crate_models.Column(
+            **{
+                "@id": "_:col0",
+                "@type": ["csvw:Column"],
+                "columnName": "file_path",
+                "propertyUrl": str(BIA.filePath),
+            }
+        ),
+        "_:col1": ro_crate_models.Column(
+            **{
+                "@id": "_:col1",
+                "@type": ["csvw:Column"],
+                "columnName": "dataset",
+                "propertyUrl": "http://schema.org/isPartOf",
+            }
+        ),
+        "_:col2": ro_crate_models.Column(
+            **{
+                "@id": "_:col2",
+                "@type": ["csvw:Column"],
+                "columnName": "type",
+                "propertyUrl": str(RDF.type),
+            }
+        ),
+    }
+    file_list = FileList(
+        schema=schema,
+        data=pd.DataFrame(
+            {
+                "file_path": [
+                    "data/tomograms/tomo[01].mrc",
+                    "data/tomograms/tomo0.mrc",
+                    "data/tomograms/tomo1.mrc",
+                ],
+                "dataset": ["#Tomograms", "#Tomograms", "#Tomograms"],
+                "type": [None, None, None],
+            }
+        ),
+    )
+    context = ResultAssignmentContext(
+        file_list=file_list,
+        dataset_name="Tomograms",
+        dataset_id="#Tomograms",
+        dataset_col_id="_:col1",
+        path_col_id="_:col0",
+        type_col_id="_:col2",
+    )
+    config = ImageAssignmentConfig(paths=["data/tomograms/tomo[01].mrc"])
+
+    count = _apply_result_assignment(
+        context,
+        assignment_name="image assignment",
+        result_type="http://bia/Image",
+        selections=[config],
+    )
+
+    assert count == 1
+    assert file_list.data["_:col2"].tolist() == ["http://bia/Image", None, None]
+
+
+def test_by_type_assignment_accepts_explicit_paths_and_patterns():
+    config = ImageAssignmentConfig.model_validate(
+        {
+            "by_type": {
+                "tomogram": {"paths": "data/tomograms/tomo[01].mrc"},
+                "tilt_series": {"patterns": "data/tilt_series/*.mrc"},
+            }
+        }
+    )
+
+    assert (
+        _classify_file_by_type(
+            Path("data/tomograms/tomo[01].mrc"), config.by_type, "Images"
+        )
+        == "tomogram"
+    )
+    assert (
+        _classify_file_by_type(
+            Path("data/tilt_series/series_01.mrc"), config.by_type, "Images"
+        )
+        == "tilt_series"
+    )
+
+
+def test_image_assignment_rejects_whole_selector_pattern_shorthand():
+    with pytest.raises(ValueError):
+        ImageAssignmentConfig.model_validate(["**/*.mrc"])
+
+    with pytest.raises(ValueError):
+        ImageAssignmentConfig.model_validate(
+            {"by_type": {"tomogram": "**/*.mrc"}}
+        )
+
+
+def test_annotation_assignment_accepts_exact_paths():
+    config = AnnotationAssignmentConfig.model_validate(
+        {
+            "paths": "data/annotations/tomo[01].star",
+            "annotation_method_titles": "Particle picking",
+            "associated_source_image": "Specimen_001 tomogram",
+        }
+    )
+
+    assert config.paths == ["data/annotations/tomo[01].star"]
+    assert config.patterns == []
 
 
 def test_get_or_add_label_column_id_creates_missing_column():

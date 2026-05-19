@@ -23,12 +23,12 @@ minimal RO-Crate  +  modification_config.yaml
         │       ├── 2. Add REMBI entities to metadata graph      [rembis.py]
         │       ├── 3. For each named dataset:
         │       │       a. Apply dataset-level REMBI associations [rembis.py]
-        │       │       b. Assign additional unassigned files     [assignments.py]
+        │       │       b. Reassign files from default dataset    [assignments.py]
         │       │       c. Assign images within the dataset       [assignments.py]
         │       │       d. Write image-group protocol refs        [assignments.py]
         │       │       e. Assign annotations within the dataset  [assignments.py]
-        │       ├── 4. Identify specimen tracks + assign         [specimens.py]
-        │       └── 5. Create default dataset for unassigned     [assignments.py]
+        │       ├── 4. Identify specimen tracks + assign          [specimens.py]
+        │       └── 5. Add dataset associations to file list.     [assignments.py]
         │
         └── apply_pruning()   [pruner.py — future]
 ```
@@ -65,18 +65,16 @@ see the results of earlier ones:
 2. Add study-wide REMBI entities to the metadata graph.
 3. For each named dataset:
    a. Apply explicit REMBI associations to the Dataset entity.
-   b. Assign `additional_files` that are still unassigned to that dataset,
-      optionally marking them as images.
+   b. Reassign matching `additional_files` from the upstream default dataset
+      to that dataset, optionally marking them as images.
    c. Apply `images` assignment to files already in the dataset, including
       files just added by `additional_files`.
    d. Apply `image_groups` protocol associations to image rows.
    e. Apply `annotations` assignment to annotation rows.
 4. If top-level `specimen_tracks` is configured, identify tracks, create
    Specimen entities, and write track metadata to the file list.
-5. Run the default-dataset step. If any file rows are still unassigned, a
-   `"Default dataset"` entity is created if needed and those rows are assigned
-   to it. When created, it is also linked from the Study `hasPart` list.
-   No YAML entry is needed for the default dataset.
+5. Add dataset associations to file list, if necessary.
+6. Remove the upstream default dataset if it is left empty after reassignment.
 
 If two pattern-based steps match the same file and write the same file-list
 column, the later step overwrites the earlier value and logs a warning.
@@ -90,9 +88,10 @@ or exclusivity.*
 
 ### 1a. Image assignment
 
-Files matching the given glob patterns are marked as `bia:Image` in the
-file list. No specimen entities are created, no metadata graph changes are
-made.
+Files matching the given exact paths or glob patterns are marked as
+`bia:Image` in the file list. No specimen entities are created, no metadata
+graph changes are made. Use `paths` for literal file-list paths, and
+`patterns` for glob matching.
 
 **Example config:**
 
@@ -100,6 +99,8 @@ made.
 datasets:
   - name: "Fluorescence images of HeLa cells"
     images:
+      paths:
+        - "data/images/cell[01].tif"
       patterns:
         - "**/*.tif"
         - "**/*.ome.tiff"
@@ -116,22 +117,20 @@ datasets:
    RO-Crate by its `name` field.
 2. It filters the file list to rows where `_part_of_dataset` matches that
    entity's `@id`.
-3. Each file whose path matches one of the glob patterns has its `type`
-   column set to `bia:Image`.
-4. After all named datasets are processed, any files that remain unassigned
-   (no dataset membership) are automatically collected into a new Dataset
-   entity titled `"Default dataset"`. The default-dataset step always runs,
-   but the entity is only created when unassigned files remain. When created,
-   it is linked from the Study `hasPart` list. No config entry is needed.
+3. Each file whose path matches one of the exact paths or glob patterns has
+   its `type` column set to `bia:Image`.
+4. Modification does not create or populate a default dataset. Dataset
+   membership comes from the minimal RO-Crate and any explicit
+   `additional_files` reassignment.
 
 
 ### 1b. Assigning additional files to an existing dataset
 
-When some files in the minimal RO-Crate have no dataset membership but
-belong logically to an existing named dataset, the `additional_files` block
-can pull them in. This is useful when the minimal step couldn't assign
-them, or when files from a subdirectory should be grouped with an existing
-imageset.
+When files in the minimal RO-Crate's upstream default dataset belong
+logically to an existing named dataset, the `additional_files` block can
+pull them in. This is useful when the minimal step left files in the default
+dataset, or when files from a subdirectory should be grouped with an
+existing imageset.
 
 `additional_files` runs **before** the `images` block within the same
 dataset step, so newly-assigned files are visible to pattern matching.
@@ -145,30 +144,33 @@ datasets:
       patterns:
         - "**/*.tif"
       images:
+        - paths:
+            - "data/extra_frames/TS_001_000.tif"
         - patterns: "**/*.tif"
           # image_type can be specified here (see below)
     images:
       by_type:
-        tilt_series: "**/*.mrc.st"
+        tilt_series:
+          patterns: "**/*.mrc.st"
 ```
 
 **`additional_files` fields:**
 
 | Field | Required | Description |
 |---|---|---|
-| `data_directories` | One of these | Directory prefixes; only unassigned files under these paths are considered. |
+| `data_directories` | One of these | Directory prefixes; only files in the upstream default dataset under these paths are considered. |
 | `patterns` | One of these | Glob patterns applied within the candidate pool. |
-| `images` | No | List of `AdditionalFileImageAssignment` entries marking subsets as images. |
+| `images` | No | List of `AdditionalFileImageAssignment` entries marking subsets as images by exact `paths`, glob `patterns`, or both. |
 
 At least one of `data_directories` or `patterns` must be present. Only
-files that are currently unassigned (no dataset membership) are ever
-affected.
+files that are currently in the upstream default dataset are ever affected.
 
 Each `images` entry has:
 
 | Field | Required | Description |
 |---|---|---|
-| `patterns` | Yes | Glob patterns identifying which additionally-assigned files are images. |
+| `paths` | One of these | Exact file-list paths identifying which additionally-assigned files are images. |
+| `patterns` | One of these | Glob patterns identifying which additionally-assigned files are images. |
 | `image_type` | No | An `ImageType` value (`frames`, `tilt_series`, etc.) for specimen track participation, or `image` for a plain non-track image. When absent, the file is a plain image. |
 
 
@@ -226,8 +228,8 @@ rembis:
 datasets:
   - name: "Tomogram annotations"
     annotations:
-      - patterns:
-          - "**/*_particles.star"
+      - paths:
+          - "data/annotations/tomo_0001_particles.star"
         annotation_method_titles:
           - "Particle picking"
         associated_source_image:
@@ -238,14 +240,15 @@ Each `annotations` entry has:
 
 | Field | Required | Description |
 |---|---|---|
-| `patterns` | Yes | Glob patterns identifying annotation files within the dataset. |
+| `paths` | One of these | Exact file-list paths identifying annotation files within the dataset. |
+| `patterns` | One of these | Glob patterns identifying annotation files within the dataset. |
 | `annotation_method_titles` | Yes | One or more AnnotationMethod titles. Values are resolved to `@id`s and written to `associated_annotation_method`; the Dataset also receives those AnnotationMethod associations. |
 | `associated_source_image` | Yes | One or more source image labels written to `associated_source_image`. For specimen-track images, use generated labels such as `Specimen_001 tomogram` or `Specimen_001 denoised_tomogram`. |
 
 Annotation assignment runs after `additional_files`, `images`, and
 `image_groups` for the same dataset. If the file list does not already have a
 label/name column, the modifier adds one before writing annotation labels. If
-an annotation pattern also matches image rows, annotation assignment overwrites
+an annotation selector also matches image rows, annotation assignment overwrites
 their `type` value and logs a warning.
 
 The modifier writes `associated_source_image` values as file-list metadata.
@@ -307,8 +310,7 @@ datasets:
 5. If `datasets` blocks are present, their `associations` are written to
    the corresponding Dataset entities.
 6. No image, annotation, or specimen-track file-list changes are made by this
-   scenario. The final default-dataset step still runs and may assign any
-   remaining unassigned files.
+   scenario. Modification does not create or populate a default dataset.
 
 
 ### 3. REMBI + specimen track assignment (including images)
@@ -366,7 +368,8 @@ datasets:
   - name: "Tilt series stacks"
     images:
       by_type:
-        tilt_series: "**/*.mrc.st"
+        tilt_series:
+          patterns: "**/*.mrc.st"
     specimen_tracks:
       image_acquisition_protocol_title:
         tilt_series:
@@ -375,8 +378,10 @@ datasets:
   - name: "Reconstructed tomograms"
     images:
       by_type:
-        tomogram: "**/*.mrc"
-        segmentation: "**/*.mrcseg"
+        tomogram:
+          patterns: "**/*.mrc"
+        segmentation:
+          patterns: "**/*.mrcseg"
     specimen_tracks:
       protocol_titles:
         tomogram:
